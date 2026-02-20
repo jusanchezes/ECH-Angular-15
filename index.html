@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ECH Patient Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
+    <link rel="stylesheet" href="theme-overrides.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header" onclick="toggleSidebar()">
+            <i class="pi pi-bars"></i>
+            <span class="logo-text">ECH</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="menu-item active" title="General View">
+                <i class="pi pi-home"></i>
+                <span class="menu-label">General View</span>
+            </div>
+            <div class="menu-item" title="Previous Visits">
+                <i class="pi pi-history"></i>
+                <span class="menu-label">Previous Visits</span>
+            </div>
+            <div class="menu-item" title="Risk Factors">
+                <i class="pi pi-exclamation-triangle"></i>
+                <span class="menu-label">Risk Factors</span>
+            </div>
+            <div class="menu-item" title="Diagnostic Tests">
+                <i class="pi pi-search"></i>
+                <span class="menu-label">Diagnostic Tests</span>
+            </div>
+            <div class="menu-item" title="Documents">
+                <i class="pi pi-file"></i>
+                <span class="menu-label">Documents</span>
+            </div>
+            <div class="menu-item" title="Medication">
+                <i class="pi pi-box"></i>
+                <span class="menu-label">Medication</span>
+            </div>
+            <div class="menu-item" title="Patient Summary">
+                <i class="pi pi-chart-bar"></i>
+                <span class="menu-label">Patient Summary</span>
+            </div>
+            <div class="menu-item" title="Care Plans">
+                <i class="pi pi-heart"></i>
+                <span class="menu-label">Care Plans</span>
+            </div>
+            <div class="menu-item" title="Measurements">
+                <i class="pi pi-chart-line"></i>
+                <span class="menu-label">Measurements</span>
+            </div>
+            <div class="menu-item" title="Nurse Notes">
+                <i class="pi pi-pencil"></i>
+                <span class="menu-label">Nurse Notes</span>
+            </div>
+            <div class="menu-item" title="Protocols">
+                <i class="pi pi-book"></i>
+                <span class="menu-label">Protocols</span>
+            </div>
+        </nav>
+
+        <div class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="pi pi-angle-double-left"></i>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <div class="hamburger" style="display:none; cursor:pointer; padding:4px;" onclick="toggleSidebar()">
+                    <i class="pi pi-bars" style="font-size:18px; color:var(--ech-primary);"></i>
+                </div>
+                <div class="logo"><i class="pi pi-shield"></i> ECH</div>
+            </div>
+
+            <div class="top-bar-center">
+                <i class="pi pi-building"></i>
+                <span>Inpatients</span>
+                <span style="color:var(--ech-text-secondary); font-weight:400;">| 20/02/2026</span>
+            </div>
+
+            <div class="top-bar-right">
+                <div class="notification-btn" onclick="toggleAlertMenu()" title="Alerts & Messages">
+                    <i class="pi pi-bell" style="font-size:16px; color:var(--ech-text-secondary);"></i>
+                    <span class="badge-count">3</span>
+                </div>
+                <div class="notification-btn" title="Messages">
+                    <i class="pi pi-envelope" style="font-size:16px; color:var(--ech-text-secondary);"></i>
+                    <span class="badge-count">1</span>
+                </div>
+                <div class="notification-btn" title="Help">
+                    <i class="pi pi-question-circle" style="font-size:16px; color:var(--ech-primary);"></i>
+                </div>
+                <div class="user-info">
+                    <i class="pi pi-user" style="color:var(--ech-primary);"></i>
+                    <span><strong>Dr. Rory Rogers</strong></span>
+                    <span style="color:var(--ech-text-muted);">Service of Healthcare Provider A1</span>
+                    <span style="color:var(--ech-text-muted);">| Adult Emergency</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="clinical-banner">
+            <div class="banner-row-1">
+                <div class="patient-identity">
+                    <i class="pi pi-user patient-icon" title="Male"></i>
+                    <span class="patient-name">THOMAS MEYER WOOD</span>
+                    <span class="patient-gender-age">(11/07/1990 - 35 Years - Male)</span>
+
+                    <div class="safety-tags">
+                        <span class="p-tag-custom p-tag-danger"><i class="pi pi-exclamation-circle"></i> Penicillin Allergy</span>
+                        <span class="p-tag-custom p-tag-danger"><i class="pi pi-exclamation-circle"></i> Latex Allergy</span>
+                        <span class="p-tag-custom p-tag-warning"><i class="pi pi-exclamation-triangle"></i> Fall Risk</span>
+                        <span class="p-tag-custom p-tag-info"><i class="pi pi-info-circle"></i> VTE Risk</span>
+                        <span class="p-tag-custom p-tag-dnr"><i class="pi pi-ban"></i> DNR</span>
+                    </div>
+                </div>
+
+                <div class="quick-actions" style="position:relative;">
+                    <div class="split-btn">
+                        <button class="split-main" onclick="handleQuickAction('Add Clinical Note')">
+                            <i class="pi pi-plus"></i> Add Clinical Note
+                        </button>
+                        <button class="split-toggle" onclick="toggleSplitMenu()">
+                            <i class="pi pi-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="split-dropdown" id="splitDropdown">
+                        <div class="split-item" onclick="handleQuickAction('Add Clinical Note')">
+                            <i class="pi pi-pencil"></i> Add Clinical Note
+                        </div>
+                        <div class="split-item" onclick="handleQuickAction('Prescribe Medication')">
+                            <i class="pi pi-box"></i> Prescribe Medication
+                        </div>
+                        <div class="split-item" onclick="handleQuickAction('Record Vitals')">
+                            <i class="pi pi-chart-line"></i> Record Vitals
+                        </div>
+                        <div class="split-item" onclick="handleQuickAction('Order Test')">
+                            <i class="pi pi-search"></i> Order Test
+                        </div>
+                        <div class="split-item" onclick="handleQuickAction('Add Diagnosis')">
+                            <i class="pi pi-tag"></i> Add Diagnosis
+                        </div>
+                        <div class="split-item" onclick="handleQuickAction('Generate Report')">
+                            <i class="pi pi-file-pdf"></i> Generate Report
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="banner-row-2">
+                <div class="patient-meta">
+                    <span>Rec ID 46</span><span class="meta-separator">|</span>
+                    <span>Episode No.: 283</span><span class="meta-separator">|</span>
+                    <span>Room Bed 201 (514 d)</span><span class="meta-separator">|</span>
+                    <span>CLIENTE 01</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label><i class="pi pi-clock"></i> Time:</label>
+                <div class="select-button-group">
+                    <button class="sb-option" data-value="24h">24h</button>
+                    <button class="sb-option" data-value="48h">48h</button>
+                    <button class="sb-option" data-value="7d">7d</button>
+                    <button class="sb-option active" data-value="full">Full Episode</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label><i class="pi pi-users"></i> Role:</label>
+                <div class="multi-select-wrapper">
+                    <div class="multi-select-btn" onclick="toggleMultiSelect()">
+                        <span id="roleLabel">All Roles</span>
+                        <i class="pi pi-chevron-down" style="margin-left:auto; font-size:10px;"></i>
+                    </div>
+                    <div class="multi-select-panel" id="rolePanel">
+                        <label class="ms-option"><input type="checkbox" value="All" checked onchange="updateRoleFilter(this)"> All</label>
+                        <label class="ms-option"><input type="checkbox" value="Physician" onchange="updateRoleFilter(this)"> Physician</label>
+                        <label class="ms-option"><input type="checkbox" value="Nursing" onchange="updateRoleFilter(this)"> Nursing</label>
+                        <label class="ms-option"><input type="checkbox" value="Radiology" onchange="updateRoleFilter(this)"> Radiology</label>
+                        <label class="ms-option"><input type="checkbox" value="Pharmacy" onchange="updateRoleFilter(this)"> Pharmacy</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group" style="flex:1;">
+                <label><i class="pi pi-search"></i></label>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search timeline...">
+            </div>
+
+            <div class="filter-group column-toggle-wrapper" style="position:relative;">
+                <button class="column-toggle-btn" onclick="toggleColumnPanel()" title="Configure visible columns">
+                    <i class="pi pi-sliders-h"></i> Columns
+                </button>
+                <div class="column-panel" id="columnPanel">
+                    <label class="col-option"><input type="checkbox" value="time" checked onchange="toggleColumn(this)"> Time</label>
+                    <label class="col-option"><input type="checkbox" value="type" checked onchange="toggleColumn(this)"> Type</label>
+                    <label class="col-option"><input type="checkbox" value="dept" checked onchange="toggleColumn(this)"> Department</label>
+                    <label class="col-option"><input type="checkbox" value="description" checked onchange="toggleColumn(this)"> Description</label>
+                    <label class="col-option"><input type="checkbox" value="card" checked onchange="toggleColumn(this)"> Service Card</label>
+                    <label class="col-option"><input type="checkbox" value="actions" checked onchange="toggleColumn(this)"> Actions</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-area">
+            <div class="timeline-container" id="timelineContainer">
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<div class="alert-menu-overlay" id="alertOverlay">
+    <div class="alert-menu-panel">
+        <div class="alert-header">
+            <span><i class="pi pi-bell"></i> Alerts & Messages</span>
+            <span style="cursor:pointer;" onclick="toggleAlertMenu()"><i class="pi pi-times"></i></span>
+        </div>
+        <div class="alert-item">
+            <div class="alert-dot critical"></div>
+            <div>
+                <strong>Allergy Alert</strong>
+                <div style="color:var(--ech-text-secondary); font-size:11px;">Penicillin allergy documented. Avoid beta-lactam antibiotics.</div>
+                <div style="color:var(--ech-text-muted); font-size:10px;">Today, 08:30</div>
+            </div>
+        </div>
+        <div class="alert-item">
+            <div class="alert-dot critical"></div>
+            <div>
+                <strong>DNR Status Active</strong>
+                <div style="color:var(--ech-text-secondary); font-size:11px;">Do Not Resuscitate order is active for this patient.</div>
+                <div style="color:var(--ech-text-muted); font-size:10px;">Updated 19/02/2026</div>
+            </div>
+        </div>
+        <div class="alert-item">
+            <div class="alert-dot warning"></div>
+            <div>
+                <strong>Fall Risk - High</strong>
+                <div style="color:var(--ech-text-secondary); font-size:11px;">Patient scored high on Morse Fall Scale. Bed rails up.</div>
+                <div style="color:var(--ech-text-muted); font-size:10px;">Today, 07:00</div>
+            </div>
+        </div>
+        <div class="alert-item">
+            <div class="alert-dot info"></div>
+            <div>
+                <strong>Lab Results Available</strong>
+                <div style="color:var(--ech-text-secondary); font-size:11px;">Complete Blood Count results are ready for review.</div>
+                <div style="color:var(--ech-text-muted); font-size:10px;">Today, 14:20</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="bottom-bar">
+    <button class="bottom-item active" title="Home">
+        <i class="pi pi-home"></i>
+        <span>Home</span>
+    </button>
+    <button class="bottom-item" title="Search">
+        <i class="pi pi-search"></i>
+        <span>Search</span>
+    </button>
+    <button class="bottom-item" title="Favorites">
+        <i class="pi pi-star"></i>
+        <span>Favorites</span>
+    </button>
+    <button class="bottom-item" title="Configuration">
+        <i class="pi pi-cog"></i>
+        <span>Config</span>
+    </button>
+    <button class="bottom-item" title="Info">
+        <i class="pi pi-info-circle"></i>
+        <span>Info</span>
+    </button>
+</footer>
+
+<script src="app.js"></script>
+
+</body>
+</html>
