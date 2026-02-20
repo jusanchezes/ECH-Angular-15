@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ECH Patient Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        /* =======================
+   BASE
+======================= */
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .layout {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* =======================
+   SIDEBAR
+======================= */
+
+        .sidebar {
+            width: 230px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            transition: width 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-header {
+            background: #1e88e5;
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .menu-item {
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-item:hover {
+            background: #eef6ff;
+        }
+
+        .menu-item span {
+            margin-left: 10px;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            display: none;
+        }
+
+        .toggle-btn {
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* =======================
+   MAIN
+======================= */
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* =======================
+   TOP BAR
+======================= */
+
+        .top-bar {
+            background: white;
+            border-bottom: 2px solid #1e88e5;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: 600;
+            color: #1e88e5;
+            font-size: 18px;
+        }
+
+        /* =======================
+   PATIENT HEADER
+======================= */
+
+        .patient-header {
+            background: white;
+            padding: 10px 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .patient-name-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .patient-meta {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .red {
+            background: #ff4d4f;
+            color: white;
+        }
+
+        .orange {
+            background: #faad14;
+            color: white;
+        }
+
+        .blue {
+            background: #1976d2;
+            color: white;
+        }
+
+        /* =======================
+   ACTION BAR
+======================= */
+
+        .action-bar {
+            display: flex;
+            gap: 8px;
+            padding-top: 8px;
+        }
+
+        .action-btn {
+            border: 1px solid #cfd8dc;
+            background: #f8fafc;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .action-btn:hover {
+            background: #e3f2fd;
+            border-color: #90caf9;
+        }
+
+        /* =======================
+   FILTER BAR
+======================= */
+
+        .filter-bar {
+            background: white;
+            margin: 12px 16px 8px;
+            padding: 6px 10px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        /* =======================
+   TIMELINE
+======================= */
+
+        .content {
+            padding: 0 16px 16px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .timeline {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .timeline-date {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            border-top: 1px solid #bbdefb;
+        }
+
+        .timeline-row {
+            display: grid;
+            grid-template-columns: 80px 130px 120px 1fr 40px;
+            padding: 6px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .timeline-row:hover {
+            background: #f4faff;
+        }
+
+        .timeline-type {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1e88e5;
+        }
+
+        .timeline-dept {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .timeline-author {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .timeline-menu {
+            position: relative;
+        }
+
+        .menu-btn {
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: absolute;
+            right: 0;
+            top: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+            min-width: 120px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .dropdown div {
+            padding: 6px 8px;
+            cursor: pointer;
+        }
+
+        .dropdown div:hover {
+            background: #f0f8ff;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">ECH</div>
+
+            <div class="menu-item">📄 <span>General View</span></div>
+            <div class="menu-item">📂 <span>Previous Visits</span></div>
+            <div class="menu-item">⚠ <span>Risk Factors</span></div>
+            <div class="menu-item">🧪 <span>Diagnostic Tests</span></div>
+            <div class="menu-item">📑 <span>Documents</span></div>
+            <div class="menu-item">💊 <span>Medication</span></div>
+            <div class="menu-item">📊 <span>Patient Summary</span></div>
+            <div class="menu-item">🩺 <span>Care Plans</span></div>
+            <div class="menu-item">📈 <span>Measurements</span></div>
+            <div class="menu-item">📝 <span>Nurse Notes</span></div>
+            <div class="menu-item">📚 <span>Protocols</span></div>
+
+            <div class="toggle-btn" onclick="toggleSidebar()">⇔</div>
+        </div>
+
+        <div class="main">
+
+            <div class="top-bar">
+                <div class="logo">ECH</div>
+                <div>Patient Timeline</div>
+                <div>Inpatients | 19/02/2026 | Dr. Rory Rogers</div>
+            </div>
+
+            <div class="patient-header">
+                <div class="patient-name-row">
+                    Thomas Meyer Wood (35 Years)
+                    <span class="badge red">Penicillin Allergy</span>
+                    <span class="badge orange">Fall Risk</span>
+                    <span class="badge blue">VTE Risk</span>
+                </div>
+                <div class="patient-meta">
+                    Rec ID 46 | Episode 283 | Room 201 | Adult Emergency
+                </div>
+
+                <div class="action-bar">
+                    <div class="action-btn">Generate Report</div>
+                    <div class="action-btn">Add Diagnosis</div>
+                    <div class="action-btn">Add Clinical Note</div>
+                    <div class="action-btn">Request Exam</div>
+                    <div class="action-btn">Prescribe Medication</div>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <label>Time:</label>
+                <select id="typeFilter" onchange="applyFilters()">
+                    <option value="all">All</option>
+                    <option value="Exam">Exam</option>
+                    <option value="Surgery">Surgery</option>
+                    <option value="Note">Note</option>
+                    <option value="Medication">Medication</option>
+                </select>
+            </div>
+
+            <div class="content">
+                <div class="timeline">
+
+                    <div class="timeline-date">Thursday 9 October 2025</div>
+
+                    <div class="timeline-row" data-type="Exam">
+                        <div>17:44</div>
+                        <div class="timeline-type">Exam</div>
+                        <div class="timeline-dept">Radiology</div>
+                        <div>
+                            Contrast-Enhanced Ultrasound (CEUS) Requested
+                            <div class="timeline-author">Nurse Adam Dixon</div>
+                        </div>
+                        <div class="timeline-menu">
+                            <div class="menu-btn" onclick="toggleMenu(this)">✏</div>
+                            <div class="dropdown">
+                                <div>Edit</div>
+                                <div>Delete</div>
+                                <div>View Details</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-row" data-type="Surgery">
+                        <div>12:37</div>
+                        <div class="timeline-type">Surgery</div>
+                        <div class="timeline-dept">Cardiology</div>
+                        <div>
+                            Aortic Aneurysm Repair – Surgery Request
+                            <div class="timeline-author">Dr. Rory Rogers</div>
+                        </div>
+                        <div class="timeline-menu">
+                            <div class="menu-btn" onclick="toggleMenu(this)">✏</div>
+                            <div class="dropdown">
+                                <div>Edit</div>
+                                <div>Cancel</div>
+                                <div>View Details</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-row" data-type="Medication">
+                        <div>10:15</div>
+                        <div class="timeline-type">Medication</div>
+                        <div class="timeline-dept">Nursing</div>
+                        <div>
+                            Enoxaparin 40mg administered
+                            <div class="timeline-author">Nurse Adam Dixon</div>
+                        </div>
+                        <div class="timeline-menu">
+                            <div class="menu-btn" onclick="toggleMenu(this)">✏</div>
+                            <div class="dropdown">
+                                <div>Edit</div>
+                                <div>View MAR</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-row" data-type="Note">
+                        <div>09:02</div>
+                        <div class="timeline-type">Note</div>
+                        <div class="timeline-dept">Adult Emergency</div>
+                        <div>
+                            Patient reviewed – stable overnight, oxygen 2L
+                            <div class="timeline-author">Dr. Rory Rogers</div>
+                        </div>
+                        <div class="timeline-menu">
+                            <div class="menu-btn" onclick="toggleMenu(this)">✏</div>
+                            <div class="dropdown">
+                                <div>Edit</div>
+                                <div>Delete</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        }
+
+        function toggleMenu(el) {
+            let dropdown = el.nextElementSibling;
+            document.querySelectorAll('.dropdown').forEach(d => {
+                if (d !== dropdown) d.style.display = 'none';
+            });
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function applyFilters() {
+            let filter = document.getElementById('typeFilter').value;
+            let rows = document.querySelectorAll('.timeline-row');
+            rows.forEach(row => {
+                if (filter === "all" || row.dataset.type === filter) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.timeline-menu')) {
+                document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
