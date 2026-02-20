@@ -96,46 +96,83 @@ function renderTimeline() {
     let html = '';
     const filteredData = filterTimelineData();
 
-    filteredData.forEach(dateGroup => {
-        html += `<div class="timeline-date-header"><i class="pi pi-calendar"></i> ${dateGroup.date}</div>`;
+    const typeIconMap = {
+        'Exam': 'pi-file',
+        'Surgery': 'pi-heart',
+        'Medication': 'pi-box',
+        'Note': 'pi-pencil',
+        'Images': 'pi-image',
+        'Care': 'pi-shield',
+        'Vitals': 'pi-chart-line'
+    };
 
-        dateGroup.entries.forEach(entry => {
-            const typeIconMap = {
-                'Exam': 'pi-file',
-                'Surgery': 'pi-heart',
-                'Medication': 'pi-box',
-                'Note': 'pi-pencil',
-                'Images': 'pi-image',
-                'Care': 'pi-shield',
-                'Vitals': 'pi-chart-line'
-            };
-            const icon = typeIconMap[entry.type] || 'pi-circle';
-
-            html += `<div class="timeline-row" data-type="${entry.type}" data-role="${entry.role}">`;
-            if (visibleColumns.time) html += `<div class="tl-time">${entry.time}</div>`;
-            if (visibleColumns.type) html += `<div class="tl-type"><i class="pi ${icon}"></i> ${entry.type}</div>`;
-            if (visibleColumns.dept) html += `<div class="tl-dept">${entry.dept}</div>`;
-            if (visibleColumns.description) html += `<div class="tl-description">${entry.description}<div class="tl-author"><i class="pi pi-user"></i> ${entry.author}</div></div>`;
-            if (visibleColumns.card) html += `<div class="tl-card-tag">${entry.card}</div>`;
-            if (visibleColumns.actions) {
-                html += `<div class="tl-actions"><span class="action-icon pi pi-pencil" onclick="toggleRowMenu(event, this)"></span>`;
-                html += `<div class="row-dropdown">`;
-                entry.actions.forEach(a => {
-                    html += `<div class="rd-item" onclick="handleAction('${a}', event)">${a}</div>`;
-                });
-                html += `</div></div>`;
-            }
-            html += `</div>`;
-        });
-    });
+    const typeColorMap = {
+        'Exam': 'var(--ech-primary)',
+        'Surgery': '#e91e63',
+        'Medication': '#9c27b0',
+        'Note': '#607d8b',
+        'Images': '#00bcd4',
+        'Care': '#4caf50',
+        'Vitals': '#ff9800'
+    };
 
     if (filteredData.length === 0) {
         html = `<div style="padding: 20px; text-align: center; color: var(--ech-text-secondary);"><i class="pi pi-info-circle"></i> No timeline entries match the current filters.</div>`;
+    } else {
+        filteredData.forEach(dateGroup => {
+            html += `<div class="timeline-date-header"><i class="pi pi-calendar"></i> ${dateGroup.date}</div>`;
+            html += `<div class="p-timeline p-timeline-vertical p-timeline-left">`;
+
+            dateGroup.entries.forEach((entry, idx) => {
+                const icon = typeIconMap[entry.type] || 'pi-circle';
+                const color = typeColorMap[entry.type] || 'var(--ech-primary)';
+                const isLast = idx === dateGroup.entries.length - 1;
+
+                html += `<div class="p-timeline-event" data-type="${entry.type}" data-role="${entry.role}">`;
+
+                html += `<div class="p-timeline-event-opposite">`;
+                if (visibleColumns.time) html += `<span class="tl-time">${entry.time}</span>`;
+                html += `</div>`;
+
+                html += `<div class="p-timeline-event-separator">`;
+                html += `<div class="p-timeline-event-marker" style="background:${color}; border-color:${color};"><i class="pi ${icon}" style="font-size:10px; color:white;"></i></div>`;
+                if (!isLast) html += `<div class="p-timeline-event-connector"></div>`;
+                html += `</div>`;
+
+                html += `<div class="p-timeline-event-content">`;
+                html += `<div class="tl-event-card">`;
+
+                let detailHtml = '';
+                if (visibleColumns.type) detailHtml += `<span class="tl-type" style="color:${color};"><i class="pi ${icon}"></i> ${entry.type}</span>`;
+                if (visibleColumns.dept) detailHtml += `<span class="tl-dept">${entry.dept}</span>`;
+                if (detailHtml) html += `<div class="tl-event-header">${detailHtml}</div>`;
+
+                if (visibleColumns.description) {
+                    html += `<div class="tl-description">${entry.description}</div>`;
+                    html += `<div class="tl-author"><i class="pi pi-user"></i> ${entry.author}</div>`;
+                }
+                if (visibleColumns.card) html += `<div class="tl-card-tag">${entry.card}</div>`;
+
+                if (visibleColumns.actions) {
+                    html += `<div class="tl-actions"><span class="action-icon pi pi-ellipsis-v" onclick="toggleRowMenu(event, this)"></span>`;
+                    html += `<div class="row-dropdown">`;
+                    entry.actions.forEach(a => {
+                        html += `<div class="rd-item" onclick="handleAction('${a}', event)">${a}</div>`;
+                    });
+                    html += `</div></div>`;
+                }
+
+                html += `</div>`;
+                html += `</div>`;
+                html += `</div>`;
+            });
+
+            html += `</div>`;
+        });
     }
 
     html += `<div class="load-more-bar"><button class="load-more-btn" onclick="handleLoadMore()"><i class="pi pi-arrow-down"></i> Load More</button></div>`;
     container.innerHTML = html;
-    updateGridColumns();
 }
 
 function filterTimelineData() {
@@ -153,19 +190,6 @@ function filterTimelineData() {
     }).filter(dg => dg.entries.length > 0);
 }
 
-function updateGridColumns() {
-    const cols = [];
-    if (visibleColumns.time) cols.push('55px');
-    if (visibleColumns.type) cols.push('95px');
-    if (visibleColumns.dept) cols.push('100px');
-    if (visibleColumns.description) cols.push('1fr');
-    if (visibleColumns.card) cols.push('80px');
-    if (visibleColumns.actions) cols.push('30px');
-
-    document.querySelectorAll('.timeline-row').forEach(row => {
-        row.style.gridTemplateColumns = cols.join(' ');
-    });
-}
 
 function bindEvents() {
     document.querySelectorAll('.sb-option').forEach(btn => {

@@ -588,61 +588,129 @@ html, body {
     font-size: 12px;
 }
 
-.timeline-row {
-    display: grid;
-    grid-template-columns: 55px 95px 100px 1fr 80px 30px;
-    padding: 5px 10px;
-    border-bottom: 1px solid var(--ech-border-light);
+.p-timeline {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+.p-timeline-event {
+    display: flex;
+    position: relative;
+    min-height: 50px;
+}
+
+.p-timeline-event-opposite {
+    flex: 0 0 55px;
+    padding: 4px 8px 4px 10px;
+    text-align: right;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-top: 8px;
+}
+
+.p-timeline-event-separator {
+    flex: 0 0 30px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+}
+
+.p-timeline-event-marker {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--ech-primary);
+    background: var(--ech-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.p-timeline-event-connector {
+    width: 2px;
+    flex: 1;
+    background: var(--ech-border);
+}
+
+.p-timeline-event-content {
+    flex: 1;
+    padding: 2px 10px 8px 8px;
+    min-width: 0;
+}
+
+.tl-event-card {
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border-light);
+    border-radius: 4px;
+    padding: 6px 10px;
+    position: relative;
+    transition: box-shadow 0.15s, border-color 0.15s;
     cursor: pointer;
-    transition: background 0.1s;
-    font-size: var(--ech-font-size);
-    gap: 4px;
 }
 
-.timeline-row:hover {
-    background: var(--ech-hover);
+.tl-event-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-color: var(--ech-primary-border);
 }
 
-.timeline-row .tl-time {
-    font-weight: 600;
+.tl-event-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.tl-time {
+    font-weight: 700;
     color: var(--ech-text);
     font-size: var(--ech-font-size-sm);
 }
 
-.timeline-row .tl-type {
+.tl-type {
     font-weight: 700;
-    color: var(--ech-primary);
     font-size: var(--ech-font-size-sm);
     text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
 }
 
-.timeline-row .tl-dept {
+.tl-dept {
     font-size: var(--ech-font-size-sm);
     color: var(--ech-text-secondary);
 }
 
-.timeline-row .tl-description {
+.tl-description {
     font-size: var(--ech-font-size);
     color: var(--ech-text);
+    margin: 2px 0;
 }
 
-.timeline-row .tl-author {
+.tl-author {
     font-size: var(--ech-font-size-xs);
     color: var(--ech-text-secondary);
     display: flex;
     align-items: center;
     gap: 4px;
+    margin-top: 2px;
 }
 
-.timeline-row .tl-card-tag {
+.tl-card-tag {
     font-size: var(--ech-font-size-xs);
     color: var(--ech-text-muted);
-    text-align: right;
+    margin-top: 2px;
 }
 
-.timeline-row .tl-actions {
-    position: relative;
+.tl-actions {
+    position: absolute;
+    top: 6px;
+    right: 6px;
 }
 
 .tl-actions .action-icon {
@@ -881,12 +949,21 @@ html, body {
         display: flex !important;
     }
 
-    .timeline-row {
-        grid-template-columns: 50px 80px 1fr 30px;
+    .p-timeline-event-opposite {
+        flex: 0 0 45px;
+        padding: 4px 4px 4px 6px;
     }
 
-    .timeline-row .tl-dept,
-    .timeline-row .tl-card-tag {
+    .p-timeline-event-marker {
+        width: 22px;
+        height: 22px;
+    }
+
+    .p-timeline-event-marker .pi {
+        font-size: 8px !important;
+    }
+
+    .tl-dept {
         display: none;
     }
 
@@ -910,12 +987,18 @@ html, body {
 }
 
 @media (max-width: 600px) {
-    .timeline-row {
-        grid-template-columns: 50px 1fr 30px;
+    .p-timeline-event-opposite {
+        flex: 0 0 40px;
+        font-size: 10px;
     }
 
-    .timeline-row .tl-type {
-        display: none;
+    .p-timeline-event-separator {
+        flex: 0 0 24px;
+    }
+
+    .p-timeline-event-marker {
+        width: 20px;
+        height: 20px;
     }
 
     .safety-tags {
