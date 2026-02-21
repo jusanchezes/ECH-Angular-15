@@ -677,8 +677,44 @@ html, body {
 .tl-event-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 2px;
+    gap: 4px;
+    margin-bottom: 3px;
+    flex-wrap: wrap;
+}
+
+.tl-sep {
+    color: var(--ech-text-muted);
+    font-size: var(--ech-font-size-xs);
+    margin: 0 2px;
+}
+
+.tl-role {
+    font-size: var(--ech-font-size-xs);
+    color: var(--ech-text-secondary);
+}
+
+.tl-sub-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 3px 0;
+    border-bottom: 1px solid var(--ech-border-light);
+}
+
+.tl-sub-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.tl-sub-item .tl-description {
+    flex: 1;
+    margin: 0;
+}
+
+.tl-sub-actions {
+    position: relative;
+    flex-shrink: 0;
 }
 
 .tl-time {
@@ -723,9 +759,7 @@ html, body {
 }
 
 .tl-actions {
-    position: absolute;
-    top: 6px;
-    right: 6px;
+    position: relative;
 }
 
 .tl-actions .action-icon {

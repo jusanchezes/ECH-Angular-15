@@ -123,15 +123,18 @@ function renderTimeline() {
             html += `<div class="timeline-date-header"><i class="pi pi-calendar"></i> ${dateGroup.date}</div>`;
             html += `<div class="p-timeline p-timeline-vertical p-timeline-left">`;
 
-            dateGroup.entries.forEach((entry, idx) => {
-                const icon = typeIconMap[entry.type] || 'pi-circle';
-                const color = typeColorMap[entry.type] || 'var(--ech-primary)';
-                const isLast = idx === dateGroup.entries.length - 1;
+            const grouped = groupEntries(dateGroup.entries);
 
-                html += `<div class="p-timeline-event" data-type="${entry.type}" data-role="${entry.role}">`;
+            grouped.forEach((group, idx) => {
+                const first = group[0];
+                const icon = typeIconMap[first.type] || 'pi-circle';
+                const color = typeColorMap[first.type] || 'var(--ech-primary)';
+                const isLast = idx === grouped.length - 1;
+
+                html += `<div class="p-timeline-event" data-type="${first.type}" data-role="${first.role}">`;
 
                 html += `<div class="p-timeline-event-opposite">`;
-                if (visibleColumns.time) html += `<span class="tl-time">${entry.time}</span>`;
+                if (visibleColumns.time) html += `<span class="tl-time">${first.time}</span>`;
                 html += `</div>`;
 
                 html += `<div class="p-timeline-event-separator">`;
@@ -142,25 +145,28 @@ function renderTimeline() {
                 html += `<div class="p-timeline-event-content">`;
                 html += `<div class="tl-event-card">`;
 
-                let detailHtml = '';
-                if (visibleColumns.type) detailHtml += `<span class="tl-type" style="color:${color};"><i class="pi ${icon}"></i> ${entry.type}</span>`;
-                if (visibleColumns.dept) detailHtml += `<span class="tl-dept">${entry.dept}</span>`;
-                if (detailHtml) html += `<div class="tl-event-header">${detailHtml}</div>`;
+                let headerParts = [];
+                if (visibleColumns.type) headerParts.push(`<span class="tl-type" style="color:${color};"><i class="pi ${icon}"></i> ${first.type}</span>`);
+                if (visibleColumns.dept) headerParts.push(`<span class="tl-dept">${first.dept}</span>`);
+                headerParts.push(`<span class="tl-role">${first.author}</span>`);
+                if (visibleColumns.card) headerParts.push(`<span class="tl-card-tag">${first.card}</span>`);
+                html += `<div class="tl-event-header">${headerParts.join('<span class="tl-sep">·</span>')}</div>`;
 
-                if (visibleColumns.description) {
-                    html += `<div class="tl-description">${entry.description}</div>`;
-                    html += `<div class="tl-author"><i class="pi pi-user"></i> ${entry.author}</div>`;
-                }
-                if (visibleColumns.card) html += `<div class="tl-card-tag">${entry.card}</div>`;
-
-                if (visibleColumns.actions) {
-                    html += `<div class="tl-actions"><span class="action-icon pi pi-ellipsis-v" onclick="toggleRowMenu(event, this)"></span>`;
-                    html += `<div class="row-dropdown">`;
-                    entry.actions.forEach(a => {
-                        html += `<div class="rd-item" onclick="handleAction('${a}', event)">${a}</div>`;
-                    });
-                    html += `</div></div>`;
-                }
+                group.forEach(entry => {
+                    html += `<div class="tl-sub-item">`;
+                    if (visibleColumns.description) {
+                        html += `<span class="tl-description">${entry.description}</span>`;
+                    }
+                    if (visibleColumns.actions) {
+                        html += `<span class="tl-sub-actions"><span class="action-icon pi pi-pencil" onclick="toggleRowMenu(event, this)" title="Actions"></span>`;
+                        html += `<div class="row-dropdown">`;
+                        entry.actions.forEach(a => {
+                            html += `<div class="rd-item" onclick="handleAction('${a}', event)">${a}</div>`;
+                        });
+                        html += `</div></span>`;
+                    }
+                    html += `</div>`;
+                });
 
                 html += `</div>`;
                 html += `</div>`;
@@ -173,6 +179,22 @@ function renderTimeline() {
 
     html += `<div class="load-more-bar"><button class="load-more-btn" onclick="handleLoadMore()"><i class="pi pi-arrow-down"></i> Load More</button></div>`;
     container.innerHTML = html;
+}
+
+function groupEntries(entries) {
+    const groups = [];
+    let currentGroup = null;
+
+    entries.forEach(entry => {
+        if (currentGroup && currentGroup[0].time === entry.time && currentGroup[0].type === entry.type && currentGroup[0].author === entry.author) {
+            currentGroup.push(entry);
+        } else {
+            currentGroup = [entry];
+            groups.push(currentGroup);
+        }
+    });
+
+    return groups;
 }
 
 function filterTimelineData() {
