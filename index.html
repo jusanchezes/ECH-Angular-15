@@ -30,7 +30,6 @@
                 <i class="pi pi-building"></i>
                 <!-- data-field="wardName": maps to WardDTO.wardName -->
                 <span data-field="wardName" data-i18n="HEADER.WARD">Inpatients</span>
-                <span class="text-color-secondary font-normal">| <!-- data-field="currentDate": maps to SessionDTO.currentDate --><span data-field="currentDate">20/02/2026</span></span>
             </div>
 
             <div class="top-bar-right flex align-items-center gap-2">
@@ -56,6 +55,35 @@
                     <!-- data-field="userDepartment": maps to UserDTO.departmentName -->
                     <span class="text-color-secondary">| <span data-field="userDepartment">Adult Emergency</span></span>
                 </div>
+                <div class="user-menu-wrapper">
+                    <button class="user-menu-toggle" onclick="toggleUserMenu()" data-i18n-title="HEADER.USER_MENU" title="User Menu">
+                        <i class="pi pi-ellipsis-v"></i>
+                    </button>
+                    <div class="user-menu-dropdown" id="userMenuDropdown">
+                        <button class="menu-option" onclick="handleUserMenuAction('change-center')" data-i18n="MENU.CHANGE_CENTER">
+                            <i class="pi pi-building"></i> Cambiar Centro sanitario
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('datetime')" data-i18n="MENU.DATETIME">
+                            <i class="pi pi-clock"></i> <span data-field="currentDateTime">21/02/2026 17:06</span>
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('preferences')" data-i18n="MENU.PREFERENCES">
+                            <i class="pi pi-cog"></i> Preferencias
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('view-config')" data-i18n="MENU.VIEW_CONFIG">
+                            <i class="pi pi-cog"></i> Herramienta de Configuración de Vistas
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('refresh')" data-i18n="MENU.REFRESH">
+                            <i class="pi pi-refresh"></i> Refrescar inicio
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('about')" data-i18n="MENU.ABOUT">
+                            <i class="pi pi-info-circle"></i> Acerca de
+                        </button>
+                        <button class="menu-option menu-option-danger" onclick="handleUserMenuAction('logout')" data-i18n="MENU.LOGOUT">
+                            <i class="pi pi-power-off"></i> Salir
+                        </button>
+                    </div>
+                </div>
+                <div class="user-menu-overlay" id="userMenuOverlay" onclick="toggleUserMenu()"></div>
             </div>
         </header>
 
@@ -70,30 +98,6 @@
     </main>
 </div>
 
-<!-- COMPONENT BOUNDARY: <ech-footer> — Angular Standalone Component -->
-<!-- Mobile/tablet bottom navigation bar with quick access icons -->
-<footer class="bottom-bar" id="footer-component">
-    <button class="bottom-item active" data-i18n-title="FOOTER.HOME" title="Home">
-        <i class="pi pi-home"></i>
-        <span data-i18n="FOOTER.HOME">Home</span>
-    </button>
-    <button class="bottom-item" data-i18n-title="FOOTER.SEARCH" title="Search">
-        <i class="pi pi-search"></i>
-        <span data-i18n="FOOTER.SEARCH">Search</span>
-    </button>
-    <button class="bottom-item" data-i18n-title="FOOTER.FAVORITES" title="Favorites">
-        <i class="pi pi-star"></i>
-        <span data-i18n="FOOTER.FAVORITES">Favorites</span>
-    </button>
-    <button class="bottom-item" data-i18n-title="FOOTER.CONFIG" title="Configuration">
-        <i class="pi pi-cog"></i>
-        <span data-i18n="FOOTER.CONFIG">Config</span>
-    </button>
-    <button class="bottom-item" data-i18n-title="FOOTER.INFO" title="Info">
-        <i class="pi pi-info-circle"></i>
-        <span data-i18n="FOOTER.INFO">Info</span>
-    </button>
-</footer>
 
 <script src="patients.js"></script>
 

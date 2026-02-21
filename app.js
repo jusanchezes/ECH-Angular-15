@@ -360,6 +360,22 @@ function toggleAlertMenu() {
     overlay.classList.toggle('show');
 }
 
+/** Toggles the three-dots user menu dropdown. Angular: UserMenuComponent with OverlayPanel or p-menu */
+function toggleUserMenu() {
+    const dropdown = document.getElementById('userMenuDropdown');
+    const overlay = document.getElementById('userMenuOverlay');
+    if (dropdown && overlay) {
+        dropdown.classList.toggle('show');
+        overlay.classList.toggle('show');
+    }
+}
+
+/** Handles user menu option clicks. Angular: UserMenuService.execute(action) */
+function handleUserMenuAction(action) {
+    toggleUserMenu();
+    console.log('User menu action:', action);
+}
+
 /** Handles row-level action clicks. Angular: replaced by ClinicalActionService.execute(action, entryId) */
 function handleAction(action, event) {
     if (event) event.stopPropagation();

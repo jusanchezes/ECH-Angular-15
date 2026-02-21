@@ -249,5 +249,21 @@ function navigateToPatient(patientId) {
     window.location.href = `timeline.html?patientId=${patientId}`;
 }
 
+/** Toggles the three-dots user menu dropdown. Angular: UserMenuComponent with OverlayPanel or p-menu */
+function toggleUserMenu() {
+    const dropdown = document.getElementById('userMenuDropdown');
+    const overlay = document.getElementById('userMenuOverlay');
+    if (dropdown && overlay) {
+        dropdown.classList.toggle('show');
+        overlay.classList.toggle('show');
+    }
+}
+
+/** Handles user menu option clicks. Angular: UserMenuService.execute(action) */
+function handleUserMenuAction(action) {
+    toggleUserMenu();
+    console.log('User menu action:', action);
+}
+
 /** Initializes the patient list on page load. Angular: replaced by ngOnInit() lifecycle hook */
 document.addEventListener('DOMContentLoaded', initPatientList);

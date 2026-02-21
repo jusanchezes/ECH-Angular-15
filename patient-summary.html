@@ -31,47 +31,47 @@
         <nav class="sidebar-nav" id="global-navigation">
             <a href="timeline.html" class="menu-item" data-i18n-title="NAV.GENERAL_VIEW" title="General View">
                 <i class="pi pi-home"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.GENERAL_VIEW">General View</span>
+                <span class="menu-label fs-md" data-i18n="NAV.GENERAL_VIEW">General View</span>
             </a>
             <a href="previous-visits.html" class="menu-item" data-i18n-title="NAV.PREVIOUS_VISITS" title="Previous Visits">
                 <i class="pi pi-history"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.PREVIOUS_VISITS">Previous Visits</span>
+                <span class="menu-label fs-md" data-i18n="NAV.PREVIOUS_VISITS">Previous Visits</span>
             </a>
             <a href="risk-factors.html" class="menu-item" data-i18n-title="NAV.RISK_FACTORS" title="Risk Factors">
                 <i class="pi pi-exclamation-triangle"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.RISK_FACTORS">Risk Factors</span>
+                <span class="menu-label fs-md" data-i18n="NAV.RISK_FACTORS">Risk Factors</span>
             </a>
             <a href="diagnostic-tests.html" class="menu-item" data-i18n-title="NAV.DIAGNOSTIC_TESTS" title="Diagnostic Tests">
                 <i class="pi pi-search"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.DIAGNOSTIC_TESTS">Diagnostic Tests</span>
+                <span class="menu-label fs-md" data-i18n="NAV.DIAGNOSTIC_TESTS">Diagnostic Tests</span>
             </a>
             <a href="documents.html" class="menu-item" data-i18n-title="NAV.DOCUMENTS" title="Documents">
                 <i class="pi pi-file"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.DOCUMENTS">Documents</span>
+                <span class="menu-label fs-md" data-i18n="NAV.DOCUMENTS">Documents</span>
             </a>
             <a href="medication.html" class="menu-item" data-i18n-title="NAV.MEDICATION" title="Medication">
                 <i class="pi pi-box"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.MEDICATION">Medication</span>
+                <span class="menu-label fs-md" data-i18n="NAV.MEDICATION">Medication</span>
             </a>
             <a href="patient-summary.html" class="menu-item active" data-i18n-title="NAV.PATIENT_SUMMARY" title="Patient Summary">
                 <i class="pi pi-chart-bar"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.PATIENT_SUMMARY">Patient Summary</span>
+                <span class="menu-label fs-md" data-i18n="NAV.PATIENT_SUMMARY">Patient Summary</span>
             </a>
             <a href="care-plans.html" class="menu-item" data-i18n-title="NAV.CARE_PLANS" title="Care Plans">
                 <i class="pi pi-heart"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.CARE_PLANS">Care Plans</span>
+                <span class="menu-label fs-md" data-i18n="NAV.CARE_PLANS">Care Plans</span>
             </a>
             <a href="measurements.html" class="menu-item" data-i18n-title="NAV.MEASUREMENTS" title="Measurements">
                 <i class="pi pi-chart-line"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.MEASUREMENTS">Measurements</span>
+                <span class="menu-label fs-md" data-i18n="NAV.MEASUREMENTS">Measurements</span>
             </a>
             <a href="nurse-notes.html" class="menu-item" data-i18n-title="NAV.NURSE_NOTES" title="Nurse Notes">
                 <i class="pi pi-pencil"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.NURSE_NOTES">Nurse Notes</span>
+                <span class="menu-label fs-md" data-i18n="NAV.NURSE_NOTES">Nurse Notes</span>
             </a>
             <a href="protocols.html" class="menu-item" data-i18n-title="NAV.PROTOCOLS" title="Protocols">
                 <i class="pi pi-book"></i>
-                <span class="menu-label fs-xs" data-i18n="NAV.PROTOCOLS">Protocols</span>
+                <span class="menu-label fs-md" data-i18n="NAV.PROTOCOLS">Protocols</span>
             </a>
         </nav>
 
@@ -101,8 +101,6 @@
                 <i class="pi pi-building"></i>
                 <!-- data-field="wardName": maps to WardDTO.wardName from Java REST API -->
                 <span data-field="wardName" data-i18n="HEADER.WARD">Inpatients</span>
-                <!-- data-field="currentDate": maps to SessionDTO.currentDate -->
-                <span class="text-color-secondary font-normal">| <span data-field="currentDate">20/02/2026</span></span>
             </div>
 
             <!-- DENSITY: flex + gap-2 keeps notification icons compact for 14" screens -->
@@ -131,6 +129,35 @@
                     <!-- data-field="userDepartment": maps to UserDTO.departmentName -->
                     <span class="text-color-secondary">| <span data-field="userDepartment">Adult Emergency</span></span>
                 </div>
+                <div class="user-menu-wrapper">
+                    <button class="user-menu-toggle" onclick="toggleUserMenu()" data-i18n-title="HEADER.USER_MENU" title="User Menu">
+                        <i class="pi pi-ellipsis-v"></i>
+                    </button>
+                    <div class="user-menu-dropdown" id="userMenuDropdown">
+                        <button class="menu-option" onclick="handleUserMenuAction('change-center')" data-i18n="MENU.CHANGE_CENTER">
+                            <i class="pi pi-building"></i> Cambiar Centro sanitario
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('datetime')" data-i18n="MENU.DATETIME">
+                            <i class="pi pi-clock"></i> <span data-field="currentDateTime">21/02/2026 17:06</span>
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('preferences')" data-i18n="MENU.PREFERENCES">
+                            <i class="pi pi-cog"></i> Preferencias
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('view-config')" data-i18n="MENU.VIEW_CONFIG">
+                            <i class="pi pi-cog"></i> Herramienta de Configuración de Vistas
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('refresh')" data-i18n="MENU.REFRESH">
+                            <i class="pi pi-refresh"></i> Refrescar inicio
+                        </button>
+                        <button class="menu-option" onclick="handleUserMenuAction('about')" data-i18n="MENU.ABOUT">
+                            <i class="pi pi-info-circle"></i> Acerca de
+                        </button>
+                        <button class="menu-option menu-option-danger" onclick="handleUserMenuAction('logout')" data-i18n="MENU.LOGOUT">
+                            <i class="pi pi-power-off"></i> Salir
+                        </button>
+                    </div>
+                </div>
+                <div class="user-menu-overlay" id="userMenuOverlay" onclick="toggleUserMenu()"></div>
             </div>
         </header>
 
@@ -254,32 +281,6 @@
         </div>
     </div>
 </div>
-
-<!-- COMPONENT BOUNDARY: <ech-footer> — Angular Standalone Component -->
-<!-- Mobile/tablet bottom navigation bar with quick access icons -->
-<!-- Angular: FooterComponent; visible on screens <= 1024px via CSS breakpoint -->
-<footer class="bottom-bar" id="footer-component">
-    <button class="bottom-item active" data-i18n-title="FOOTER.HOME" title="Home">
-        <i class="pi pi-home"></i>
-        <span data-i18n="FOOTER.HOME">Home</span>
-    </button>
-    <button class="bottom-item" data-i18n-title="FOOTER.SEARCH" title="Search">
-        <i class="pi pi-search"></i>
-        <span data-i18n="FOOTER.SEARCH">Search</span>
-    </button>
-    <button class="bottom-item" data-i18n-title="FOOTER.FAVORITES" title="Favorites">
-        <i class="pi pi-star"></i>
-        <span data-i18n="FOOTER.FAVORITES">Favorites</span>
-    </button>
-    <button class="bottom-item" data-i18n-title="FOOTER.CONFIG" title="Configuration">
-        <i class="pi pi-cog"></i>
-        <span data-i18n="FOOTER.CONFIG">Config</span>
-    </button>
-    <button class="bottom-item" data-i18n-title="FOOTER.INFO" title="Info">
-        <i class="pi pi-info-circle"></i>
-        <span data-i18n="FOOTER.INFO">Info</span>
-    </button>
-</footer>
 
 <script src="app.js"></script>
 
