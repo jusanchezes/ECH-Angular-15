@@ -1,3 +1,15 @@
+/**
+ * @file patients.js — Patient List Logic & Mock Data
+ * @description Prototype script for the EHR Patient List view (index.html entry point).
+ *   Renders a p-datatable-sm patient table with click-to-navigate to patient timeline.
+ *   In production Angular 15, this logic will be replaced by:
+ *     - PatientListComponent with PrimeNG <p-table> and async pipe
+ *     - PatientService for HTTP calls to Java REST API
+ *   Mock data (PatientListData) will be replaced by PatientService.getPatients()
+ *   returning PatientListDTO[] from the Java backend.
+ */
+
+/** Mock patient list data. Angular: replaced by PatientService.getPatients() → PatientListDTO[] from Java REST API */
 const PatientListData = [
     {
         id: 46,
@@ -15,10 +27,17 @@ const PatientListData = [
     }
 ];
 
+/** Initializes the patient list view. Angular: replaced by ngOnInit() in PatientListComponent */
 function initPatientList() {
     renderPatientList();
 }
 
+/**
+ * Renders the patient list as a high-density data table.
+ * PrimeNG equivalent: <p-table> with p-sortableColumn and p-filter.
+ * Angular: PatientListComponent template with *ngFor and async pipe.
+ * Uses .p-datatable-sm class for 32px max row height per clinical density standard.
+ */
 function renderPatientList() {
     const container = document.getElementById('patientListContainer');
     if (!container) return;
@@ -71,8 +90,10 @@ function renderPatientList() {
     container.innerHTML = html;
 }
 
+/** Navigates to selected patient's timeline. Angular: replaced by Router.navigate(['/timeline', patientId]) */
 function navigateToPatient(patientId) {
     window.location.href = `timeline.html?patientId=${patientId}`;
 }
 
+/** Initializes the patient list on page load. Angular: replaced by ngOnInit() lifecycle hook */
 document.addEventListener('DOMContentLoaded', initPatientList);

@@ -1,3 +1,17 @@
+/**
+ * @file app.js — Timeline Logic & Shared Shell Functions
+ * @description Prototype script for the EHR Patient Timeline view and shared UI shell.
+ *   Handles timeline rendering, filtering, sidebar toggle, alert panel, and quick actions.
+ *   In production Angular 15, this logic will be split across:
+ *     - TimelineComponent + TimelineService (timeline rendering & filtering)
+ *     - SidebarComponent + SidebarService (sidebar state management)
+ *     - HeaderComponent + NotificationService (alerts & notifications)
+ *     - ActionBarComponent + ClinicalActionService (quick actions)
+ *   Mock data (PatientData, TimelineData) will be replaced by Angular HttpClient
+ *   calls to Java REST API endpoints returning DTOs.
+ */
+
+/** Mock patient context data. Angular: replaced by PatientService.getPatient() → PatientDTO from Java REST API */
 const PatientData = {
     name: "THOMAS MEYER WOOD",
     dob: "11/07/1990",
@@ -26,6 +40,7 @@ const PatientData = {
     serviceUnit: "A1MGCARD - Cardiology"
 };
 
+/** Mock timeline entries. Angular: replaced by TimelineService.getEntries() → TimelineEntryDTO[] from Java REST API */
 const TimelineData = [
     {
         date: "Thursday 2 October 2025",
@@ -72,6 +87,7 @@ const TimelineData = [
     }
 ];
 
+/** Timeline filter state. Angular: managed by TimelineFilterService with BehaviorSubject observables */
 let currentTimeFilter = 'full';
 let currentRoleFilters = ['All'];
 let searchQuery = '';
@@ -84,6 +100,7 @@ let visibleColumns = {
     actions: true
 };
 
+/** Renders the timeline view. Angular: replaced by TimelineComponent template with <p-timeline> and async pipe. @see TimelineService.getFilteredEntries() */
 function renderTimeline() {
     const container = document.getElementById('timelineContainer');
     if (!container) return;
@@ -167,6 +184,7 @@ function renderTimeline() {
     container.innerHTML = html;
 }
 
+/** Groups timeline entries by time+type+author for visual clustering. Angular: pure pipe or utility in TimelineService */
 function groupEntries(entries) {
     const groups = [];
     let currentGroup = null;
@@ -183,6 +201,7 @@ function groupEntries(entries) {
     return groups;
 }
 
+/** Filters timeline data by role and search query. Angular: replaced by TimelineFilterService.applyFilters() with combineLatest */
 function filterTimelineData() {
     return TimelineData.map(dateGroup => {
         const filtered = dateGroup.entries.filter(entry => {
@@ -198,7 +217,7 @@ function filterTimelineData() {
     }).filter(dg => dg.entries.length > 0);
 }
 
-
+/** Binds UI event listeners for filters and dropdowns. Angular: replaced by (click) and (input) template bindings + reactive forms */
 function bindEvents() {
     document.querySelectorAll('.sb-option').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -236,6 +255,7 @@ function bindEvents() {
     });
 }
 
+/** Restores sidebar collapsed/expanded state from localStorage. Angular: SidebarService.init() with BehaviorSubject */
 function applySidebarState() {
     const sidebar = document.getElementById('sidebar-component');
     if (!sidebar) return;
@@ -247,6 +267,7 @@ function applySidebarState() {
     }
 }
 
+/** Toggles sidebar between collapsed and expanded modes. Angular: SidebarService.toggle() */
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar-component');
     const overlay = document.getElementById('sidebarOverlay');
@@ -262,6 +283,7 @@ function toggleSidebar() {
     }
 }
 
+/** Closes mobile sidebar overlay. Angular: SidebarService.close() */
 function closeSidebar() {
     const sidebar = document.getElementById('sidebar-component');
     const overlay = document.getElementById('sidebarOverlay');
@@ -269,6 +291,7 @@ function closeSidebar() {
     overlay.classList.remove('show');
 }
 
+/** Toggles row-level action dropdown menu. Angular: PrimeNG p-menu with (click) binding */
 function toggleRowMenu(event, el) {
     event.stopPropagation();
     const dd = el.nextElementSibling;
@@ -278,11 +301,13 @@ function toggleRowMenu(event, el) {
     dd.classList.toggle('show');
 }
 
+/** Toggles the role multi-select filter panel. Angular: replaced by PrimeNG p-multiSelect component */
 function toggleMultiSelect() {
     const panel = document.getElementById('rolePanel');
     panel.classList.toggle('show');
 }
 
+/** Updates active role filters and re-renders timeline. Angular: ReactiveFormsModule with valueChanges observable */
 function updateRoleFilter(checkbox) {
     const val = checkbox.value;
     if (val === 'All') {
@@ -316,35 +341,42 @@ function updateRoleFilter(checkbox) {
     renderTimeline();
 }
 
+/** Toggles column visibility configuration panel. Angular: PrimeNG p-multiSelect for column chooser */
 function toggleColumnPanel() {
     const panel = document.getElementById('columnPanel');
     panel.classList.toggle('show');
 }
 
+/** Toggles individual column visibility. Angular: bound to p-table [columns] property */
 function toggleColumn(checkbox) {
     const col = checkbox.value;
     visibleColumns[col] = checkbox.checked;
     renderTimeline();
 }
 
+/** Toggles the alerts/notifications overlay panel. Angular: NotificationService.togglePanel() */
 function toggleAlertMenu() {
     const overlay = document.getElementById('alertOverlay');
     overlay.classList.toggle('show');
 }
 
+/** Handles row-level action clicks. Angular: replaced by ClinicalActionService.execute(action, entryId) */
 function handleAction(action, event) {
     if (event) event.stopPropagation();
     console.log('Action triggered:', action);
 }
 
+/** Handles "Load More" pagination. Angular: TimelineService.loadNextPage() with scroll-based pagination */
 function handleLoadMore() {
     console.log('Load more triggered');
 }
 
+/** Handles quick action bar button clicks. Angular: ClinicalActionService.executeQuickAction(action) */
 function handleQuickAction(action) {
     console.log('Quick action:', action);
 }
 
+/** Initializes the application on page load. Angular: replaced by ngOnInit() lifecycle hooks in respective components */
 document.addEventListener('DOMContentLoaded', function() {
     applySidebarState();
     if (document.getElementById('timelineContainer')) {

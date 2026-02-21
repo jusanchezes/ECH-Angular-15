@@ -46,6 +46,7 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - **Top Bar** (`id="header-component"`): Hospital/department info, alerts/messages bell, user identity
 - **Clinical Banner** (`id="banner-component"`): Fixed/sticky with patient identity, safety tags, p-splitButton quick actions
 - **Sidebar** (`id="sidebar-component"`): Collapsible navigation with PrimeIcons, `<a>` links to module pages
+- 
 - **Footer** (`id="footer-component"`): Home, Search, Favorites, Config, Info quick links
 - **Alert Overlay** (`id="alert-panel"`): Slide-in alerts panel
 

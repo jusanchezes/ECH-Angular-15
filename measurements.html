@@ -10,16 +10,24 @@
 </head>
 <body>
 
+<!-- LAYOUT: PrimeFlex grid shell. Angular equivalent: app.component.html with <router-outlet> -->
+<!-- DENSITY: Layout optimized for 14" clinical workstations; sidebar + main content use flexbox for maximum data visibility -->
 <div class="layout">
 
+    <!-- OVERLAY: Mobile sidebar backdrop. Angular: controlled via SidebarService.isOpen$ observable -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+    <!-- COMPONENT BOUNDARY: <ech-sidebar> — Angular Standalone Component -->
+    <!-- Dual-mode sidebar: collapsed (56px icon-only) / expanded (220px with labels) -->
+    <!-- State persisted in localStorage('ech-sidebar-collapsed'); Angular: managed by SidebarService with BehaviorSubject -->
     <aside class="sidebar collapsed" id="sidebar-component">
         <div class="sidebar-header" onclick="toggleSidebar()">
             <i class="pi pi-bars"></i>
             <span class="logo-text" data-i18n="APP.TITLE">ECH</span>
         </div>
 
+        <!-- NAV: Angular equivalent: PrimeNG p-menu with routerLink directives -->
+        <!-- Navigation uses relative <a> hrefs for prototype click-through; Angular: replaced by [routerLink] + routerLinkActive -->
         <nav class="sidebar-nav" id="global-navigation">
             <a href="timeline.html" class="menu-item" data-i18n-title="NAV.GENERAL_VIEW" title="General View">
                 <i class="pi pi-home"></i>
@@ -72,8 +80,12 @@
         </div>
     </aside>
 
+    <!-- MAIN CONTENT AREA: Angular equivalent: <router-outlet> renders module components here -->
     <main class="main-content">
 
+        <!-- COMPONENT BOUNDARY: <ech-header> — Angular Standalone Component -->
+        <!-- Top bar with hospital context, notifications, and user identity -->
+        <!-- Angular: HeaderComponent with inject(AuthService) for user data, inject(NotificationService) for alerts -->
         <header class="top-bar" id="header-component">
             <div class="top-bar-left flex align-items-center gap-2">
                 <div class="hamburger hamburger-btn hidden lg:hidden" onclick="toggleSidebar()">
@@ -87,48 +99,72 @@
 
             <div class="top-bar-center flex align-items-center gap-1">
                 <i class="pi pi-building"></i>
+                <!-- data-field="wardName": maps to WardDTO.wardName from Java REST API -->
                 <span data-field="wardName" data-i18n="HEADER.WARD">Inpatients</span>
-                <span class="text-color-secondary font-normal">| <span data-field="currentDate">20/02/2026</span></span>
+                <span class="text-color-secondary font-normal">| <!-- data-field="currentDate": maps to SessionDTO.currentDate --><span data-field="currentDate">20/02/2026</span></span>
             </div>
 
+            <!-- DENSITY: flex + gap-2 keeps notification icons compact for 14" screens -->
             <div class="top-bar-right flex align-items-center gap-2">
+                <!-- PrimeNG equivalent: p-badge on p-button; Angular: (click)="alertService.togglePanel()" -->
                 <div class="notification-btn" onclick="toggleAlertMenu()" data-i18n-title="HEADER.ALERTS_TITLE" title="Alerts & Messages">
                     <i class="pi pi-bell text-color-secondary icon-md"></i>
+                    <!-- data-field="alertCount": maps to NotificationDTO.alertCount -->
                     <span class="badge-count" data-field="alertCount">3</span>
                 </div>
                 <div class="notification-btn" data-i18n-title="HEADER.MESSAGES_TITLE" title="Messages">
                     <i class="pi pi-envelope text-color-secondary icon-md"></i>
+                    <!-- data-field="messageCount": maps to NotificationDTO.messageCount -->
                     <span class="badge-count" data-field="messageCount">1</span>
                 </div>
                 <div class="notification-btn" data-i18n-title="HEADER.HELP_TITLE" title="Help">
                     <i class="pi pi-question-circle icon-md text-primary-color"></i>
                 </div>
+                <!-- USER IDENTITY: Angular: populated via AuthService.currentUser$ observable -->
                 <div class="user-info flex align-items-center gap-1">
                     <i class="pi pi-user text-primary-color"></i>
+                    <!-- data-field="userName": maps to UserDTO.fullName -->
                     <span><strong data-field="userName">Dr. Rory Rogers</strong></span>
+                    <!-- data-field="userService": maps to UserDTO.serviceName -->
                     <span class="text-color-secondary" data-field="userService">Service of Healthcare Provider A1</span>
+                    <!-- data-field="userDepartment": maps to UserDTO.departmentName -->
                     <span class="text-color-secondary">| <span data-field="userDepartment">Adult Emergency</span></span>
                 </div>
             </div>
         </header>
 
+        <!-- COMPONENT BOUNDARY: <ech-clinical-banner> — Angular Standalone Component -->
+        <!-- SAFETY REQUIREMENT: Banner is fixed/sticky (max 80px height) and must never scroll out of view -->
+        <!-- Angular: ClinicalBannerComponent with inject(PatientService) for patient context -->
         <section class="clinical-banner" id="banner-component">
+            <!-- DENSITY: flex + justify-content-between + gap-2 keeps patient info and safety tags in a single compact row -->
             <div class="banner-row-1 flex align-items-center justify-content-between gap-2 flex-wrap">
                 <div class="patient-identity flex align-items-center gap-2 flex-wrap">
+                    <!-- data-field="patientGenderIcon": maps to PatientDTO.genderIcon -->
                     <i class="pi pi-user patient-icon" data-field="patientGenderIcon" data-i18n-title="PATIENT.GENDER_MALE" title="Male"></i>
                     <div class="patient-id-block">
                         <div class="patient-name-line flex align-items-center gap-2 flex-wrap">
+                            <!-- data-field="patientName": maps to PatientDTO.fullName -->
                             <span class="patient-name" data-field="patientName">THOMAS MEYER WOOD</span>
+                            <!-- data-field="patientDemographics": maps to PatientDTO.demographicSummary -->
                             <span class="patient-gender-age" data-field="patientDemographics">(11/07/1990 - 35 Years - Male)</span>
                         </div>
+                        <!-- data-field="patientMeta": maps to PatientDTO admission context fields -->
                         <div class="patient-meta flex align-items-center gap-1 flex-wrap" data-field="patientMeta">
+                            <!-- data-field="patientRecId": maps to PatientDTO.recordId -->
                             <span data-field="patientRecId">Rec ID 46</span><span class="meta-separator">|</span>
+                            <!-- data-field="patientEpisode": maps to EpisodeDTO.episodeNumber -->
                             <span data-field="patientEpisode">Episode No.: 283</span><span class="meta-separator">|</span>
+                            <!-- data-field="patientRoom": maps to AdmissionDTO.roomBed -->
                             <span data-field="patientRoom">Room Bed 201 (514 d)</span><span class="meta-separator">|</span>
+                            <!-- data-field="patientClient": maps to PatientDTO.clientCode -->
                             <span data-field="patientClient">CLIENTE 01</span>
                         </div>
                     </div>
 
+                    <!-- SAFETY TAGS: PrimeNG equivalent: p-tag with severity. Angular: *ngFor over PatientDTO.safetyAlerts -->
+                    <!-- Color logic: Red(danger)=Allergies/DNR, Yellow(warning)=Fall Risk, Blue(info)=VTE/Isolation -->
+                    <!-- data-field="allergyList": maps to PatientDTO.safetyAlerts[] -->
                     <div class="safety-tags flex align-items-center gap-1 flex-wrap" data-field="allergyList">
                         <span class="p-tag-custom p-tag-danger" data-i18n="SAFETY.ALLERGY_PENICILLIN"><i class="pi pi-exclamation-circle"></i> Penicillin Allergy</span>
                         <span class="p-tag-custom p-tag-danger" data-i18n="SAFETY.ALLERGY_LATEX"><i class="pi pi-exclamation-circle"></i> Latex Allergy</span>
@@ -141,6 +177,9 @@
             </div>
         </section>
 
+        <!-- COMPONENT BOUNDARY: <ech-action-bar> — Angular Standalone Component -->
+        <!-- Quick clinical actions bar; Angular: ActionBarComponent with inject(ClinicalActionService) -->
+        <!-- Primary action (Add Note) uses filled style; secondary actions use outlined style -->
         <section class="action-bar" id="action-bar-component">
             <button class="action-btn action-btn-primary" onclick="handleQuickAction('Add Clinical Note')" data-i18n-title="ACTIONS.ADD_NOTE" title="Add Clinical Note">
                 <i class="pi pi-plus"></i> <span data-i18n="ACTIONS.ADD_NOTE">Add Note</span>
@@ -163,6 +202,7 @@
             </button>
         </section>
 
+        <!-- COMPONENT BOUNDARY: <ech-measurements> — Angular Standalone Component. Content to be implemented. -->
         <section class="module-content-area" id="measurements-component">
             <!-- Content will be provided later -->
         </section>
@@ -170,7 +210,10 @@
     </main>
 </div>
 
+<!-- ALERT OVERLAY: PrimeNG equivalent: p-sidebar or p-dialog -->
+<!-- Angular: AlertPanelComponent with inject(NotificationService).alerts$ observable -->
 <div class="alert-menu-overlay" id="alertOverlay">
+    <!-- COMPONENT BOUNDARY: <ech-alert-panel> — Angular Standalone Component -->
     <div class="alert-menu-panel" id="alert-panel">
         <div class="alert-header flex align-items-center justify-content-between">
             <span><i class="pi pi-bell"></i> <span data-i18n="ALERTS.TITLE">Alerts &amp; Messages</span></span>
@@ -211,6 +254,9 @@
     </div>
 </div>
 
+<!-- COMPONENT BOUNDARY: <ech-footer> — Angular Standalone Component -->
+<!-- Mobile/tablet bottom navigation bar with quick access icons -->
+<!-- Angular: FooterComponent; visible on screens <= 1024px via CSS breakpoint -->
 <footer class="bottom-bar" id="footer-component">
     <button class="bottom-item active" data-i18n-title="FOOTER.HOME" title="Home">
         <i class="pi pi-home"></i>
