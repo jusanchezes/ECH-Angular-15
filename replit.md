@@ -46,7 +46,8 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - **Top Bar** (`id="header-component"`): Hospital/department info, alerts/messages bell, user identity
 - **Clinical Banner** (`id="banner-component"`): Fixed/sticky with patient identity, safety tags, p-splitButton quick actions
 - **Sidebar** (`id="sidebar-component"`): Collapsible navigation with PrimeIcons, `<a>` links to module pages
-- 
+- **Filter bar** (`id="filter-bar"`): filters for the content in the pages, diferent filters depending on the clinical content,
+- **Action bar** (`id="action-bar-component"`): action bar for each of the pages, diferent actions depending on the clinical content,
 - **Footer** (`id="footer-component"`): Home, Search, Favorites, Config, Info quick links
 - **Alert Overlay** (`id="alert-panel"`): Slide-in alerts panel
 
@@ -74,7 +75,6 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
-- 2026-02-21: Developer Handoff comments added to all 12 HTML pages and 2 JS files per Instructions.md sections 4 & 5 (component boundaries, data-field DTO mappings, PrimeFlex density rationale, Angular migration notes, JSDoc)
 - 2026-02-21: Action bar - quick actions moved from banner to dedicated section below, individual icon+text buttons (primary + secondary), not split-dropdown
 - 2026-02-21: Collapsible sidebar - defaults to collapsed (icon-only), toggle via hamburger/arrow, state persisted in localStorage across pages
 - 2026-02-21: Multi-page restructure - patient list entry point, 10 empty module shell pages with shared clinical shell

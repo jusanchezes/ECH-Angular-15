@@ -24,6 +24,160 @@ const PatientListData = [
         admissionDate: "25/05/2024",
         daysAdmitted: 514,
         alerts: ["Penicillin Allergy", "Latex Allergy", "Fall Risk", "VTE Risk", "DNR"]
+    },
+    {
+        id: 47,
+        name: "MARIA SANTOS FERREIRA",
+        dob: "23/03/1958",
+        age: 67,
+        gender: "Female",
+        room: "Bed 105",
+        episode: 412,
+        department: "Cardiology",
+        attendingPhysician: "Dr. Elena Vasquez",
+        admissionDate: "10/02/2026",
+        daysAdmitted: 11,
+        alerts: ["Aspirin Allergy", "Fall Risk", "Pressure Ulcer Risk"]
+    },
+    {
+        id: 48,
+        name: "JAMES O'BRIEN",
+        dob: "15/11/1975",
+        age: 50,
+        gender: "Male",
+        room: "Bed 302",
+        episode: 198,
+        department: "Orthopedics",
+        attendingPhysician: "Dr. Henrik Larsson",
+        admissionDate: "18/02/2026",
+        daysAdmitted: 3,
+        alerts: ["VTE Risk"]
+    },
+    {
+        id: 49,
+        name: "ANNA KOWALSKI",
+        dob: "02/09/1945",
+        age: 80,
+        gender: "Female",
+        room: "Bed 410",
+        episode: 567,
+        department: "Internal Medicine",
+        attendingPhysician: "Dr. Rory Rogers",
+        admissionDate: "05/01/2026",
+        daysAdmitted: 47,
+        alerts: ["Iodine Allergy", "Fall Risk", "VTE Risk", "DNR", "Isolation"]
+    },
+    {
+        id: 50,
+        name: "LUCAS BERNARD MARTIN",
+        dob: "30/06/2002",
+        age: 23,
+        gender: "Male",
+        room: "Bed 208",
+        episode: 89,
+        department: "Adult Emergency",
+        attendingPhysician: "Dr. Sofia Chen",
+        admissionDate: "19/02/2026",
+        daysAdmitted: 2,
+        alerts: []
+    },
+    {
+        id: 51,
+        name: "FATIMA AL-RASHID",
+        dob: "14/12/1983",
+        age: 42,
+        gender: "Female",
+        room: "Bed 115",
+        episode: 334,
+        department: "Oncology",
+        attendingPhysician: "Dr. Marcus Webb",
+        admissionDate: "28/01/2026",
+        daysAdmitted: 24,
+        alerts: ["Morphine Allergy", "Neutropenia Risk"]
+    },
+    {
+        id: 52,
+        name: "PETER JOHANSSON",
+        dob: "08/04/1968",
+        age: 57,
+        gender: "Male",
+        room: "ICU 03",
+        episode: 621,
+        department: "Intensive Care",
+        attendingPhysician: "Dr. Elena Vasquez",
+        admissionDate: "17/02/2026",
+        daysAdmitted: 4,
+        alerts: ["Sulfa Allergy", "Fall Risk", "VTE Risk", "High-Risk Meds"]
+    },
+    {
+        id: 53,
+        name: "CAROLINA SILVA DUARTE",
+        dob: "19/01/1992",
+        age: 34,
+        gender: "Female",
+        room: "Bed 207",
+        episode: 156,
+        department: "Obstetrics",
+        attendingPhysician: "Dr. Amara Okonkwo",
+        admissionDate: "20/02/2026",
+        daysAdmitted: 1,
+        alerts: ["Latex Allergy"]
+    },
+    {
+        id: 54,
+        name: "HEINRICH MÜLLER",
+        dob: "25/07/1940",
+        age: 85,
+        gender: "Male",
+        room: "Bed 501",
+        episode: 445,
+        department: "Geriatrics",
+        attendingPhysician: "Dr. Henrik Larsson",
+        admissionDate: "12/12/2025",
+        daysAdmitted: 71,
+        alerts: ["Penicillin Allergy", "Fall Risk", "Pressure Ulcer Risk", "VTE Risk", "DNR"]
+    },
+    {
+        id: 55,
+        name: "YUKI TANAKA",
+        dob: "03/05/1971",
+        age: 54,
+        gender: "Female",
+        room: "Bed 306",
+        episode: 278,
+        department: "Neurology",
+        attendingPhysician: "Dr. Sofia Chen",
+        admissionDate: "14/02/2026",
+        daysAdmitted: 7,
+        alerts: ["Seizure Risk", "Fall Risk"]
+    },
+    {
+        id: 56,
+        name: "AHMED HASSAN IBRAHIM",
+        dob: "11/10/1955",
+        age: 70,
+        gender: "Male",
+        room: "Bed 402",
+        episode: 503,
+        department: "Cardiology",
+        attendingPhysician: "Dr. Elena Vasquez",
+        admissionDate: "02/02/2026",
+        daysAdmitted: 19,
+        alerts: ["Contrast Dye Allergy", "VTE Risk", "High-Risk Meds"]
+    },
+    {
+        id: 57,
+        name: "SOPHIE DUBOIS",
+        dob: "28/08/1999",
+        age: 26,
+        gender: "Female",
+        room: "Bed 112",
+        episode: 91,
+        department: "Pulmonology",
+        attendingPhysician: "Dr. Marcus Webb",
+        admissionDate: "16/02/2026",
+        daysAdmitted: 5,
+        alerts: ["Asthma", "Latex Allergy"]
     }
 ];
 
@@ -77,7 +231,7 @@ function renderPatientList() {
         html += `<td>${patient.daysAdmitted}</td>`;
         html += `<td>`;
         patient.alerts.forEach(alert => {
-            const severity = alert.includes('Allergy') ? 'danger' : (alert === 'DNR' ? 'dnr' : (alert.includes('Fall') ? 'warning' : 'info'));
+            const severity = alert.includes('Allergy') || alert.includes('High-Risk') ? 'danger' : (alert === 'DNR' ? 'dnr' : (alert.includes('Fall') || alert.includes('Pressure') || alert.includes('Seizure') ? 'warning' : 'info'));
             html += `<span class="p-tag-custom p-tag-${severity} mr-1 mb-1">${alert}</span>`;
         });
         html += `</td>`;
