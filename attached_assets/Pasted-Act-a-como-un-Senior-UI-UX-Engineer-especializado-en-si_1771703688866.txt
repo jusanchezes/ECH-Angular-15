@@ -1,0 +1,37 @@
+Actúa como un Senior UI/UX Engineer especializado en sistemas de salud. Tu objetivo es refactorizar este proyecto para que sea modular, use una tipografía basada en rem de alta densidad y esté documentado para programadores.
+
+1. Creación del Cerebro Modular (layout.js)
+Crea un archivo llamado layout.js que gestione la inyección dinámica de componentes. Define dentro de él:
+
+header-component: Barra superior con logo, contexto hospitalario y perfil de usuario.
+
+sidebar-component: Menú lateral colapsable con iconos de PrimeIcons y estados active.
+
+banner-component: El Clinical Banner persistente. El nombre del paciente debe usar la clase .fs-lg. La altura total del banner no debe exceder los 80px.
+
+alert-overlay-component: Sistema de notificaciones global inyectado al final del body. Incluye lógica para que la función toggleAlertMenu() abra y cierre el panel desde el icono de la campana en el Header.
+
+2. Estandarización de Tipografía y Estilo (theme-overrides.css)
+Establece el tamaño de fuente raíz en html { font-size: 13px; } para optimizar pantallas de 14''.
+
+Implementa la escala tipográfica en rem: .fs-xs (1.0rem), .fs-md (1.5rem), .fs-lg (2.0rem), .fs-xl (2.5rem).
+
+Usa clases semánticas para alertas: .clinical-danger (Rojo), .clinical-warning (Naranja), .clinical-info (Azul).
+
+3. Limpieza de Archivos HTML
+Refactoriza index.html, timeline.html y demás páginas.
+
+Elimina el código repetido del Header, Sidebar, Banner y Alert Overlay.
+
+Inserta en su lugar los marcadores de posición: <header id="header-component"></header>, <aside id="sidebar-component"></aside>, <section id="banner-component"></section>.
+
+Importante: Mantén la sección action-bar-component dentro del HTML de cada página, ya que las acciones clínicas son únicas por módulo.
+
+Asegura que todos los archivos llamen a <script src="layout.js"></script> antes del cierre de etiquetas.
+
+4. Documentación para Desarrolladores
+Añade comentarios en el código explicando que los IDs de componentes marcan los límites de los futuros Standalone Components de Angular 15.
+
+Documenta que los atributos data-field mapean directamente a los Java DTOs.
+
+Explica que el uso de rem permite escalar el EHR completo solo cambiando el tamaño base en el CSS.
