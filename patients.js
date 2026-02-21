@@ -200,7 +200,7 @@ function renderPatientList() {
     html += `<div class="patient-list-header flex align-items-center justify-content-between p-3">`;
     html += `<h2 class="m-0" data-i18n="PATIENTS.LIST_TITLE"><i class="pi pi-users"></i> Patient List</h2>`;
     html += `<div class="flex align-items-center gap-2">`;
-    html += `<input type="text" class="search-input" placeholder="Search patients..." data-i18n-placeholder="PATIENTS.SEARCH_PLACEHOLDER" id="patientSearch">`;
+    html += `<input type="text" class="search-input fs-xs" placeholder="Search patients..." data-i18n-placeholder="PATIENTS.SEARCH_PLACEHOLDER" id="patientSearch">`;
     html += `</div>`;
     html += `</div>`;
 
