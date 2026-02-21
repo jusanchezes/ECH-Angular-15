@@ -1267,3 +1267,6 @@ body {
 .clinical-danger { color: var(--ech-clinical-danger); }
 .clinical-warning { color: var(--ech-clinical-warning); }
 .clinical-info { color: var(--ech-clinical-info); }
+.p-tag-custom.clinical-danger,
+.p-tag-custom.clinical-warning,
+.p-tag-custom.clinical-info { color: white; }
