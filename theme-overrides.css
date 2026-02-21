@@ -19,6 +19,9 @@
     --ech-sidebar-collapsed: 56px;
     --ech-banner-height: auto;
     --ech-bottom-bar-height: 0px;
+    --ech-clinical-danger: #ff4d4f;
+    --ech-clinical-warning: #faad14;
+    --ech-clinical-info: #1976d2;
     --ech-font-family: "Segoe UI", Roboto, Arial, sans-serif;
     --fs-xl: 2.5rem;
     --fs-lg: 2.0rem;
@@ -1260,3 +1263,7 @@ body {
     overflow-y: auto;
     padding: 16px;
 }
+
+.clinical-danger { color: var(--ech-clinical-danger); }
+.clinical-warning { color: var(--ech-clinical-warning); }
+.clinical-info { color: var(--ech-clinical-info); }

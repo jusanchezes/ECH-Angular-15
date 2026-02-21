@@ -8,16 +8,18 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Served via Node.js static file server on port 5000
 - Mock clinical data for demonstration purposes
 - Patient list as entry point, navigates to patient-context module pages
+- Modular layout.js eliminates HTML duplication across all 12 pages
 
 ## Project Architecture
 
 ### File Structure
 ```
 /
-├── index.html              # Patient List (entry point)
+├── index.html              # Patient List (entry point, data-page-type="patient-list")
 ├── patients.js             # Patient list logic and mock data
 ├── timeline.html           # General View / Patient Timeline
-├── app.js                  # Timeline logic + shared shell functions (sidebar, alerts, dropdowns)
+├── app.js                  # Timeline-specific logic (rendering, filtering, events)
+├── layout.js               # Modular layout engine — injects shared components into all pages
 ├── previous-visits.html    # Previous Visits module (empty shell)
 ├── risk-factors.html       # Risk Factors module (empty shell)
 ├── diagnostic-tests.html   # Diagnostic Tests module (empty shell)
@@ -35,31 +37,40 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 └── replit.md               # This file
 ```
 
+### Layout Engine (layout.js)
+- **Purpose**: Single source of truth for shared shell HTML; eliminates duplication across 12 pages
+- **Detection**: Uses `data-page-type="patient-list"` on `<body>` to distinguish patient list from patient-context pages
+- **Components injected**: Header, Sidebar (patient-context only), Clinical Banner (patient-context only), Alert Overlay
+- **Shared functions**: toggleSidebar(), toggleAlertMenu(), toggleUserMenu(), handleUserMenuAction(), handleQuickAction()
+- **Config arrays**: NAV_ITEMS (sidebar links), USER_MENU_ITEMS (three-dots dropdown)
+- **Angular migration**: Each render function maps to a Standalone Component; full migration notes in JSDoc comments
+
 ### Page Architecture
 - **Patient List** (`index.html`): Entry point, no sidebar/clinical banner, table of patients with click-to-navigate
-- **Patient Module Pages**: All share a common shell (top bar, clinical banner, sidebar, footer)
+- **Patient Module Pages**: All share a common shell injected by layout.js
   - Sidebar navigation uses `<a>` tags with relative `href` for click-through
-  - Active page highlighted in sidebar
+  - Active page auto-detected by layout.js from window.location
   - Clinical banner persists across all patient-context pages
 
-### Shell Components (shared across patient pages)
+### Shell Components (shared across patient pages, rendered by layout.js)
 - **Top Bar** (`id="header-component"`): Hospital/department info, alerts/messages bell, user identity
-- **Clinical Banner** (`id="banner-component"`): Fixed/sticky with patient identity, safety tags, p-splitButton quick actions
+- **Clinical Banner** (`id="banner-component"`): Fixed/sticky with patient identity, safety tags
 - **Sidebar** (`id="sidebar-component"`): Collapsible navigation with PrimeIcons, `<a>` links to module pages
-- **Filter bar** (`id="filter-bar"`): filters for the content in the pages, diferent filters depending on the clinical content,
-- **Action bar** (`id="action-bar-component"`): action bar for each of the pages, diferent actions depending on the clinical content,
+- **Filter bar** (`id="filter-bar"`): Page-specific filters (only timeline has content currently)
+- **Action bar** (`id="action-bar-component"`): Page-specific action buttons (only timeline has content currently)
 - **Alert Overlay** (`id="alert-panel"`): Slide-in alerts panel
 
 ### Technical Standards (from Instructions.md)
 - `data-i18n` / `data-i18n-title`: All UI text mapped to translation keys
 - `data-field="dtoFieldName"`: Data-bound values mirroring Java DTOs
-- Component boundary IDs: `id="header-component"`, `id="sidebar-component"`, `id="banner-component"`, `id="footer-component"`
+- Component boundary IDs: `id="header-component"`, `id="sidebar-component"`, `id="banner-component"`
 - PrimeFlex utility classes for layout (no inline styles)
 - PrimeIcons for all iconography
 - `.p-datatable-sm` for high-density data grids (32px max row height)
 
 ### Design System
 - Colors defined as CSS custom properties in `theme-overrides.css` (--ech-primary, --ech-danger, etc.)
+- Semantic clinical CSS classes: .clinical-danger, .clinical-warning, .clinical-info
 - Type-specific timeline colors via CSS classes (tl-type-exam, tl-type-surgery, etc.)
 - Responsive breakpoints: 1024px (tablet), 600px (mobile)
 
@@ -74,14 +85,17 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
-- 2026-02-21: Replaced bottom-bar footer with three-dots user menu dropdown in top bar — 7 options: Change Center, DateTime, Preferences, View Config, Refresh, About, Logout
-- 2026-02-21: Rem-based font scaling — root 13px, .fs-xs through .fs-xxl utility classes, all px fonts converted to rem
-- 2026-02-21: Applied .fs-lg to patient name, .fs-xs to nav labels, action buttons, filter controls, search inputs
+- 2026-02-21: Created layout.js modular engine — eliminates ~250 lines of duplicated HTML per page
+- 2026-02-21: Refactored all 12 HTML files to use layout.js placeholders (12 files reduced from ~280 to ~40 lines each)
+- 2026-02-21: Cleaned up app.js — removed shared shell functions, kept timeline-specific logic only
+- 2026-02-21: Cleaned up patients.js — removed duplicate toggle functions
+- 2026-02-21: Added semantic clinical CSS classes (.clinical-danger, .clinical-warning, .clinical-info)
+- 2026-02-21: Replaced bottom-bar footer with three-dots user menu dropdown in top bar
+- 2026-02-21: Rem-based font scaling — root 13px, .fs-xs through .fs-xxl utility classes
 - 2026-02-21: Clinical banner max-height: 80px safety constraint with overflow: hidden
-- 2026-02-21: Removed dead split-btn/split-dropdown CSS and bottom-bar CSS
-- 2026-02-21: Action bar - quick actions moved from banner to dedicated section below, individual icon+text buttons (primary + secondary), not split-dropdown
-- 2026-02-21: Collapsible sidebar - defaults to collapsed (icon-only), toggle via hamburger/arrow, state persisted in localStorage across pages
-- 2026-02-21: Multi-page restructure - patient list entry point, 10 empty module shell pages with shared clinical shell
+- 2026-02-21: Action bar - quick actions as individual icon+text buttons (primary + secondary)
+- 2026-02-21: Collapsible sidebar - defaults to collapsed, state persisted in localStorage
+- 2026-02-21: Multi-page restructure - patient list entry point, 10 empty module shell pages
 - 2026-02-21: Sidebar navigation converted to `<a>` tags with relative links between pages
 - 2026-02-21: Added `data-field` attributes per Instructions.md for Java DTO mapping
 - 2026-02-20: Initial build of complete EHR patient timeline with all MVP features

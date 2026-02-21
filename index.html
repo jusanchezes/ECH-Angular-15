@@ -8,86 +8,17 @@
     <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
     <link rel="stylesheet" href="theme-overrides.css">
 </head>
-<body>
+<body data-page-type="patient-list">
 
 <!-- LAYOUT: Patient list view without sidebar. Angular: PatientListComponent rendered at root route -->
-<!-- DENSITY: Full-width layout for patient list; no sidebar needed on list view -->
 <div class="layout layout-no-sidebar">
 
-    <!-- MAIN CONTENT AREA: Full-width mode for patient list (no sidebar) -->
     <main class="main-content main-full-width">
 
-        <!-- COMPONENT BOUNDARY: <ech-header> — Angular Standalone Component -->
-        <header class="top-bar" id="header-component">
-            <div class="top-bar-left flex align-items-center gap-2">
-                <div class="logo flex align-items-center gap-1">
-                    <i class="pi pi-shield"></i>
-                    <span data-i18n="APP.TITLE">ECH</span>
-                </div>
-            </div>
-
-            <div class="top-bar-center flex align-items-center gap-1">
-                <i class="pi pi-building"></i>
-                <!-- data-field="wardName": maps to WardDTO.wardName -->
-                <span data-field="wardName" data-i18n="HEADER.WARD">Inpatients</span>
-            </div>
-
-            <div class="top-bar-right flex align-items-center gap-2">
-                <div class="notification-btn" data-i18n-title="HEADER.ALERTS_TITLE" title="Alerts & Messages">
-                    <i class="pi pi-bell text-color-secondary icon-md"></i>
-                    <!-- data-field="alertCount": maps to NotificationDTO.alertCount -->
-                    <span class="badge-count" data-field="alertCount">3</span>
-                </div>
-                <div class="notification-btn" data-i18n-title="HEADER.MESSAGES_TITLE" title="Messages">
-                    <i class="pi pi-envelope text-color-secondary icon-md"></i>
-                    <!-- data-field="messageCount": maps to NotificationDTO.messageCount -->
-                    <span class="badge-count" data-field="messageCount">1</span>
-                </div>
-                <div class="notification-btn" data-i18n-title="HEADER.HELP_TITLE" title="Help">
-                    <i class="pi pi-question-circle icon-md text-primary-color"></i>
-                </div>
-                <div class="user-info">
-                    
-                    <!-- data-field="userName": maps to UserDTO.fullName -->
-                    <span class="user-name" data-field="userName">Dr. Rory Rogers</span>
-                    <!-- data-field="userService": maps to UserDTO.serviceName -->
-                    <span class="user-detail"><span data-field="userService">Service of Healthcare Provider A1</span> | <span data-field="userDepartment">Adult Emergency</span></span>
-                </div>
-                <div class="user-menu-wrapper">
-                    <button class="user-menu-toggle" onclick="toggleUserMenu()" data-i18n-title="HEADER.USER_MENU" title="User Menu">
-                        <i class="pi pi-ellipsis-v"></i>
-                    </button>
-                    <div class="user-menu-dropdown" id="userMenuDropdown">
-                        <button class="menu-option" onclick="handleUserMenuAction('change-center')" data-i18n="MENU.CHANGE_CENTER">
-                            <i class="pi pi-building"></i> Cambiar Centro sanitario
-                        </button>
-                        <button class="menu-option" onclick="handleUserMenuAction('datetime')" data-i18n="MENU.DATETIME">
-                            <i class="pi pi-clock"></i> <span data-field="currentDateTime">21/02/2026 17:06</span>
-                        </button>
-                        <button class="menu-option" onclick="handleUserMenuAction('preferences')" data-i18n="MENU.PREFERENCES">
-                            <i class="pi pi-cog"></i> Preferencias
-                        </button>
-                        <button class="menu-option" onclick="handleUserMenuAction('view-config')" data-i18n="MENU.VIEW_CONFIG">
-                            <i class="pi pi-cog"></i> Herramienta de Configuración de Vistas
-                        </button>
-                        <button class="menu-option" onclick="handleUserMenuAction('refresh')" data-i18n="MENU.REFRESH">
-                            <i class="pi pi-refresh"></i> Refrescar inicio
-                        </button>
-                        <button class="menu-option" onclick="handleUserMenuAction('about')" data-i18n="MENU.ABOUT">
-                            <i class="pi pi-info-circle"></i> Acerca de
-                        </button>
-                        <button class="menu-option menu-option-danger" onclick="handleUserMenuAction('logout')" data-i18n="MENU.LOGOUT">
-                            <i class="pi pi-power-off"></i> Salir
-                        </button>
-                    </div>
-                </div>
-                <div class="user-menu-overlay" id="userMenuOverlay" onclick="toggleUserMenu()"></div>
-            </div>
-        </header>
+        <!-- COMPONENT BOUNDARY: <ech-header> — Injected by layout.js -->
+        <header class="top-bar" id="header-component"></header>
 
         <!-- COMPONENT BOUNDARY: <ech-patient-list> — Angular Standalone Component -->
-        <!-- PrimeNG equivalent: p-table with p-sortableColumn, p-filter. Angular: PatientListComponent with inject(PatientService).patients$ -->
-        <!-- Content rendered dynamically by patients.js; Angular: replaced by PrimeNG DataTable with async pipe -->
         <section class="patient-list-area" id="patient-list-component">
             <div class="patient-list-container" id="patientListContainer">
             </div>
@@ -96,7 +27,7 @@
     </main>
 </div>
 
-
+<script src="layout.js"></script>
 <script src="patients.js"></script>
 
 </body>

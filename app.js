@@ -1,12 +1,9 @@
 /**
- * @file app.js — Timeline Logic & Shared Shell Functions
- * @description Prototype script for the EHR Patient Timeline view and shared UI shell.
- *   Handles timeline rendering, filtering, sidebar toggle, alert panel, and quick actions.
- *   In production Angular 15, this logic will be split across:
- *     - TimelineComponent + TimelineService (timeline rendering & filtering)
- *     - SidebarComponent + SidebarService (sidebar state management)
- *     - HeaderComponent + NotificationService (alerts & notifications)
- *     - ActionBarComponent + ClinicalActionService (quick actions)
+ * @file app.js — Timeline-Specific Logic
+ * @description Prototype script for the EHR Patient Timeline view.
+ *   Handles timeline rendering, filtering, and timeline-specific UI interactions.
+ *   Shared shell functions (sidebar, header, banner, alerts, user menu) are now in layout.js.
+ *   In production Angular 15, this becomes TimelineComponent + TimelineService.
  *   Mock data (PatientData, TimelineData) will be replaced by Angular HttpClient
  *   calls to Java REST API endpoints returning DTOs.
  */
@@ -246,50 +243,9 @@ function bindEvents() {
         if (!e.target.closest('.column-toggle-wrapper')) {
             document.querySelectorAll('.column-panel').forEach(d => d.classList.remove('show'));
         }
-        if (e.target.classList.contains('alert-menu-overlay')) {
-            e.target.classList.remove('show');
-        }
-        if (e.target.classList.contains('sidebar-overlay')) {
-            closeSidebar();
-        }
     });
 }
 
-/** Restores sidebar collapsed/expanded state from localStorage. Angular: SidebarService.init() with BehaviorSubject */
-function applySidebarState() {
-    const sidebar = document.getElementById('sidebar-component');
-    if (!sidebar) return;
-    const collapsed = localStorage.getItem('ech-sidebar-collapsed');
-    if (collapsed === null || collapsed === 'true') {
-        sidebar.classList.add('collapsed');
-    } else {
-        sidebar.classList.remove('collapsed');
-    }
-}
-
-/** Toggles sidebar between collapsed and expanded modes. Angular: SidebarService.toggle() */
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar-component');
-    const overlay = document.getElementById('sidebarOverlay');
-    const isMobile = window.innerWidth <= 1024;
-
-    if (isMobile) {
-        sidebar.classList.toggle('open');
-        overlay.classList.toggle('show');
-    } else {
-        sidebar.classList.toggle('collapsed');
-        const isCollapsed = sidebar.classList.contains('collapsed');
-        localStorage.setItem('ech-sidebar-collapsed', isCollapsed);
-    }
-}
-
-/** Closes mobile sidebar overlay. Angular: SidebarService.close() */
-function closeSidebar() {
-    const sidebar = document.getElementById('sidebar-component');
-    const overlay = document.getElementById('sidebarOverlay');
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
-}
 
 /** Toggles row-level action dropdown menu. Angular: PrimeNG p-menu with (click) binding */
 function toggleRowMenu(event, el) {
@@ -354,28 +310,6 @@ function toggleColumn(checkbox) {
     renderTimeline();
 }
 
-/** Toggles the alerts/notifications overlay panel. Angular: NotificationService.togglePanel() */
-function toggleAlertMenu() {
-    const overlay = document.getElementById('alertOverlay');
-    overlay.classList.toggle('show');
-}
-
-/** Toggles the three-dots user menu dropdown. Angular: UserMenuComponent with OverlayPanel or p-menu */
-function toggleUserMenu() {
-    const dropdown = document.getElementById('userMenuDropdown');
-    const overlay = document.getElementById('userMenuOverlay');
-    if (dropdown && overlay) {
-        dropdown.classList.toggle('show');
-        overlay.classList.toggle('show');
-    }
-}
-
-/** Handles user menu option clicks. Angular: UserMenuService.execute(action) */
-function handleUserMenuAction(action) {
-    toggleUserMenu();
-    console.log('User menu action:', action);
-}
-
 /** Handles row-level action clicks. Angular: replaced by ClinicalActionService.execute(action, entryId) */
 function handleAction(action, event) {
     if (event) event.stopPropagation();
@@ -387,14 +321,8 @@ function handleLoadMore() {
     console.log('Load more triggered');
 }
 
-/** Handles quick action bar button clicks. Angular: ClinicalActionService.executeQuickAction(action) */
-function handleQuickAction(action) {
-    console.log('Quick action:', action);
-}
-
-/** Initializes the application on page load. Angular: replaced by ngOnInit() lifecycle hooks in respective components */
+/** Initializes timeline on page load. Angular: replaced by ngOnInit() in TimelineComponent */
 document.addEventListener('DOMContentLoaded', function() {
-    applySidebarState();
     if (document.getElementById('timelineContainer')) {
         renderTimeline();
     }
