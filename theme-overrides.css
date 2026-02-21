@@ -137,6 +137,29 @@ html, body {
     display: none;
 }
 
+.sidebar.collapsed .sidebar-nav .menu-item {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar.collapsed .sidebar-nav .menu-item.active {
+    background: var(--ech-primary-light);
+    border-left: 3px solid var(--ech-primary);
+}
+
+.sidebar.collapsed .sidebar-nav .menu-item.active .pi {
+    color: var(--ech-primary-dark);
+}
+
+.sidebar.collapsed .sidebar-nav .menu-item .pi {
+    font-size: 17px;
+}
+
+.sidebar.collapsed .sidebar-header {
+    justify-content: center;
+    padding: 10px 0;
+}
+
 .sidebar-toggle {
     padding: 8px;
     text-align: center;
@@ -148,6 +171,14 @@ html, body {
 
 .sidebar-toggle:hover {
     background: var(--ech-primary-light);
+}
+
+.sidebar.collapsed .sidebar-toggle .pi {
+    transform: rotate(180deg);
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    padding: 10px 0;
 }
 
 .main-content {
