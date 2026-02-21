@@ -120,14 +120,12 @@
                     <i class="pi pi-question-circle icon-md text-primary-color"></i>
                 </div>
                 <!-- USER IDENTITY: Angular: populated via AuthService.currentUser$ observable -->
-                <div class="user-info flex align-items-center gap-1">
-                    <i class="pi pi-user text-primary-color"></i>
+                <div class="user-info">
+                    
                     <!-- data-field="userName": maps to UserDTO.fullName -->
-                    <span><strong data-field="userName">Dr. Rory Rogers</strong></span>
+                    <span class="user-name" data-field="userName">Dr. Rory Rogers</span>
                     <!-- data-field="userService": maps to UserDTO.serviceName -->
-                    <span class="text-color-secondary" data-field="userService">Service of Healthcare Provider A1</span>
-                    <!-- data-field="userDepartment": maps to UserDTO.departmentName -->
-                    <span class="text-color-secondary">| <span data-field="userDepartment">Adult Emergency</span></span>
+                    <span class="user-detail"><span data-field="userService">Service of Healthcare Provider A1</span> | <span data-field="userDepartment">Adult Emergency</span></span>
                 </div>
                 <div class="user-menu-wrapper">
                     <button class="user-menu-toggle" onclick="toggleUserMenu()" data-i18n-title="HEADER.USER_MENU" title="User Menu">
