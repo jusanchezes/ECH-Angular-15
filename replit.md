@@ -75,6 +75,10 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-21: Rem-based font scaling system — root 13px, .fs-xs through .fs-xxl utility classes, all px fonts converted to rem
+- 2026-02-21: Applied .fs-lg to patient name, .fs-xs to nav labels, action buttons, filter controls, search inputs across all pages
+- 2026-02-21: Clinical banner max-height: 80px safety constraint with overflow: hidden
+- 2026-02-21: Removed dead split-btn/split-dropdown CSS
 - 2026-02-21: Action bar - quick actions moved from banner to dedicated section below, individual icon+text buttons (primary + secondary), not split-dropdown
 - 2026-02-21: Collapsible sidebar - defaults to collapsed (icon-only), toggle via hamburger/arrow, state persisted in localStorage across pages
 - 2026-02-21: Multi-page restructure - patient list entry point, 10 empty module shell pages with shared clinical shell
