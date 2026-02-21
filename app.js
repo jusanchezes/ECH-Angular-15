@@ -106,18 +106,9 @@ function renderTimeline() {
         'Vitals': 'pi-chart-line'
     };
 
-    const typeColorMap = {
-        'Exam': 'var(--ech-primary)',
-        'Surgery': '#e91e63',
-        'Medication': '#9c27b0',
-        'Note': '#607d8b',
-        'Images': '#00bcd4',
-        'Care': '#4caf50',
-        'Vitals': '#ff9800'
-    };
 
     if (filteredData.length === 0) {
-        html = `<div style="padding: 20px; text-align: center; color: var(--ech-text-secondary);"><i class="pi pi-info-circle"></i> No timeline entries match the current filters.</div>`;
+        html = `<div class="p-3 text-center text-color-secondary"><i class="pi pi-info-circle"></i> <span data-i18n="TIMELINE.NO_RESULTS">No timeline entries match the current filters.</span></div>`;
     } else {
         filteredData.forEach(dateGroup => {
             html += `<div class="timeline-date-header"><i class="pi pi-calendar"></i> ${dateGroup.date}</div>`;
@@ -128,7 +119,6 @@ function renderTimeline() {
             grouped.forEach((group, idx) => {
                 const first = group[0];
                 const icon = typeIconMap[first.type] || 'pi-circle';
-                const color = typeColorMap[first.type] || 'var(--ech-primary)';
                 const isLast = idx === grouped.length - 1;
 
                 html += `<div class="p-timeline-event" data-type="${first.type}" data-role="${first.role}">`;
@@ -138,7 +128,7 @@ function renderTimeline() {
                 html += `</div>`;
 
                 html += `<div class="p-timeline-event-separator">`;
-                html += `<div class="p-timeline-event-marker" style="background:${color}; border-color:${color};"><i class="pi ${icon}" style="font-size:10px; color:white;"></i></div>`;
+                html += `<div class="p-timeline-event-marker" data-type-color="${first.type}"><i class="pi ${icon} tl-marker-icon"></i></div>`;
                 if (!isLast) html += `<div class="p-timeline-event-connector"></div>`;
                 html += `</div>`;
 
@@ -146,7 +136,7 @@ function renderTimeline() {
                 html += `<div class="tl-event-card">`;
 
                 let headerParts = [];
-                if (visibleColumns.type) headerParts.push(`<span class="tl-type" style="color:${color};"><i class="pi ${icon}"></i> ${first.type}</span>`);
+                if (visibleColumns.type) headerParts.push(`<span class="tl-type tl-type-${first.type.toLowerCase()}" data-i18n="TYPE.${first.type.toUpperCase()}"><i class="pi ${icon}"></i> ${first.type}</span>`);
                 if (visibleColumns.dept) headerParts.push(`<span class="tl-dept">${first.dept}</span>`);
                 headerParts.push(`<span class="tl-role">${first.author}</span>`);
                 if (visibleColumns.card) headerParts.push(`<span class="tl-card-tag">${first.card}</span>`);
@@ -158,10 +148,11 @@ function renderTimeline() {
                         html += `<span class="tl-description">${entry.description}</span>`;
                     }
                     if (visibleColumns.actions) {
-                        html += `<span class="tl-sub-actions"><span class="action-icon pi pi-pencil" onclick="toggleRowMenu(event, this)" title="Actions"></span>`;
+                        html += `<span class="tl-sub-actions"><span class="action-icon pi pi-pencil" onclick="toggleRowMenu(event, this)" data-i18n-title="ACTIONS.MENU_TITLE" title="Actions"></span>`;
                         html += `<div class="row-dropdown">`;
                         entry.actions.forEach(a => {
-                            html += `<div class="rd-item" onclick="handleAction('${a}', event)">${a}</div>`;
+                            const actionKey = a.replace(/\s+/g, '_').toUpperCase();
+                            html += `<div class="rd-item" onclick="handleAction('${a}', event)" data-i18n="ACTIONS.${actionKey}">${a}</div>`;
                         });
                         html += `</div></span>`;
                     }
@@ -177,7 +168,7 @@ function renderTimeline() {
         });
     }
 
-    html += `<div class="load-more-bar"><button class="load-more-btn" onclick="handleLoadMore()"><i class="pi pi-arrow-down"></i> Load More</button></div>`;
+    html += `<div class="load-more-bar"><button class="load-more-btn" onclick="handleLoadMore()"><i class="pi pi-arrow-down"></i> <span data-i18n="TIMELINE.LOAD_MORE">Load More</span></button></div>`;
     container.innerHTML = html;
 }
 
