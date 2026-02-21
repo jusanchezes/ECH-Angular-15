@@ -221,9 +221,6 @@ function bindEvents() {
         if (!e.target.closest('.tl-actions')) {
             document.querySelectorAll('.row-dropdown').forEach(d => d.classList.remove('show'));
         }
-        if (!e.target.closest('.split-btn') && !e.target.closest('.split-dropdown')) {
-            document.querySelectorAll('.split-dropdown').forEach(d => d.classList.remove('show'));
-        }
         if (!e.target.closest('.multi-select-wrapper')) {
             document.querySelectorAll('.multi-select-panel').forEach(d => d.classList.remove('show'));
         }
@@ -270,11 +267,6 @@ function closeSidebar() {
     const overlay = document.getElementById('sidebarOverlay');
     sidebar.classList.remove('open');
     overlay.classList.remove('show');
-}
-
-function toggleSplitMenu() {
-    const dd = document.getElementById('splitDropdown');
-    dd.classList.toggle('show');
 }
 
 function toggleRowMenu(event, el) {

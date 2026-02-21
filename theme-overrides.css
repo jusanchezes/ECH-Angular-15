@@ -1211,6 +1211,62 @@ html, body {
     background: var(--ech-hover);
 }
 
+.action-bar {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text);
+    font-size: var(--ech-font-size-sm);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.action-btn .pi {
+    font-size: 12px;
+}
+
+.action-btn:hover {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
+    color: var(--ech-primary-dark);
+}
+
+.action-btn-primary {
+    background: var(--ech-primary);
+    color: white;
+    border-color: var(--ech-primary);
+    font-weight: 600;
+}
+
+.action-btn-primary:hover {
+    background: var(--ech-primary-dark);
+    border-color: var(--ech-primary-dark);
+    color: white;
+}
+
+.action-bar-separator {
+    width: 1px;
+    height: 20px;
+    background: var(--ech-border);
+    flex-shrink: 0;
+}
+
 .module-content-area {
     flex: 1;
     overflow-y: auto;

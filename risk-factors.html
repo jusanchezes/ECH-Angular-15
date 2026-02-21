@@ -138,37 +138,29 @@
                     </div>
                 </div>
 
-                <div class="quick-actions relative">
-                    <div class="split-btn" id="split-button-actions">
-                        <button class="split-main" onclick="handleQuickAction('Add Clinical Note')">
-                            <i class="pi pi-plus"></i> <span data-i18n="ACTIONS.ADD_NOTE">Add Clinical Note</span>
-                        </button>
-                        <button class="split-toggle" onclick="toggleSplitMenu()">
-                            <i class="pi pi-chevron-down"></i>
-                        </button>
-                    </div>
-                    <div class="split-dropdown" id="splitDropdown">
-                        <div class="split-item" onclick="handleQuickAction('Add Clinical Note')">
-                            <i class="pi pi-pencil"></i> <span data-i18n="ACTIONS.ADD_NOTE">Add Clinical Note</span>
-                        </div>
-                        <div class="split-item" onclick="handleQuickAction('Prescribe Medication')">
-                            <i class="pi pi-box"></i> <span data-i18n="ACTIONS.PRESCRIBE">Prescribe Medication</span>
-                        </div>
-                        <div class="split-item" onclick="handleQuickAction('Record Vitals')">
-                            <i class="pi pi-chart-line"></i> <span data-i18n="ACTIONS.RECORD_VITALS">Record Vitals</span>
-                        </div>
-                        <div class="split-item" onclick="handleQuickAction('Order Test')">
-                            <i class="pi pi-search"></i> <span data-i18n="ACTIONS.ORDER_TEST">Order Test</span>
-                        </div>
-                        <div class="split-item" onclick="handleQuickAction('Add Diagnosis')">
-                            <i class="pi pi-tag"></i> <span data-i18n="ACTIONS.ADD_DIAGNOSIS">Add Diagnosis</span>
-                        </div>
-                        <div class="split-item" onclick="handleQuickAction('Generate Report')">
-                            <i class="pi pi-file-pdf"></i> <span data-i18n="ACTIONS.GENERATE_REPORT">Generate Report</span>
-                        </div>
-                    </div>
-                </div>
             </div>
+        </section>
+
+        <section class="action-bar" id="action-bar-component">
+            <button class="action-btn action-btn-primary" onclick="handleQuickAction('Add Clinical Note')" data-i18n-title="ACTIONS.ADD_NOTE" title="Add Clinical Note">
+                <i class="pi pi-plus"></i> <span data-i18n="ACTIONS.ADD_NOTE">Add Note</span>
+            </button>
+            <button class="action-btn" onclick="handleQuickAction('Prescribe Medication')" data-i18n-title="ACTIONS.PRESCRIBE" title="Prescribe Medication">
+                <i class="pi pi-box"></i> <span data-i18n="ACTIONS.PRESCRIBE">Prescribe</span>
+            </button>
+            <button class="action-btn" onclick="handleQuickAction('Record Vitals')" data-i18n-title="ACTIONS.RECORD_VITALS" title="Record Vitals">
+                <i class="pi pi-chart-line"></i> <span data-i18n="ACTIONS.RECORD_VITALS">Vitals</span>
+            </button>
+            <button class="action-btn" onclick="handleQuickAction('Order Test')" data-i18n-title="ACTIONS.ORDER_TEST" title="Order Test">
+                <i class="pi pi-search"></i> <span data-i18n="ACTIONS.ORDER_TEST">Order Test</span>
+            </button>
+            <div class="action-bar-separator"></div>
+            <button class="action-btn" onclick="handleQuickAction('Add Diagnosis')" data-i18n-title="ACTIONS.ADD_DIAGNOSIS" title="Add Diagnosis">
+                <i class="pi pi-tag"></i> <span data-i18n="ACTIONS.ADD_DIAGNOSIS">Diagnosis</span>
+            </button>
+            <button class="action-btn" onclick="handleQuickAction('Generate Report')" data-i18n-title="ACTIONS.GENERATE_REPORT" title="Generate Report">
+                <i class="pi pi-file-pdf"></i> <span data-i18n="ACTIONS.GENERATE_REPORT">Report</span>
+            </button>
         </section>
 
         <section class="module-content-area" id="risk-factors-component">

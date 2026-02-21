@@ -73,6 +73,7 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-21: Action bar - quick actions moved from banner to dedicated section below, individual icon+text buttons (primary + secondary), not split-dropdown
 - 2026-02-21: Collapsible sidebar - defaults to collapsed (icon-only), toggle via hamburger/arrow, state persisted in localStorage across pages
 - 2026-02-21: Multi-page restructure - patient list entry point, 10 empty module shell pages with shared clinical shell
 - 2026-02-21: Sidebar navigation converted to `<a>` tags with relative links between pages
