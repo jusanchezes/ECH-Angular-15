@@ -29,15 +29,8 @@ const server = http.createServer((req, res) => {
     fs.readFile(filePath, (err, data) => {
         if (err) {
             if (err.code === 'ENOENT') {
-                fs.readFile(path.join(__dirname, 'index.html'), (e, d) => {
-                    if (e) {
-                        res.writeHead(500);
-                        res.end('Internal Server Error');
-                    } else {
-                        res.writeHead(200, { 'Content-Type': 'text/html' });
-                        res.end(d);
-                    }
-                });
+                res.writeHead(404, { 'Content-Type': 'text/html' });
+                res.end('<h1>404 - Page Not Found</h1>');
             } else {
                 res.writeHead(500);
                 res.end('Internal Server Error');
@@ -50,5 +43,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`ECH Patient Timeline server running on http://0.0.0.0:${PORT}`);
+    console.log(`ECH EHR server running on http://0.0.0.0:${PORT}`);
 });

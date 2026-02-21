@@ -1,42 +1,29 @@
-# EHR Design Project Rules
+# EHR Redesign: Global Design System & Modular Standards
 
-## Project Context
-- **Migration:** Moving from Legacy Java/AngularJS to Modern Java/Angular 15.
-- **Tech Stack:** Static HTML/JS/CSS (for UX iteration) using **PrimeNG-flavored HTML**.
-- **Design Philosophy:** High-impact, low-effort clinical "Quick Wins."
+## 1. Project Context
+* **Objective**: Refactor legacy Java/AngularJS EPR into a high-density, safety-first Angular 15 system.
+* **Prototyping Strategy**: Use Static HTML/JS with **PrimeNG 15** and **PrimeFlex 3+** to build a modular set of linked clinical pages.
+* **UX Goal**: High Information Density (14'' screen optimization), zero "blind screens," and a 30% reduction in click-paths.
 
-## Mandatory UI Requirements
-- **Clinical Banner:** Fixed/Sticky header. Must contain Patient Identity, patient metadata and Safety Tags (Allergies, Fall Risk, DNR).
-- **High Density:** Use PrimeFlex to maximize space for 14'' screens and tablets. Minimal padding.
-- **Quick Actions:** Always include a `p-splitButton` for clinical actions "Add Note", "Prescribe", etc.
+## 2. Global "Shell" Architecture (Mandatory on All Pages)
+Every module must inhabit a standard shell to ensure consistency.
 
-## Coding Standards
-- Use PrimeNG 15 components only.
-- Prefer PrimeFlex utility classes for layout.
-- Use Semantic HTML5 tags.
-- # Modular UI/UX Architecture Rules
+### 2.1 The Safety-First Clinical Banner (Header)
+* **Persistent & Fixed**: This component must never scroll out of view.
+* **Max Vertical Height**: **80px**. Combine patient identity and safety alerts into a single horizontal row.
+* **Safety Alert Logic**: Use `p-tag` with specific colors:
+    * **Red (`danger`)**: Allergies, DNR status, High-Risk Meds.
+    * **Yellow (`warning`)**: Fall Risk, Pressure Ulcer Risk.
+    * **Blue (`info`)**: VTE Risk, Isolation status.
+* **Contextual Quick Actions**: A `p-splitButton` must be anchored on the far right for "Quick-Add" tasks (Note, Order, Vital, Med).
 
-## Structural Consistency
-- **Universal Components**: Every page MUST include the following three components:
-  1. **Persistent Clinical Banner (Header)**: Contains patient identity and safety alerts.
-  2. **Global Navigation (Menu)**: Sidebar/Top-bar for module switching.
-  3. **Standard Clinical Footer**: For system status and secondary actions.
-- **Static Linking**: Pages should be linked via the Menu component using standard relative paths (e.g., `timeline.html`, `medication.html`).
+### 2.2 Global Sidebar Navigation
+* **Dual-Mode**: Support a full-width (220px) and a collapsed "Slim" mode (60px).
+* **Icon-Centric**: Use PrimeIcons for all modules (e.g., `pi-box` for Medication, `pi-chart-line` for Measurements).
+* **Navigation**: Links must use relative HTML paths to facilitate prototype click-throughs.
 
-## Component Simulation (Modular Design)
-- **HTML Inclusions**: Since this is a static prototype, use a "Component-First" approach. 
-- **Mock Data-Binding**: Use clear ID naming conventions (e.g., `id="patient-name"`, `id="allergy-list"`) that mirror the eventual Java DTOs (Data Transfer Objects). This minimizes migration effort by creating a 1:1 map for developers to bind data later.
-- **Standardized CSS**: All layouts must use **PrimeFlex** to ensure that "High Density" remains consistent across every screen.
-
-## Page Structure
-- Every new page must follow this grid layout:
-  - Top: Fixed Header (Clinical Banner)
-  - Center: Scrollable Content Area (Timeline, Forms, etc.)
-  - Left/Right: Collapsible Menu
-  - Bottom: Fixed Footer
-
-## Localization and Translation (i18n)
-- **Hardcoding Prohibited**: Do not hardcode user-facing strings (e.g., "Add Note", "Medication") directly into HTML tags.
-- **Translation Key Pattern**: Use a clear key-based system for all labels, menus, and buttons (e.g., `{{ 'ACTIONS.ADD_NOTE' | translate }}` or a data-attribute like `data-i18n="ACTIONS.ADD_NOTE"`).
-- **Clinical Terminology**: Ensure that clinical labels in the **Clinical Banner** (e.g., "Allergies", "Risk Factors") are mapped to translation keys to facilitate different medical locales.
-- **Component Menus**: All items in the `p-splitButton` or `p-menu` must pull their labels from a centralized translation object/JSON file.
+## 3. Technical & Engineering Standards
+* **Translation (i18n)**: Strictly use `data-i18n` attributes. All UI text must map to a `translations.json` file.
+* **Data Mapping**: Use `data-field="dtoFieldName"` to indicate where Java backend data will be injected later.
+* **Componentization**: Use IDs like `id="header-component"` and `id="sidebar-component"` to define future Angular Standalone Component boundaries.
+* **High-Density Data**: Use `.p-datatable-sm` and custom CSS to ensure row heights do not exceed 32px in data grids.
