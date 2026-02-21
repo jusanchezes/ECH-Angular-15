@@ -15,7 +15,7 @@
     --ech-border: #e0e0e0;
     --ech-border-light: #f0f0f0;
     --ech-hover: #f4faff;
-    --ech-sidebar-width: 220px;
+    --ech-sidebar-width: 180px;
     --ech-sidebar-collapsed: 56px;
     --ech-banner-height: auto;
     --ech-bottom-bar-height: 0px;
@@ -82,7 +82,7 @@ body {
     color: white;
     padding: 10px 12px;
     font-weight: 700;
-    font-size: 1.231rem;
+    font-size: var(--fs-lg);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -91,7 +91,7 @@ body {
 }
 
 .sidebar-header .pi {
-    font-size: 1.385rem;
+    font-size: var(--fs-lg);
 }
 
 .sidebar-header .logo-text {
@@ -225,16 +225,16 @@ body {
 .top-bar-left .logo {
     font-weight: 700;
     color: var(--ech-primary);
-    font-size: 1.231rem;
+    font-size: var(--fs-lg);
 }
 
 .top-bar-center {
     display: flex;
     align-items: center;
     gap: 6px;
+    font-weight: 700;
     font-size: var(--fs-lg);
     color: var(--ech-primary);
-    font-size: var(--fs-lg);
 }
 
 .top-bar-right {
@@ -255,11 +255,11 @@ body {
 .top-bar-right .user-info .user-name {
     color: var(--ech-primary);
     font-weight: 600;
-    font-size: 0.923rem;
+    font-size: var(--fs-xs);
 }
 
 .top-bar-right .user-info .user-detail {
-    font-size: 0.77rem;
+    font-size: var(--fs-xs);
     color: var(--ech-text-secondary);
 }
 

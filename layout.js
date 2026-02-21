@@ -40,13 +40,14 @@
  * with routerLink and routerLinkActive directives.
  * ============================================================ */
 const NAV_ITEMS = [
-    { href: 'timeline.html',        icon: 'pi-home',                  label: 'General View',     i18n: 'NAV.GENERAL_VIEW' },
+    { href: 'patient-summary.html',  icon: 'pi-chart-bar',           label: 'Patient Summary',  i18n: 'NAV.PATIENT_SUMMARY' },
+    { href: 'timeline.html',        icon: 'pi-home',                  label: 'Timeline',         i18n: 'NAV.GENERAL_VIEW' },
     { href: 'previous-visits.html',  icon: 'pi-history',              label: 'Previous Visits',  i18n: 'NAV.PREVIOUS_VISITS' },
     { href: 'risk-factors.html',     icon: 'pi-exclamation-triangle', label: 'Risk Factors',     i18n: 'NAV.RISK_FACTORS' },
     { href: 'diagnostic-tests.html', icon: 'pi-search',              label: 'Diagnostic Tests', i18n: 'NAV.DIAGNOSTIC_TESTS' },
     { href: 'documents.html',        icon: 'pi-file',                label: 'Documents',        i18n: 'NAV.DOCUMENTS' },
     { href: 'medication.html',       icon: 'pi-box',                 label: 'Medication',       i18n: 'NAV.MEDICATION' },
-    { href: 'patient-summary.html',  icon: 'pi-chart-bar',           label: 'Patient Summary',  i18n: 'NAV.PATIENT_SUMMARY' },
+
     { href: 'care-plans.html',       icon: 'pi-heart',               label: 'Care Plans',       i18n: 'NAV.CARE_PLANS' },
     { href: 'measurements.html',     icon: 'pi-chart-line',          label: 'Measurements',     i18n: 'NAV.MEASUREMENTS' },
     { href: 'nurse-notes.html',      icon: 'pi-pencil',              label: 'Nurse Notes',      i18n: 'NAV.NURSE_NOTES' },
@@ -97,10 +98,10 @@ function renderHeader(options = {}) {
     el.innerHTML = `
             <div class="top-bar-left flex align-items-center gap-2">
                 ${hamburger}
-                <div class="logo flex align-items-center gap-1">
+                <a href="index.html" class="logo flex align-items-center gap-1" style="text-decoration:none;color:inherit">
                     <i class="pi pi-shield"></i>
                     <span data-i18n="APP.TITLE">ECH</span>
-                </div>
+                </a>
             </div>
             <div class="top-bar-center flex align-items-center gap-1">
                 <i class="pi pi-building"></i>
