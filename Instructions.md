@@ -7,9 +7,9 @@
 
 ## Mandatory UI Requirements
 - **Clinical Banner:** Fixed/Sticky header. Must contain Patient Identity and Safety Tags (Allergies, Fall Risk, DNR).
-- **High Density:** Use PrimeFlex to maximize space for 14'' screens. Minimal padding.
+- **High Density:** Use PrimeFlex to maximize space for 14'' screens and tablets. Minimal padding.
 - **Timeline:** Use `p-timeline` for the clinical logbook view.
-- **Quick Actions:** Always include a `p-splitButton` for "Add Note", "Prescribe", etc.
+- **Quick Actions:** Always include a `p-splitButton` for clinical actions "Add Note", "Prescribe", etc.
 
 ## Coding Standards
 - Use PrimeNG 15 components only.

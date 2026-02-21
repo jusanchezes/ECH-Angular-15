@@ -255,6 +255,26 @@ html, body {
     flex-wrap: wrap;
 }
 
+.patient-identity .patient-icon {
+    font-size: 20px;
+    color: var(--ech-primary);
+    align-self: flex-start;
+    margin-top: 2px;
+}
+
+.patient-id-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.patient-name-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 .patient-identity .patient-name {
     font-weight: 700;
     font-size: 14px;
@@ -264,11 +284,6 @@ html, body {
 .patient-identity .patient-gender-age {
     font-size: var(--ech-font-size-sm);
     color: var(--ech-text-secondary);
-}
-
-.patient-identity .patient-icon {
-    font-size: 20px;
-    color: var(--ech-primary);
 }
 
 .safety-tags {
