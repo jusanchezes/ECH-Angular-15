@@ -16,7 +16,8 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ```
 /
 ├── index.html              # Patient List (entry point, data-page-type="patient-list")
-├── patients.js             # Patient list logic and mock data
+├── patients.js             # Patient list logic, mock data, 11-column clinical table
+├── layout_list.js          # List-specific layout engine — tab-bar + toolbar injection
 ├── timeline.html           # General View / Patient Timeline
 ├── app.js                  # Timeline-specific logic (rendering, filtering, events)
 ├── layout.js               # Modular layout engine — injects shared components into all pages
@@ -85,6 +86,16 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-22: Refactored patient list (index.html) to Full Clinical version with 11 columns
+- 2026-02-22: Created layout_list.js — modular list layout engine with tab-bar and toolbar components
+- 2026-02-22: Added tab-bar with configurable tabs (Arrivals Today, Planned Arrivals, etc.) and config button
+- 2026-02-22: Added toolbar with pagination, PDF/Filter/Folder action icons, and search with blue badge counter
+- 2026-02-22: Expanded patients.js with admissionType, medicalProblem, payer, statusMeds/Orders/Vitals fields
+- 2026-02-22: Clinical table now has: Room, Admission, Patient, Age/Sex, Medical Problem, Doctor, Payer, Alerts, Days, Status, Actions
+- 2026-02-22: Added .table-scroll-container with min-width 1500px for horizontal scroll on small screens
+- 2026-02-22: Sort icon placeholders (pi-sort-alt) on table headers with hover effects
+- 2026-02-22: Status column with Medication/Orders/Vitals icons and dot-new/dot-alert indicators
+- 2026-02-22: Row action menus (pi-ellipsis-v) with dropdown for Ver Detalle, Notas, Órdenes, Medicación
 - 2026-02-21: Created layout.js modular engine — eliminates ~250 lines of duplicated HTML per page
 - 2026-02-21: Refactored all 12 HTML files to use layout.js placeholders (12 files reduced from ~280 to ~40 lines each)
 - 2026-02-21: Cleaned up app.js — removed shared shell functions, kept timeline-specific logic only

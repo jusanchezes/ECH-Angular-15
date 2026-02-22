@@ -8,19 +8,22 @@
     <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
     <link rel="stylesheet" href="theme-overrides.css">
 </head>
-<body data-page-type="patient-list">
+<body data-page-type="patient-list" data-list-type="patient-list">
 
-<!-- LAYOUT: Patient list view without sidebar. Angular: PatientListComponent rendered at root route -->
 <div class="layout layout-no-sidebar">
 
     <main class="main-content main-full-width">
 
-        <!-- COMPONENT BOUNDARY: <ech-header> — Injected by layout.js -->
         <header class="top-bar" id="header-component"></header>
 
-        <!-- COMPONENT BOUNDARY: <ech-patient-list> — Angular Standalone Component -->
+        <nav class="tab-bar" id="tab-bar-component"></nav>
+
+        <div class="list-toolbar" id="toolbar-component"></div>
+
         <section class="patient-list-area" id="patient-list-component">
-            <div class="patient-list-container" id="patientListContainer">
+            <div class="table-scroll-container">
+                <div class="patient-list-container" id="patientListContainer">
+                </div>
             </div>
         </section>
 
@@ -28,6 +31,7 @@
 </div>
 
 <script src="layout.js"></script>
+<script src="layout_list.js"></script>
 <script src="patients.js"></script>
 
 </body>

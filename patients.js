@@ -1,15 +1,27 @@
 /**
- * @file patients.js — Patient List Logic & Mock Data
+ * @file patients.js — Patient List Logic & Mock Data (Full Clinical Version)
  * @description Prototype script for the EHR Patient List view (index.html entry point).
- *   Renders a p-datatable-sm patient table with click-to-navigate to patient timeline.
+ *   Renders a p-datatable-sm patient table with 11 clinical columns and click-to-navigate.
  *   In production Angular 15, this logic will be replaced by:
  *     - PatientListComponent with PrimeNG <p-table> and async pipe
  *     - PatientService for HTTP calls to Java REST API
  *   Mock data (PatientListData) will be replaced by PatientService.getPatients()
  *   returning PatientListDTO[] from the Java backend.
+ *
+ *   COLUMN STRUCTURE:
+ *     1. Habitación        → AdmissionDTO.roomBed (negrita, azul)
+ *     2. Admisión           → AdmissionDTO.admissionType (icono color: rojo urgencias, azul hospitalizado)
+ *     3. Paciente           → PatientDTO.fullName + recordId + episodeNumber
+ *     4. Edad/Sexo          → PatientDTO.age + gender (iconos pi-venus / pi-mars)
+ *     5. Problema Médico    → DiagnosisDTO.primaryDiagnosis (texto truncado)
+ *     6. Médico Responsable → StaffDTO.attendingPhysician (azul negrita)
+ *     7. Payer              → InsuranceDTO.payerName
+ *     8. Alertas            → PatientDTO.safetyAlerts[] (p-tag con iconos)
+ *     9. Días de Estancia   → AdmissionDTO.daysAdmitted (número resaltado)
+ *    10. Status             → StatusDTO (iconos Medicación, Órdenes, Vitals con dot-new)
+ *    11. Acciones           → Icono vertical pi-ellipsis-v
  */
 
-/** Mock patient list data. Angular: replaced by PatientService.getPatients() → PatientListDTO[] from Java REST API */
 const PatientListData = [
     {
         id: 46,
@@ -17,13 +29,19 @@ const PatientListData = [
         dob: "11/07/1990",
         age: 35,
         gender: "Male",
-        room: "Bed 201",
+        room: "201",
         episode: 283,
         department: "Adult Emergency",
         attendingPhysician: "Dr. Rory Rogers",
         admissionDate: "25/05/2024",
         daysAdmitted: 514,
-        alerts: ["Penicillin Allergy", "Latex Allergy", "Fall Risk", "VTE Risk", "DNR"]
+        admissionType: "emergency",
+        medicalProblem: "Fractura de fémur abierta con complicación vascular",
+        payer: "Adeslas Premium",
+        alerts: ["Penicillin Allergy", "Latex Allergy", "Fall Risk", "VTE Risk", "DNR"],
+        statusMeds: "new",
+        statusOrders: "pending",
+        statusVitals: "ok"
     },
     {
         id: 47,
@@ -31,13 +49,19 @@ const PatientListData = [
         dob: "23/03/1958",
         age: 67,
         gender: "Female",
-        room: "Bed 105",
+        room: "105",
         episode: 412,
         department: "Cardiology",
         attendingPhysician: "Dr. Elena Vasquez",
         admissionDate: "10/02/2026",
         daysAdmitted: 11,
-        alerts: ["Aspirin Allergy", "Fall Risk", "Pressure Ulcer Risk"]
+        admissionType: "inpatient",
+        medicalProblem: "Insuficiencia cardíaca congestiva descompensada NYHA III",
+        payer: "Sanitas",
+        alerts: ["Aspirin Allergy", "Fall Risk", "Pressure Ulcer Risk"],
+        statusMeds: "ok",
+        statusOrders: "new",
+        statusVitals: "alert"
     },
     {
         id: 48,
@@ -45,13 +69,19 @@ const PatientListData = [
         dob: "15/11/1975",
         age: 50,
         gender: "Male",
-        room: "Bed 302",
+        room: "302",
         episode: 198,
         department: "Orthopedics",
         attendingPhysician: "Dr. Henrik Larsson",
         admissionDate: "18/02/2026",
         daysAdmitted: 3,
-        alerts: ["VTE Risk"]
+        admissionType: "inpatient",
+        medicalProblem: "Artroplastia total de rodilla izquierda postoperatorio",
+        payer: "DKV Seguros",
+        alerts: ["VTE Risk"],
+        statusMeds: "ok",
+        statusOrders: "ok",
+        statusVitals: "new"
     },
     {
         id: 49,
@@ -59,13 +89,19 @@ const PatientListData = [
         dob: "02/09/1945",
         age: 80,
         gender: "Female",
-        room: "Bed 410",
+        room: "410",
         episode: 567,
         department: "Internal Medicine",
         attendingPhysician: "Dr. Rory Rogers",
         admissionDate: "05/01/2026",
         daysAdmitted: 47,
-        alerts: ["Iodine Allergy", "Fall Risk", "VTE Risk", "DNR", "Isolation"]
+        admissionType: "inpatient",
+        medicalProblem: "Neumonía nosocomial con insuficiencia respiratoria",
+        payer: "Mapfre Salud",
+        alerts: ["Iodine Allergy", "Fall Risk", "VTE Risk", "DNR", "Isolation"],
+        statusMeds: "new",
+        statusOrders: "new",
+        statusVitals: "alert"
     },
     {
         id: 50,
@@ -73,13 +109,19 @@ const PatientListData = [
         dob: "30/06/2002",
         age: 23,
         gender: "Male",
-        room: "Bed 208",
+        room: "208",
         episode: 89,
         department: "Adult Emergency",
         attendingPhysician: "Dr. Sofia Chen",
         admissionDate: "19/02/2026",
         daysAdmitted: 2,
-        alerts: []
+        admissionType: "emergency",
+        medicalProblem: "Apendicitis aguda perforada",
+        payer: "Asisa",
+        alerts: [],
+        statusMeds: "ok",
+        statusOrders: "pending",
+        statusVitals: "ok"
     },
     {
         id: 51,
@@ -87,13 +129,19 @@ const PatientListData = [
         dob: "14/12/1983",
         age: 42,
         gender: "Female",
-        room: "Bed 115",
+        room: "115",
         episode: 334,
         department: "Oncology",
         attendingPhysician: "Dr. Marcus Webb",
         admissionDate: "28/01/2026",
         daysAdmitted: 24,
-        alerts: ["Morphine Allergy", "Neutropenia Risk"]
+        admissionType: "inpatient",
+        medicalProblem: "Carcinoma ductal infiltrante mama izquierda - Ciclo 3 QT",
+        payer: "Cigna Health",
+        alerts: ["Morphine Allergy", "Neutropenia Risk"],
+        statusMeds: "new",
+        statusOrders: "ok",
+        statusVitals: "ok"
     },
     {
         id: 52,
@@ -107,7 +155,13 @@ const PatientListData = [
         attendingPhysician: "Dr. Elena Vasquez",
         admissionDate: "17/02/2026",
         daysAdmitted: 4,
-        alerts: ["Sulfa Allergy", "Fall Risk", "VTE Risk", "High-Risk Meds"]
+        admissionType: "emergency",
+        medicalProblem: "Infarto agudo de miocardio STEMI anterior extenso",
+        payer: "AXA Salud",
+        alerts: ["Sulfa Allergy", "Fall Risk", "VTE Risk", "High-Risk Meds"],
+        statusMeds: "alert",
+        statusOrders: "new",
+        statusVitals: "alert"
     },
     {
         id: 53,
@@ -115,13 +169,19 @@ const PatientListData = [
         dob: "19/01/1992",
         age: 34,
         gender: "Female",
-        room: "Bed 207",
+        room: "207",
         episode: 156,
         department: "Obstetrics",
         attendingPhysician: "Dr. Amara Okonkwo",
         admissionDate: "20/02/2026",
         daysAdmitted: 1,
-        alerts: ["Latex Allergy"]
+        admissionType: "inpatient",
+        medicalProblem: "Parto prematuro amenaza - 32 semanas gestación",
+        payer: "Sanitas",
+        alerts: ["Latex Allergy"],
+        statusMeds: "ok",
+        statusOrders: "ok",
+        statusVitals: "new"
     },
     {
         id: 54,
@@ -129,13 +189,19 @@ const PatientListData = [
         dob: "25/07/1940",
         age: 85,
         gender: "Male",
-        room: "Bed 501",
+        room: "501",
         episode: 445,
         department: "Geriatrics",
         attendingPhysician: "Dr. Henrik Larsson",
         admissionDate: "12/12/2025",
         daysAdmitted: 71,
-        alerts: ["Penicillin Allergy", "Fall Risk", "Pressure Ulcer Risk", "VTE Risk", "DNR"]
+        admissionType: "inpatient",
+        medicalProblem: "Demencia vascular con agitación psicomotriz",
+        payer: "Mutua Madrileña",
+        alerts: ["Penicillin Allergy", "Fall Risk", "Pressure Ulcer Risk", "VTE Risk", "DNR"],
+        statusMeds: "new",
+        statusOrders: "pending",
+        statusVitals: "ok"
     },
     {
         id: 55,
@@ -143,13 +209,19 @@ const PatientListData = [
         dob: "03/05/1971",
         age: 54,
         gender: "Female",
-        room: "Bed 306",
+        room: "306",
         episode: 278,
         department: "Neurology",
         attendingPhysician: "Dr. Sofia Chen",
         admissionDate: "14/02/2026",
         daysAdmitted: 7,
-        alerts: ["Seizure Risk", "Fall Risk"]
+        admissionType: "inpatient",
+        medicalProblem: "Ictus isquémico ACM derecha en evolución",
+        payer: "Adeslas Básico",
+        alerts: ["Seizure Risk", "Fall Risk"],
+        statusMeds: "ok",
+        statusOrders: "new",
+        statusVitals: "alert"
     },
     {
         id: 56,
@@ -157,13 +229,19 @@ const PatientListData = [
         dob: "11/10/1955",
         age: 70,
         gender: "Male",
-        room: "Bed 402",
+        room: "402",
         episode: 503,
         department: "Cardiology",
         attendingPhysician: "Dr. Elena Vasquez",
         admissionDate: "02/02/2026",
         daysAdmitted: 19,
-        alerts: ["Contrast Dye Allergy", "VTE Risk", "High-Risk Meds"]
+        admissionType: "inpatient",
+        medicalProblem: "Fibrilación auricular con respuesta ventricular rápida",
+        payer: "MUFACE",
+        alerts: ["Contrast Dye Allergy", "VTE Risk", "High-Risk Meds"],
+        statusMeds: "new",
+        statusOrders: "ok",
+        statusVitals: "ok"
     },
     {
         id: 57,
@@ -171,83 +249,182 @@ const PatientListData = [
         dob: "28/08/1999",
         age: 26,
         gender: "Female",
-        room: "Bed 112",
+        room: "112",
         episode: 91,
         department: "Pulmonology",
         attendingPhysician: "Dr. Marcus Webb",
         admissionDate: "16/02/2026",
         daysAdmitted: 5,
-        alerts: ["Asthma", "Latex Allergy"]
+        admissionType: "emergency",
+        medicalProblem: "Crisis asmática severa con insuficiencia respiratoria",
+        payer: "DKV Seguros",
+        alerts: ["Asthma", "Latex Allergy"],
+        statusMeds: "ok",
+        statusOrders: "pending",
+        statusVitals: "new"
     }
 ];
 
-/** Initializes the patient list view. Angular: replaced by ngOnInit() in PatientListComponent */
 function initPatientList() {
     renderPatientList();
 }
 
-/**
- * Renders the patient list as a high-density data table.
- * PrimeNG equivalent: <p-table> with p-sortableColumn and p-filter.
- * Angular: PatientListComponent template with *ngFor and async pipe.
- * Uses .p-datatable-sm class for 32px max row height per clinical density standard.
- */
+function getAlertSeverity(alert) {
+    if (alert.includes('Allergy') || alert.includes('High-Risk')) return 'danger';
+    if (alert === 'DNR' || alert === 'Isolation') return 'dnr';
+    if (alert.includes('Fall') || alert.includes('Pressure') || alert.includes('Seizure') || alert.includes('Neutropenia')) return 'warning';
+    return 'info';
+}
+
+function getAlertIcon(alert) {
+    if (alert === 'DNR') return 'pi-ban';
+    if (alert === 'Isolation') return 'pi-lock';
+    if (alert.includes('Allergy')) return 'pi-exclamation-circle';
+    if (alert.includes('Fall') || alert.includes('Seizure')) return 'pi-exclamation-triangle';
+    return 'pi-info-circle';
+}
+
+function getStatusIcon(status, type) {
+    const icons = { meds: 'pi-box', orders: 'pi-file', vitals: 'pi-heart' };
+    const icon = icons[type] || 'pi-circle';
+    const dotNew = (status === 'new') ? '<span class="dot-new"></span>' : '';
+    const dotAlert = (status === 'alert') ? '<span class="dot-alert"></span>' : '';
+    let cls = 'status-icon';
+    if (status === 'new') cls += ' status-new';
+    if (status === 'alert') cls += ' status-alert';
+    if (status === 'pending') cls += ' status-pending';
+    return `<span class="${cls}" title="${type}: ${status}"><i class="pi ${icon}"></i>${dotNew}${dotAlert}</span>`;
+}
+
 function renderPatientList() {
     const container = document.getElementById('patientListContainer');
     if (!container) return;
 
     let html = '';
-    html += `<div class="patient-list-header flex align-items-center justify-content-between p-3">`;
-    html += `<h2 class="m-0" data-i18n="PATIENTS.LIST_TITLE"><i class="pi pi-users"></i> Patient List</h2>`;
-    html += `<div class="flex align-items-center gap-2">`;
-    html += `<input type="text" class="search-input fs-xs" placeholder="Search patients..." data-i18n-placeholder="PATIENTS.SEARCH_PLACEHOLDER" id="patientSearch">`;
-    html += `</div>`;
-    html += `</div>`;
-
-    html += `<div class="p-datatable p-datatable-sm">`;
     html += `<table class="patient-table w-full">`;
     html += `<thead><tr>`;
-    html += `<th data-i18n="PATIENTS.COL_NAME">Patient Name</th>`;
-    html += `<th data-i18n="PATIENTS.COL_DOB">Date of Birth</th>`;
-    html += `<th data-i18n="PATIENTS.COL_AGE">Age</th>`;
-    html += `<th data-i18n="PATIENTS.COL_GENDER">Gender</th>`;
-    html += `<th data-i18n="PATIENTS.COL_ROOM">Room</th>`;
-    html += `<th data-i18n="PATIENTS.COL_DEPARTMENT">Department</th>`;
-    html += `<th data-i18n="PATIENTS.COL_PHYSICIAN">Attending Physician</th>`;
-    html += `<th data-i18n="PATIENTS.COL_DAYS">Days</th>`;
-    html += `<th data-i18n="PATIENTS.COL_ALERTS">Alerts</th>`;
+    html += `<th class="col-room" data-i18n="PATIENTS.COL_ROOM">Hab. <i class="pi pi-sort-alt sort-icon"></i></th>`;
+    html += `<th class="col-admission" data-i18n="PATIENTS.COL_ADMISSION">Admisión <i class="pi pi-sort-alt sort-icon"></i></th>`;
+    html += `<th class="col-patient" data-i18n="PATIENTS.COL_PATIENT">Paciente <i class="pi pi-sort-alt sort-icon"></i></th>`;
+    html += `<th class="col-age-sex" data-i18n="PATIENTS.COL_AGE_SEX">Edad/Sexo <i class="pi pi-sort-alt sort-icon"></i></th>`;
+    html += `<th class="col-problem" data-i18n="PATIENTS.COL_PROBLEM">Problema Médico <i class="pi pi-sort-alt sort-icon"></i></th>`;
+    html += `<th class="col-physician" data-i18n="PATIENTS.COL_PHYSICIAN">Médico Resp. <i class="pi pi-sort-alt sort-icon"></i></th>`;
+    html += `<th class="col-payer" data-i18n="PATIENTS.COL_PAYER">Payer <i class="pi pi-sort-alt sort-icon"></i></th>`;
+    html += `<th class="col-alerts" data-i18n="PATIENTS.COL_ALERTS">Alertas</th>`;
+    html += `<th class="col-days" data-i18n="PATIENTS.COL_DAYS">Días <i class="pi pi-sort-alt sort-icon"></i></th>`;
+    html += `<th class="col-status" data-i18n="PATIENTS.COL_STATUS">Status</th>`;
+    html += `<th class="col-actions" data-i18n="PATIENTS.COL_ACTIONS"></th>`;
     html += `</tr></thead>`;
     html += `<tbody>`;
 
     PatientListData.forEach(patient => {
+        const genderIcon = patient.gender === 'Male' ? 'pi-mars' : 'pi-venus';
+        const genderColor = patient.gender === 'Male' ? 'color: var(--ech-primary)' : 'color: #e91e63';
+        const admissionIcon = patient.admissionType === 'emergency'
+            ? '<i class="pi pi-bolt admission-icon admission-emergency" title="Urgencias"></i>'
+            : '<i class="pi pi-home admission-icon admission-inpatient" title="Hospitalizado"></i>';
+
+        const daysClass = patient.daysAdmitted > 30 ? 'days-highlight days-long' : (patient.daysAdmitted > 7 ? 'days-highlight days-medium' : 'days-highlight');
+
         html += `<tr class="patient-row cursor-pointer" onclick="navigateToPatient(${patient.id})" data-patient-id="${patient.id}">`;
-        html += `<td class="font-bold"><i class="pi pi-user text-primary-color mr-2"></i>${patient.name}</td>`;
-        html += `<td>${patient.dob}</td>`;
-        html += `<td>${patient.age}</td>`;
-        html += `<td>${patient.gender}</td>`;
-        html += `<td>${patient.room}</td>`;
-        html += `<td>${patient.department}</td>`;
-        html += `<td>${patient.attendingPhysician}</td>`;
-        html += `<td>${patient.daysAdmitted}</td>`;
-        html += `<td>`;
-        patient.alerts.forEach(alert => {
-            const severity = alert.includes('Allergy') || alert.includes('High-Risk') ? 'danger' : (alert === 'DNR' ? 'dnr' : (alert.includes('Fall') || alert.includes('Pressure') || alert.includes('Seizure') ? 'warning' : 'info'));
-            html += `<span class="p-tag-custom p-tag-${severity} mr-1 mb-1">${alert}</span>`;
-        });
+
+        html += `<td class="col-room"><span class="room-number">${patient.room}</span></td>`;
+
+        html += `<td class="col-admission">${admissionIcon}</td>`;
+
+        html += `<td class="col-patient">
+                    <span class="patient-name-cell">${patient.name}</span>
+                    <span class="patient-sub-info">Rec ID ${patient.id} &middot; Ep. ${patient.episode}</span>
+                 </td>`;
+
+        html += `<td class="col-age-sex">
+                    <span>${patient.age}</span>
+                    <i class="pi ${genderIcon}" style="${genderColor}"></i>
+                 </td>`;
+
+        html += `<td class="col-problem"><span class="problem-text">${patient.medicalProblem}</span></td>`;
+
+        html += `<td class="col-physician"><span class="physician-name">${patient.attendingPhysician}</span></td>`;
+
+        html += `<td class="col-payer">${patient.payer}</td>`;
+
+        html += `<td class="col-alerts">`;
+        if (patient.alerts.length > 0) {
+            patient.alerts.forEach(alert => {
+                const severity = getAlertSeverity(alert);
+                const icon = getAlertIcon(alert);
+                html += `<span class="p-tag-custom p-tag-${severity}" title="${alert}"><i class="pi ${icon}"></i> ${alert}</span> `;
+            });
+        } else {
+            html += `<span class="no-alerts">—</span>`;
+        }
         html += `</td>`;
+
+        html += `<td class="col-days"><span class="${daysClass}">${patient.daysAdmitted}</span></td>`;
+
+        html += `<td class="col-status">
+                    <div class="status-icons-group">
+                        ${getStatusIcon(patient.statusMeds, 'meds')}
+                        ${getStatusIcon(patient.statusOrders, 'orders')}
+                        ${getStatusIcon(patient.statusVitals, 'vitals')}
+                    </div>
+                 </td>`;
+
+        html += `<td class="col-actions">
+                    <button class="row-action-btn" onclick="event.stopPropagation(); toggleRowMenu(${patient.id})" title="Acciones">
+                        <i class="pi pi-ellipsis-v"></i>
+                    </button>
+                    <div class="row-dropdown" id="rowMenu-${patient.id}">
+                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('view', ${patient.id})"><i class="pi pi-eye"></i> Ver Detalle</button>
+                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('notes', ${patient.id})"><i class="pi pi-pencil"></i> Notas</button>
+                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('orders', ${patient.id})"><i class="pi pi-file"></i> Órdenes</button>
+                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('meds', ${patient.id})"><i class="pi pi-box"></i> Medicación</button>
+                    </div>
+                 </td>`;
+
         html += `</tr>`;
     });
 
     html += `</tbody></table>`;
-    html += `</div>`;
 
     container.innerHTML = html;
 }
 
-/** Navigates to selected patient's timeline. Angular: replaced by Router.navigate(['/timeline', patientId]) */
 function navigateToPatient(patientId) {
     window.location.href = `timeline.html?patientId=${patientId}`;
 }
 
-/** Initializes the patient list on page load. Angular: replaced by ngOnInit() lifecycle hook */
+function toggleRowMenu(patientId) {
+    document.querySelectorAll('.row-dropdown').forEach(menu => {
+        if (menu.id !== `rowMenu-${patientId}`) menu.classList.remove('show');
+    });
+    const menu = document.getElementById(`rowMenu-${patientId}`);
+    if (menu) menu.classList.toggle('show');
+}
+
+function handleRowAction(action, patientId) {
+    document.querySelectorAll('.row-dropdown').forEach(m => m.classList.remove('show'));
+    console.log('Row action:', action, 'for patient:', patientId);
+    if (action === 'view') navigateToPatient(patientId);
+}
+
+function filterPatientList(searchTerm) {
+    const rows = document.querySelectorAll('.patient-row');
+    let visibleCount = 0;
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        const match = !searchTerm || text.includes(searchTerm.toLowerCase());
+        row.style.display = match ? '' : 'none';
+        if (match) visibleCount++;
+    });
+    const badge = document.getElementById('toolbarSearchBadge');
+    if (badge) badge.textContent = visibleCount;
+}
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.col-actions')) {
+        document.querySelectorAll('.row-dropdown').forEach(m => m.classList.remove('show'));
+    }
+});
+
 document.addEventListener('DOMContentLoaded', initPatientList);
