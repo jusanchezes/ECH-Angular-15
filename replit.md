@@ -25,7 +25,7 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── risk-factors.html       # Risk Factors module (empty shell)
 ├── diagnostic-tests.html   # Diagnostic Tests module (empty shell)
 ├── documents.html          # Documents module (empty shell)
-├── medication.html         # Medication module (empty shell)
+├── medication.html         # Medication Administration Record (MAR) — full MAR grid with frozen columns, time slots, status cells
 ├── patient-summary.html    # Patient Summary module (empty shell)
 ├── care-plans.html         # Care Administration Record (CAR) — full CAR grid with frozen columns, time slots, status cells
 ├── measurements.html       # Measurements module (empty shell)
@@ -86,6 +86,14 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-24: Implemented Medication Administration Record (MAR) in medication.html
+- 2026-02-24: MAR Action Bar — New Medication (primary), Validate All Pending, Print MAR, View Audit Trail
+- 2026-02-24: MAR Filter Bar — date navigation + Time Window (2h/4h/12h) + Care Type (All/Current/Scheduled/PRN) + search input + legend
+- 2026-02-24: MAR Grid — p-table with 5 frozen columns (Medication, Dose, Freq, Route, Actions) + horizontal-scrolling time columns
+- 2026-02-24: MAR status cells — Given (green), Due (white dashed), Hold (red with reason), Not Given (dark red), Cancelled (gray strikethrough)
+- 2026-02-24: MAR mock data — 10 medications (Amoxicillin, Insulin Aspart, Enoxaparin, Metoprolol, Omeprazol, Paracetamol, Furosemida, KCl, Morphine, Atorvastatin)
+- 2026-02-24: MAR high-alert icons (triangle warning) for Insulin, Enoxaparin, KCl, Morphine
+- 2026-02-24: MAR CSS in `<style>` block within medication.html — no changes to theme-overrides.css
 - 2026-02-24: Implemented Care Administration Record (CAR) in care-plans.html
 - 2026-02-24: CAR Action Bar — New Care Task, Validate All Pending, Copy from Yesterday, Print CAR, View Audit Trail
 - 2026-02-24: CAR Filter Bar — date navigation (Yesterday/Today/Tomorrow) + status legend (Completed/Pending/Overdue)

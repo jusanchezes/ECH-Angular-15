@@ -2,11 +2,390 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="APP.PAGE_TITLE_MEDICATION">ECH Medication</title>
+    <title data-i18n="APP.PAGE_TITLE_MEDICATION">ECH Medication (MAR)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
     <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
     <link rel="stylesheet" href="theme-overrides.css">
+    <style>
+        .mar-action-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .mar-filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 8px;
+        }
+
+        .mar-filter-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mar-date-nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mar-date-nav .date-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border: 1px solid var(--ech-border);
+            border-radius: 4px;
+            background: var(--ech-surface);
+            color: var(--ech-text);
+            font-size: var(--fs-xs);
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+            font-family: var(--ech-font-family);
+        }
+
+        .mar-date-nav .date-nav-btn:hover {
+            background: var(--ech-primary-light);
+            border-color: var(--ech-primary);
+            color: var(--ech-primary-dark);
+        }
+
+        .mar-date-nav .date-label {
+            font-weight: 700;
+            font-size: var(--fs-md);
+            color: var(--ech-text);
+            white-space: nowrap;
+        }
+
+        .mar-legend {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: var(--fs-xs);
+            color: var(--ech-text-secondary);
+            flex-shrink: 0;
+        }
+
+        .mar-legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .mar-legend-swatch {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .mar-legend-swatch.given { background: #e8f5e9; border: 1px solid #a5d6a7; }
+        .mar-legend-swatch.due { background: #ffffff; border: 1px dashed var(--ech-border); }
+        .mar-legend-swatch.hold { background: #fff3e0; border: 1px solid #ffcc80; }
+        .mar-legend-swatch.not-given { background: #ffebee; border: 1px solid #ef9a9a; }
+        .mar-legend-swatch.cancelled { background: #f5f5f5; border: 1px solid #bdbdbd; }
+
+        .mar-grid-wrapper {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 0 10px 10px;
+        }
+
+        .mar-table-container {
+            flex: 1;
+            overflow: auto;
+            border: 1px solid var(--ech-border);
+            border-radius: 4px;
+            background: var(--ech-surface);
+            position: relative;
+        }
+
+        .mar-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: max-content;
+            min-width: 100%;
+            font-size: var(--fs-md);
+        }
+
+        .mar-table thead th {
+            background: var(--ech-primary-light);
+            color: var(--ech-primary-dark);
+            font-weight: 600;
+            font-size: var(--fs-xs);
+            padding: 6px 10px;
+            text-align: center;
+            border-bottom: 2px solid var(--ech-primary-border);
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .mar-table thead th.mar-frozen {
+            position: sticky;
+            left: 0;
+            z-index: 12;
+            text-align: left;
+            background: var(--ech-primary-light);
+            border-right: 2px solid var(--ech-primary-border);
+        }
+
+        .mar-table thead th.mar-frozen-med {
+            min-width: 320px;
+            max-width: 320px;
+        }
+
+        .mar-table thead th.mar-frozen-dose {
+            min-width: 60px;
+            max-width: 60px;
+            left: 320px;
+            text-align: center;
+        }
+
+        .mar-table thead th.mar-frozen-freq {
+            min-width: 60px;
+            max-width: 60px;
+            left: 380px;
+            text-align: center;
+        }
+
+        .mar-table thead th.mar-frozen-route {
+            min-width: 55px;
+            max-width: 55px;
+            left: 440px;
+            text-align: center;
+        }
+
+        .mar-table thead th.mar-frozen-actions {
+            min-width: 44px;
+            max-width: 44px;
+            left: 495px;
+            text-align: center;
+            border-right: 2px solid var(--ech-primary-border);
+        }
+
+        .mar-table tbody td {
+            padding: 4px 6px;
+            border-bottom: 1px solid var(--ech-border-light);
+            vertical-align: middle;
+            text-align: center;
+            font-size: var(--fs-md);
+            height: 52px;
+        }
+
+        .mar-table tbody td.mar-frozen {
+            position: sticky;
+            z-index: 5;
+            background: var(--ech-surface);
+            text-align: left;
+        }
+
+        .mar-table tbody td.mar-frozen-med {
+            left: 0;
+            min-width: 320px;
+            max-width: 320px;
+        }
+
+        .mar-table tbody td.mar-frozen-dose {
+            left: 320px;
+            min-width: 60px;
+            max-width: 60px;
+            text-align: center;
+        }
+
+        .mar-table tbody td.mar-frozen-freq {
+            left: 380px;
+            min-width: 60px;
+            max-width: 60px;
+            text-align: center;
+        }
+
+        .mar-table tbody td.mar-frozen-route {
+            left: 440px;
+            min-width: 55px;
+            max-width: 55px;
+            text-align: center;
+        }
+
+        .mar-table tbody td.mar-frozen-actions {
+            left: 495px;
+            min-width: 44px;
+            max-width: 44px;
+            text-align: center;
+            border-right: 2px solid var(--ech-border);
+        }
+
+        .mar-table tbody tr:hover td {
+            background: var(--ech-hover);
+        }
+
+        .mar-table tbody tr:hover td.mar-frozen {
+            background: var(--ech-hover);
+        }
+
+        .mar-med-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .mar-med-name {
+            font-weight: 700;
+            color: var(--ech-text);
+            font-size: var(--fs-md);
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mar-med-detail {
+            font-size: var(--fs-xs);
+            color: var(--ech-text-secondary);
+            line-height: 1.3;
+        }
+
+        .mar-high-alert {
+            color: var(--ech-warning);
+            font-size: var(--fs-xs);
+        }
+
+        .mar-time-col {
+            min-width: 80px;
+            width: 80px;
+        }
+
+        .mar-cell {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 58px;
+            min-height: 32px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: var(--fs-xs);
+            font-weight: 600;
+            cursor: default;
+            line-height: 1.3;
+        }
+
+        .mar-cell-given {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #2e7d32;
+        }
+
+        .mar-cell-due {
+            background: #ffffff;
+            border: 1px dashed var(--ech-border);
+            color: var(--ech-text-muted);
+        }
+
+        .mar-cell-hold {
+            background: #ffebee;
+            border: 1px solid #ef9a9a;
+            color: #c62828;
+        }
+
+        .mar-cell-not-given {
+            background: #ffebee;
+            border: 1px solid #e57373;
+            color: #b71c1c;
+        }
+
+        .mar-cell-cancelled {
+            background: #f5f5f5;
+            border: 1px solid #bdbdbd;
+            color: var(--ech-text-muted);
+            text-decoration: line-through;
+        }
+
+        .mar-cell-empty {
+            color: var(--ech-text-muted);
+        }
+
+        .mar-cell .mar-cell-sub {
+            font-size: 0.77rem;
+            font-weight: 400;
+        }
+
+        .mar-row-actions-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: var(--ech-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+            margin: 0 auto;
+        }
+
+        .mar-row-actions-btn:hover {
+            background: var(--ech-primary-light);
+            color: var(--ech-primary);
+        }
+
+        .module-content-area.mar-mode {
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mar-search-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .mar-search-icon {
+            position: absolute;
+            left: 8px;
+            font-size: 0.923rem;
+            color: var(--ech-text-muted);
+            pointer-events: none;
+        }
+
+        .mar-search-input {
+            padding: 4px 8px 4px 28px;
+            border: 1px solid var(--ech-border);
+            border-radius: 4px;
+            font-size: var(--fs-md);
+            outline: none;
+            min-width: 160px;
+            max-width: 220px;
+            font-family: var(--ech-font-family);
+        }
+
+        .mar-search-input:focus {
+            border-color: var(--ech-primary);
+            box-shadow: 0 0 0 2px rgba(30,136,229,0.15);
+        }
+
+        .mar-filter-separator {
+            width: 1px;
+            height: 20px;
+            background: var(--ech-border);
+            flex-shrink: 0;
+        }
+    </style>
 </head>
 <body>
 
@@ -19,23 +398,459 @@
         <section class="clinical-banner" id="banner-component"></section>
 
         <section class="action-bar" id="action-bar-component">
-            <!-- Module-specific action buttons go here later -->
+            <div class="mar-action-bar">
+                <button class="action-btn action-btn-primary" data-i18n="MAR.NEW_MEDICATION" onclick="void(0)">
+                    <i class="pi pi-plus"></i>
+                    <span>New Medication</span>
+                </button>
+                <button class="action-btn" data-i18n="MAR.VALIDATE_ALL" onclick="void(0)">
+                    <i class="pi pi-check-circle"></i>
+                    <span>Validate All Pending</span>
+                </button>
+                <div class="action-bar-separator"></div>
+                <button class="action-btn" data-i18n="MAR.PRINT_MAR" onclick="void(0)">
+                    <i class="pi pi-print"></i>
+                    <span>Print MAR</span>
+                </button>
+                <button class="action-btn" data-i18n="MAR.AUDIT_TRAIL" onclick="void(0)">
+                    <i class="pi pi-history"></i>
+                    <span>View Audit Trail</span>
+                </button>
+            </div>
         </section>
 
         <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
-            <!-- Module-specific filters go here later -->
+            <div class="mar-filter-bar">
+                <div class="mar-filter-left">
+                    <div class="mar-date-nav">
+                        <button class="date-nav-btn" onclick="marNavDate(-1)">
+                            <i class="pi pi-chevron-left"></i> <span id="marPrevLabel">22 Feb</span>
+                        </button>
+                        <span class="date-label" data-field="marDate" id="marDateLabel">Today: Monday, 23 Feb 2026</span>
+                        <button class="date-nav-btn" onclick="marNavDate(1)">
+                            <span id="marNextLabel">24 Feb</span> <i class="pi pi-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="mar-filter-separator"></div>
+
+                    <div class="filter-group">
+                        <label data-i18n="MAR.TIME_WINDOW">Window:</label>
+                        <div class="select-button-group" id="marTimeWindow">
+                            <button class="sb-option" data-value="2" onclick="setMarTimeWindow(this)">2h</button>
+                            <button class="sb-option active" data-value="4" onclick="setMarTimeWindow(this)">4h</button>
+                            <button class="sb-option" data-value="12" onclick="setMarTimeWindow(this)">12h</button>
+                        </div>
+                    </div>
+
+                    <div class="mar-filter-separator"></div>
+
+                    <div class="filter-group">
+                        <label data-i18n="MAR.CARE_TYPE">Type:</label>
+                        <div class="select-button-group" id="marCareType">
+                            <button class="sb-option active" data-value="all" onclick="setMarCareType(this)">All</button>
+                            <button class="sb-option" data-value="current" onclick="setMarCareType(this)">Current</button>
+                            <button class="sb-option" data-value="scheduled" onclick="setMarCareType(this)">Scheduled</button>
+                            <button class="sb-option" data-value="prn" onclick="setMarCareType(this)">PRN</button>
+                        </div>
+                    </div>
+
+                    <div class="mar-filter-separator"></div>
+
+                    <div class="mar-search-wrapper">
+                        <i class="pi pi-search mar-search-icon"></i>
+                        <input type="text" class="mar-search-input" id="marSearchInput" placeholder="Search medication..." data-i18n-placeholder="MAR.SEARCH_PLACEHOLDER" oninput="filterMarTable()">
+                    </div>
+                </div>
+
+                <div class="mar-legend">
+                    <span class="mar-legend-item"><span class="mar-legend-swatch given"></span> <span data-i18n="MAR.LEGEND_GIVEN">Given</span></span>
+                    <span class="mar-legend-item"><span class="mar-legend-swatch due"></span> <span data-i18n="MAR.LEGEND_DUE">Due</span></span>
+                    <span class="mar-legend-item"><span class="mar-legend-swatch hold"></span> <span data-i18n="MAR.LEGEND_HOLD">Hold/Omit</span></span>
+                </div>
+            </div>
         </section>
 
-        <section class="module-content-area" id="module-content">
-            <div class="flex align-items-center justify-content-center" style="height:200px;color:var(--ech-text-secondary)">
-                <i class="pi pi-box mr-2" style="font-size:1.5rem"></i>
-                <span class="fs-md" data-i18n="MODULE.MEDICATION_PLACEHOLDER">Medication — content area</span>
+        <section class="module-content-area mar-mode" id="module-content">
+            <div class="mar-grid-wrapper">
+                <div class="mar-table-container">
+                    <table class="mar-table" data-i18n-title="MAR.TABLE_TITLE">
+                        <thead id="mar-table-head">
+                        </thead>
+                        <tbody id="mar-table-body">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </main>
 </div>
 
 <script src="layout.js"></script>
+<script>
+(function() {
+    var marTimeWindow = 4;
+    var marCareType = 'all';
+
+    var TIME_SLOTS = {
+        2:  ['06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','00:00'],
+        4:  ['08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00'],
+        12: ['08:00','20:00']
+    };
+
+    var MAR_DATA = [
+        {
+            drug: 'AMOXICILLINA 500mg CAPSULE',
+            dose: '500mg',
+            freq: 'TID',
+            route: 'Oral',
+            startDate: '20-12-26',
+            endDate: '23-12-26',
+            days: '2 days',
+            condition: 'Before meal',
+            category: 'current',
+            highAlert: false,
+            prnReason: null,
+            slots: {
+                '08:00': { status: 'given', value: '500mg', time: '08:12' },
+                '10:00': { status: 'empty' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'due', value: '-' },
+                '16:00': { status: 'given', value: '500mg', time: '16:05' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'empty' },
+                '22:00': { status: 'due', value: '-' }
+            }
+        },
+        {
+            drug: 'INSULINA ASPART',
+            dose: '6 U',
+            freq: 'TID',
+            route: 'SC',
+            startDate: '20-12-26',
+            endDate: '23-12-26',
+            days: '2 days',
+            condition: 'Mobile Scale | AC',
+            category: 'current',
+            highAlert: true,
+            prnReason: null,
+            slots: {
+                '08:00': { status: 'given', value: '6 U', time: '07:55' },
+                '10:00': { status: 'empty' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'hold', value: 'HOLD', reason: 'Gluc: 85' },
+                '16:00': { status: 'empty' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'due', value: '-' },
+                '22:00': { status: 'empty' }
+            }
+        },
+        {
+            drug: 'ENOXAPARINA 40mg JERINGA',
+            dose: '40mg',
+            freq: 'QD',
+            route: 'SC',
+            startDate: '18-12-26',
+            endDate: '28-12-26',
+            days: '10 days',
+            condition: 'Night',
+            category: 'current',
+            highAlert: true,
+            prnReason: null,
+            slots: {
+                '08:00': { status: 'empty' },
+                '10:00': { status: 'empty' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'empty' },
+                '16:00': { status: 'empty' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'empty' },
+                '22:00': { status: 'due', value: '-' }
+            }
+        },
+        {
+            drug: 'METOPROLOL TARTRATE 50mg TAB',
+            dose: '50mg',
+            freq: 'BID',
+            route: 'Oral',
+            startDate: '15-12-26',
+            endDate: '30-12-26',
+            days: '15 days',
+            condition: null,
+            category: 'current',
+            highAlert: false,
+            prnReason: null,
+            slots: {
+                '08:00': { status: 'given', value: '50mg', time: '08:20' },
+                '10:00': { status: 'empty' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'empty' },
+                '16:00': { status: 'empty' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'due', value: '-' },
+                '22:00': { status: 'empty' }
+            }
+        },
+        {
+            drug: 'OMEPRAZOL 20mg CAPSULE',
+            dose: '20mg',
+            freq: 'QD',
+            route: 'Oral',
+            startDate: '10-12-26',
+            endDate: '10-01-27',
+            days: '31 days',
+            condition: 'Before breakfast',
+            category: 'current',
+            highAlert: false,
+            prnReason: null,
+            slots: {
+                '08:00': { status: 'given', value: '20mg', time: '07:45' },
+                '10:00': { status: 'empty' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'empty' },
+                '16:00': { status: 'empty' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'empty' },
+                '22:00': { status: 'empty' }
+            }
+        },
+        {
+            drug: 'PARACETAMOL 1g IV',
+            dose: '1g',
+            freq: 'PRN',
+            route: 'IV',
+            startDate: '20-12-26',
+            endDate: '25-12-26',
+            days: '5 days',
+            condition: 'Max Q6H',
+            category: 'prn',
+            highAlert: false,
+            prnReason: 'Pain > 4 VAS',
+            slots: {
+                '08:00': { status: 'given', value: '1g', time: '08:30' },
+                '10:00': { status: 'empty' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'given', value: '1g', time: '14:45' },
+                '16:00': { status: 'empty' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'empty' },
+                '22:00': { status: 'empty' }
+            }
+        },
+        {
+            drug: 'FUROSEMIDA 20mg AMP',
+            dose: '20mg',
+            freq: 'BID',
+            route: 'IV',
+            startDate: '19-12-26',
+            endDate: '26-12-26',
+            days: '7 days',
+            condition: null,
+            category: 'current',
+            highAlert: false,
+            prnReason: null,
+            slots: {
+                '08:00': { status: 'given', value: '20mg', time: '08:10' },
+                '10:00': { status: 'empty' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'empty' },
+                '16:00': { status: 'empty' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'due', value: '-' },
+                '22:00': { status: 'empty' }
+            }
+        },
+        {
+            drug: 'CLORURO POTÁSICO 600mg TAB',
+            dose: '600mg',
+            freq: 'TID',
+            route: 'Oral',
+            startDate: '19-12-26',
+            endDate: '26-12-26',
+            days: '7 days',
+            condition: 'With meals',
+            category: 'current',
+            highAlert: true,
+            prnReason: null,
+            slots: {
+                '08:00': { status: 'given', value: '600mg', time: '08:15' },
+                '10:00': { status: 'empty' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'given', value: '600mg', time: '14:10' },
+                '16:00': { status: 'empty' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'empty' },
+                '22:00': { status: 'due', value: '-' }
+            }
+        },
+        {
+            drug: 'MORPHINE SULFATE 5mg AMP',
+            dose: '5mg',
+            freq: 'PRN',
+            route: 'IV',
+            startDate: '20-12-26',
+            endDate: '23-12-26',
+            days: '3 days',
+            condition: 'Max Q4H | Slow push',
+            category: 'prn',
+            highAlert: true,
+            prnReason: 'Pain > 7 VAS',
+            slots: {
+                '08:00': { status: 'empty' },
+                '10:00': { status: 'given', value: '5mg', time: '10:20' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'empty' },
+                '16:00': { status: 'empty' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'empty' },
+                '22:00': { status: 'empty' }
+            }
+        },
+        {
+            drug: 'ATORVASTATIN 40mg TAB',
+            dose: '40mg',
+            freq: 'QD',
+            route: 'Oral',
+            startDate: '01-12-26',
+            endDate: '01-03-27',
+            days: '90 days',
+            condition: 'Night',
+            category: 'scheduled',
+            highAlert: false,
+            prnReason: null,
+            slots: {
+                '08:00': { status: 'empty' },
+                '10:00': { status: 'empty' },
+                '12:00': { status: 'empty' },
+                '14:00': { status: 'empty' },
+                '16:00': { status: 'empty' },
+                '18:00': { status: 'empty' },
+                '20:00': { status: 'empty' },
+                '22:00': { status: 'due', value: '-' }
+            }
+        }
+    ];
+
+    function renderCell(slot) {
+        if (!slot || slot.status === 'empty') {
+            return '<span class="mar-cell mar-cell-empty">-</span>';
+        }
+        if (slot.status === 'given') {
+            return '<span class="mar-cell mar-cell-given">' + slot.value + '<span class="mar-cell-sub">' + slot.time + '</span></span>';
+        }
+        if (slot.status === 'due') {
+            return '<span class="mar-cell mar-cell-due">-</span>';
+        }
+        if (slot.status === 'hold') {
+            return '<span class="mar-cell mar-cell-hold">' + slot.value + '<span class="mar-cell-sub">' + (slot.reason || '') + '</span></span>';
+        }
+        if (slot.status === 'not-given') {
+            return '<span class="mar-cell mar-cell-not-given">' + (slot.value || 'NOT GIVEN') + '</span>';
+        }
+        if (slot.status === 'cancelled') {
+            return '<span class="mar-cell mar-cell-cancelled">' + (slot.value || 'CANCELLED') + '</span>';
+        }
+        return '';
+    }
+
+    function getFilteredData() {
+        var searchVal = (document.getElementById('marSearchInput') || {}).value || '';
+        searchVal = searchVal.toLowerCase();
+
+        return MAR_DATA.filter(function(med) {
+            if (marCareType !== 'all' && med.category !== marCareType) return false;
+            if (searchVal && med.drug.toLowerCase().indexOf(searchVal) === -1 &&
+                med.route.toLowerCase().indexOf(searchVal) === -1 &&
+                med.freq.toLowerCase().indexOf(searchVal) === -1) return false;
+            return true;
+        });
+    }
+
+    function renderTable() {
+        var thead = document.getElementById('mar-table-head');
+        var tbody = document.getElementById('mar-table-body');
+        if (!thead || !tbody) return;
+
+        var slots = TIME_SLOTS[marTimeWindow] || TIME_SLOTS[4];
+
+        var headHtml = '<tr>';
+        headHtml += '<th class="mar-frozen mar-frozen-med" data-i18n="MAR.COL_MEDICATION">Medication (Dose/Route/Freq)</th>';
+        headHtml += '<th class="mar-frozen mar-frozen-dose" data-i18n="MAR.COL_DOSE">Dose</th>';
+        headHtml += '<th class="mar-frozen mar-frozen-freq" data-i18n="MAR.COL_FREQ">Freq</th>';
+        headHtml += '<th class="mar-frozen mar-frozen-route" data-i18n="MAR.COL_ROUTE">Route</th>';
+        headHtml += '<th class="mar-frozen mar-frozen-actions" data-i18n="MAR.COL_ACTIONS">Actions</th>';
+        for (var i = 0; i < slots.length; i++) {
+            headHtml += '<th class="mar-time-col">' + slots[i] + '</th>';
+        }
+        headHtml += '</tr>';
+        thead.innerHTML = headHtml;
+
+        var data = getFilteredData();
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="' + (5 + slots.length) + '" style="text-align:center;padding:20px;color:var(--ech-text-secondary)"><i class="pi pi-info-circle"></i> No medications match the current filters.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = data.map(function(med) {
+            var alertIcon = med.highAlert ? '<i class="pi pi-exclamation-triangle mar-high-alert" title="High Alert Medication"></i> ' : '';
+            var condLine = '';
+            var parts = [];
+            if (med.condition) parts.push(med.condition);
+            parts.push(med.startDate + ' / ' + med.endDate + ' / ' + med.days);
+            condLine = parts.join(' | ');
+            var prnLine = med.prnReason ? '<span class="mar-med-detail" style="color:var(--ech-warning);font-weight:600">PRN: ' + med.prnReason + '</span>' : '';
+
+            var slotCells = slots.map(function(t) {
+                var s = med.slots[t] || { status: 'empty' };
+                return '<td class="mar-time-col">' + renderCell(s) + '</td>';
+            }).join('');
+
+            return '<tr data-category="' + med.category + '">' +
+                '<td class="mar-frozen mar-frozen-med">' +
+                    '<div class="mar-med-info">' +
+                        '<span class="mar-med-name">' + alertIcon + med.drug + '</span>' +
+                        '<span class="mar-med-detail">' + med.route + ' | ' + med.freq + ' | ' + condLine + '</span>' +
+                        prnLine +
+                    '</div>' +
+                '</td>' +
+                '<td class="mar-frozen mar-frozen-dose"><strong>' + med.dose + '</strong></td>' +
+                '<td class="mar-frozen mar-frozen-freq">' + med.freq + '</td>' +
+                '<td class="mar-frozen mar-frozen-route">' + med.route + '</td>' +
+                '<td class="mar-frozen mar-frozen-actions"><button class="mar-row-actions-btn" onclick="void(0)" title="Actions"><i class="pi pi-ellipsis-v"></i></button></td>' +
+                slotCells +
+            '</tr>';
+        }).join('');
+    }
+
+    window.setMarTimeWindow = function(btn) {
+        document.querySelectorAll('#marTimeWindow .sb-option').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        marTimeWindow = parseInt(btn.dataset.value, 10);
+        renderTable();
+    };
+
+    window.setMarCareType = function(btn) {
+        document.querySelectorAll('#marCareType .sb-option').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        marCareType = btn.dataset.value;
+        renderTable();
+    };
+
+    window.filterMarTable = function() {
+        renderTable();
+    };
+
+    window.marNavDate = function(dir) {
+        console.log('Navigate MAR date:', dir > 0 ? 'next' : 'previous');
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderTable);
+    } else {
+        renderTable();
+    }
+})();
+</script>
 
 </body>
 </html>
