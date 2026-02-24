@@ -22,7 +22,9 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── app.js                  # Timeline-specific logic (rendering, filtering, events)
 ├── layout.js               # Modular layout engine — injects shared components into all pages
 ├── previous-visits.html    # Previous Visits — Master-Detail split layout with episode list + clinical panels
-├── risk-factors.html       # Risk Factors module (empty shell)
+├── risk-factors.html       # Risk Factors module — 10-tab risk control center with high-density tables
+├── risk-factors.js         # Risk Factors logic — mock data (33 records), tab switching, search, status toggle
+├── risk-factors.css        # Risk Factors styles — tabs, tables, severity tags, alert icons, responsive
 ├── diagnostic-tests.html   # Diagnostic Tests module (empty shell)
 ├── documents.html          # Documents module — clinical file manager with tab filters and document table
 ├── documents.js            # Documents logic — mock data, filtering, search, table rendering
@@ -88,6 +90,14 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-24: Implemented Risk Factors module — 10-tab risk control center with high-density tables
+- 2026-02-24: Risk Factors Action Bar — "Add Risk Factor / Alert" primary button + search input with filter
+- 2026-02-24: Risk Factors Tab System — Summary, Allergies, Conditions, Procedures, Family History, Social History & Habits, Infection Control, Immunizations, Devices & Implants, Risk Assessments
+- 2026-02-24: Risk Factors p-table — 10 columns: Type, Group, Risk Factor, Catalogued, Comment, Author, Date, Severity, Alert, Actions
+- 2026-02-24: Risk Factors Active/Inactive sections — inactive rows with reduced opacity, toggle status via action buttons
+- 2026-02-24: Risk Factors Summary tab — aggregated view of severe/alert records from all categories
+- 2026-02-24: Risk Factors mock data — 33 records across 9 categories with realistic clinical data
+- 2026-02-24: Risk Factors CSS in risk-factors.css — severity tags (red/orange/yellow/green), alert icons, responsive
 - 2026-02-24: Implemented Documents module — clinical file manager with tab filters, search, and document table
 - 2026-02-24: Documents tab filters: All, Reports, Informed Consent, Various, Digital History, Signed Documents
 - 2026-02-24: Documents table: Name (link), Author, Department, Type, Date, Status (Signed/Draft tags), Access Web (globe icon), Actions (Download/Delete/Share)
