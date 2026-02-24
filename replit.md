@@ -24,7 +24,9 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── previous-visits.html    # Previous Visits module (empty shell)
 ├── risk-factors.html       # Risk Factors module (empty shell)
 ├── diagnostic-tests.html   # Diagnostic Tests module (empty shell)
-├── documents.html          # Documents module (empty shell)
+├── documents.html          # Documents module — clinical file manager with tab filters and document table
+├── documents.js            # Documents logic — mock data, filtering, search, table rendering
+├── documents.css           # Documents-specific styles — tabs, table, status tags, action buttons
 ├── medication.html         # Medication Administration Record (MAR) — full MAR grid with frozen columns, time slots, status cells
 ├── patient-summary.html    # Patient Summary module (empty shell)
 ├── care-plans.html         # Care Administration Record (CAR) — full CAR grid with frozen columns, time slots, status cells
@@ -86,6 +88,11 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-24: Implemented Documents module — clinical file manager with tab filters, search, and document table
+- 2026-02-24: Documents tab filters: All, Reports, Informed Consent, Various, Digital History, Signed Documents
+- 2026-02-24: Documents table: Name (link), Author, Department, Type, Date, Status (Signed/Draft tags), Access Web (globe icon), Actions (Download/Delete/Share)
+- 2026-02-24: Documents CSS in separate documents.css — high-density layout, sticky header, responsive
+- 2026-02-24: Documents mock data — 8 documents across categories with realistic clinical data
 - 2026-02-24: Implemented Medication Administration Record (MAR) in medication.html
 - 2026-02-24: MAR Action Bar — New Medication (primary), Validate All Pending, Print MAR, View Audit Trail
 - 2026-02-24: MAR Filter Bar — date navigation + Time Window (2h/4h/12h) + Care Type (All/Current/Scheduled/PRN) + search input + legend

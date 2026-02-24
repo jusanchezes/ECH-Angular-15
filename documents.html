@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
     <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
     <link rel="stylesheet" href="theme-overrides.css">
+    <link rel="stylesheet" href="documents.css">
 </head>
 <body>
 
@@ -18,24 +19,50 @@
         <header class="top-bar" id="header-component"></header>
         <section class="clinical-banner" id="banner-component"></section>
 
-        <section class="action-bar" id="action-bar-component">
-            <!-- Module-specific action buttons go here later -->
+        <section class="doc-filters-bar" id="doc-filters-bar">
+            <div class="doc-tabs-row">
+                <div class="doc-tabs" id="docTabs">
+                    <button class="doc-tab doc-tab-active" data-filter="all" onclick="filterDocuments('all')">All</button>
+                    <button class="doc-tab" data-filter="reports" onclick="filterDocuments('reports')">Reports</button>
+                    <button class="doc-tab" data-filter="informed-consent" onclick="filterDocuments('informed-consent')">Informed Consent</button>
+                    <button class="doc-tab" data-filter="various" onclick="filterDocuments('various')">Various</button>
+                    <button class="doc-tab" data-filter="digital-history" onclick="filterDocuments('digital-history')">Digital History</button>
+                    <button class="doc-tab" data-filter="signed" onclick="filterDocuments('signed')">Signed Documents</button>
+                </div>
+                <div class="doc-search-area">
+                    <div class="doc-search-wrapper">
+                        <i class="pi pi-search doc-search-icon"></i>
+                        <input type="text" class="doc-search-input" placeholder="Search documents..." id="docSearchInput" oninput="searchDocuments(this.value)">
+                    </div>
+                    <span class="doc-count-badge" id="docCountBadge">8</span>
+                </div>
+            </div>
         </section>
 
-        <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
-            <!-- Module-specific filters go here later -->
-        </section>
-
-        <section class="module-content-area" id="module-content">
-            <div class="flex align-items-center justify-content-center" style="height:200px;color:var(--ech-text-secondary)">
-                <i class="pi pi-file mr-2" style="font-size:1.5rem"></i>
-                <span class="fs-md" data-i18n="MODULE.DOCUMENTS_PLACEHOLDER">Documents — content area</span>
+        <section class="doc-table-area" id="doc-table-area">
+            <div class="doc-table-scroll">
+                <table class="doc-table" id="docTable">
+                    <thead>
+                        <tr>
+                            <th class="col-doc-name">Name <i class="pi pi-sort-alt sort-icon"></i></th>
+                            <th class="col-doc-author">Author <i class="pi pi-sort-alt sort-icon"></i></th>
+                            <th class="col-doc-dept">Department <i class="pi pi-sort-alt sort-icon"></i></th>
+                            <th class="col-doc-type">Type <i class="pi pi-sort-alt sort-icon"></i></th>
+                            <th class="col-doc-date">Date <i class="pi pi-sort-alt sort-icon"></i></th>
+                            <th class="col-doc-status">Status</th>
+                            <th class="col-doc-access">Access Web</th>
+                            <th class="col-doc-actions">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="docTableBody"></tbody>
+                </table>
             </div>
         </section>
     </main>
 </div>
 
 <script src="layout.js"></script>
+<script src="documents.js"></script>
 
 </body>
 </html>
