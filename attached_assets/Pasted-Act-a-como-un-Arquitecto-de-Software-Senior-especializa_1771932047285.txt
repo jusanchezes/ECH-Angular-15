@@ -1,0 +1,57 @@
+Actúa como un Arquitecto de Software Senior especializado en EMR. Tu objetivo es refactorizar medication.html para implantar un Registro de Administración de Medicación (MAR) profesional utilizando componentes de PrimeNG 15 y el CSS existente.
+
+1. Consistencia Visual y Arquitectura
+Estilos: Utiliza el CSS existente. Asegura que el tamaño de fuente base sea 13px para alta densidad en 14''.
+
+Tipografía: Mantén estrictamente los textos en 1.3rem y el título de la página en 2rem.
+
+Shell: Respeta la inyección modular del Header, Sidebar y Patient Banner a través de layout.js.
+
+2. Barras de Control (Actions & Filters)
+Añade las siguientes secciones entre el banner del paciente y la rejilla:
+
+Action Bar: Un botón p-button para "Add Medication" (ícono pi pi-plus).
+
+Filter Bar:
+
+Time Window: p-selectButton con opciones: 2h / 4h / 12h.
+
+Care Type: Filtro para Current, Scheduled y PRN/Continuous.
+
+Buscador: Input con lupa para filtrar por nombre de droga o principio activo.
+
+3. El MAR GRID (Componente p-table)
+Implanta un componente PrimeNG p-table con Frozen Columns para representar el tratamiento:
+
+Columnas Congeladas (Detalle del Fármaco):
+
+Medicamento: Texto de la droga con su Presentación (ej. "AMOXICILINA 500mg CAPSULE").
+
+Dose: Dosis pautada.
+
+Freq: Frecuencia (ej. "TID", "Q8H").
+
+Route: Vía de administración (Oral, IV, SC, etc.).
+
+Start Date: Fecha de inicio del tratamiento.
+
+PRN Reason: Motivo de administración si es "según necesidad".
+
+Columnas Dinámicas (Tiempo): Cuadrícula de horas según la ventana seleccionada (2h, 4h, 12h).
+
+Estados de Administración (Celdas):
+
+Given: Verde suave con la hora real de administración.
+
+Hold: Rosa/Rojo suave para dosis retenidas por criterio clínico.
+
+Not Given: Rojo para dosis rechazadas u omitidas.
+
+Due: Blanco con borde dashed para dosis futuras pendientes.
+
+Cancelled: Gris con texto tachado para dosis anuladas.
+
+4. Optimizaciones Clínicas
+Configura la tabla con Scroll Horizontal para las horas y Scroll Vertical con cabecera fija.
+
+El padding debe ser mínimo para permitir visualizar al menos 8-10 medicamentos simultáneamente en una pantalla de 14''.
