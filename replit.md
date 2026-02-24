@@ -27,7 +27,7 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── documents.html          # Documents module (empty shell)
 ├── medication.html         # Medication module (empty shell)
 ├── patient-summary.html    # Patient Summary module (empty shell)
-├── care-plans.html         # Care Plans module (empty shell)
+├── care-plans.html         # Care Administration Record (CAR) — full CAR grid with frozen columns, time slots, status cells
 ├── measurements.html       # Measurements module (empty shell)
 ├── nurse-notes.html        # Nurse Notes module (empty shell)
 ├── protocols.html          # Protocols module (empty shell)
@@ -86,6 +86,13 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-24: Implemented Care Administration Record (CAR) in care-plans.html
+- 2026-02-24: CAR Action Bar — New Care Task, Validate All Pending, Copy from Yesterday, Print CAR, View Audit Trail
+- 2026-02-24: CAR Filter Bar — date navigation (Yesterday/Today/Tomorrow) + status legend (Completed/Pending/Overdue)
+- 2026-02-24: CAR Grid — p-table with frozen left column (task name + detail), horizontal-scrolling time columns (08:00–22:00)
+- 2026-02-24: CAR status cells — color-coded: green (completed), gray/dashed (pending), red (overdue/MISSING)
+- 2026-02-24: CAR mock data — 10 clinical care tasks (Respiratory, Subclavian, Hygiene, Mobilisation, Pain, Nutrition, etc.)
+- 2026-02-24: CAR CSS in `<style>` block within care-plans.html — no changes to theme-overrides.css
 - 2026-02-22: Refactored patient list (index.html) to Full Clinical version with 11 columns
 - 2026-02-22: Created layout_list.js — modular list layout engine with tab-bar and toolbar components
 - 2026-02-22: Added tab-bar with configurable tabs (Arrivals Today, Planned Arrivals, etc.) and config button
