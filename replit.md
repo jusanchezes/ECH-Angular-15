@@ -21,7 +21,7 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── timeline.html           # General View / Patient Timeline
 ├── app.js                  # Timeline-specific logic (rendering, filtering, events)
 ├── layout.js               # Modular layout engine — injects shared components into all pages
-├── previous-visits.html    # Previous Visits module (empty shell)
+├── previous-visits.html    # Previous Visits — Master-Detail split layout with episode list + clinical panels
 ├── risk-factors.html       # Risk Factors module (empty shell)
 ├── diagnostic-tests.html   # Diagnostic Tests module (empty shell)
 ├── documents.html          # Documents module — clinical file manager with tab filters and document table
@@ -108,6 +108,11 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 - 2026-02-24: CAR status cells — color-coded: green (completed), gray/dashed (pending), red (overdue/MISSING)
 - 2026-02-24: CAR mock data — 10 clinical care tasks (Respiratory, Subclavian, Hygiene, Mobilisation, Pain, Nutrition, etc.)
 - 2026-02-24: CAR CSS in `<style>` block within care-plans.html — no changes to theme-overrides.css
+- 2026-02-24: Previous Visits — Master-Detail split layout (30/70) with episode list + 5 clinical panels
+- 2026-02-24: Previous Visits — Action Bar with Generate Summary and Print Episode Report buttons
+- 2026-02-24: Previous Visits — Episode list (5 episodes with date/type), clickable with active state
+- 2026-02-24: Previous Visits — Clinical panels: Alerts & Risks, Problems/Diagnoses, Active Medication, 24h Snapshot, Pending Tests
+- 2026-02-24: Previous Visits — CSS classes prefixed with pv-* added to theme-overrides.css
 - 2026-02-22: Refactored patient list (index.html) to Full Clinical version with 11 columns
 - 2026-02-22: Created layout_list.js — modular list layout engine with tab-bar and toolbar components
 - 2026-02-22: Added tab-bar with configurable tabs (Arrivals Today, Planned Arrivals, etc.) and config button
