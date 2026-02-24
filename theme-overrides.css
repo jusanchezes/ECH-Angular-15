@@ -1,3 +1,43 @@
+/* ============================================================================
+   ECH EHR — UNIFIED THEME STYLESHEET
+   ============================================================================
+   Single source of truth for all project styling.
+   
+   TABLE OF CONTENTS
+   -----------------
+   1.  CSS CUSTOM PROPERTIES (Design Tokens)          ~Line 35
+   2.  BASE & RESET                                   ~Line 73
+   3.  FONT SIZE UTILITIES                            ~Line 96
+   4.  LAYOUT SHELL                                   ~Line 106
+   5.  SIDEBAR                                        ~Line 140
+   6.  HEADER / TOP BAR                               ~Line 282
+   7.  CLINICAL BANNER                                ~Line 379
+   8.  ACTION BAR (SHARED)                            ~Line 511
+   9.  FILTER BAR & CONTROLS (SHARED)                 ~Line 593
+   10. MODULE TABS (SHARED)                           ~Line 764
+   11. SEARCH INPUT (SHARED)                          ~Line 945
+   12. DATE NAVIGATION (SHARED)                       ~Line 1019
+   13. LEGEND (SHARED)                                ~Line 1068
+   14. TIMELINE                                       ~Line 1104
+   15. PATIENT LIST (index.html)                      ~Line 1382
+   16. PATIENT SUMMARY / PREVIOUS VISITS              ~Line 1812
+   17. DOCUMENTS                                      ~Line 2051
+   18. RISK FACTORS                                   ~Line 2317
+   19. MEDICATION (MAR)                               ~Line 2856
+   20. CARE PLANS (CAR)                               ~Line 3236
+   21. USER MENUS & OVERLAYS                          ~Line 3503
+   22. UTILITY CLASSES                                ~Line 3661
+   23. RESPONSIVE — TABLET (max-width: 1024px)        ~Line 3691
+   24. RESPONSIVE — MOBILE (max-width: 600px)         ~Line 3833
+   ============================================================================ */
+
+
+/* ============================================================================
+   1. CSS CUSTOM PROPERTIES (Design Tokens)
+   --------------------------------------------------------------------------
+   All colors, spacing, typography and layout variables.
+   Change these to re-theme the entire application.
+   ============================================================================ */
 :root {
     --ech-primary: #1e88e5;
     --ech-primary-dark: #1565c0;
@@ -27,9 +67,12 @@
     --fs-lg: 2.0rem;
     --fs-md: 1.3rem;
     --fs-xs: 1.0rem;
-    
 }
 
+
+/* ============================================================================
+   2. BASE & RESET
+   ============================================================================ */
 * {
     box-sizing: border-box;
 }
@@ -49,18 +92,57 @@ body {
     overflow: hidden;
 }
 
+
+/* ============================================================================
+   3. FONT SIZE UTILITIES
+   ============================================================================ */
 .fs-xs  { font-size: 1.0rem !important; }
 .fs-md  { font-size: 1.3rem !important; }
 .fs-lg  { font-size: 2.0rem !important; }
 .fs-xl  { font-size: 2.5rem !important; }
 .fs-xxl { font-size: 3.0rem !important; }
 
+
+/* ============================================================================
+   4. LAYOUT SHELL
+   --------------------------------------------------------------------------
+   Main flex container that holds sidebar + main content.
+   ============================================================================ */
 .layout {
     display: flex;
     height: 100vh;
     width: 100vw;
 }
 
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.layout-no-sidebar {
+    grid-template-columns: 1fr;
+}
+
+.main-full-width {
+    margin-left: 0;
+}
+
+.module-content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+
+/* ============================================================================
+   5. SIDEBAR
+   --------------------------------------------------------------------------
+   Collapsible navigation sidebar with menu items.
+   Classes: .sidebar, .sidebar.collapsed, .sidebar-nav, .menu-item
+   ============================================================================ */
 .sidebar {
     width: var(--ech-sidebar-width);
     background: var(--ech-surface);
@@ -196,14 +278,13 @@ body {
     padding: 10px 0;
 }
 
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-width: 0;
-}
 
+/* ============================================================================
+   6. HEADER / TOP BAR
+   --------------------------------------------------------------------------
+   Fixed header with hospital context, notifications, and user identity.
+   Classes: .top-bar, .top-bar-left, .top-bar-center, .top-bar-right
+   ============================================================================ */
 .top-bar {
     background: var(--ech-surface);
     border-bottom: 2px solid var(--ech-primary);
@@ -289,6 +370,19 @@ body {
     text-align: center;
 }
 
+.hamburger-btn {
+    cursor: pointer;
+    padding: 4px;
+}
+
+
+/* ============================================================================
+   7. CLINICAL BANNER
+   --------------------------------------------------------------------------
+   Patient identification and safety alerts strip.
+   Classes: .clinical-banner, .banner-row-1, .banner-row-2,
+            .patient-identity, .safety-tags, .p-tag-*
+   ============================================================================ */
 .clinical-banner {
     background: var(--ech-surface);
     border-bottom: 1px solid var(--ech-border);
@@ -406,6 +500,103 @@ body {
     color: var(--ech-border);
 }
 
+.clinical-danger { color: var(--ech-clinical-danger); }
+.clinical-warning { color: var(--ech-clinical-warning); }
+.clinical-info { color: var(--ech-clinical-info); }
+.p-tag-custom.clinical-danger,
+.p-tag-custom.clinical-warning,
+.p-tag-custom.clinical-info { color: white; }
+
+
+/* ============================================================================
+   8. ACTION BAR (SHARED)
+   --------------------------------------------------------------------------
+   Horizontal bar with quick-action buttons, used by Timeline, MAR, CAR,
+   Risk Factors, and Previous Visits pages.
+   Classes: .action-bar, .action-btn, .action-btn-primary, .action-bar-separator
+   ============================================================================ */
+.action-bar {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.action-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.action-bar-spread {
+    justify-content: space-between;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text);
+    font-size: var(--fs-md);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+    font-family: var(--ech-font-family);
+}
+
+.action-btn .pi {
+    font-size: 0.923rem;
+}
+
+.action-btn:hover {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
+    color: var(--ech-primary-dark);
+}
+
+.action-btn-primary {
+    background: var(--ech-primary);
+    color: white;
+    border-color: var(--ech-primary);
+    font-weight: 600;
+}
+
+.action-btn-primary:hover {
+    background: var(--ech-primary-dark);
+    border-color: var(--ech-primary-dark);
+    color: white;
+}
+
+.action-bar-separator {
+    width: 1px;
+    height: 20px;
+    background: var(--ech-border);
+    flex-shrink: 0;
+}
+
+
+/* ============================================================================
+   9. FILTER BAR & CONTROLS (SHARED)
+   --------------------------------------------------------------------------
+   Horizontal filter strip with select-button groups and multi-selects.
+   Used by Timeline and shared across modules.
+   Classes: .filter-bar, .filter-group, .select-button-group, .multi-select-*
+   ============================================================================ */
 .filter-bar {
     background: var(--ech-surface);
     margin: 6px 10px 4px;
@@ -520,21 +711,6 @@ body {
     accent-color: var(--ech-primary);
 }
 
-.search-input {
-    padding: 4px 8px;
-    border: 1px solid var(--ech-border);
-    border-radius: 4px;
-    font-size: var(--fs-md);
-    outline: none;
-    min-width: 140px;
-    max-width: 200px;
-}
-
-.search-input:focus {
-    border-color: var(--ech-primary);
-    box-shadow: 0 0 0 2px rgba(30,136,229,0.15);
-}
-
 .column-toggle-btn {
     padding: 4px 8px;
     border: 1px solid var(--ech-border);
@@ -553,6 +729,384 @@ body {
     color: var(--ech-primary);
 }
 
+.column-panel {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    min-width: 160px;
+    z-index: 150;
+    display: none;
+    padding: 4px 0;
+}
+
+.column-panel.show {
+    display: block;
+}
+
+.column-panel .col-option {
+    padding: 6px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-md);
+}
+
+.column-panel .col-option:hover {
+    background: var(--ech-primary-light);
+}
+
+
+/* ============================================================================
+   10. MODULE TABS (SHARED)
+   --------------------------------------------------------------------------
+   Horizontal tab navigation used by Documents (.doc-tab), Risk Factors
+   (.rf-tab), and the Patient List tab bar (.tab-btn).
+   All share the same visual pattern: underlined active state, primary color.
+   ============================================================================ */
+
+/* --- 10a. Module filter tabs container (Documents, Risk Factors) --- */
+.module-tabs-bar {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 0 12px;
+    flex-shrink: 0;
+}
+
+.module-tabs-row {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.module-tabs-row::-webkit-scrollbar {
+    height: 3px;
+}
+
+.module-tabs-row::-webkit-scrollbar-thumb {
+    background: var(--ech-border);
+    border-radius: 3px;
+}
+
+.module-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    font-size: var(--fs-md);
+    color: var(--ech-primary);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    font-family: var(--ech-font-family);
+    font-weight: 500;
+    gap: 5px;
+}
+
+.module-tab:hover {
+    background: rgba(30, 136, 229, 0.06);
+}
+
+.module-tab.module-tab-active {
+    font-weight: 600;
+    border-bottom-color: var(--ech-primary);
+    background: rgba(30, 136, 229, 0.08);
+}
+
+.module-tab .module-tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 16px;
+    padding: 0 5px;
+    border-radius: 8px;
+    font-size: 0.692rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+.module-tab.module-tab-active .module-tab-count {
+    background: var(--ech-primary-dark);
+}
+
+/* --- 10b. Documents tabs row (with search area) --- */
+.doc-tabs-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 38px;
+    gap: 12px;
+}
+
+/* --- 10c. Patient list tab bar (index.html) --- */
+.tab-bar {
+    background: #eef1f5;
+    border-bottom: 1px solid var(--ech-border);
+    flex-shrink: 0;
+}
+
+.tab-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    min-height: 38px;
+}
+
+.tab-bar-tabs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    font-size: var(--fs-md);
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    font-family: var(--ech-font-family);
+}
+
+.tab-btn:hover {
+    color: var(--ech-primary);
+    background: rgba(30, 136, 229, 0.06);
+}
+
+.tab-btn-active {
+    color: var(--ech-primary);
+    font-weight: 600;
+    border-bottom-color: var(--ech-primary);
+    background: rgba(30, 136, 229, 0.08);
+}
+
+.tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    font-size: 0.769rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+.tab-btn:not(.tab-btn-active) .tab-count {
+    background: #aab2bd;
+}
+
+.tab-bar-actions {
+    flex-shrink: 0;
+}
+
+.tab-config-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.tab-config-btn:hover {
+    border-color: var(--ech-primary);
+    color: var(--ech-primary);
+    background: var(--ech-primary-light);
+}
+
+
+/* ============================================================================
+   11. SEARCH INPUT (SHARED)
+   --------------------------------------------------------------------------
+   Reusable search input pattern with icon.
+   Used by: Timeline (.search-input), Documents (.doc-search-*),
+            Risk Factors (.rf-search-*), MAR (.mar-search-*),
+            Patient List toolbar (.toolbar-search-*)
+   ============================================================================ */
+.search-input {
+    padding: 4px 8px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    min-width: 140px;
+    max-width: 200px;
+}
+
+.search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.15);
+}
+
+.module-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.module-search-icon {
+    position: absolute;
+    left: 8px;
+    font-size: 0.923rem;
+    color: var(--ech-text-muted);
+    pointer-events: none;
+}
+
+.module-search-input {
+    padding: 5px 12px 5px 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    width: 220px;
+    font-family: var(--ech-font-family);
+}
+
+.module-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
+}
+
+.module-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 11px;
+    font-size: 0.769rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+.module-search-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+
+/* ============================================================================
+   12. DATE NAVIGATION (SHARED)
+   --------------------------------------------------------------------------
+   Previous / Today / Next date navigation strip.
+   Used by MAR and CAR pages.
+   ============================================================================ */
+.date-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.date-nav .date-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: var(--ech-font-family);
+}
+
+.date-nav .date-nav-btn:hover {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
+    color: var(--ech-primary-dark);
+}
+
+.date-nav .date-label {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    white-space: nowrap;
+}
+
+.filter-separator {
+    width: 1px;
+    height: 20px;
+    background: var(--ech-border);
+    flex-shrink: 0;
+}
+
+
+/* ============================================================================
+   13. LEGEND (SHARED)
+   --------------------------------------------------------------------------
+   Color-coded legend strips for MAR and CAR grids.
+   ============================================================================ */
+.module-legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    flex-shrink: 0;
+}
+
+.module-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.module-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.module-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+
+/* ============================================================================
+   14. TIMELINE
+   --------------------------------------------------------------------------
+   Chronological event timeline with color-coded markers.
+   Classes: .timeline-area, .p-timeline, .tl-event-card, .tl-type-*
+   ============================================================================ */
 .timeline-area {
     flex: 1;
     overflow-y: auto;
@@ -803,317 +1357,6 @@ body {
     background: var(--ech-primary-dark);
 }
 
-.user-menu-wrapper {
-    position: relative;
-}
-
-.user-menu-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--ech-primary);
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    border-radius: 4px;
-    transition: background 0.15s;
-}
-
-.user-menu-toggle:hover {
-    background: var(--ech-primary-light);
-}
-
-.user-menu-toggle .pi {
-    font-size: 1.25rem;
-}
-
-.user-menu-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: var(--ech-surface);
-    border: 1px solid var(--ech-border);
-    border-radius: 6px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    min-width: 260px;
-    z-index: 600;
-    display: none;
-    padding: 4px 0;
-}
-
-.user-menu-dropdown.show {
-    display: block;
-}
-
-.user-menu-dropdown .menu-option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 16px;
-    cursor: pointer;
-    color: var(--ech-text);
-    font-size: 1rem;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-    transition: background 0.15s;
-}
-
-.user-menu-dropdown .menu-option:hover {
-    background: var(--ech-hover);
-}
-
-.user-menu-dropdown .menu-option .pi {
-    color: var(--ech-primary);
-    width: 20px;
-    text-align: center;
-    font-size: 1.1rem;
-}
-
-.user-menu-dropdown .menu-option.menu-option-danger {
-    color: var(--ech-danger);
-}
-
-.user-menu-dropdown .menu-option.menu-option-danger .pi {
-    color: var(--ech-danger);
-}
-
-.user-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 599;
-    display: none;
-}
-
-.user-menu-overlay.show {
-    display: block;
-}
-
-.alert-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 300;
-    display: none;
-}
-
-.alert-menu-overlay.show {
-    display: block;
-}
-
-.alert-menu-panel {
-    position: absolute;
-    top: 50px;
-    right: 60px;
-    background: var(--ech-surface);
-    border: 1px solid var(--ech-border);
-    border-radius: 6px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    width: 300px;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.alert-menu-panel .alert-header {
-    padding: 10px 12px;
-    font-weight: 700;
-    border-bottom: 1px solid var(--ech-border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.alert-menu-panel .alert-item {
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--ech-border-light);
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    font-size: var(--fs-md);
-}
-
-.alert-menu-panel .alert-item:last-child {
-    border-bottom: none;
-}
-
-.alert-item .alert-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-top: 4px;
-    flex-shrink: 0;
-}
-
-.alert-dot.critical { background: var(--ech-danger); }
-.alert-dot.warning { background: var(--ech-warning); }
-.alert-dot.info { background: var(--ech-info); }
-
-.column-panel {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: var(--ech-surface);
-    border: 1px solid var(--ech-border);
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    min-width: 160px;
-    z-index: 150;
-    display: none;
-    padding: 4px 0;
-}
-
-.column-panel.show {
-    display: block;
-}
-
-.column-panel .col-option {
-    padding: 6px 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: var(--fs-md);
-}
-
-.column-panel .col-option:hover {
-    background: var(--ech-primary-light);
-}
-
-@media (max-width: 1024px) {
-    .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: var(--ech-bottom-bar-height);
-        z-index: 500;
-        width: var(--ech-sidebar-width);
-        transform: translateX(-100%);
-        transition: transform 0.25s ease;
-        box-shadow: 4px 0 12px rgba(0,0,0,0.1);
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
-    }
-
-    .sidebar.collapsed {
-        width: var(--ech-sidebar-width);
-    }
-
-    .sidebar-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.3);
-        z-index: 499;
-        display: none;
-    }
-
-    .sidebar-overlay.show {
-        display: block;
-    }
-
-    .main-content {
-        width: 100%;
-    }
-
-    .top-bar-left .hamburger {
-        display: flex !important;
-    }
-
-    .p-timeline-event-opposite {
-        flex: 0 0 45px;
-        padding: 4px 4px 4px 6px;
-    }
-
-    .p-timeline-event-marker {
-        width: 22px;
-        height: 22px;
-    }
-
-    .p-timeline-event-marker .pi {
-        font-size: 0.615rem !important;
-    }
-
-    .tl-dept {
-        display: none;
-    }
-
-    .filter-bar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .search-input {
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .patient-meta {
-        font-size: var(--fs-xs);
-    }
-
-    .banner-row-1 {
-        gap: 4px;
-    }
-}
-
-@media (max-width: 600px) {
-    .p-timeline-event-opposite {
-        flex: 0 0 40px;
-        font-size: var(--fs-xs);
-    }
-
-    .p-timeline-event-separator {
-        flex: 0 0 24px;
-    }
-
-    .p-timeline-event-marker {
-        width: 20px;
-        height: 20px;
-    }
-
-    .safety-tags {
-        gap: 3px;
-    }
-
-    .p-tag-custom {
-        font-size: 0.692rem;
-        padding: 1px 5px;
-    }
-
-    .banner-row-2 {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-.hidden {
-    display: none !important;
-}
-
-.icon-md {
-    font-size: var(--fs-md);
-}
-
-.icon-lg {
-    font-size: var(--fs-md);
-}
-
-.text-primary-color {
-    color: var(--ech-primary);
-}
-
-.hamburger-btn {
-    cursor: pointer;
-    padding: 4px;
-}
-
 .tl-marker-icon {
     font-size: var(--fs-xs);
     color: white;
@@ -1135,113 +1378,16 @@ body {
 .p-timeline-event-marker[data-type-color="Care"] { background: #4caf50; border-color: #4caf50; }
 .p-timeline-event-marker[data-type-color="Vitals"] { background: #ff9800; border-color: #ff9800; }
 
-.text-xs {
-    font-size: var(--fs-xs);
-}
 
-.cursor-pointer {
-    cursor: pointer;
-}
+/* ============================================================================
+   15. PATIENT LIST (index.html)
+   --------------------------------------------------------------------------
+   Patient list table with toolbar, pagination, and status indicators.
+   Classes: .patient-table, .patient-row, .list-toolbar, .toolbar-*,
+            .col-room, .col-patient, .status-icon, etc.
+   ============================================================================ */
 
-.layout-no-sidebar {
-    grid-template-columns: 1fr;
-}
-
-.main-full-width {
-    margin-left: 0;
-}
-
-.tab-bar {
-    background: #eef1f5;
-    border-bottom: 1px solid var(--ech-border);
-    flex-shrink: 0;
-}
-
-.tab-bar-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 12px;
-    min-height: 38px;
-}
-
-.tab-bar-tabs {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    overflow-x: auto;
-}
-
-.tab-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 14px;
-    border: none;
-    background: transparent;
-    font-size: var(--fs-md);
-    color: var(--ech-text-secondary);
-    cursor: pointer;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s;
-    font-family: var(--ech-font-family);
-}
-
-.tab-btn:hover {
-    color: var(--ech-primary);
-    background: rgba(30, 136, 229, 0.06);
-}
-
-.tab-btn-active {
-    color: var(--ech-primary);
-    font-weight: 600;
-    border-bottom-color: var(--ech-primary);
-    background: rgba(30, 136, 229, 0.08);
-}
-
-.tab-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 20px;
-    height: 18px;
-    padding: 0 5px;
-    border-radius: 9px;
-    font-size: 0.769rem;
-    font-weight: 700;
-    background: var(--ech-primary);
-    color: white;
-}
-
-.tab-btn:not(.tab-btn-active) .tab-count {
-    background: #aab2bd;
-}
-
-.tab-bar-actions {
-    flex-shrink: 0;
-}
-
-.tab-config-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--ech-border);
-    border-radius: 4px;
-    background: var(--ech-surface);
-    color: var(--ech-text-secondary);
-    cursor: pointer;
-    transition: all 0.15s;
-}
-
-.tab-config-btn:hover {
-    border-color: var(--ech-primary);
-    color: var(--ech-primary);
-    background: var(--ech-primary-light);
-}
-
+/* --- 15a. List toolbar --- */
 .list-toolbar {
     background: var(--ech-surface);
     border-bottom: 1px solid var(--ech-border);
@@ -1385,6 +1531,7 @@ body {
     color: white;
 }
 
+/* --- 15b. Patient table --- */
 .patient-list-area {
     flex: 1;
     overflow: hidden;
@@ -1455,6 +1602,7 @@ body {
     background: var(--ech-hover);
 }
 
+/* --- 15c. Patient table column widths --- */
 .col-room { width: 70px; }
 .col-admission { width: 60px; text-align: center; }
 .col-patient { min-width: 200px; }
@@ -1467,6 +1615,7 @@ body {
 .col-status { width: 100px; text-align: center; }
 .col-actions { width: 40px; text-align: center; }
 
+/* --- 15d. Patient table cell styles --- */
 .room-number {
     font-weight: 700;
     color: var(--ech-primary);
@@ -1538,6 +1687,7 @@ body {
     color: #c62828;
 }
 
+/* --- 15e. Status indicators --- */
 .status-icons-group {
     display: flex;
     align-items: center;
@@ -1580,6 +1730,7 @@ body {
     background: var(--ech-danger);
 }
 
+/* --- 15f. Row actions --- */
 .row-action-btn {
     display: flex;
     align-items: center;
@@ -1657,75 +1808,13 @@ body {
     color: var(--ech-text-muted);
 }
 
-.action-bar {
-    background: var(--ech-surface);
-    border-bottom: 1px solid var(--ech-border);
-    padding: 4px 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-}
 
-.action-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    border: 1px solid var(--ech-border);
-    border-radius: 4px;
-    background: var(--ech-surface);
-    color: var(--ech-text);
-    font-size: var(--fs-md);
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-    white-space: nowrap;
-}
-
-.action-btn .pi {
-    font-size: 0.923rem;
-}
-
-.action-btn:hover {
-    background: var(--ech-primary-light);
-    border-color: var(--ech-primary);
-    color: var(--ech-primary-dark);
-}
-
-.action-btn-primary {
-    background: var(--ech-primary);
-    color: white;
-    border-color: var(--ech-primary);
-    font-weight: 600;
-}
-
-.action-btn-primary:hover {
-    background: var(--ech-primary-dark);
-    border-color: var(--ech-primary-dark);
-    color: white;
-}
-
-.action-bar-separator {
-    width: 1px;
-    height: 20px;
-    background: var(--ech-border);
-    flex-shrink: 0;
-}
-
-.module-content-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-}
-
-.clinical-danger { color: var(--ech-clinical-danger); }
-.clinical-warning { color: var(--ech-clinical-warning); }
-.clinical-info { color: var(--ech-clinical-info); }
-.p-tag-custom.clinical-danger,
-.p-tag-custom.clinical-warning,
-.p-tag-custom.clinical-info { color: white; }
-
+/* ============================================================================
+   16. PATIENT SUMMARY / PREVIOUS VISITS
+   --------------------------------------------------------------------------
+   Master-detail episode list with clinical detail panels.
+   Classes: .pv-split, .pv-episode-list, .pv-detail, .pv-panel, .pv-badge-*
+   ============================================================================ */
 .pv-split {
     display: flex;
     flex: 1;
@@ -1956,4 +2045,1901 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
+}
+
+
+/* ============================================================================
+   17. DOCUMENTS
+   --------------------------------------------------------------------------
+   Clinical document manager with tabs, table, and action buttons.
+   Classes: .doc-*, .col-doc-*
+   ============================================================================ */
+
+/* --- 17a. Filters bar & tabs --- */
+.doc-filters-bar {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 0 12px;
+    flex-shrink: 0;
+}
+
+.doc-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+}
+
+.doc-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    font-size: var(--fs-md);
+    color: var(--ech-primary);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    font-family: var(--ech-font-family);
+    font-weight: 500;
+}
+
+.doc-tab:hover {
+    background: rgba(30, 136, 229, 0.06);
+}
+
+.doc-tab-active {
+    font-weight: 600;
+    border-bottom-color: var(--ech-primary);
+    background: rgba(30, 136, 229, 0.08);
+}
+
+/* --- 17b. Document search --- */
+.doc-search-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.doc-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.doc-search-icon {
+    position: absolute;
+    left: 8px;
+    font-size: 0.923rem;
+    color: var(--ech-text-muted);
+    pointer-events: none;
+}
+
+.doc-search-input {
+    padding: 5px 12px 5px 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    width: 220px;
+    font-family: var(--ech-font-family);
+}
+
+.doc-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
+}
+
+.doc-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 11px;
+    font-size: 0.769rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+/* --- 17c. Table --- */
+.doc-table-area {
+    flex: 1;
+    overflow: hidden;
+    padding: 0;
+}
+
+.doc-table-scroll {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.doc-table {
+    border-collapse: collapse;
+    font-size: var(--fs-md);
+    width: 100%;
+    min-width: 900px;
+}
+
+.doc-table thead th {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+    font-weight: 600;
+    font-size: var(--fs-md);
+    padding: 6px 10px;
+    text-align: left;
+    border-bottom: 2px solid var(--ech-primary-border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+}
+
+.doc-table thead th:hover {
+    background: #d6e4f0;
+}
+
+.doc-table tbody td {
+    padding: 4px 10px;
+    border-bottom: 1px solid var(--ech-border-light);
+    vertical-align: middle;
+    font-size: var(--fs-md);
+}
+
+.doc-row {
+    transition: background 0.15s ease;
+}
+
+.doc-row:hover {
+    background: var(--ech-hover);
+}
+
+/* --- 17c. Column widths --- */
+.col-doc-name { min-width: 240px; }
+.col-doc-author { min-width: 130px; }
+.col-doc-dept { min-width: 130px; }
+.col-doc-type { min-width: 120px; }
+.col-doc-date { min-width: 130px; white-space: nowrap; }
+.col-doc-status { width: 80px; text-align: center; }
+.col-doc-access { width: 80px; text-align: center; }
+.col-doc-actions { width: 110px; text-align: center; }
+
+/* --- 17d. Document-specific elements --- */
+.doc-link {
+    color: var(--ech-primary);
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.doc-link:hover {
+    text-decoration: underline;
+    color: var(--ech-primary-dark);
+}
+
+.doc-status-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.doc-status-signed {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.doc-status-draft {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.doc-access-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.doc-access-active {
+    color: var(--ech-primary);
+    background: var(--ech-primary-light);
+}
+
+.doc-access-inactive {
+    color: var(--ech-text-muted);
+    opacity: 0.4;
+}
+
+.doc-actions-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.doc-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.923rem;
+    transition: all 0.15s;
+}
+
+.doc-action-download {
+    background: var(--ech-primary);
+    color: white;
+}
+
+.doc-action-download:hover {
+    background: var(--ech-primary-dark);
+}
+
+.doc-action-delete {
+    background: var(--ech-danger);
+    color: white;
+}
+
+.doc-action-delete:hover {
+    background: #d32f2f;
+}
+
+.doc-action-share {
+    background: var(--ech-success);
+    color: white;
+}
+
+.doc-action-share:hover {
+    background: #43a047;
+}
+
+
+/* ============================================================================
+   18. RISK FACTORS
+   --------------------------------------------------------------------------
+   10-tab risk factor center with severity indicators and summary cards.
+   Classes: .rf-*, .col-rf-*
+   ============================================================================ */
+
+/* --- 18a. Action bar & search --- */
+.rf-action-bar {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+.rf-action-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rf-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--ech-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: var(--ech-font-family);
+    transition: background 0.15s;
+}
+
+.rf-btn-primary:hover {
+    background: var(--ech-primary-dark);
+}
+
+.rf-btn-primary .pi {
+    font-size: 1rem;
+}
+
+.rf-action-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.rf-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.rf-search-icon {
+    position: absolute;
+    left: 8px;
+    font-size: 0.923rem;
+    color: var(--ech-text-muted);
+    pointer-events: none;
+}
+
+.rf-search-input {
+    padding: 5px 12px 5px 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    width: 240px;
+    font-family: var(--ech-font-family);
+}
+
+.rf-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
+}
+
+/* --- 18b. Tabs --- */
+.rf-tabs-bar {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 0 12px;
+    flex-shrink: 0;
+}
+
+.rf-tabs-row,
+.rf-tabs {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.rf-tabs-row::-webkit-scrollbar,
+.rf-tabs::-webkit-scrollbar {
+    height: 3px;
+}
+
+.rf-tabs-row::-webkit-scrollbar-thumb,
+.rf-tabs::-webkit-scrollbar-thumb {
+    background: var(--ech-border);
+    border-radius: 3px;
+}
+
+.rf-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    font-size: var(--fs-md);
+    color: var(--ech-primary);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    font-family: var(--ech-font-family);
+    font-weight: 500;
+    gap: 5px;
+}
+
+.rf-tab:hover {
+    background: rgba(30, 136, 229, 0.06);
+}
+
+.rf-tab.rf-tab-active {
+    font-weight: 600;
+    border-bottom-color: var(--ech-primary);
+    background: rgba(30, 136, 229, 0.08);
+}
+
+.rf-tab .rf-tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 16px;
+    padding: 0 5px;
+    border-radius: 8px;
+    font-size: 0.692rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+.rf-tab.rf-tab-active .rf-tab-count {
+    background: var(--ech-primary-dark);
+}
+
+/* --- 18c. Content area --- */
+.rf-content-area {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.rf-tab-panel {
+    display: none;
+    flex: 1;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.rf-tab-panel.rf-tab-panel-active {
+    display: flex;
+}
+
+/* --- 18b. Section headers (Active / Inactive) --- */
+.rf-section-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    font-size: var(--fs-md);
+    font-weight: 700;
+    color: var(--ech-text);
+    background: var(--ech-bg);
+    border-bottom: 1px solid var(--ech-border-light);
+    flex-shrink: 0;
+}
+
+.rf-section-header .pi {
+    font-size: 0.923rem;
+}
+
+.rf-section-header-active {
+    color: var(--ech-success);
+}
+
+.rf-section-header-active .pi {
+    color: var(--ech-success);
+}
+
+.rf-section-header-inactive {
+    color: var(--ech-text-secondary);
+}
+
+.rf-section-header-inactive .pi {
+    color: var(--ech-text-muted);
+}
+
+.rf-section-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 9px;
+    font-size: 0.692rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+    margin-left: 4px;
+}
+
+.rf-section-header-inactive .rf-section-count {
+    background: var(--ech-text-muted);
+}
+
+/* --- 18c. Risk factors table --- */
+.rf-table-scroll {
+    overflow: auto;
+    flex: 1;
+}
+
+.rf-table {
+    border-collapse: collapse;
+    font-size: var(--fs-md);
+    width: 100%;
+    min-width: 1000px;
+}
+
+.rf-table thead th {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+    font-weight: 600;
+    font-size: var(--fs-md);
+    padding: 5px 10px;
+    text-align: left;
+    border-bottom: 2px solid var(--ech-primary-border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    user-select: none;
+}
+
+.rf-table tbody td {
+    padding: 3px 10px;
+    border-bottom: 1px solid var(--ech-border-light);
+    vertical-align: middle;
+    font-size: var(--fs-md);
+    height: 32px;
+}
+
+.rf-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.rf-table tbody tr:hover {
+    background: var(--ech-hover);
+}
+
+/* --- 18d. Column widths --- */
+.col-rf-type { min-width: 90px; }
+.col-rf-group { min-width: 110px; }
+.col-rf-risk { min-width: 200px; }
+.col-rf-catalogued { min-width: 80px; text-align: center; }
+.col-rf-comment { min-width: 160px; }
+.col-rf-author { min-width: 120px; }
+.col-rf-date { min-width: 100px; white-space: nowrap; }
+.col-rf-severity { min-width: 80px; text-align: center; }
+.col-rf-alert { min-width: 50px; text-align: center; }
+.col-rf-actions { min-width: 70px; text-align: center; }
+
+/* --- 18e. Severity tags --- */
+.rf-severity-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.rf-severity-severe {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.rf-severity-high {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.rf-severity-moderate {
+    background: #fff8e1;
+    color: #f9a825;
+}
+
+.rf-severity-low {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.rf-severity-none {
+    background: var(--ech-bg);
+    color: var(--ech-text-secondary);
+}
+
+/* --- 18f. Alert indicators --- */
+.rf-alert-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.923rem;
+}
+
+.rf-alert-active {
+    color: var(--ech-danger);
+    background: #ffebee;
+}
+
+.rf-alert-inactive {
+    color: var(--ech-text-muted);
+    opacity: 0.4;
+}
+
+.rf-catalogued-yes {
+    color: var(--ech-success);
+    font-weight: 600;
+}
+
+.rf-catalogued-no {
+    color: var(--ech-text-muted);
+}
+
+/* --- 18g. Row actions --- */
+.rf-actions-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.rf-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.923rem;
+    transition: all 0.15s;
+    background: transparent;
+    color: var(--ech-text-secondary);
+}
+
+.rf-action-btn:hover {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary);
+}
+
+.rf-action-edit:hover {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary);
+}
+
+.rf-action-deactivate:hover {
+    background: #ffebee;
+    color: var(--ech-danger);
+}
+
+/* --- 18h. Row states --- */
+.rf-row-inactive {
+    opacity: 0.55;
+}
+
+.rf-row-inactive td {
+    color: var(--ech-text-muted) !important;
+}
+
+.rf-row-inactive .rf-severity-tag {
+    background: var(--ech-bg);
+    color: var(--ech-text-muted);
+}
+
+.rf-row-inactive .rf-alert-icon {
+    opacity: 0.3;
+}
+
+.rf-row-inactive .rf-action-btn {
+    opacity: 0.5;
+}
+
+/* --- 18i. Empty states --- */
+.rf-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    color: var(--ech-text-muted);
+    font-size: var(--fs-md);
+    font-style: italic;
+}
+
+.rf-empty-state .pi {
+    font-size: 1.2rem;
+}
+
+.rf-no-results {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    color: var(--ech-text-muted);
+    font-size: var(--fs-md);
+    gap: 8px;
+}
+
+/* --- 18j. Summary cards --- */
+.rf-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+    padding: 10px 12px;
+    overflow-y: auto;
+}
+
+.rf-summary-card {
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.rf-summary-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-color: var(--ech-primary-border);
+}
+
+.rf-summary-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.rf-summary-card-title {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rf-summary-card-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    font-size: 0.692rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+.rf-summary-card-body {
+    font-size: var(--fs-md);
+    color: var(--ech-text-secondary);
+}
+
+.rf-summary-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    border-bottom: 1px solid var(--ech-border-light);
+}
+
+.rf-summary-item:last-child {
+    border-bottom: none;
+}
+
+.rf-summary-item .rf-severity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.rf-severity-dot.dot-severe { background: #c62828; }
+.rf-severity-dot.dot-high { background: #e65100; }
+.rf-severity-dot.dot-moderate { background: #f9a825; }
+.rf-severity-dot.dot-low { background: #2e7d32; }
+
+.rf-summary-card.rf-summary-danger {
+    border-left: 3px solid var(--ech-danger);
+}
+
+.rf-summary-card.rf-summary-warning {
+    border-left: 3px solid var(--ech-warning);
+}
+
+.rf-summary-card.rf-summary-info {
+    border-left: 3px solid var(--ech-primary);
+}
+
+.rf-summary-card.rf-summary-success {
+    border-left: 3px solid var(--ech-success);
+}
+
+
+/* ============================================================================
+   19. MEDICATION (MAR)
+   --------------------------------------------------------------------------
+   Medication Administration Record grid with frozen columns and time slots.
+   Classes: .mar-*, .module-content-area.mar-mode
+   ============================================================================ */
+
+/* --- 19a. Action & filter bars --- */
+.mar-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.mar-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+}
+
+.mar-filter-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.mar-date-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mar-date-nav .date-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: var(--ech-font-family);
+}
+
+.mar-date-nav .date-nav-btn:hover {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
+    color: var(--ech-primary-dark);
+}
+
+.mar-date-nav .date-label {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    white-space: nowrap;
+}
+
+.mar-legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    flex-shrink: 0;
+}
+
+.mar-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.mar-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.mar-legend-swatch.given { background: #e8f5e9; border: 1px solid #a5d6a7; }
+.mar-legend-swatch.due { background: #ffffff; border: 1px dashed var(--ech-border); }
+.mar-legend-swatch.hold { background: #fff3e0; border: 1px solid #ffcc80; }
+.mar-legend-swatch.not-given { background: #ffebee; border: 1px solid #ef9a9a; }
+.mar-legend-swatch.cancelled { background: #f5f5f5; border: 1px solid #bdbdbd; }
+
+/* --- 19b. Grid layout --- */
+.mar-grid-wrapper {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px 10px;
+}
+
+.mar-table-container {
+    flex: 1;
+    overflow: auto;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    position: relative;
+}
+
+.mar-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: max-content;
+    min-width: 100%;
+    font-size: var(--fs-md);
+}
+
+.mar-table thead th {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+    font-weight: 600;
+    font-size: var(--fs-xs);
+    padding: 6px 10px;
+    text-align: center;
+    border-bottom: 2px solid var(--ech-primary-border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.mar-table thead th.mar-frozen {
+    position: sticky;
+    left: 0;
+    z-index: 12;
+    text-align: left;
+    background: var(--ech-primary-light);
+    border-right: 2px solid var(--ech-primary-border);
+}
+
+.mar-table thead th.mar-frozen-med {
+    min-width: 320px;
+    max-width: 320px;
+}
+
+.mar-table thead th.mar-frozen-dose {
+    min-width: 120px;
+    max-width: 120px;
+    left: 320px;
+}
+
+.mar-table thead th.mar-frozen-freq {
+    min-width: 60px;
+    max-width: 60px;
+    left: 440px;
+}
+
+.mar-table thead th.mar-frozen-route {
+    min-width: 60px;
+    max-width: 60px;
+    left: 500px;
+}
+
+.mar-table thead th.mar-frozen-actions {
+    min-width: 60px;
+    max-width: 60px;
+    left: 560px;
+}
+
+.mar-table tbody td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--ech-border-light);
+    vertical-align: middle;
+    text-align: center;
+    font-size: var(--fs-md);
+    height: 48px;
+}
+
+.mar-table tbody td.mar-frozen {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: var(--ech-surface);
+    text-align: left;
+    border-right: 2px solid var(--ech-border);
+}
+
+.mar-table tbody td.mar-frozen-med {
+    min-width: 320px;
+    max-width: 320px;
+}
+
+.mar-table tbody td.mar-frozen-dose {
+    min-width: 120px;
+    max-width: 120px;
+    left: 320px;
+}
+
+.mar-table tbody td.mar-frozen-freq {
+    min-width: 60px;
+    max-width: 60px;
+    left: 440px;
+}
+
+.mar-table tbody td.mar-frozen-route {
+    min-width: 60px;
+    max-width: 60px;
+    left: 500px;
+}
+
+.mar-table tbody td.mar-frozen-actions {
+    min-width: 60px;
+    max-width: 60px;
+    left: 560px;
+}
+
+.mar-table tbody tr {
+    transition: background 0.15s;
+}
+
+.mar-table tbody tr:hover td {
+    background: var(--ech-hover);
+}
+
+.mar-table tbody tr:hover td.mar-frozen {
+    background: var(--ech-hover);
+}
+
+/* --- 19c. Time slot columns --- */
+.mar-time-col {
+    min-width: 54px;
+}
+
+.mar-time-header {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+}
+
+/* --- 19d. Medication info cell --- */
+.mar-med-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mar-med-name {
+    font-weight: 600;
+    color: var(--ech-text);
+    font-size: var(--fs-md);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+
+.mar-med-detail {
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+
+.mar-med-route {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.769rem;
+    color: var(--ech-text-muted);
+    margin-top: 1px;
+}
+
+.mar-dose-info {
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    font-weight: 500;
+}
+
+/* --- 19e. Status cells --- */
+.mar-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    min-height: 26px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    cursor: default;
+}
+
+.mar-cell-given {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+}
+
+.mar-cell-due {
+    background: var(--ech-surface);
+    border: 1px dashed var(--ech-border);
+    color: var(--ech-text-muted);
+}
+
+.mar-cell-hold {
+    background: #fff3e0;
+    border: 1px solid #ffcc80;
+    color: #e65100;
+}
+
+.mar-cell-not-given {
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: #c62828;
+}
+
+.mar-cell-cancelled {
+    background: #f5f5f5;
+    border: 1px solid #bdbdbd;
+    color: var(--ech-text-muted);
+    text-decoration: line-through;
+}
+
+.mar-cell-empty {
+    color: var(--ech-text-muted);
+}
+
+.mar-cell-sub {
+    display: block;
+    font-size: 0.769rem;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.mar-high-alert {
+    color: var(--ech-warning);
+    font-size: 0.923rem;
+    margin-right: 2px;
+}
+
+.mar-cell .mar-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 3px;
+    flex-shrink: 0;
+}
+
+.mar-dot.dot-given { background: #2e7d32; }
+.mar-dot.dot-due { background: var(--ech-text-muted); }
+.mar-dot.dot-hold { background: #e65100; }
+
+/* --- 19f. Row actions --- */
+.mar-row-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mar-row-actions-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    font-size: 0.923rem;
+    transition: all 0.15s;
+}
+
+.mar-row-actions-btn:hover {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary);
+}
+
+.module-content-area.mar-mode {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- 19g. MAR search --- */
+.mar-search-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.mar-search-icon {
+    position: absolute;
+    left: 8px;
+    font-size: 0.923rem;
+    color: var(--ech-text-muted);
+    pointer-events: none;
+}
+
+.mar-search-input {
+    padding: 4px 8px 4px 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    min-width: 160px;
+    max-width: 220px;
+    font-family: var(--ech-font-family);
+}
+
+.mar-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.15);
+}
+
+.mar-filter-separator {
+    width: 1px;
+    height: 20px;
+    background: var(--ech-border);
+    flex-shrink: 0;
+}
+
+
+/* ============================================================================
+   20. CARE PLANS (CAR)
+   --------------------------------------------------------------------------
+   Care Administration Record grid with frozen columns and date navigation.
+   Classes: .car-*, .module-content-area.car-mode
+   ============================================================================ */
+
+/* --- 20a. Action & filter bars --- */
+.car-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.car-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.car-date-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.car-date-nav .date-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: var(--ech-font-family);
+}
+
+.car-date-nav .date-nav-btn:hover {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
+    color: var(--ech-primary-dark);
+}
+
+.car-date-nav .date-label {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    white-space: nowrap;
+}
+
+.car-legend {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+}
+
+.car-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.car-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.car-legend-dot.completed { background: var(--ech-success); }
+.car-legend-dot.pending { background: var(--ech-text-muted); }
+.car-legend-dot.overdue { background: var(--ech-danger); }
+
+/* --- 20b. Grid layout --- */
+.car-grid-wrapper {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px 10px;
+}
+
+.car-table-container {
+    flex: 1;
+    overflow: auto;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    position: relative;
+}
+
+.car-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: max-content;
+    min-width: 100%;
+    font-size: var(--fs-md);
+}
+
+.car-table thead th {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+    font-weight: 600;
+    font-size: var(--fs-xs);
+    padding: 6px 10px;
+    text-align: center;
+    border-bottom: 2px solid var(--ech-primary-border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.car-table thead th.car-frozen {
+    position: sticky;
+    left: 0;
+    z-index: 12;
+    text-align: left;
+    background: var(--ech-primary-light);
+    min-width: 340px;
+    max-width: 340px;
+    border-right: 2px solid var(--ech-primary-border);
+}
+
+.car-table tbody td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--ech-border-light);
+    vertical-align: middle;
+    text-align: center;
+    font-size: var(--fs-md);
+    height: 48px;
+}
+
+.car-table tbody td.car-frozen {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: var(--ech-surface);
+    text-align: left;
+    min-width: 340px;
+    max-width: 340px;
+    border-right: 2px solid var(--ech-border);
+}
+
+.car-table tbody tr {
+    transition: background 0.15s;
+}
+
+.car-table tbody tr:hover td {
+    background: var(--ech-hover);
+}
+
+.car-table tbody tr:hover td.car-frozen {
+    background: var(--ech-hover);
+}
+
+/* --- 20c. Time slot columns --- */
+.car-time-col {
+    min-width: 54px;
+}
+
+.car-time-header {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+}
+
+/* --- 20d. Task info cell --- */
+.car-task-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.car-task-name {
+    font-weight: 600;
+    color: var(--ech-text);
+    font-size: var(--fs-md);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 320px;
+}
+
+.car-task-detail {
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 320px;
+}
+
+.car-task-freq {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.769rem;
+    color: var(--ech-text-muted);
+    margin-top: 1px;
+}
+
+/* --- 20e. Status cells --- */
+.car-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 54px;
+    min-height: 30px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    cursor: default;
+}
+
+.car-cell-completed {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+}
+
+.car-cell-pending {
+    background: #f5f5f5;
+    border: 1px dashed var(--ech-border);
+    color: var(--ech-text-muted);
+}
+
+.car-cell-overdue {
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: #c62828;
+}
+
+.car-cell-empty {
+    color: var(--ech-text-muted);
+}
+
+.car-cell .car-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 4px;
+    flex-shrink: 0;
+}
+
+.car-dot.dot-completed { background: var(--ech-success); }
+.car-dot.dot-pending { background: var(--ech-text-muted); }
+.car-dot.dot-overdue { background: var(--ech-danger); }
+
+.module-content-area.car-mode {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ============================================================================
+   21. USER MENUS & OVERLAYS
+   --------------------------------------------------------------------------
+   User profile dropdown, alert notification panel, and overlay backdrops.
+   Classes: .user-menu-*, .alert-menu-*, .user-menu-overlay
+   ============================================================================ */
+.user-menu-wrapper {
+    position: relative;
+}
+
+.user-menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ech-primary);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
+
+.user-menu-toggle:hover {
+    background: var(--ech-primary-light);
+}
+
+.user-menu-toggle .pi {
+    font-size: 1.25rem;
+}
+
+.user-menu-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    min-width: 260px;
+    z-index: 600;
+    display: none;
+    padding: 4px 0;
+}
+
+.user-menu-dropdown.show {
+    display: block;
+}
+
+.user-menu-dropdown .menu-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    color: var(--ech-text);
+    font-size: 1rem;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s;
+}
+
+.user-menu-dropdown .menu-option:hover {
+    background: var(--ech-hover);
+}
+
+.user-menu-dropdown .menu-option .pi {
+    color: var(--ech-primary);
+    width: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.user-menu-dropdown .menu-option.menu-option-danger {
+    color: var(--ech-danger);
+}
+
+.user-menu-dropdown .menu-option.menu-option-danger .pi {
+    color: var(--ech-danger);
+}
+
+.user-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 599;
+    display: none;
+}
+
+.user-menu-overlay.show {
+    display: block;
+}
+
+.alert-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 300;
+    display: none;
+}
+
+.alert-menu-overlay.show {
+    display: block;
+}
+
+.alert-menu-panel {
+    position: absolute;
+    top: 50px;
+    right: 60px;
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.alert-menu-panel .alert-header {
+    padding: 10px 12px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--ech-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.alert-menu-panel .alert-item {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--ech-border-light);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: var(--fs-md);
+}
+
+.alert-menu-panel .alert-item:last-child {
+    border-bottom: none;
+}
+
+.alert-item .alert-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.alert-dot.critical { background: var(--ech-danger); }
+.alert-dot.warning { background: var(--ech-warning); }
+.alert-dot.info { background: var(--ech-info); }
+
+
+/* ============================================================================
+   22. UTILITY CLASSES
+   --------------------------------------------------------------------------
+   Generic helper classes used across the project.
+   ============================================================================ */
+.hidden {
+    display: none !important;
+}
+
+.icon-md {
+    font-size: var(--fs-md);
+}
+
+.icon-lg {
+    font-size: var(--fs-md);
+}
+
+.text-primary-color {
+    color: var(--ech-primary);
+}
+
+.text-xs {
+    font-size: var(--fs-xs);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+
+/* ============================================================================
+   23. RESPONSIVE — TABLET (max-width: 1024px)
+   --------------------------------------------------------------------------
+   Sidebar becomes fixed overlay, filter bars stack, tables adapt.
+   ============================================================================ */
+@media (max-width: 1024px) {
+
+    /* --- Sidebar --- */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: var(--ech-bottom-bar-height);
+        z-index: 500;
+        width: var(--ech-sidebar-width);
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        box-shadow: 4px 0 12px rgba(0,0,0,0.1);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar.collapsed {
+        width: var(--ech-sidebar-width);
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 499;
+        display: none;
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .top-bar-left .hamburger {
+        display: flex !important;
+    }
+
+    /* --- Timeline --- */
+    .p-timeline-event-opposite {
+        flex: 0 0 45px;
+        padding: 4px 4px 4px 6px;
+    }
+
+    .p-timeline-event-marker {
+        width: 22px;
+        height: 22px;
+    }
+
+    .p-timeline-event-marker .pi {
+        font-size: 0.615rem !important;
+    }
+
+    .tl-dept {
+        display: none;
+    }
+
+    /* --- Filter bar --- */
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    /* --- Clinical banner --- */
+    .patient-meta {
+        font-size: var(--fs-xs);
+    }
+
+    .banner-row-1 {
+        gap: 4px;
+    }
+
+    /* --- Documents --- */
+    .doc-tabs-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        padding: 6px 0;
+    }
+
+    .doc-search-input,
+    .module-search-input {
+        width: 100%;
+    }
+
+    .doc-search-area,
+    .module-search-area {
+        width: 100%;
+    }
+
+    .doc-search-wrapper,
+    .module-search-wrapper {
+        flex: 1;
+    }
+
+    /* --- Risk factors --- */
+    .rf-action-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        padding: 6px 10px;
+    }
+
+    .rf-action-bar .action-bar-left,
+    .rf-action-bar .action-bar-right {
+        width: 100%;
+    }
+
+    .rf-search-input {
+        width: 100%;
+    }
+
+    .rf-search-wrapper {
+        flex: 1;
+    }
+
+    .module-tabs-row .module-tab {
+        padding: 6px 10px;
+        font-size: var(--fs-xs);
+    }
+
+    .rf-summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ============================================================================
+   24. RESPONSIVE — MOBILE (max-width: 600px)
+   --------------------------------------------------------------------------
+   Compact layout for small screens.
+   ============================================================================ */
+@media (max-width: 600px) {
+
+    /* --- Timeline --- */
+    .p-timeline-event-opposite {
+        flex: 0 0 40px;
+        font-size: var(--fs-xs);
+    }
+
+    .p-timeline-event-separator {
+        flex: 0 0 24px;
+    }
+
+    .p-timeline-event-marker {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* --- Clinical banner --- */
+    .safety-tags {
+        gap: 3px;
+    }
+
+    .p-tag-custom {
+        font-size: 0.692rem;
+        padding: 1px 5px;
+    }
+
+    .banner-row-2 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* --- Risk factors --- */
+    .rf-action-bar {
+        padding: 4px 8px;
+    }
+
+    .rf-btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .module-tab {
+        padding: 5px 8px;
+        font-size: var(--fs-xs);
+    }
+
+    .rf-table {
+        min-width: 800px;
+    }
+
+    .col-rf-comment {
+        display: none;
+    }
+
+    .col-rf-catalogued {
+        display: none;
+    }
 }
