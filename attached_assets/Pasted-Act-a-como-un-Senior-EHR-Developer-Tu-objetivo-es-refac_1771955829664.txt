@@ -1,0 +1,55 @@
+Actúa como un Senior EHR Developer. Tu objetivo es refactorizar previous-visits.html para crear una vista de Resumen de Visitas Previas utilizando un patrón de diseño "Master-Detail" con PrimeNG 15.
+
+
+
+1. Consistencia del Shell Modular
+
+CSS y Tipografía: Utiliza estrictamente el CSS existente. 
+
+Inyección: No alteres el Sidebar, Header ni el Clinical Banner; deben cargarse a través de layout.js.
+
+2. Barra de Acciones (Action Bar)
+
+Añade entre el banner del paciente y el contenido principal:
+
+
+
+Botones: "Generate Summary" (Icono: pi pi-file-edit) y "Print Episode Report" (Icono: pi pi-print).
+
+Estilo: Usa la clase .action-btn para botones compactos y profesionales.
+
+3. Diseño Maestro-Detalle (Split Layout)
+
+Divide el área de contenido principal (.content) en dos columnas usando PrimeFlex:
+
+
+
+Izquierda (30% - Lista de Episodios): * Usa un componente tipo p-listbox o una lista vertical de alta densidad.
+
+Cada elemento debe mostrar la Fecha y el Tipo de Visita (ej: "30/01/24 CARD", "08/09/25 CARD").
+
+Derecha (70% - Detalle del Episodio): * Un contenedor con scroll independiente que organice la información en Paneles Clínicos (p-panel o tarjetas con bordes finos).
+
+4. Componentes del Detalle Clínico
+
+Dentro de la columna derecha, implanta las siguientes secciones de datos recuperados del EMR antiguo:
+
+
+
+Active Alerts & Risks: Lista de alertas con nombre, fecha y médico responsable (ej: "Latex Allergy (23/09/2024) - Dr. Rory Rogers").
+
+Active Problems / Diagnoses: Tabla con Código (ej: A029), Descripción y Estado (badge verde para "Active", gris para "Resolved").
+
+Active Medication: Lista compacta con Nombre, Dosis y etiqueta roja de "High Risk" si aplica, incluyendo la hora de la última dosis.
+
+24h Clinical Snapshot: Una cuadrícula (Grid) de alta densidad con:
+
+BP (con flecha de tendencia), Temp, HR, Urine, SpO2, Balance.
+
+Pending Tests & Abnormal Results: Lista de pruebas resaltando en rojo los resultados "Abnormal" o "Pending".
+
+5. Estética y Densidad
+
+Usa colores semánticos: Verde para éxitos/activo, Rojo para alertas/anomalías, Azul para datos primarios.
+
+Asegura que el padding entre paneles sea mínimo para permitir ver el "Snapshot" y los "Problemas" en la misma pantalla de 14''.
