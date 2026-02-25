@@ -12,30 +12,66 @@
 
 <div class="layout">
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- Angular: <app-sidebar> Standalone Component -->
     <aside class="sidebar collapsed" id="sidebar-component"></aside>
 
     <main class="main-content">
+        <!-- Angular: <app-header> Standalone Component -->
         <header class="top-bar" id="header-component"></header>
+        <!-- Angular: <app-clinical-banner> Standalone Component -->
         <section class="clinical-banner" id="banner-component"></section>
 
+        <!-- Angular: Action bar with p-button components for exam creation -->
+        <!-- PrimeFlex: flex row with gap for high-density action buttons -->
         <section class="action-bar" id="action-bar-component">
-            <!-- Module-specific action buttons go here later -->
+            <button class="action-btn action-btn-primary" data-i18n="CO.CREATE_RADIOLOGY" onclick="handleCreateExam('radiology')">
+                <i class="pi pi-plus"></i>
+                <span>Create Radiology Exam</span>
+            </button>
+            <button class="action-btn action-btn-primary" data-i18n="CO.CREATE_LABORATORY" onclick="handleCreateExam('laboratory')">
+                <i class="pi pi-plus"></i>
+                <span>Create Laboratory Exam</span>
+            </button>
+            <button class="action-btn action-btn-primary" data-i18n="CO.CREATE_PATHOLOGY" onclick="handleCreateExam('pathology')">
+                <i class="pi pi-plus"></i>
+                <span>Create Pathology Exam</span>
+            </button>
         </section>
 
+        <!-- Filter bar placeholder for future search/filter controls -->
         <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
-            <!-- Module-specific filters go here later -->
         </section>
 
-        <section class="module-content-area" id="module-content">
-            <div class="flex align-items-center justify-content-center" style="height:200px;color:var(--ech-text-secondary)">
-                <i class="pi pi-search mr-2" style="font-size:1.5rem"></i>
-                <span class="fs-md" data-i18n="MODULE.DIAGNOSTIC_TESTS_PLACEHOLDER">Diagnostic Tests — content area</span>
+        <!-- Angular: <app-clinical-orders-table> using p-table with p-datatable-sm -->
+        <!-- PrimeFlex: flex-1 overflow container for scrollable high-density data grid -->
+        <section class="co-table-area" id="module-content">
+            <div class="co-table-scroll">
+                <!-- Angular: <p-table [value]="orders" styleClass="p-datatable-sm"> -->
+                <table class="co-table">
+                    <thead>
+                        <tr>
+                            <!-- data-field maps to ClinicalOrderDTO fields -->
+                            <th class="col-co-date" data-i18n="CO.COL_REQUEST_DATE">Request Date</th>
+                            <th class="col-co-request" data-i18n="CO.COL_REQUEST">Request</th>
+                            <th class="col-co-comment" data-i18n="CO.COL_COMMENT">Comment</th>
+                            <th class="col-co-see-request" data-i18n="CO.COL_SEE_REQUEST">See Request</th>
+                            <th class="col-co-author" data-i18n="CO.COL_AUTHOR">Author</th>
+                            <th class="col-co-result-date" data-i18n="CO.COL_RESULT_DATE">Result Date</th>
+                            <th class="col-co-see-result" data-i18n="CO.COL_SEE_RESULT">See Result</th>
+                            <th class="col-co-access-web" data-i18n="CO.COL_ACCESS_WEB">Access Web</th>
+                            <th class="col-co-action" data-i18n="CO.COL_ACTION">Action</th>
+                        </tr>
+                    </thead>
+                    <!-- Angular: <ng-template pTemplate="body" let-order> -->
+                    <tbody id="ordersTableBody"></tbody>
+                </table>
             </div>
         </section>
     </main>
 </div>
 
 <script src="layout.js"></script>
+<script src="diagnostic-tests.js"></script>
 
 </body>
 </html>

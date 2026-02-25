@@ -25,7 +25,8 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── previous-visits.html    # Previous Visits — Master-Detail split layout with episode list + clinical panels
 ├── risk-factors.html       # Risk Factors module — 10-tab risk control center with high-density tables
 ├── risk-factors.js         # Risk Factors logic — mock data (33 records), tab switching, search, status toggle
-├── diagnostic-tests.html   # Diagnostic Tests module (empty shell)
+├── diagnostic-tests.html   # Diagnostic Tests / Clinical Orders — order list with date tags, result indicators, icon actions
+├── diagnostic-tests.js     # Clinical Orders logic — mock data (4 orders), table rendering, action handlers
 ├── documents.html          # Documents module — clinical file manager with tab filters and document table
 ├── documents.js            # Documents logic — mock data, filtering, search, table rendering
 ├── medication.html         # Medication Administration Record (MAR) — full MAR grid with frozen columns, time slots, status cells
@@ -63,6 +64,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 18. Risk Factors
 19. Medication (MAR)
 20. Care Plans (CAR)
+20½. Clinical Orders / Diagnostic Tests
 21. User Menus & Overlays
 22. Utility Classes
 23. Responsive — Tablet (max-width: 1024px)
@@ -116,6 +118,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-25: Implemented Clinical Orders (Diagnostic Tests) module — orders table with green date tags, result indicators, icon action buttons, and 3 exam creation buttons
 - 2026-02-24: **CSS Consolidation** — Merged all CSS into single `theme-overrides.css` with 24 documented sections and TOC
 - 2026-02-24: Deleted `documents.css` and `risk-factors.css` (merged into theme-overrides.css)
 - 2026-02-24: Removed inline `<style>` blocks from `medication.html` and `care-plans.html`

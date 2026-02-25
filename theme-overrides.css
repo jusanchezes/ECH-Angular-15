@@ -62,6 +62,11 @@
     --ech-clinical-danger: #ff4d4f;
     --ech-clinical-warning: #faad14;
     --ech-clinical-info: #1976d2;
+    --ech-clinical-success: #4caf50;
+    --ech-clinical-success-dark: #2e7d32;
+    --ech-clinical-success-light: #e8f5e9;
+    --ech-clinical-orange: #ff9800;
+    --ech-clinical-orange-dark: #f57c00;
     --ech-font-family: "Segoe UI", Roboto, Arial, sans-serif;
     --fs-xl: 2.5rem;
     --fs-lg: 2.0rem;
@@ -3546,6 +3551,154 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+}
+
+
+/* ============================================================================
+   20½. CLINICAL ORDERS (DIAGNOSTIC TESTS)
+   --------------------------------------------------------------------------
+   Clinical orders list with date tags, icon actions, and result indicators.
+   Follows the same table pattern as Documents (section 17).
+   Classes: .co-*, .col-co-*
+   ============================================================================ */
+
+/* --- 20½a. Table container --- */
+.co-table-area {
+    flex: 1;
+    overflow: hidden;
+    padding: 0;
+}
+
+.co-table-scroll {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.co-table {
+    border-collapse: collapse;
+    font-size: var(--fs-md);
+    width: 100%;
+    min-width: 900px;
+}
+
+/* --- 20½b. Table header --- */
+.co-table thead th {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+    font-weight: 600;
+    font-size: var(--fs-md);
+    padding: 6px 10px;
+    text-align: left;
+    border-bottom: 2px solid var(--ech-primary-border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+/* --- 20½c. Table body --- */
+.co-table tbody td {
+    padding: 4px 10px;
+    border-bottom: 1px solid var(--ech-border-light);
+    vertical-align: middle;
+    font-size: var(--fs-md);
+}
+
+.co-row {
+    transition: background 0.15s ease;
+}
+
+.co-row:hover {
+    background: var(--ech-hover);
+}
+
+/* --- 20½d. Column widths --- */
+.col-co-date        { width: 100px; text-align: center; }
+.col-co-request     { min-width: 220px; }
+.col-co-comment     { min-width: 160px; }
+.col-co-see-request { width: 85px; text-align: center; }
+.col-co-author      { min-width: 130px; }
+.col-co-result-date { min-width: 130px; }
+.col-co-see-result  { width: 80px; text-align: center; }
+.col-co-access-web  { width: 85px; text-align: center; }
+.col-co-action      { width: 60px; text-align: center; }
+
+/* --- 20½e. Request date tag (green pill) --- */
+.co-date-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    background: var(--ech-clinical-success);
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+/* --- 20½f. Result date text (green highlight) --- */
+.co-result-date-text {
+    color: var(--ech-clinical-success-dark);
+    font-weight: 500;
+    background: var(--ech-clinical-success-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: var(--fs-xs);
+    white-space: nowrap;
+}
+
+/* --- 20½g. Icon action buttons --- */
+.co-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.923rem;
+    transition: all 0.15s;
+}
+
+.co-icon-btn-blue {
+    background: var(--ech-primary);
+    color: #ffffff;
+}
+
+.co-icon-btn-blue:hover {
+    background: var(--ech-primary-dark);
+}
+
+.co-icon-btn-orange {
+    background: var(--ech-clinical-orange);
+    color: #ffffff;
+}
+
+.co-icon-btn-orange:hover {
+    background: var(--ech-clinical-orange-dark);
+}
+
+.co-icon-btn-green {
+    background: var(--ech-success);
+    color: #ffffff;
+}
+
+.co-icon-btn-green:hover {
+    background: var(--ech-clinical-success);
+}
+
+.co-icon-btn-link {
+    background: transparent;
+    color: var(--ech-primary);
+    border: 1px solid var(--ech-border);
+}
+
+.co-icon-btn-link:hover {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
 }
 
 
