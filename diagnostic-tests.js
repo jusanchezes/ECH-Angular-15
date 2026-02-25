@@ -58,18 +58,37 @@ const ORDERS_DATA = [
     }
 ];
 
-/**
- * Renders the clinical orders table body.
- * Angular equivalent: *ngFor directive with ng-template for each column.
- */
+let activeTestTypeFilter = 'all';
+
+const TEST_TYPE_LABELS = {
+    laboratory: 'Laboratory',
+    radiology: 'Radiology',
+    pathology: 'Pathology'
+};
+
+function setTestTypeFilter(btn) {
+    const group = btn.closest('.select-button-group');
+    group.querySelectorAll('.sb-option').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTestTypeFilter = btn.dataset.value;
+    renderOrdersTable();
+}
+
+function getFilteredOrders() {
+    if (activeTestTypeFilter === 'all') return ORDERS_DATA;
+    return ORDERS_DATA.filter(o => o.type === activeTestTypeFilter);
+}
+
 function renderOrdersTable() {
     const tbody = document.getElementById('ordersTableBody');
     if (!tbody) return;
 
-    if (ORDERS_DATA.length === 0) {
+    const filtered = getFilteredOrders();
+
+    if (filtered.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="9" style="text-align:center;padding:40px;color:var(--ech-text-secondary)">
+                <td colspan="10" style="text-align:center;padding:40px;color:var(--ech-text-secondary)">
                     <i class="pi pi-inbox" style="font-size:2rem;display:block;margin-bottom:8px"></i>
                     <span data-i18n="CO.EMPTY_STATE">No clinical orders found</span>
                 </td>
@@ -77,7 +96,9 @@ function renderOrdersTable() {
         return;
     }
 
-    tbody.innerHTML = ORDERS_DATA.map(order => {
+    tbody.innerHTML = filtered.map(order => {
+        const typeLabel = TEST_TYPE_LABELS[order.type] || order.type;
+
         const resultDateHtml = order.resultDate
             ? `<span class="co-result-date-text">${order.resultDate}</span>`
             : '';
@@ -94,6 +115,9 @@ function renderOrdersTable() {
             <tr class="co-row">
                 <td class="col-co-date" data-field="requestDate">
                     <span class="co-date-tag">${order.requestDate}</span>
+                </td>
+                <td class="col-co-type" data-field="testType">
+                    <span class="co-type-label co-type-${order.type}">${typeLabel}</span>
                 </td>
                 <td class="col-co-request" data-field="requestName">${order.request}</td>
                 <td class="col-co-comment" data-field="comment">${order.comment}</td>

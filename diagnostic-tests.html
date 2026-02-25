@@ -38,8 +38,16 @@
             </button>
         </section>
 
-        <!-- Filter bar placeholder for future search/filter controls -->
         <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
+            <div class="filter-group">
+                <label data-i18n="CO.TEST_TYPE">Test Type:</label>
+                <div class="select-button-group" id="coTestType">
+                    <button class="sb-option active" data-value="all" onclick="setTestTypeFilter(this)" data-i18n="CO.TYPE_ALL">All</button>
+                    <button class="sb-option" data-value="laboratory" onclick="setTestTypeFilter(this)" data-i18n="CO.TYPE_LABORATORY">Laboratory</button>
+                    <button class="sb-option" data-value="radiology" onclick="setTestTypeFilter(this)" data-i18n="CO.TYPE_RADIOLOGY">Radiology</button>
+                    <button class="sb-option" data-value="pathology" onclick="setTestTypeFilter(this)" data-i18n="CO.TYPE_PATHOLOGY">Pathology</button>
+                </div>
+            </div>
         </section>
 
         <!-- Angular: <app-clinical-orders-table> using p-table with p-datatable-sm -->
@@ -52,6 +60,7 @@
                         <tr>
                             <!-- data-field maps to ClinicalOrderDTO fields -->
                             <th class="col-co-date" data-i18n="CO.COL_REQUEST_DATE">Request Date</th>
+                            <th class="col-co-type" data-i18n="CO.COL_TEST_TYPE">Test Type</th>
                             <th class="col-co-request" data-i18n="CO.COL_REQUEST">Request</th>
                             <th class="col-co-comment" data-i18n="CO.COL_COMMENT">Comment</th>
                             <th class="col-co-see-request" data-i18n="CO.COL_SEE_REQUEST">See Request</th>
