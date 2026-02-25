@@ -19,7 +19,7 @@
         <section class="clinical-banner" id="banner-component"></section>
 
         <section class="rf-action-bar">
-            <button class="rf-btn-primary" id="btnAddRiskFactor">
+            <button class="action-btn action-btn-primary" id="btnAddRiskFactor">
                 <i class="pi pi-plus-circle"></i>
                 <span data-i18n="RISK_FACTORS.ADD_RISK_FACTOR">Add Risk Factor / Alert</span>
             </button>
@@ -32,17 +32,18 @@
         <!-- Angular: p-selectButton for risk factor category switching -->
         <!-- PrimeFlex: filter-bar with select-button-group matching MAR filter pattern -->
         <section class="filter-bar flex align-items-center gap-2 flex-wrap">
+            <label data-i18n="MAR.RF_TYPE">Type:</label>
             <div class="select-button-group rf-select-group" id="rfTabs">
                 <button class="sb-option active" data-tab="summary" onclick="switchTab('summary')" data-i18n="RISK_FACTORS.TAB_SUMMARY">Summary</button>
                 <button class="sb-option" data-tab="allergies" onclick="switchTab('allergies')" data-i18n="RISK_FACTORS.TAB_ALLERGIES">Allergies</button>
                 <button class="sb-option" data-tab="conditions" onclick="switchTab('conditions')" data-i18n="RISK_FACTORS.TAB_CONDITIONS">Conditions</button>
                 <button class="sb-option" data-tab="procedures" onclick="switchTab('procedures')" data-i18n="RISK_FACTORS.TAB_PROCEDURES">Procedures</button>
-                <button class="sb-option" data-tab="family-history" onclick="switchTab('family-history')" data-i18n="RISK_FACTORS.TAB_FAMILY_HISTORY">Family History</button>
-                <button class="sb-option" data-tab="social-history" onclick="switchTab('social-history')" data-i18n="RISK_FACTORS.TAB_SOCIAL_HISTORY">Social History &amp; Habits</button>
-                <button class="sb-option" data-tab="infection-control" onclick="switchTab('infection-control')" data-i18n="RISK_FACTORS.TAB_INFECTION_CONTROL">Infection Control</button>
+                <button class="sb-option" data-tab="family-history" onclick="switchTab('family-history')" data-i18n="RISK_FACTORS.TAB_FAMILY_HISTORY">Family H.</button>
+                <button class="sb-option" data-tab="social-history" onclick="switchTab('social-history')" data-i18n="RISK_FACTORS.TAB_SOCIAL_HISTORY">Social &amp; Habits</button>
+                <button class="sb-option" data-tab="infection-control" onclick="switchTab('infection-control')" data-i18n="RISK_FACTORS.TAB_INFECTION_CONTROL">IC</button>
                 <button class="sb-option" data-tab="immunizations" onclick="switchTab('immunizations')" data-i18n="RISK_FACTORS.TAB_IMMUNIZATIONS">Immunizations</button>
-                <button class="sb-option" data-tab="devices" onclick="switchTab('devices')" data-i18n="RISK_FACTORS.TAB_DEVICES">Devices &amp; Implants</button>
-                <button class="sb-option" data-tab="risk-assessments" onclick="switchTab('risk-assessments')" data-i18n="RISK_FACTORS.TAB_RISK_ASSESSMENTS">Risk Assessments</button>
+                <button class="sb-option" data-tab="devices" onclick="switchTab('devices')" data-i18n="RISK_FACTORS.TAB_DEVICES">Devices</button>
+                <button class="sb-option" data-tab="risk-assessments" onclick="switchTab('risk-assessments')" data-i18n="RISK_FACTORS.TAB_RISK_ASSESSMENTS">Risks</button>
             </div>
         </section>
 
