@@ -769,8 +769,8 @@ body {
 /* ============================================================================
    10. MODULE TABS (SHARED)
    --------------------------------------------------------------------------
-   Horizontal tab navigation used by Documents (.doc-tab), Risk Factors
-   (.rf-tab), and the Patient List tab bar (.tab-btn).
+   Horizontal tab navigation used by Documents (.doc-tab) and the Patient
+   List tab bar (.tab-btn). Risk Factors now uses select-button-group (section 18b).
    All share the same visual pattern: underlined active state, primary color.
    ============================================================================ */
 
@@ -2406,78 +2406,20 @@ body {
     box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
 }
 
-/* --- 18b. Tabs --- */
-.rf-tabs-bar {
-    background: var(--ech-surface);
-    border-bottom: 1px solid var(--ech-border);
-    padding: 0 12px;
-    flex-shrink: 0;
-}
-
-.rf-tabs-row,
-.rf-tabs {
-    display: flex;
-    align-items: center;
-    min-height: 36px;
-    gap: 0;
+/* --- 18b. Category select-button-group (scrollable for 10 categories) --- */
+.rf-select-group {
+    flex-wrap: nowrap;
     overflow-x: auto;
     scrollbar-width: thin;
 }
 
-.rf-tabs-row::-webkit-scrollbar,
-.rf-tabs::-webkit-scrollbar {
+.rf-select-group::-webkit-scrollbar {
     height: 3px;
 }
 
-.rf-tabs-row::-webkit-scrollbar-thumb,
-.rf-tabs::-webkit-scrollbar-thumb {
+.rf-select-group::-webkit-scrollbar-thumb {
     background: var(--ech-border);
     border-radius: 3px;
-}
-
-.rf-tab {
-    display: inline-flex;
-    align-items: center;
-    padding: 7px 14px;
-    border: none;
-    background: transparent;
-    font-size: var(--fs-md);
-    color: var(--ech-primary);
-    cursor: pointer;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s;
-    font-family: var(--ech-font-family);
-    font-weight: 500;
-    gap: 5px;
-}
-
-.rf-tab:hover {
-    background: rgba(30, 136, 229, 0.06);
-}
-
-.rf-tab.rf-tab-active {
-    font-weight: 600;
-    border-bottom-color: var(--ech-primary);
-    background: rgba(30, 136, 229, 0.08);
-}
-
-.rf-tab .rf-tab-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 16px;
-    padding: 0 5px;
-    border-radius: 8px;
-    font-size: 0.692rem;
-    font-weight: 700;
-    background: var(--ech-primary);
-    color: white;
-}
-
-.rf-tab.rf-tab-active .rf-tab-count {
-    background: var(--ech-primary-dark);
 }
 
 /* --- 18c. Content area --- */

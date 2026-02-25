@@ -118,6 +118,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-25: Refactored Risk Factors tabs from underlined text tabs (.rf-tab) to select-button-group (.sb-option) matching Medication filter pattern
 - 2026-02-25: Implemented Clinical Orders (Diagnostic Tests) module — orders table with green date tags, result indicators, icon action buttons, and 3 exam creation buttons
 - 2026-02-24: **CSS Consolidation** — Merged all CSS into single `theme-overrides.css` with 24 documented sections and TOC
 - 2026-02-24: Deleted `documents.css` and `risk-factors.css` (merged into theme-overrides.css)

@@ -29,18 +29,20 @@
             </div>
         </section>
 
-        <section class="rf-tab-system">
-            <div class="rf-tabs" id="rfTabs">
-                <button class="rf-tab rf-tab-active" data-tab="summary" onclick="switchTab('summary')" data-i18n="RISK_FACTORS.TAB_SUMMARY">Summary</button>
-                <button class="rf-tab" data-tab="allergies" onclick="switchTab('allergies')" data-i18n="RISK_FACTORS.TAB_ALLERGIES">Allergies</button>
-                <button class="rf-tab" data-tab="conditions" onclick="switchTab('conditions')" data-i18n="RISK_FACTORS.TAB_CONDITIONS">Conditions</button>
-                <button class="rf-tab" data-tab="procedures" onclick="switchTab('procedures')" data-i18n="RISK_FACTORS.TAB_PROCEDURES">Procedures</button>
-                <button class="rf-tab" data-tab="family-history" onclick="switchTab('family-history')" data-i18n="RISK_FACTORS.TAB_FAMILY_HISTORY">Family History</button>
-                <button class="rf-tab" data-tab="social-history" onclick="switchTab('social-history')" data-i18n="RISK_FACTORS.TAB_SOCIAL_HISTORY">Social History &amp; Habits</button>
-                <button class="rf-tab" data-tab="infection-control" onclick="switchTab('infection-control')" data-i18n="RISK_FACTORS.TAB_INFECTION_CONTROL">Infection Control</button>
-                <button class="rf-tab" data-tab="immunizations" onclick="switchTab('immunizations')" data-i18n="RISK_FACTORS.TAB_IMMUNIZATIONS">Immunizations</button>
-                <button class="rf-tab" data-tab="devices" onclick="switchTab('devices')" data-i18n="RISK_FACTORS.TAB_DEVICES">Devices &amp; Implants</button>
-                <button class="rf-tab" data-tab="risk-assessments" onclick="switchTab('risk-assessments')" data-i18n="RISK_FACTORS.TAB_RISK_ASSESSMENTS">Risk Assessments</button>
+        <!-- Angular: p-selectButton for risk factor category switching -->
+        <!-- PrimeFlex: filter-bar with select-button-group matching MAR filter pattern -->
+        <section class="filter-bar flex align-items-center gap-2 flex-wrap">
+            <div class="select-button-group rf-select-group" id="rfTabs">
+                <button class="sb-option active" data-tab="summary" onclick="switchTab('summary')" data-i18n="RISK_FACTORS.TAB_SUMMARY">Summary</button>
+                <button class="sb-option" data-tab="allergies" onclick="switchTab('allergies')" data-i18n="RISK_FACTORS.TAB_ALLERGIES">Allergies</button>
+                <button class="sb-option" data-tab="conditions" onclick="switchTab('conditions')" data-i18n="RISK_FACTORS.TAB_CONDITIONS">Conditions</button>
+                <button class="sb-option" data-tab="procedures" onclick="switchTab('procedures')" data-i18n="RISK_FACTORS.TAB_PROCEDURES">Procedures</button>
+                <button class="sb-option" data-tab="family-history" onclick="switchTab('family-history')" data-i18n="RISK_FACTORS.TAB_FAMILY_HISTORY">Family History</button>
+                <button class="sb-option" data-tab="social-history" onclick="switchTab('social-history')" data-i18n="RISK_FACTORS.TAB_SOCIAL_HISTORY">Social History &amp; Habits</button>
+                <button class="sb-option" data-tab="infection-control" onclick="switchTab('infection-control')" data-i18n="RISK_FACTORS.TAB_INFECTION_CONTROL">Infection Control</button>
+                <button class="sb-option" data-tab="immunizations" onclick="switchTab('immunizations')" data-i18n="RISK_FACTORS.TAB_IMMUNIZATIONS">Immunizations</button>
+                <button class="sb-option" data-tab="devices" onclick="switchTab('devices')" data-i18n="RISK_FACTORS.TAB_DEVICES">Devices &amp; Implants</button>
+                <button class="sb-option" data-tab="risk-assessments" onclick="switchTab('risk-assessments')" data-i18n="RISK_FACTORS.TAB_RISK_ASSESSMENTS">Risk Assessments</button>
             </div>
         </section>
 

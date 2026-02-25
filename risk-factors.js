@@ -160,9 +160,9 @@ function renderAllPanels() {
 function switchTab(tabId) {
     activeTab = tabId;
 
-    document.querySelectorAll('.rf-tab').forEach(t => t.classList.remove('rf-tab-active'));
-    const activeTabBtn = document.querySelector('.rf-tab[data-tab="' + tabId + '"]');
-    if (activeTabBtn) activeTabBtn.classList.add('rf-tab-active');
+    document.querySelectorAll('#rfTabs .sb-option').forEach(t => t.classList.remove('active'));
+    const activeTabBtn = document.querySelector('#rfTabs .sb-option[data-tab="' + tabId + '"]');
+    if (activeTabBtn) activeTabBtn.classList.add('active');
 
     document.querySelectorAll('.rf-tab-panel').forEach(p => p.classList.remove('rf-tab-panel-active'));
     const activePanel = document.getElementById('panel-' + tabId);
