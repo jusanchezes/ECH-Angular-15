@@ -20,11 +20,11 @@
 
         <section class="action-bar" id="action-bar-component">
             <div class="car-action-bar">
-                <button class="action-btn" data-i18n="CAR.NEW_CARE_TASK" onclick="void(0)">
+                <button class="action-btn action-btn-primary" data-i18n="CAR.NEW_CARE_TASK" onclick="void(0)">
                     <i class="pi pi-plus-circle"></i>
                     <span>New Care Task</span>
                 </button>
-                <button class="action-btn" data-i18n="CAR.VALIDATE_ALL" onclick="void(0)">
+                <button class="action-btn action-btn-primary" data-i18n="CAR.VALIDATE_ALL" onclick="void(0)">
                     <i class="pi pi-check-circle"></i>
                     <span>New PRN/Continuous</span>
                 </button>
@@ -49,7 +49,7 @@
                     <button class="date-nav-btn" data-i18n="CAR.YESTERDAY" onclick="void(0)">
                         <i class="pi pi-chevron-left"></i> Yesterday
                     </button>
-                    <span class="date-label" data-field="carDate" data-i18n="CAR.TODAY_DATE">Today: 23 Feb 2026</span>
+                    <span class="date-label" data-field="carDate" data-i18n="CAR.TODAY_DATE">Today</span>
                     <button class="date-nav-btn" data-i18n="CAR.TOMORROW" onclick="void(0)">
                         Tomorrow <i class="pi pi-chevron-right"></i>
                     </button>
@@ -154,7 +154,8 @@
                 { time: null, status: 'empty' },
                 { time: '--', status: 'pending' },
                 { time: null, status: 'empty' },
-                { time: null, status: 'empty' }action-btn        { time: '--', status: 'pending' }
+                { time: null, status: 'empty' },
+                { time: '--', status: 'pending' }
             ]
         },
         {
