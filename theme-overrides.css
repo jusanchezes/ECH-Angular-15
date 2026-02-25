@@ -2042,6 +2042,106 @@ body {
     flex-direction: column;
 }
 
+/* --- 16b. Patient Summary Dashboard --- */
+.ps-content {
+    padding: 8px 12px;
+    overflow-y: auto;
+}
+
+.ps-grid {
+    margin: 0;
+}
+
+.ps-panel {
+    margin-bottom: 8px;
+}
+
+.ps-icon-checked {
+    color: var(--ech-primary);
+    font-size: 1.1rem;
+}
+
+.ps-icon-pending {
+    color: var(--ech-text-secondary);
+    font-size: 1.1rem;
+}
+
+.ps-med-row {
+    padding: 6px 0;
+}
+
+.ps-med-next {
+    font-size: var(--fs-md);
+    font-weight: 600;
+    color: var(--ech-text);
+}
+
+.ps-note-title {
+    font-size: var(--fs-md);
+    margin-bottom: 2px;
+}
+
+.ps-note-excerpt {
+    font-size: var(--fs-md);
+    color: var(--ech-text-secondary);
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.ps-note-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-xs);
+    color: var(--ech-primary);
+    text-decoration: none;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    background: var(--ech-surface);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.ps-note-link:hover {
+    background: var(--ech-hover);
+}
+
+.ps-problem-num {
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    margin-right: 4px;
+}
+
+.ps-panel-footer {
+    padding-top: 6px;
+    margin-top: 4px;
+    border-top: 1px solid var(--ech-border-light);
+}
+
+.ps-trend-down {
+    color: var(--ech-primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.ps-trend-up {
+    color: var(--ech-danger);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.ps-result-abnormal {
+    color: var(--ech-danger);
+    font-weight: 600;
+}
+
+.ps-result-pending {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+}
+
 
 /* ============================================================================
    17. DOCUMENTS

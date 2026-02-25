@@ -30,7 +30,7 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── documents.html          # Documents module — clinical file manager with tab filters and document table
 ├── documents.js            # Documents logic — mock data, filtering, search, table rendering
 ├── medication.html         # Medication Administration Record (MAR) — full MAR grid with frozen columns, time slots, status cells
-├── patient-summary.html    # Patient Summary module (empty shell)
+├── patient-summary.html    # Patient Summary dashboard — 6 clinical panels (alerts, meds, notes, problems, vitals, results)
 ├── care-plans.html         # Care Administration Record (CAR) — full CAR grid with frozen columns, time slots, status cells
 ├── measurements.html       # Measurements module (empty shell)
 ├── nurse-notes.html        # Nurse Notes module (empty shell)
@@ -118,6 +118,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-25: Implemented Patient Summary dashboard — 6 clinical panels (Alerts/Risks, Active Medication, Recent Notes, Active Problems, 24h Vitals Snapshot, Pending/Abnormal Results) with doctor action bar and ps-* CSS classes
 - 2026-02-25: Refactored Documents tabs from underlined text tabs (.doc-tab) to select-button-group (.sb-option) matching Medication filter pattern
 - 2026-02-25: Refactored Risk Factors tabs from underlined text tabs (.rf-tab) to select-button-group (.sb-option) matching Medication filter pattern
 - 2026-02-25: Implemented Clinical Orders (Diagnostic Tests) module — orders table with green date tags, result indicators, icon action buttons, and 3 exam creation buttons
