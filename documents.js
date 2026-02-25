@@ -165,10 +165,10 @@ function renderDocumentTable() {
 
 function filterDocuments(filter) {
     currentFilter = filter;
-    const tabs = document.querySelectorAll('.doc-tab');
-    tabs.forEach(t => t.classList.remove('doc-tab-active'));
-    const active = document.querySelector(`.doc-tab[data-filter="${filter}"]`);
-    if (active) active.classList.add('doc-tab-active');
+    const tabs = document.querySelectorAll('#docTabs .sb-option');
+    tabs.forEach(t => t.classList.remove('active'));
+    const active = document.querySelector(`#docTabs .sb-option[data-filter="${filter}"]`);
+    if (active) active.classList.add('active');
     renderDocumentTable();
 }
 

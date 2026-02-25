@@ -18,23 +18,23 @@
         <header class="top-bar" id="header-component"></header>
         <section class="clinical-banner" id="banner-component"></section>
 
-        <section class="doc-filters-bar" id="doc-filters-bar">
-            <div class="doc-tabs-row">
-                <div class="doc-tabs" id="docTabs">
-                    <button class="doc-tab doc-tab-active" data-filter="all" onclick="filterDocuments('all')">All</button>
-                    <button class="doc-tab" data-filter="reports" onclick="filterDocuments('reports')">Reports</button>
-                    <button class="doc-tab" data-filter="informed-consent" onclick="filterDocuments('informed-consent')">Informed Consent</button>
-                    <button class="doc-tab" data-filter="various" onclick="filterDocuments('various')">Various</button>
-                    <button class="doc-tab" data-filter="digital-history" onclick="filterDocuments('digital-history')">Digital History</button>
-                    <button class="doc-tab" data-filter="signed" onclick="filterDocuments('signed')">Signed Documents</button>
+        <!-- Angular: p-selectButton for document category filtering -->
+        <!-- PrimeFlex: filter-bar with select-button-group matching MAR filter pattern -->
+        <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="doc-filters-bar">
+            <div class="select-button-group" id="docTabs">
+                <button class="sb-option active" data-filter="all" onclick="filterDocuments('all')">All</button>
+                <button class="sb-option" data-filter="reports" onclick="filterDocuments('reports')">Reports</button>
+                <button class="sb-option" data-filter="informed-consent" onclick="filterDocuments('informed-consent')">Informed Consent</button>
+                <button class="sb-option" data-filter="various" onclick="filterDocuments('various')">Various</button>
+                <button class="sb-option" data-filter="digital-history" onclick="filterDocuments('digital-history')">Digital History</button>
+                <button class="sb-option" data-filter="signed" onclick="filterDocuments('signed')">Signed Documents</button>
+            </div>
+            <div class="doc-search-area" style="margin-left:auto">
+                <div class="doc-search-wrapper">
+                    <i class="pi pi-search doc-search-icon"></i>
+                    <input type="text" class="doc-search-input" placeholder="Search documents..." id="docSearchInput" oninput="searchDocuments(this.value)">
                 </div>
-                <div class="doc-search-area">
-                    <div class="doc-search-wrapper">
-                        <i class="pi pi-search doc-search-icon"></i>
-                        <input type="text" class="doc-search-input" placeholder="Search documents..." id="docSearchInput" oninput="searchDocuments(this.value)">
-                    </div>
-                    <span class="doc-count-badge" id="docCountBadge">8</span>
-                </div>
+                <span class="doc-count-badge" id="docCountBadge">8</span>
             </div>
         </section>
 

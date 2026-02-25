@@ -769,9 +769,8 @@ body {
 /* ============================================================================
    10. MODULE TABS (SHARED)
    --------------------------------------------------------------------------
-   Horizontal tab navigation used by Documents (.doc-tab) and the Patient
-   List tab bar (.tab-btn). Risk Factors now uses select-button-group (section 18b).
-   All share the same visual pattern: underlined active state, primary color.
+   Horizontal tab navigation used by the Patient List tab bar (.tab-btn).
+   Documents and Risk Factors now use select-button-group (sections 9, 17, 18b).
    ============================================================================ */
 
 /* --- 10a. Module filter tabs container (Documents, Risk Factors) --- */
@@ -843,15 +842,6 @@ body {
 
 .module-tab.module-tab-active .module-tab-count {
     background: var(--ech-primary-dark);
-}
-
-/* --- 10b. Documents tabs row (with search area) --- */
-.doc-tabs-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 38px;
-    gap: 12px;
 }
 
 /* --- 10c. Patient list tab bar (index.html) --- */
@@ -2059,47 +2049,6 @@ body {
    Clinical document manager with tabs, table, and action buttons.
    Classes: .doc-*, .col-doc-*
    ============================================================================ */
-
-/* --- 17a. Filters bar & tabs --- */
-.doc-filters-bar {
-    background: var(--ech-surface);
-    border-bottom: 1px solid var(--ech-border);
-    padding: 0 12px;
-    flex-shrink: 0;
-}
-
-.doc-tabs {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    overflow-x: auto;
-}
-
-.doc-tab {
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 16px;
-    border: none;
-    background: transparent;
-    font-size: var(--fs-md);
-    color: var(--ech-primary);
-    cursor: pointer;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s;
-    font-family: var(--ech-font-family);
-    font-weight: 500;
-}
-
-.doc-tab:hover {
-    background: rgba(30, 136, 229, 0.06);
-}
-
-.doc-tab-active {
-    font-weight: 600;
-    border-bottom-color: var(--ech-primary);
-    background: rgba(30, 136, 229, 0.08);
-}
 
 /* --- 17b. Document search --- */
 .doc-search-area {
@@ -3919,13 +3868,6 @@ body {
         gap: 4px;
     }
 
-    /* --- Documents --- */
-    .doc-tabs-row {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 6px;
-        padding: 6px 0;
-    }
 
     .doc-search-input,
     .module-search-input {
