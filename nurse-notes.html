@@ -18,18 +18,170 @@
         <header class="top-bar" id="header-component"></header>
         <section class="clinical-banner" id="banner-component"></section>
 
+        <!-- ACTION BAR: Nurse quick-actions. Angular: NurseNotesActionBarComponent -->
         <section class="action-bar" id="action-bar-component">
-            <!-- Module-specific action buttons go here later -->
+            <button class="action-btn action-btn-primary" onclick="handleQuickAction('Administer Medication')" data-i18n-title="ACTIONS.ADMIN_MED" title="Administer Medication">
+                <i class="pi pi-box"></i> <span data-i18n="ACTIONS.ADMIN_MED">Administer Medication</span>
+            </button>
+            <button class="action-btn" onclick="handleQuickAction('Administer Care')" data-i18n-title="ACTIONS.ADMIN_CARE" title="Administer Care">
+                <i class="pi pi-heart"></i> <span data-i18n="ACTIONS.ADMIN_CARE">Administer Care</span>
+            </button>
+            <button class="action-btn" onclick="handleQuickAction('Record Vital Signs')" data-i18n-title="ACTIONS.RECORD_VITALS" title="Record Vital Signs">
+                <i class="pi pi-chart-line"></i> <span data-i18n="ACTIONS.RECORD_VITALS">Record Vitals</span>
+            </button>
+            <div class="action-bar-separator"></div>
+            <button class="action-btn" onclick="handleQuickAction('Record I/O')" data-i18n-title="ACTIONS.RECORD_IO" title="Record Intake/Output">
+                <i class="pi pi-sync"></i> <span data-i18n="ACTIONS.RECORD_IO">Record I/O</span>
+            </button>
+            <button class="action-btn" onclick="handleQuickAction('Record Assessment')" data-i18n-title="ACTIONS.RECORD_ASSESSMENT" title="Record Assessment">
+                <i class="pi pi-check-square"></i> <span data-i18n="ACTIONS.RECORD_ASSESSMENT">Assessment</span>
+            </button>
+            <button class="action-btn" onclick="handleQuickAction('Add Nursing Note')" data-i18n-title="ACTIONS.ADD_NURSE_NOTE" title="Add Nursing Note">
+                <i class="pi pi-pencil"></i> <span data-i18n="ACTIONS.ADD_NURSE_NOTE">Nursing Note</span>
+            </button>
         </section>
 
         <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
-            <!-- Module-specific filters go here later -->
         </section>
 
-        <section class="module-content-area" id="module-content">
-            <div class="flex align-items-center justify-content-center" style="height:200px;color:var(--ech-text-secondary)">
-                <i class="pi pi-pencil mr-2" style="font-size:1.5rem"></i>
-                <span class="fs-md" data-i18n="MODULE.NURSE_NOTES_PLACEHOLDER">Nurse Notes — content area</span>
+        <!-- COMPONENT BOUNDARY: <ech-nurse-notes> — Nursing Overview Shift-Based View -->
+        <!-- Layout: PrimeFlex 2-column grid for high-density 14" screen optimization -->
+        <section class="module-content-area nn-content" id="module-content">
+
+            <!-- Section Title: Nursing Overview -->
+            <div class="nn-section-title" data-i18n="NN.TITLE">Nursing Overview — Shift-Based View</div>
+
+            <!-- SAFETY STRIP: Quick-glance safety indicators. Angular: NurseSafetyStripComponent -->
+            <!-- data-field="safetyIndicators" — Java DTO: PatientSafetyDTO -->
+            <div class="nn-safety-strip">
+                <span class="nn-safety-label" data-i18n="NN.SAFETY">Safety:</span>
+                <span class="nn-safety-tag nn-safety-tag-danger" data-field="safetyAllergies" data-i18n="NN.ALLERGIES">Allergies</span>
+                <span class="nn-safety-tag nn-safety-tag-warning" data-field="safetyFalls" data-i18n="NN.FALLS">Falls</span>
+                <span class="nn-safety-tag nn-safety-tag-info" data-field="safetyIsolation" data-i18n="NN.ISOLATION">Isolation</span>
+                <span class="nn-safety-tag nn-safety-tag-info" data-field="safetyVTE" data-i18n="NN.VTE_RISK">VTE Risk</span>
+            </div>
+
+            <div class="grid nn-grid">
+
+                <!-- ==================== LEFT COLUMN ==================== -->
+                <div class="col-12 md:col-6">
+
+                    <!-- PANEL 1: Handoff Report -->
+                    <!-- Angular: HandoffReportComponent — data-field maps to HandoffReportDTO -->
+                    <div class="pv-panel nn-panel">
+                        <div class="pv-panel-header" data-i18n="NN.HANDOFF_REPORT">Handoff Report</div>
+                        <div class="pv-panel-body">
+                            <!-- data-field="handoffItems" — Java DTO: List<HandoffItemDTO> -->
+                            <div class="nn-checklist-item" data-field="handoff_sbar">
+                                <span class="nn-checklist-bullet nn-checklist-bullet-done"></span>
+                                <span data-i18n="NN.SBAR_SUMMARY">SBAR Summary</span>
+                            </div>
+                            <div class="nn-checklist-item" data-field="handoff_events">
+                                <span class="nn-checklist-bullet nn-checklist-bullet-pending"></span>
+                                <span data-i18n="NN.SHIFT_EVENTS">Shift Events</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANEL 2: Shift Checklist -->
+                    <!-- Angular: ShiftChecklistComponent — data-field maps to ShiftChecklistDTO -->
+                    <div class="pv-panel nn-panel">
+                        <div class="pv-panel-header" data-i18n="NN.SHIFT_CHECKLIST">Shift Checklist</div>
+                        <div class="pv-panel-body">
+                            <!-- data-field="shiftChecklist" — Java DTO: List<ChecklistItemDTO> -->
+                            <div class="nn-checklist-item" data-field="check_ivLines">
+                                <span class="nn-checklist-bullet nn-checklist-bullet-done"></span>
+                                <span data-i18n="NN.IV_LINES">IV Lines</span>
+                            </div>
+                            <div class="nn-checklist-item" data-field="check_catheters">
+                                <span class="nn-checklist-bullet nn-checklist-bullet-pending"></span>
+                                <span data-i18n="NN.CATHETERS">Catheters</span>
+                            </div>
+                            <div class="nn-checklist-item" data-field="check_woundCare">
+                                <span class="nn-checklist-bullet nn-checklist-bullet-pending"></span>
+                                <span data-i18n="NN.WOUND_CARE">Wound Care Tasks</span>
+                            </div>
+                            <div class="nn-checklist-item" data-field="check_turnReposition">
+                                <span class="nn-checklist-bullet nn-checklist-bullet-done"></span>
+                                <span data-i18n="NN.TURN_REPOSITION">Turn &amp; Reposition</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANEL 3: Medications Due -->
+                    <!-- Angular: MedicationsDueComponent — data-field maps to MedicationDueDTO -->
+                    <div class="pv-panel nn-panel">
+                        <div class="pv-panel-header" data-i18n="NN.MEDICATIONS_DUE">Medications Due</div>
+                        <div class="pv-panel-body">
+                            <!-- data-field="medicationsDue" — Java DTO: List<MedicationDueDTO> -->
+                            <div class="nn-med-due-item" data-field="medDue_1">
+                                <span class="nn-med-time" data-field="medDueTime">8:00 AM</span>
+                                <span class="nn-med-name" data-field="medDueName">Med A</span>
+                                <span class="pv-badge pv-badge-high-risk" data-i18n="PS.HIGH_RISK">HIGH-RISK</span>
+                            </div>
+                            <div class="nn-med-due-item" data-field="medDue_2">
+                                <span class="nn-med-time" data-field="medDueTime">9:00 AM</span>
+                                <span class="nn-med-name" data-field="medDueName">Med B</span>
+                            </div>
+                            <div class="nn-med-due-item" data-field="medDue_3">
+                                <span class="nn-med-time" data-field="medDueTime">10:00 AM</span>
+                                <span class="nn-med-name" data-field="medDueName">Med C</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ==================== RIGHT COLUMN ==================== -->
+                <div class="col-12 md:col-6">
+
+                    <!-- PANEL 4: Quick Assessments -->
+                    <!-- Angular: QuickAssessmentsComponent — data-field maps to QuickAssessmentDTO -->
+                    <div class="pv-panel nn-panel">
+                        <div class="pv-panel-header" data-i18n="NN.QUICK_ASSESSMENTS">Quick Assessments</div>
+                        <div class="pv-panel-body">
+                            <!-- data-field="quickAssessments" — Java DTO: QuickAssessmentDTO -->
+                            <div class="nn-assessment-grid">
+                                <div class="nn-score-item" data-field="scoreGCS">
+                                    <span class="nn-score-label" data-i18n="NN.GCS">GCS:</span>
+                                    <span class="nn-score-value" data-field="gcsValue">0</span>
+                                </div>
+                                <div class="nn-score-item" data-field="scoreRASS">
+                                    <span class="nn-score-label" data-i18n="NN.RASS">RASS:</span>
+                                    <span class="nn-score-value" data-field="rassValue">0</span>
+                                </div>
+                                <div class="nn-score-item" data-field="scorePain">
+                                    <span class="nn-score-label" data-i18n="NN.PAIN_SCORE">Pain Score:</span>
+                                    <span class="nn-score-value" data-field="painValue">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANEL 5: Flowsheet Links -->
+                    <!-- Angular: FlowsheetLinksComponent — quick navigation to related flowsheets -->
+                    <div class="pv-panel nn-panel">
+                        <div class="pv-panel-header" data-i18n="NN.FLOWSHEET_LINKS">Flowsheet Links</div>
+                        <div class="pv-panel-body">
+                            <div class="nn-flowsheet-links">
+                                <a href="measurements.html" class="nn-flowsheet-link" data-i18n="NN.VITALS">
+                                    <i class="pi pi-chart-line" style="font-size:0.85rem"></i> Vitals
+                                </a>
+                                <a href="#" class="nn-flowsheet-link" onclick="handleQuickAction('Open I&O Flowsheet'); return false;" data-i18n="NN.IO">
+                                    <i class="pi pi-sync" style="font-size:0.85rem"></i> I&amp;O
+                                </a>
+                                <a href="#" class="nn-flowsheet-link" onclick="handleQuickAction('Open Wounds Flowsheet'); return false;" data-i18n="NN.WOUNDS">
+                                    <i class="pi pi-heart" style="font-size:0.85rem"></i> Wounds
+                                </a>
+                                <a href="#" class="nn-flowsheet-link" onclick="handleQuickAction('Open Devices Flowsheet'); return false;" data-i18n="NN.DEVICES">
+                                    <i class="pi pi-cog" style="font-size:0.85rem"></i> Devices
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </section>
     </main>
