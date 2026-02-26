@@ -2142,6 +2142,120 @@ body {
     color: var(--ech-text);
 }
 
+/* --- 16c. Nursing Overview (Shift-Based View) --- */
+.ns-section-title {
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    color: var(--ech-text);
+    padding: 8px 0 4px 0;
+    margin-bottom: 4px;
+}
+
+.ns-safety-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.ns-safety-label {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    margin-right: 4px;
+}
+
+.ns-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    border-bottom: 1px solid var(--ech-border-light);
+}
+
+.ns-checklist-item:last-child {
+    border-bottom: none;
+}
+
+.ns-bullet {
+    font-size: 0.45rem;
+    color: var(--ech-text-secondary);
+    flex-shrink: 0;
+}
+
+.ns-med-due-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    border-bottom: 1px solid var(--ech-border-light);
+}
+
+.ns-med-due-item:last-child {
+    border-bottom: none;
+}
+
+.ns-med-time {
+    font-weight: 600;
+    color: var(--ech-text);
+    min-width: 60px;
+}
+
+.ns-assessment-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+}
+
+.ns-assessment-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+}
+
+.ns-assessment-value {
+    font-size: var(--fs-md);
+    color: var(--ech-primary);
+}
+
+.ns-flowsheet-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    flex-wrap: wrap;
+}
+
+.ns-flowsheet-link {
+    font-size: var(--fs-md);
+    color: var(--ech-primary);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.ns-flowsheet-link:hover {
+    color: var(--ech-primary-dark, #1565c0);
+    text-decoration: underline;
+}
+
+.ns-flowsheet-sep {
+    color: var(--ech-text-secondary);
+    font-size: var(--fs-sm);
+}
+
 
 /* ============================================================================
    17. DOCUMENTS

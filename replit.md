@@ -30,7 +30,7 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── documents.html          # Documents module — clinical file manager with tab filters and document table
 ├── documents.js            # Documents logic — mock data, filtering, search, table rendering
 ├── medication.html         # Medication Administration Record (MAR) — full MAR grid with frozen columns, time slots, status cells
-├── patient-summary.html    # Patient Summary dashboard — 6 clinical panels (alerts, meds, notes, problems, vitals, results)
+├── patient-summary.html    # Nursing Overview dashboard — Shift-based view with safety bar, handoff, checklist, meds due, assessments, flowsheet links
 ├── care-plans.html         # Care Administration Record (CAR) — full CAR grid with frozen columns, time slots, status cells
 ├── measurements.html       # Measurements module (empty shell)
 ├── nurse-notes.html        # Nurse Notes module (empty shell)
@@ -118,6 +118,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-26: Redesigned Patient Summary as Nursing Overview — shift-based view with nurse action bar (Administer Meds, Administer Care, Record Vitals, Record I/O, Assessments, Nursing Notes), safety flags bar, and 5 nursing panels (Handoff Report, Shift Checklist, Medications Due, Quick Assessments, Flowsheet Links) with ns-* CSS classes
 - 2026-02-25: Implemented Patient Summary dashboard — 6 clinical panels (Alerts/Risks, Active Medication, Recent Notes, Active Problems, 24h Vitals Snapshot, Pending/Abnormal Results) with doctor action bar and ps-* CSS classes
 - 2026-02-25: Refactored Documents tabs from underlined text tabs (.doc-tab) to select-button-group (.sb-option) matching Medication filter pattern
 - 2026-02-25: Refactored Risk Factors tabs from underlined text tabs (.rf-tab) to select-button-group (.sb-option) matching Medication filter pattern

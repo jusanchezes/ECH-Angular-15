@@ -18,117 +18,93 @@
         <header class="top-bar" id="header-component"></header>
         <section class="clinical-banner" id="banner-component"></section>
 
-        <!-- ACTION BAR: Generic doctor quick-actions. Angular: PatientSummaryActionBarComponent -->
+        <!-- ACTION BAR: Nurse quick-actions. Angular: NursingSummaryActionBarComponent -->
         <section class="action-bar" id="action-bar-component">
-            <button class="action-btn action-btn-primary" onclick="handleQuickAction('Add Clinical Note')" data-i18n-title="ACTIONS.ADD_NOTE" title="Add Clinical Note">
-                <i class="pi pi-plus"></i> <span data-i18n="ACTIONS.ADD_NOTE">Add Note</span>
+            <button class="action-btn action-btn-primary" onclick="handleQuickAction('Administer Medication')" data-i18n-title="ACTIONS.ADMIN_MED" title="Administer Medication">
+                <i class="pi pi-box"></i> <span data-i18n="ACTIONS.ADMIN_MED">Administer Meds</span>
             </button>
-            <button class="action-btn" onclick="handleQuickAction('Prescribe Medication')" data-i18n-title="ACTIONS.PRESCRIBE" title="Prescribe Medication">
-                <i class="pi pi-box"></i> <span data-i18n="ACTIONS.PRESCRIBE">Prescribe</span>
+            <button class="action-btn" onclick="handleQuickAction('Administer Care')" data-i18n-title="ACTIONS.ADMIN_CARE" title="Administer Care">
+                <i class="pi pi-heart"></i> <span data-i18n="ACTIONS.ADMIN_CARE">Administer Care</span>
             </button>
-            <button class="action-btn" onclick="handleQuickAction('Record Vitals')" data-i18n-title="ACTIONS.RECORD_VITALS" title="Record Vitals">
-                <i class="pi pi-chart-line"></i> <span data-i18n="ACTIONS.RECORD_VITALS">Vitals</span>
-            </button>
-            <button class="action-btn" onclick="handleQuickAction('Order Test')" data-i18n-title="ACTIONS.ORDER_TEST" title="Order Test">
-                <i class="pi pi-search"></i> <span data-i18n="ACTIONS.ORDER_TEST">Order Test</span>
+            <button class="action-btn" onclick="handleQuickAction('Record Vitals')" data-i18n-title="ACTIONS.RECORD_VITALS" title="Record Vital Signs">
+                <i class="pi pi-chart-line"></i> <span data-i18n="ACTIONS.RECORD_VITALS">Record Vitals</span>
             </button>
             <div class="action-bar-separator"></div>
-            <button class="action-btn" onclick="handleQuickAction('Add Diagnosis')" data-i18n-title="ACTIONS.ADD_DIAGNOSIS" title="Add Diagnosis">
-                <i class="pi pi-tag"></i> <span data-i18n="ACTIONS.ADD_DIAGNOSIS">Diagnosis</span>
+            <button class="action-btn" onclick="handleQuickAction('Record I/O')" data-i18n-title="ACTIONS.RECORD_IO" title="Record Intake / Output">
+                <i class="pi pi-sync"></i> <span data-i18n="ACTIONS.RECORD_IO">Record I/O</span>
             </button>
-            <button class="action-btn" onclick="handleQuickAction('View Orders')" data-i18n-title="ACTIONS.VIEW_ORDERS" title="View Orders">
-                <i class="pi pi-list"></i> <span data-i18n="ACTIONS.VIEW_ORDERS">Orders</span>
+            <button class="action-btn" onclick="handleQuickAction('Record Assessment')" data-i18n-title="ACTIONS.RECORD_ASSESSMENT" title="Record Assessment">
+                <i class="pi pi-check-square"></i> <span data-i18n="ACTIONS.RECORD_ASSESSMENT">Assessments</span>
             </button>
-            <button class="action-btn" onclick="handleQuickAction('Generate Report')" data-i18n-title="ACTIONS.GENERATE_REPORT" title="Generate Report">
-                <i class="pi pi-file-pdf"></i> <span data-i18n="ACTIONS.GENERATE_REPORT">Report</span>
+            <button class="action-btn" onclick="handleQuickAction('Record Nursing Note')" data-i18n-title="ACTIONS.NURSING_NOTE" title="Record Nursing Note">
+                <i class="pi pi-pencil"></i> <span data-i18n="ACTIONS.NURSING_NOTE">Nursing Notes</span>
             </button>
         </section>
 
         <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
         </section>
 
-        <!-- COMPONENT BOUNDARY: <ech-patient-summary> — Main summary dashboard content -->
-        <!-- Layout: PrimeFlex 2-column grid for high-density 14" screen optimization -->
+        <!-- COMPONENT BOUNDARY: <ech-nursing-overview> — Nursing shift-based overview dashboard -->
+        <!-- Layout: PrimeFlex single-column for shift-based nursing workflow -->
         <section class="module-content-area ps-content" id="module-content">
+
+            <!-- SECTION TITLE: Nursing Overview — Shift-Based View -->
+            <!-- Angular: NursingOverviewComponent -->
+            <div class="ns-section-title" data-i18n="NS.OVERVIEW_TITLE">Nursing Overview — Shift-Based View</div>
+
+            <!-- SAFETY BAR: Quick-access safety flags -->
+            <!-- Angular: SafetyBarComponent — data-field maps to PatientSafetyDTO -->
+            <div class="ns-safety-bar" data-field="safetyFlags">
+                <span class="ns-safety-label" data-i18n="NS.SAFETY">Safety:</span>
+                <span class="pv-badge pv-badge-high-risk" data-field="safetyAllergies" data-i18n="NS.ALLERGIES">Allergies</span>
+                <span class="pv-badge pv-badge-pending" data-field="safetyFalls" data-i18n="NS.FALLS">Falls</span>
+                <span class="pv-badge pv-badge-active" data-field="safetyIsolation" data-i18n="NS.ISOLATION">Isolation</span>
+                <span class="pv-badge pv-badge-abnormal" data-field="safetyVTE" data-i18n="NS.VTE_RISK">VTE Risk</span>
+            </div>
+
             <div class="grid ps-grid">
 
                 <!-- ==================== LEFT COLUMN ==================== -->
                 <div class="col-12 md:col-6">
 
-                    <!-- PANEL 1: Alertas y Riesgos Activos -->
-                    <!-- Angular: ActiveAlertsRisksComponent — data-field maps to AlertRiskDTO -->
+                    <!-- PANEL 1: Handoff Report -->
+                    <!-- Angular: HandoffReportComponent — data-field maps to HandoffReportDTO -->
                     <div class="pv-panel ps-panel">
-                        <div class="pv-panel-header" data-i18n="PS.ALERTS_RISKS">Alerts and Active Risks</div>
+                        <div class="pv-panel-header" data-i18n="NS.HANDOFF_REPORT">Handoff Report</div>
                         <div class="pv-panel-body">
-                            <!-- data-field="activeAlerts" — Java DTO: List<AlertRiskDTO> -->
-                            <div class="pv-alert-row" data-field="alertRisk_1">
-                                <div>
-                                    <span data-field="riskName">Fall Risk (High)</span>
-                                    <span class="pv-alert-doctor" data-field="riskDate"> 23/02/26 - </span>
-                                    <span class="pv-alert-doctor" data-field="riskDoctor">Dr. Rogers</span>
-                                </div>
-                                <i class="pi pi-check-circle ps-icon-checked" title="Acknowledged"></i>
+                            <!-- data-field="handoffItems" — Java DTO: HandoffReportDTO -->
+                            <div class="ns-checklist-item" data-field="handoff_sbar">
+                                <i class="pi pi-circle-fill ns-bullet"></i>
+                                <span data-i18n="NS.SBAR_SUMMARY">SBAR Summary</span>
                             </div>
-                            <div class="pv-alert-row" data-field="alertRisk_2">
-                                <div>
-                                    <span data-field="riskName">Pressure Injury Risk</span>
-                                    <span class="pv-alert-doctor" data-field="riskDate"> 24/02/26 - </span>
-                                    <span class="pv-alert-doctor" data-field="riskDoctor">Nurse Adam</span>
-                                </div>
-                                <i class="pi pi-circle ps-icon-pending" title="Pending"></i>
+                            <div class="ns-checklist-item" data-field="handoff_events">
+                                <i class="pi pi-circle-fill ns-bullet"></i>
+                                <span data-i18n="NS.SHIFT_EVENTS">Shift Events</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- PANEL 2: Medicación Activa -->
-                    <!-- Angular: ActiveMedicationComponent — data-field maps to ActiveMedicationDTO -->
+                    <!-- PANEL 2: Shift Checklist -->
+                    <!-- Angular: ShiftChecklistComponent — data-field maps to ShiftChecklistDTO -->
                     <div class="pv-panel ps-panel">
-                        <div class="pv-panel-header" data-i18n="PS.ACTIVE_MEDICATION">Active Medication</div>
+                        <div class="pv-panel-header" data-i18n="NS.SHIFT_CHECKLIST">Shift Checklist</div>
                         <div class="pv-panel-body">
-                            <!-- data-field="activeMedications" — Java DTO: List<ActiveMedicationDTO> -->
-                            <div class="pv-med-row ps-med-row" data-field="medication_1">
-                                <div class="pv-med-name">
-                                    <div>
-                                        <span class="pv-badge pv-badge-high-risk" data-i18n="PS.HIGH_RISK">HIGH-RISK</span>
-                                        <strong data-field="medName">Enoxaparin 40mg SC</strong>
-                                        <div class="pv-med-dose-time">
-                                            <span data-i18n="PS.LAST">Last:</span> <span data-field="medLastAdmin">08:15 AM</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pv-med-dose-time ps-med-next">
-                                    <span data-i18n="PS.NEXT">Next:</span> <span data-field="medNextAdmin">08:00 PM</span>
-                                </div>
+                            <!-- data-field="shiftChecklist" — Java DTO: List<ShiftChecklistItemDTO> -->
+                            <div class="ns-checklist-item" data-field="checklist_iv">
+                                <i class="pi pi-circle-fill ns-bullet"></i>
+                                <span data-i18n="NS.IV_LINES">IV Lines</span>
                             </div>
-                            <div class="pv-med-row ps-med-row" data-field="medication_2">
-                                <div class="pv-med-name">
-                                    <div>
-                                        <strong data-field="medName">Bisoprolol 2.5mg PO</strong>
-                                        <div class="pv-med-dose-time">
-                                            <span data-i18n="PS.LAST">Last:</span> <span data-field="medLastAdmin">08:00 AM</span>
-                                            <span> (</span><span data-i18n="PS.NEXT">Next:</span> <span data-field="medNextAdmin">Tomorrow</span><span>)</span>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="ns-checklist-item" data-field="checklist_catheters">
+                                <i class="pi pi-circle-fill ns-bullet"></i>
+                                <span data-i18n="NS.CATHETERS">Catheters</span>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- PANEL 3: Notas Recientes -->
-                    <!-- Angular: RecentNotesComponent — data-field maps to ClinicalNoteDTO -->
-                    <div class="pv-panel ps-panel">
-                        <div class="pv-panel-header" data-i18n="PS.RECENT_NOTES">Recent Notes</div>
-                        <div class="pv-panel-body">
-                            <!-- data-field="recentNotes" — Java DTO: List<ClinicalNoteDTO> -->
-                            <div data-field="note_1">
-                                <div class="ps-note-title">
-                                    <strong data-i18n="PS.PROGRESS_NOTE">Progress Note</strong>
-                                    <span class="pv-alert-doctor"> (<span data-field="noteSpecialty">Cardiology</span>)</span>
-                                </div>
-                                <div class="ps-note-excerpt" data-field="noteExcerpt">Patient reports slight improvement in dyspnea. Bibasilar crackles persist...</div>
-                                <a href="#" class="ps-note-link" onclick="handleQuickAction('View Problem Plan'); return false;" data-i18n="PS.VIEW_PLAN">
-                                    <span>Go to</span> <i class="pi pi-external-link" style="font-size:0.75rem"></i>
-                                </a>
+                            <div class="ns-checklist-item" data-field="checklist_wound">
+                                <i class="pi pi-circle-fill ns-bullet"></i>
+                                <span data-i18n="NS.WOUND_CARE">Wound Care Tasks</span>
+                            </div>
+                            <div class="ns-checklist-item" data-field="checklist_turn">
+                                <i class="pi pi-circle-fill ns-bullet"></i>
+                                <span data-i18n="NS.TURN_REPOSITION">Turn &amp; Reposition</span>
                             </div>
                         </div>
                     </div>
@@ -138,75 +114,67 @@
                 <!-- ==================== RIGHT COLUMN ==================== -->
                 <div class="col-12 md:col-6">
 
-                    <!-- PANEL 4: Problemas Activos (Priorizados) -->
-                    <!-- Angular: ActiveProblemsComponent — data-field maps to ProblemDTO -->
+                    <!-- PANEL 3: Medications Due -->
+                    <!-- Angular: MedicationsDueComponent — data-field maps to MedicationDueDTO -->
                     <div class="pv-panel ps-panel">
-                        <div class="pv-panel-header" data-i18n="PS.ACTIVE_PROBLEMS">Active Problems</div>
+                        <div class="pv-panel-header" data-i18n="NS.MEDICATIONS_DUE">Medications Due</div>
                         <div class="pv-panel-body">
-                            <!-- data-field="activeProblems" — Java DTO: List<ProblemDTO> -->
-                            <div class="pv-alert-row" data-field="problem_1">
-                                <span><span class="ps-problem-num">1.</span> <span data-field="problemName">Heart Failure with Preserved EF</span></span>
-                                <span class="pv-badge pv-badge-active" data-field="problemStatus">Active</span>
+                            <!-- data-field="medicationsDue" — Java DTO: List<MedicationDueDTO> -->
+                            <div class="ns-med-due-item" data-field="medDue_1">
+                                <span class="ns-med-time" data-field="medDueTime">8:00 AM</span>
+                                <span data-field="medDueName">Med A</span>
+                                <span class="pv-badge pv-badge-high-risk" data-i18n="NS.HIGH_RISK">High-Risk</span>
                             </div>
-                            <div class="pv-alert-row" data-field="problem_2">
-                                <span><span class="ps-problem-num">2.</span> <span data-field="problemName">Chronic Kidney Disease Stage 3</span></span>
-                                <span class="pv-badge pv-badge-active" data-field="problemStatus">Active</span>
+                            <div class="ns-med-due-item" data-field="medDue_2">
+                                <span class="ns-med-time" data-field="medDueTime">9:00 AM</span>
+                                <span data-field="medDueName">Med B</span>
                             </div>
-                            <div class="ps-panel-footer">
-                                <span class="pv-alert-doctor" data-field="problemsLastUpdate" data-i18n="PS.LAST_UPDATE">Last update: 25/02/26 10:00 (Dr. Rogers)</span>
+                            <div class="ns-med-due-item" data-field="medDue_3">
+                                <span class="ns-med-time" data-field="medDueTime">10:00 AM</span>
+                                <span data-field="medDueName">Med C</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- PANEL 5: Snapshot 24h -->
-                    <!-- Angular: VitalsSnapshotComponent — data-field maps to VitalsSnapshotDTO -->
+                    <!-- PANEL 4: Quick Assessments -->
+                    <!-- Angular: QuickAssessmentsComponent — data-field maps to QuickAssessmentDTO -->
                     <div class="pv-panel ps-panel">
-                        <div class="pv-panel-header" data-i18n="PS.SNAPSHOT_24H">Snapshot 24h</div>
+                        <div class="pv-panel-header" data-i18n="NS.QUICK_ASSESSMENTS">Quick Assessments</div>
                         <div class="pv-panel-body">
-                            <!-- data-field="vitalsSnapshot" — Java DTO: VitalsSnapshotDTO -->
-                            <div class="pv-snapshot-grid">
-                                <div class="pv-snapshot-item" data-field="vitalBP">
-                                    <span class="pv-snapshot-label" data-i18n="PS.BP">BP:</span>
-                                    <span class="pv-snapshot-value"><strong>115/75</strong> <i class="pi pi-arrow-down ps-trend-down" title="Decreasing"></i></span>
+                            <!-- data-field="quickAssessments" — Java DTO: QuickAssessmentDTO -->
+                            <div class="ns-assessment-grid">
+                                <div class="ns-assessment-item" data-field="assessGCS">
+                                    <i class="pi pi-circle-fill ns-bullet"></i>
+                                    <span data-i18n="NS.GCS">GCS:</span>
+                                    <strong class="ns-assessment-value" data-field="gcsValue">[0]</strong>
                                 </div>
-                                <div class="pv-snapshot-item" data-field="vitalHR">
-                                    <span class="pv-snapshot-label" data-i18n="PS.HR">HR:</span>
-                                    <span class="pv-snapshot-value"><strong>92</strong> <i class="pi pi-arrow-up ps-trend-up" title="Increasing"></i></span>
+                                <div class="ns-assessment-item" data-field="assessRASS">
+                                    <i class="pi pi-circle-fill ns-bullet"></i>
+                                    <span data-i18n="NS.RASS">RASS:</span>
+                                    <strong class="ns-assessment-value" data-field="rassValue">[0]</strong>
                                 </div>
-                                <div class="pv-snapshot-item" data-field="vitalTemp">
-                                    <span class="pv-snapshot-label" data-i18n="PS.TEMP">Temp:</span>
-                                    <span class="pv-snapshot-value"><strong>37.1 °C</strong></span>
-                                </div>
-                                <div class="pv-snapshot-item" data-field="vitalSpO2">
-                                    <span class="pv-snapshot-label" data-i18n="PS.SPO2">SpO2:</span>
-                                    <span class="pv-snapshot-value"><strong>94%</strong> (NC 2L)</span>
-                                </div>
-                                <div class="pv-snapshot-item" data-field="vitalBalance">
-                                    <span class="pv-snapshot-label" data-i18n="PS.BALANCE">Balance:</span>
-                                    <span class="pv-snapshot-value"><strong>+550 mL</strong></span>
-                                </div>
-                                <div class="pv-snapshot-item" data-field="vitalUrine">
-                                    <span class="pv-snapshot-label" data-i18n="PS.URINE">Urine:</span>
-                                    <span class="pv-snapshot-value"><strong>1200 mL</strong></span>
+                                <div class="ns-assessment-item" data-field="assessPain">
+                                    <i class="pi pi-circle-fill ns-bullet"></i>
+                                    <span data-i18n="NS.PAIN_SCORE">Pain Score:</span>
+                                    <strong class="ns-assessment-value" data-field="painValue">[0]</strong>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- PANEL 6: Resultados (Pendientes / Anómalos) -->
-                    <!-- Angular: PendingResultsComponent — data-field maps to LabResultDTO -->
+                    <!-- PANEL 5: Flowsheet Links -->
+                    <!-- Angular: FlowsheetLinksComponent — navigates to respective modules -->
                     <div class="pv-panel ps-panel">
-                        <div class="pv-panel-header" data-i18n="PS.PENDING_RESULTS">Results</div>
+                        <div class="pv-panel-header" data-i18n="NS.FLOWSHEET_LINKS">Flowsheet Links</div>
                         <div class="pv-panel-body">
-                            <!-- data-field="pendingResults" — Java DTO: List<LabResultDTO> -->
-                            <div class="pv-test-row" data-field="result_1">
-                                <span class="ps-result-abnormal" data-field="resultName">
-                                    <span data-i18n="PS.POTASSIUM">Potassium:</span> <strong>5.8 (H)</strong>
-                                </span>
-                            </div>
-                            <div class="pv-test-row" data-field="result_2">
-                                <span data-field="resultName">Troponin I (Serial)</span>
-                                <span class="ps-result-pending" data-i18n="PS.PENDING">PEND</span>
+                            <div class="ns-flowsheet-links">
+                                <a href="measurements.html" class="ns-flowsheet-link" data-i18n="NS.VITALS">Vitals</a>
+                                <span class="ns-flowsheet-sep">|</span>
+                                <a href="measurements.html" class="ns-flowsheet-link" data-i18n="NS.IO">I&amp;O</a>
+                                <span class="ns-flowsheet-sep">|</span>
+                                <a href="measurements.html" class="ns-flowsheet-link" data-i18n="NS.WOUNDS">Wounds</a>
+                                <span class="ns-flowsheet-sep">|</span>
+                                <a href="measurements.html" class="ns-flowsheet-link" data-i18n="NS.DEVICES">Devices</a>
                             </div>
                         </div>
                     </div>
