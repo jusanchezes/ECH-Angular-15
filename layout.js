@@ -40,7 +40,8 @@
  * with routerLink and routerLinkActive directives.
  * ============================================================ */
 const NAV_ITEMS = [
-    { href: 'patient-summary.html',  icon: 'pi-chart-bar',           label: 'Patient Summary',  i18n: 'NAV.PATIENT_SUMMARY' },
+    { href: 'patient-summary.html',  icon: 'pi-chart-bar',           label: 'Doctor Overview',  i18n: 'NAV.PATIENT_SUMMARY' },
+    { href: 'nurse-notes.html',      icon: 'pi-pencil',              label: 'Nurse Overview',      i18n: 'NAV.NURSE_NOTES' },
     { href: 'timeline.html',        icon: 'pi-home',                  label: 'Timeline',         i18n: 'NAV.GENERAL_VIEW' },
     { href: 'previous-visits.html',  icon: 'pi-history',              label: 'Previous Visits',  i18n: 'NAV.PREVIOUS_VISITS' },
     { href: 'risk-factors.html',     icon: 'pi-exclamation-triangle', label: 'Risk Factors',     i18n: 'NAV.RISK_FACTORS' },
@@ -49,7 +50,6 @@ const NAV_ITEMS = [
     { href: 'medication.html',       icon: 'pi-box',                 label: 'Medication',       i18n: 'NAV.MEDICATION' },
     { href: 'care-plans.html',       icon: 'pi-heart',               label: 'Care Plans',       i18n: 'NAV.CARE_PLANS' },
     { href: 'measurements.html',     icon: 'pi-chart-line',          label: 'Measurements',     i18n: 'NAV.MEASUREMENTS' },
-    { href: 'nurse-notes.html',      icon: 'pi-pencil',              label: 'Nurse Notes',      i18n: 'NAV.NURSE_NOTES' },
     { href: 'protocols.html',        icon: 'pi-book',                label: 'Protocols',        i18n: 'NAV.PROTOCOLS' }
 ];
 

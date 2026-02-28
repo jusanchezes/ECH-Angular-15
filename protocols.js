@@ -38,69 +38,6 @@ const PROTOCOLS_DATA = [
         department: 'Neurology',
         status: 'Open',
         endDate: ''
-    },
-    {
-        id: 4,
-        creationDate: '10/10/2025',
-        protocolName: 'Sepsis Early Detection Protocol',
-        author: 'Dr. Rory Rogers',
-        department: 'Emergency Medicine',
-        status: 'Closed',
-        endDate: '15/01/2026'
-    },
-    {
-        id: 5,
-        creationDate: '05/09/2025',
-        protocolName: 'Hip Replacement Rehabilitation',
-        author: 'Dr. Emily Torres',
-        department: 'Orthopedics',
-        status: 'Open',
-        endDate: ''
-    },
-    {
-        id: 6,
-        creationDate: '18/08/2025',
-        protocolName: 'Chemotherapy Cycle Management',
-        author: 'Dr. Laura Patel',
-        department: 'Oncology',
-        status: 'Open',
-        endDate: ''
-    },
-    {
-        id: 7,
-        creationDate: '01/07/2025',
-        protocolName: 'Diabetic Ketoacidosis Protocol',
-        author: 'Dr. Rory Rogers',
-        department: 'Endocrinology',
-        status: 'Closed',
-        endDate: '20/12/2025'
-    },
-    {
-        id: 8,
-        creationDate: '14/06/2025',
-        protocolName: 'Neonatal Jaundice Pathway',
-        author: 'Dr. Sarah Mitchell',
-        department: 'Pediatrics',
-        status: 'Open',
-        endDate: ''
-    },
-    {
-        id: 9,
-        creationDate: '28/05/2025',
-        protocolName: 'Pneumonia Treatment Pathway',
-        author: 'Dr. James Chen',
-        department: 'Pulmonology',
-        status: 'Closed',
-        endDate: '10/11/2025'
-    },
-    {
-        id: 10,
-        creationDate: '12/04/2025',
-        protocolName: 'Heart Failure Management Protocol',
-        author: 'Dr. Emily Torres',
-        department: 'Cardiology',
-        status: 'Open',
-        endDate: ''
     }
 ];
 
@@ -149,7 +86,7 @@ function renderProtocolsTable() {
                     </button>
                 </td>
                 <td class="col-proto-date" data-field="creationDate">${protocol.creationDate}</td>
-                <td class="col-proto-name ${statusClass}" data-field="protocolName">
+                <td class="col-proto-name" data-field="protocolName">
                     <span class="proto-name-link">${protocol.protocolName}</span>
                 </td>
                 <td class="col-proto-author" data-field="author">${protocol.author}</td>
