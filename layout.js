@@ -339,14 +339,6 @@ function handleUserMenuAction(action) {
 /** Handles quick action bar button clicks. Angular: ClinicalActionService.executeQuickAction(action) */
 function handleQuickAction(action) {
     console.log('Quick action:', action);
-    switch (action) {
-        case 'Administer Medication':
-            window.location.href = 'medication.html';
-            break;
-        case 'Administer Care':
-            window.location.href = 'care-plans.html';
-            break;
-    }
 }
 
 /** Binds global click-away listeners for dropdown panels. Angular: handled by PrimeNG overlay lifecycle */
