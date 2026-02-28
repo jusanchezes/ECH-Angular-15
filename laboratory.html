@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="APP.PAGE_TITLE_LABORATORY">ECH Laboratory Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
+    <link rel="stylesheet" href="theme-overrides.css">
+</head>
+<body>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar collapsed" id="sidebar-component"></aside>
+
+    <main class="main-content">
+        <header class="top-bar" id="header-component"></header>
+        <section class="clinical-banner" id="banner-component"></section>
+
+        <section class="action-bar" id="action-bar-component"></section>
+        <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar"></section>
+
+        <section class="module-content-area" id="module-content" style="padding:0;">
+
+            <div class="lab-context-strip">
+                <div class="lab-context-left">
+                    <span class="lab-context-item"><strong data-i18n="LAB.CONTEXT_EGFR">eGFR:</strong> <span class="lab-text-danger">42 (Low)</span></span>
+                    <span class="lab-context-separator">|</span>
+                    <span class="lab-context-item"><strong data-i18n="LAB.CONTEXT_CREATININE">Creatinine:</strong> 1.4 mg/dL</span>
+                </div>
+                <div class="lab-context-right">
+                    <span class="lab-tag-allergy"><i class="pi pi-exclamation-triangle"></i> <span data-i18n="LAB.TAG_PENICILLIN">PENICILLIN ALLERGY</span></span>
+                    <span class="lab-tag-critical"><i class="pi pi-exclamation-circle"></i> <span data-i18n="LAB.TAG_CRITICAL_LABS">CRITICAL LABS</span> (<span id="labCriticalCount">1</span>)</span>
+                </div>
+            </div>
+
+            <div class="lab-layout">
+                <div class="lab-disciplines-panel">
+                    <div class="lab-disciplines-title" data-i18n="LAB.DISCIPLINES_TITLE">Disciplines</div>
+                    <ul class="lab-discipline-list" id="labDisciplineList"></ul>
+                </div>
+
+                <div class="lab-main-panel">
+                    <div class="lab-toolbar">
+                        <div class="lab-toolbar-left">
+                            <div class="lab-time-group" id="labTimeGroup">
+                                <button class="lab-time-btn active" data-range="24" onclick="labSetTimeRange(this)" data-i18n="LAB.RANGE_24H">24h</button>
+                                <button class="lab-time-btn" data-range="48" onclick="labSetTimeRange(this)" data-i18n="LAB.RANGE_48H">48h</button>
+                                <button class="lab-time-btn" data-range="72" onclick="labSetTimeRange(this)" data-i18n="LAB.RANGE_72H">72h</button>
+                            </div>
+                            <div class="lab-filter-group">
+                                <button class="lab-filter-btn" id="labBtnAbnormal" onclick="labToggleAbnormal()" data-i18n="LAB.BTN_ABNORMAL">Abnormal Only</button>
+                                <button class="lab-filter-btn" id="labBtnCritical" onclick="labToggleCritical()" data-i18n="LAB.BTN_CRITICAL">Critical Only</button>
+                                <button class="lab-filter-btn" id="labBtnTrend" onclick="labToggleTrendView()"><i class="pi pi-chart-line"></i> <span data-i18n="LAB.BTN_TREND">Trend View</span></button>
+                            </div>
+                        </div>
+                        <div class="lab-toolbar-right">
+                            <span class="lab-search-wrapper">
+                                <i class="pi pi-search"></i>
+                                <input type="text" class="lab-search-input" id="labSearchInput" placeholder="Search analyte..." data-i18n-placeholder="LAB.SEARCH_PLACEHOLDER" oninput="labFilterBySearch(this.value)">
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="lab-table-wrapper" id="labTableWrapper">
+                        <table class="lab-results-table p-datatable-sm" id="labResultsTable">
+                            <thead id="labTableHead"></thead>
+                            <tbody id="labTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lab-detail-backdrop" id="labDetailBackdrop" onclick="labCloseDetail()"></div>
+            <div class="lab-detail-sidebar" id="labDetailSidebar">
+                <div class="lab-detail-header">
+                    <span class="lab-detail-title" id="labDetailTitle" data-i18n="LAB.DETAIL_TITLE">Result Detail</span>
+                    <button class="lab-detail-close" onclick="labCloseDetail()"><i class="pi pi-times"></i></button>
+                </div>
+                <div class="lab-detail-body" id="labDetailBody"></div>
+            </div>
+
+        </section>
+    </main>
+</div>
+
+<script src="layout.js"></script>
+<script src="laboratory.js"></script>
+</body>
+</html>

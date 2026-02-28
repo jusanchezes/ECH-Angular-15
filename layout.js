@@ -46,6 +46,7 @@ const NAV_ITEMS = [
     { href: 'previous-visits.html',  icon: 'pi-history',              label: 'Previous Visits',  i18n: 'NAV.PREVIOUS_VISITS' },
     { href: 'risk-factors.html',     icon: 'pi-exclamation-triangle', label: 'Risk Factors',     i18n: 'NAV.RISK_FACTORS' },
     { href: 'diagnostic-tests.html', icon: 'pi-search',              label: 'Diagnostic Tests', i18n: 'NAV.DIAGNOSTIC_TESTS' },
+    { href: 'laboratory.html',      icon: 'pi-table',               label: 'Laboratory Results', i18n: 'NAV.LABORATORY_RESULTS' },
     { href: 'documents.html',        icon: 'pi-file',                label: 'Documents',        i18n: 'NAV.DOCUMENTS' },
     { href: 'medication.html',       icon: 'pi-box',                 label: 'Medication',       i18n: 'NAV.MEDICATION' },
     { href: 'care-plans.html',       icon: 'pi-heart',               label: 'Care Plans',       i18n: 'NAV.CARE_PLANS' },
