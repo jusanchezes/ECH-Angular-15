@@ -1,0 +1,40 @@
+Actúa como un Senior Angular & PrimeNG Developer. Tu tarea es refactorizar el archivo medication-prescription.html para implementar una vista de Prescripción Vertical de Alta Densidad.
+
+1. Respeto al Framework y Estilos Existentes
+Arquitectura Shell: Mantén intactos el Navigation Sidebar, el Top Header y el Clinical Banner del paciente. No modifiques el archivo de estilos CSS global; utilízalo para asegurar la coherencia visual.
+
+Regla de Densidad 13px: Todos los textos, etiquetas de formulario (labels), inputs, botones y celdas de tabla deben usar estrictamente font-size: 13px (o 1.3rem).
+
+Componentes: Utiliza componentes de PrimeNG 15 (p-inputtext, p-dropdown, p-button, p-tag) con el padding mínimo para optimizar el espacio en pantallas de 14''.
+
+2. Disposición de Paneles (Vertical Master-Detail)
+Divide el área de contenido principal en dos secciones verticales con bordes definidos:
+
+A. Sección Superior (Selección - 40% de altura): Divide este espacio en dos columnas (50/50):
+
+Panel Izquierdo (Búsqueda): Buscador de catálogo con un p-inputGroup y una lista de resultados rápida.
+
+Panel Derecho (Órdenes Seleccionadas): Una lista tipo "carrito" de órdenes pendientes de firma. Cada ítem debe mostrar el resumen extendido: DROGA | Dosis | Vía | Frecuencia | Rango de Fechas | Duración.
+
+Ejemplo: "METOPROLOL TARTRATE 50mg TAB | Oral | BID | 15-12-26 / 30-12-26 | 15 days".
+
+B. Sección Inferior (Detalle - 60% de altura): Un formulario amplio para configurar la droga seleccionada arriba.
+
+Configuración del Grid: Usa PrimeFlex para crear una rejilla de 4 columnas.
+
+Campos del Formulario:
+
+Fila 1: Dose (Input), Route (Dropdown), Frequency (Dropdown), PRN Reason (Input).
+
+Fila 2: Start Date (p-calendar), End Date (p-calendar), Duration (Days), Dispense Unit (Dropdown).
+
+Fila 3: Special Instructions (TextArea que ocupe todo el ancho).
+
+Módulo de Seguridad: Inyecta un cuadro de alerta (background rojo/naranja suave) para mostrar Interacciones y Duplicidad de Terapia justo antes de la botonera.
+
+3. Botonera de Firma
+Fija en la parte inferior derecha del panel de detalle los botones de acción:
+
+Botón "Cancel": Estilo p-button-outlined y p-button-secondary.
+
+Botón "Sign Order": Estilo primario (p-button-primary), resaltado para indicar el cierre de la prescripción.
