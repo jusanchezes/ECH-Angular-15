@@ -28,6 +28,7 @@
    20. CARE PLANS (CAR)
    20½. IMAGING ORDERS (io)
    20¾. NURSE NOTES (nurse-notes.html)
+   20⅞. LABORATORY ORDERS (lo)
    21. USER MENUS & OVERLAYS                          ~Line 3503
    22. UTILITY CLASSES                                ~Line 3661
    23. RESPONSIVE — TABLET (max-width: 1024px)        ~Line 3691
@@ -4888,6 +4889,89 @@ body {
 .io-btn-secondary:hover {
     background: #f5f5f5;
     color: var(--ech-text);
+}
+
+
+/* ============================================================================
+   20⅞. LABORATORY ORDERS (lo)
+   --------------------------------------------------------------------------
+   Laboratory-specific styles for lab test ordering. Reuses .io-* classes
+   for shared layout, form fields, footer, and buttons. Only lab-unique
+   elements get .lo-* prefixes.
+   Classes: .lo-tag-fasting, .lo-tag-stat, .lo-coag-alert, .lo-volume-badge
+   ============================================================================ */
+
+.lo-tag-fasting {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: var(--ech-clinical-orange);
+    color: #fff;
+    white-space: nowrap;
+}
+
+.lo-tag-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: var(--ech-danger);
+    color: #fff;
+    white-space: nowrap;
+}
+
+.lo-coag-alert {
+    border: 1px solid #ffcdd2;
+    border-radius: 6px;
+    background: #ffebee;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: #c62828;
+}
+.lo-coag-alert .pi {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    color: var(--ech-danger);
+}
+.lo-coag-alert-text {
+    font-weight: 600;
+    line-height: 1.4;
+}
+.lo-coag-alert-meds {
+    font-weight: 700;
+    color: var(--ech-danger);
+}
+
+.lo-order-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.15rem;
+}
+
+.lo-volume-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #e3f2fd;
+    color: var(--ech-primary-dark);
+    white-space: nowrap;
 }
 
 

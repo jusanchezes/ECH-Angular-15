@@ -161,6 +161,10 @@ function handleCreateExam(examType) {
         window.location.href = 'imaging-orders.html';
         return;
     }
+    if (examType === 'laboratory') {
+        window.location.href = 'laboratory-orders.html';
+        return;
+    }
     console.log(`Create new exam: ${examType}`);
 }
 

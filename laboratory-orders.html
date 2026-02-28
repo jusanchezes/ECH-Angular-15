@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="APP.PAGE_TITLE_LABORATORY_ORDERS">ECH Laboratory Orders</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
+    <link rel="stylesheet" href="theme-overrides.css">
+</head>
+<body>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar collapsed" id="sidebar-component"></aside>
+
+    <main class="main-content">
+        <header class="top-bar" id="header-component"></header>
+        <section class="clinical-banner" id="banner-component"></section>
+
+        <div class="io-context-strip">
+            <div class="io-context-left">
+                <span class="io-context-item"><strong data-i18n="LO.CONTEXT_ANTICOAGULANT">Active Anticoagulant:</strong> Warfarin 5 mg/day</span>
+                <span class="io-context-separator">|</span>
+                <span class="io-context-item"><strong data-i18n="LO.CONTEXT_INR">INR:</strong> 2.8 (<span class="io-text-danger">Elevated</span>)</span>
+                <span class="io-context-separator">|</span>
+                <span class="io-context-item"><strong data-i18n="LO.CONTEXT_DX">Dx:</strong> Suspected Infection</span>
+            </div>
+            <div class="io-context-right">
+                <span class="io-tag-danger"><i class="pi pi-exclamation-circle"></i> <span data-i18n="LO.TAG_BLEEDING_RISK">BLEEDING RISK</span></span>
+                <span class="io-tag-warning"><i class="pi pi-exclamation-triangle"></i> <span data-i18n="LO.TAG_ANTICOAGULANT">ON ANTICOAGULANT</span></span>
+            </div>
+        </div>
+
+        <section class="module-content-area io-mode" id="module-content">
+
+            <div class="io-upper-section">
+                <div class="io-panel io-panel-catalog">
+                    <div class="io-panel-header">
+                        <span data-i18n="LO.CATALOG_TITLE">1. Laboratory Catalog</span>
+                        <div class="io-modality-filters" id="loCategoryFilters">
+                            <button class="io-modality-btn active" data-category="all" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_ALL">All</button>
+                            <button class="io-modality-btn" data-category="Hematology" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_HEMATOLOGY">Hematology</button>
+                            <button class="io-modality-btn" data-category="Chemistry" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_CHEMISTRY">Chemistry</button>
+                            <button class="io-modality-btn" data-category="Microbiology" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_MICROBIOLOGY">Microbiology</button>
+                            <button class="io-modality-btn" data-category="Coagulation" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_COAGULATION">Coagulation</button>
+                            <button class="io-modality-btn" data-category="Urinalysis" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_URINALYSIS">Urinalysis</button>
+                        </div>
+                    </div>
+                    <div class="io-panel-body">
+                        <div class="io-search-group">
+                            <i class="pi pi-search io-search-icon"></i>
+                            <input type="text" class="io-search-input" id="loSearchInput" placeholder="Search test (e.g. CBC, BMP)..." aria-label="Search laboratory catalog" data-i18n-placeholder="LO.SEARCH_PLACEHOLDER" oninput="loFilterCatalog()">
+                        </div>
+                        <div class="io-catalog-list" id="loCatalogList"></div>
+                    </div>
+                </div>
+
+                <div class="io-panel io-panel-orders">
+                    <div class="io-panel-header io-panel-header-orders">
+                        <i class="pi pi-file-edit"></i>
+                        <span data-i18n="LO.ORDERS_TITLE">2. Orders for Signature</span>
+                    </div>
+                    <div class="io-panel-body">
+                        <div class="io-orders-list" id="loOrdersList">
+                            <div class="io-orders-empty" id="loOrdersEmpty">
+                                <i class="pi pi-inbox"></i>
+                                <span data-i18n="LO.ORDERS_EMPTY">No orders pending signature</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="io-lower-section" id="loDetailSection">
+                <div class="io-detail-header-row">
+                    <span class="io-detail-title">
+                        <span data-i18n="LO.DETAIL_TITLE">3. Order Technical Detail:</span>
+                        <span class="io-detail-exam-name" id="loDetailExamName">&mdash;</span>
+                    </span>
+                    <span class="io-required-note" data-i18n="LO.REQUIRED_NOTE">All required fields marked with <span class="io-required-star">*</span></span>
+                </div>
+
+                <div class="io-form" id="loForm">
+                    <div class="grid">
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="loPriority" data-i18n="LO.FIELD_PRIORITY">Priority <span class="io-required-star">*</span></label>
+                                <div class="io-select-wrapper">
+                                    <select class="io-select" id="loPriority" data-field="priority" onchange="loFormChange()">
+                                        <option value="Routine" data-i18n="LO.PRIORITY_ROUTINE">Routine</option>
+                                        <option value="STAT" data-i18n="LO.PRIORITY_STAT">STAT</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down io-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="loRequestedDate" data-i18n="LO.FIELD_REQUESTED_DATE">Requested Date/Time <span class="io-required-star">*</span></label>
+                                <input type="datetime-local" class="io-input" id="loRequestedDate" data-field="requestedDate" onchange="loFormChange()">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="loFrequency" data-i18n="LO.FIELD_FREQUENCY">Frequency</label>
+                                <div class="io-select-wrapper">
+                                    <select class="io-select" id="loFrequency" data-field="frequency" onchange="loFormChange()">
+                                        <option value="Once" data-i18n="LO.FREQ_ONCE">Once</option>
+                                        <option value="Daily x3" data-i18n="LO.FREQ_DAILY3">Daily x3</option>
+                                        <option value="Serial" data-i18n="LO.FREQ_SERIAL">Serial</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down io-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label">&nbsp;</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="loSpecimenType" data-i18n="LO.FIELD_SPECIMEN_TYPE">Specimen Type <span class="io-required-star">*</span></label>
+                                <div class="io-select-wrapper">
+                                    <select class="io-select" id="loSpecimenType" data-field="specimenType" onchange="loFormChange()">
+                                        <option value="" data-i18n="LO.SELECT_SPECIMEN">-- Select --</option>
+                                        <option value="Blood" data-i18n="LO.SPECIMEN_BLOOD">Blood</option>
+                                        <option value="Urine" data-i18n="LO.SPECIMEN_URINE">Urine</option>
+                                        <option value="Swab" data-i18n="LO.SPECIMEN_SWAB">Swab</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down io-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="loCollectionMethod" data-i18n="LO.FIELD_COLLECTION_METHOD">Collection Method</label>
+                                <div class="io-select-wrapper">
+                                    <select class="io-select" id="loCollectionMethod" data-field="collectionMethod" onchange="loFormChange()">
+                                        <option value="Nurse" data-i18n="LO.METHOD_NURSE">Nurse</option>
+                                        <option value="Lab" data-i18n="LO.METHOD_LAB">Lab</option>
+                                        <option value="Patient" data-i18n="LO.METHOD_PATIENT">Patient</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down io-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="loVolumeRequired" data-i18n="LO.FIELD_VOLUME">Volume Required</label>
+                                <input type="text" class="io-input io-input-readonly" id="loVolumeRequired" data-field="volumeRequired" value="—" readonly>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label">&nbsp;</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="loFastingRequired" data-i18n="LO.FIELD_FASTING">Fasting Required</label>
+                                <div class="io-select-wrapper">
+                                    <select class="io-select" id="loFastingRequired" data-field="fastingRequired" onchange="loFormChange()">
+                                        <option value="No" data-i18n="LO.FASTING_NO">No</option>
+                                        <option value="Yes" data-i18n="LO.FASTING_YES">Yes</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down io-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3" id="loFastingDurationGroup" style="display:none;">
+                            <div class="io-field">
+                                <label class="io-label" for="loFastingDuration" data-i18n="LO.FIELD_FASTING_DURATION">Fasting Duration (hours)</label>
+                                <input type="number" class="io-input" id="loFastingDuration" data-field="fastingDuration" min="1" max="24" placeholder="e.g. 8" oninput="loFormChange()">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="io-field">
+                                <label class="io-label" for="loClinicalIndication" data-i18n="LO.FIELD_INDICATION">Clinical Indication <span class="io-required-star">*</span></label>
+                                <textarea class="io-textarea" id="loClinicalIndication" data-field="clinicalIndication" rows="2" placeholder="Explain the clinical question..." data-i18n-placeholder="LO.INDICATION_PLACEHOLDER" oninput="loFormChange()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lo-coag-alert" id="loCoagAlert" role="alert" aria-live="polite" style="display:none;">
+                        <i class="pi pi-exclamation-triangle"></i>
+                        <div>
+                            <strong data-i18n="LO.COAG_ALERT_TITLE">Coagulation Safety Alert:</strong>
+                            Patient is on active anticoagulant therapy.
+                            <span class="lo-coag-alert-meds" id="loCoagAlertMeds"></span>.
+                            Current INR: 2.8. Verify clinical necessity and coordinate timing with pharmacy.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <div class="io-footer">
+            <div class="io-error-summary" id="loErrorSummary">
+                <i class="pi pi-info-circle"></i>
+                <span id="loErrorText" data-i18n="LO.ERROR_DEFAULT">Select a test to begin</span>
+            </div>
+            <div class="io-footer-actions">
+                <button class="io-btn io-btn-secondary" onclick="loCancel()" data-i18n="LO.BTN_CANCEL">Cancel</button>
+                <button class="io-btn io-btn-primary" id="loSignBtn" onclick="loReviewSign()" disabled data-i18n="LO.BTN_SIGN">Review &amp; Sign</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="layout.js"></script>
+<script src="laboratory-orders.js"></script>
+
+</body>
+</html>
