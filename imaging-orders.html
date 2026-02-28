@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="APP.PAGE_TITLE_IMAGING_ORDERS">ECH Imaging Orders</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
+    <link rel="stylesheet" href="theme-overrides.css">
+</head>
+<body>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar collapsed" id="sidebar-component"></aside>
+
+    <main class="main-content">
+        <header class="top-bar" id="header-component"></header>
+        <section class="clinical-banner" id="banner-component"></section>
+
+        <div class="io-context-strip">
+            <div class="io-context-left">
+                <span class="io-context-item"><strong>eGFR:</strong> 42 mL/min (<span class="io-text-danger">Low</span>)</span>
+                <span class="io-context-separator">|</span>
+                <span class="io-context-item"><strong>Dx:</strong> Abdominal Pain</span>
+            </div>
+            <div class="io-context-right">
+                <span class="io-tag-danger"><i class="pi pi-exclamation-circle"></i> CONTRAST ALLERGY</span>
+                <span class="io-tag-warning"><i class="pi pi-exclamation-triangle"></i> RENAL RISK</span>
+            </div>
+        </div>
+
+        <section class="module-content-area io-mode" id="module-content">
+
+            <div class="io-upper-section">
+                <div class="io-panel io-panel-catalog">
+                    <div class="io-panel-header">
+                        <span>1. Service Catalog</span>
+                        <div class="io-modality-filters" id="ioModalityFilters">
+                            <button class="io-modality-btn active" data-modality="all" onclick="ioSetModalityFilter(this)">All</button>
+                            <button class="io-modality-btn" data-modality="CT" onclick="ioSetModalityFilter(this)">CT</button>
+                            <button class="io-modality-btn" data-modality="MRI" onclick="ioSetModalityFilter(this)">MRI</button>
+                            <button class="io-modality-btn" data-modality="XR" onclick="ioSetModalityFilter(this)">XR</button>
+                            <button class="io-modality-btn" data-modality="US" onclick="ioSetModalityFilter(this)">US</button>
+                        </div>
+                    </div>
+                    <div class="io-panel-body">
+                        <div class="io-search-group">
+                            <i class="pi pi-search io-search-icon"></i>
+                            <input type="text" class="io-search-input" id="ioSearchInput" placeholder="Search exam (e.g. CT Abdomen)..." aria-label="Search exam catalog" oninput="ioFilterCatalog()">
+                        </div>
+                        <div class="io-catalog-list" id="ioCatalogList"></div>
+                    </div>
+                </div>
+
+                <div class="io-panel io-panel-orders">
+                    <div class="io-panel-header io-panel-header-orders">
+                        <i class="pi pi-file-edit"></i>
+                        <span>2. Orders for Signature</span>
+                    </div>
+                    <div class="io-panel-body">
+                        <div class="io-orders-list" id="ioOrdersList">
+                            <div class="io-orders-empty" id="ioOrdersEmpty">
+                                <i class="pi pi-inbox"></i>
+                                <span>No orders pending signature</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="io-lower-section" id="ioDetailSection">
+                <div class="io-detail-header-row">
+                    <span class="io-detail-title">
+                        <span>3. Order Technical Detail:</span>
+                        <span class="io-detail-exam-name" id="ioDetailExamName">—</span>
+                    </span>
+                    <span class="io-required-note">All required fields marked with <span class="io-required-star">*</span></span>
+                </div>
+
+                <div class="io-form" id="ioForm">
+                    <div class="grid">
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="ioPriority">Priority <span class="io-required-star">*</span></label>
+                                <div class="io-select-wrapper">
+                                    <select class="io-select" id="ioPriority" data-field="priority" onchange="ioFormChange()">
+                                        <option value="Routine">Routine</option>
+                                        <option value="Urgent">Urgent</option>
+                                        <option value="STAT">STAT (Urgent)</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down io-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="ioTiming">Timing <span class="io-required-star">*</span></label>
+                                <div class="io-select-wrapper">
+                                    <select class="io-select" id="ioTiming" data-field="timing" onchange="ioFormChange()">
+                                        <option value="Scheduled">Scheduled</option>
+                                        <option value="Today-ASAP">Today / ASAP</option>
+                                        <option value="Tomorrow">Tomorrow</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down io-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="io-field">
+                                <label class="io-label" for="ioClinicalIndication">Clinical Indication <span class="io-required-star">*</span></label>
+                                <textarea class="io-textarea" id="ioClinicalIndication" data-field="clinicalIndication" rows="2" placeholder="Explain the clinical question..." oninput="ioFormChange()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="ioContrastProtocol">Contrast Protocol <span class="io-required-star">*</span></label>
+                                <div class="io-select-wrapper">
+                                    <select class="io-select" id="ioContrastProtocol" data-field="contrastProtocol" onchange="ioFormChange()">
+                                        <option value="None">None</option>
+                                        <option value="IV Only">IV Contrast Only</option>
+                                        <option value="Oral Only">Oral Only</option>
+                                        <option value="IV+Oral">IV + Oral</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down io-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="ioCreatinine">Creatinine (mg/dL)</label>
+                                <input type="text" class="io-input io-input-readonly" id="ioCreatinine" data-field="creatinine" value="1.4 (Low eGFR)" readonly>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label" for="ioPregnancyCheck">Pregnancy Check <span class="io-required-star">*</span></label>
+                                <div class="io-select-wrapper">
+                                    <select class="io-select" id="ioPregnancyCheck" data-field="pregnancyCheck" onchange="ioFormChange()">
+                                        <option value="N/A">N/A</option>
+                                        <option value="Negative-Confirmed">Negative / Confirmed</option>
+                                        <option value="Pending">Pending</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down io-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="io-field">
+                                <label class="io-label">&nbsp;</label>
+                                <div class="io-checkbox-group">
+                                    <input type="checkbox" id="ioPortable" data-field="portable">
+                                    <label for="ioPortable" class="io-checkbox-label">Portable?</label>
+                                    <span class="io-checkbox-note" id="ioPortableNote">N/A for CT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="io-safety-alert" id="ioContrastAlert" role="alert" aria-live="polite">
+                        <i class="pi pi-exclamation-triangle"></i>
+                        <span><strong>Alert:</strong> Contrast Allergy history. Document pre-medication before signing.</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <div class="io-footer">
+            <div class="io-error-summary" id="ioErrorSummary">
+                <i class="pi pi-info-circle"></i>
+                <span id="ioErrorText">Missing clinical indication</span>
+            </div>
+            <div class="io-footer-actions">
+                <button class="io-btn io-btn-secondary" onclick="ioCancel()">Cancel</button>
+                <button class="io-btn io-btn-primary" id="ioSignBtn" onclick="ioReviewSign()" disabled>Review &amp; Sign</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="layout.js"></script>
+<script src="imaging-orders.js"></script>
+
+</body>
+</html>

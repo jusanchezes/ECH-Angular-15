@@ -157,6 +157,10 @@ function handleOrderAction(action, orderId) {
  * @param {string} examType - 'radiology' | 'laboratory' | 'pathology'
  */
 function handleCreateExam(examType) {
+    if (examType === 'radiology') {
+        window.location.href = 'imaging-orders.html';
+        return;
+    }
     console.log(`Create new exam: ${examType}`);
 }
 

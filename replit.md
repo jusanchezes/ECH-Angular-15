@@ -27,6 +27,8 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── risk-factors.js         # Risk Factors logic — mock data (33 records), tab switching, search, status toggle
 ├── diagnostic-tests.html   # Diagnostic Tests / Clinical Orders — order list with date tags, result indicators, icon actions
 ├── diagnostic-tests.js     # Clinical Orders logic — mock data (4 orders), table rendering, action handlers
+├── imaging-orders.html     # Imaging Orders — Balanced Master-Detail radiology ordering view with service catalog, orders cart, technical detail form
+├── imaging-orders.js       # Imaging Orders logic — radiology catalog (13 exams), modality filters, cart management, form validation, contrast safety
 ├── documents.html          # Documents module — clinical file manager with tab filters and document table
 ├── documents.js            # Documents logic — mock data, filtering, search, table rendering
 ├── medication.html         # Medication Administration Record (MAR) — full MAR grid with frozen columns, time slots, status cells
@@ -65,7 +67,9 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 18. Risk Factors
 19. Medication (MAR)
 20. Care Plans (CAR)
-20½. Clinical Orders / Diagnostic Tests
+20½a. Clinical Orders / Diagnostic Tests
+20½b. Imaging Orders (io)
+20¾. Nurse Notes
 21. User Menus & Overlays
 22. Utility Classes
 23. Responsive — Tablet (max-width: 1024px)
@@ -119,6 +123,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-28: Implemented Imaging Orders — Balanced Master-Detail radiology ordering view with service catalog (13 exams, CT/MRI/XR/US modality filters), orders-for-signature cart with validation status, technical detail form (Priority, Timing, Clinical Indication, Contrast Protocol, Creatinine, Pregnancy Check, Portable), clinical context strip (eGFR/Dx/Contrast Allergy/Renal Risk tags), contrast safety alert, Review & Sign validation. io-* CSS classes in section 20½b. Linked from Diagnostic Tests "Create Radiology Exam" button.
 - 2026-02-28: Implemented Medication Prescription — Vertical Master-Detail view with drug catalog search, orders-for-signature cart, vitals strip (Weight/Height/BMI/BSA), 4-column detail form, safety alerts module, Sign Order/Cancel actions. rx-* CSS classes in section 19½. Linked from MAR "New Medication" button. Added Prescription to sidebar nav.
 - 2026-02-26: Implemented Nurse Notes — Nursing Overview Shift-Based View with 5 panels (Handoff Report, Shift Checklist, Medications Due, Quick Assessments, Flowsheet Links), safety strip, and 6 nurse action buttons (Administer Medication/Care, Record Vitals/I&O/Assessment, Nursing Note), nn-* CSS classes in section 20¾
 - 2026-02-25: Implemented Patient Summary dashboard — 6 clinical panels (Alerts/Risks, Active Medication, Recent Notes, Active Problems, 24h Vitals Snapshot, Pending/Abnormal Results) with doctor action bar and ps-* CSS classes
