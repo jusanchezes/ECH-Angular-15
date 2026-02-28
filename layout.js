@@ -47,7 +47,7 @@ const NAV_ITEMS = [
     { href: 'diagnostic-tests.html', icon: 'pi-search',              label: 'Diagnostic Tests', i18n: 'NAV.DIAGNOSTIC_TESTS' },
     { href: 'documents.html',        icon: 'pi-file',                label: 'Documents',        i18n: 'NAV.DOCUMENTS' },
     { href: 'medication.html',       icon: 'pi-box',                 label: 'Medication',       i18n: 'NAV.MEDICATION' },
-    { href: 'medication-prescription.html', icon: 'pi-file-edit',     label: 'Prescription',     i18n: 'NAV.PRESCRIPTION' },
+    { href: 'medication-prescription.html', icon: 'pi-file-edit',     label: 'Order Medication',     i18n: 'NAV.PRESCRIPTION' },
 
     { href: 'care-plans.html',       icon: 'pi-heart',               label: 'Care Plans',       i18n: 'NAV.CARE_PLANS' },
     { href: 'measurements.html',     icon: 'pi-chart-line',          label: 'Measurements',     i18n: 'NAV.MEASUREMENTS' },
@@ -58,7 +58,7 @@ const NAV_ITEMS = [
 /** User menu options for the three-dots dropdown. Angular: PrimeNG MenuItem[] */
 const USER_MENU_ITEMS = [
     { action: 'change-center', icon: 'pi-building',    label: 'Cambiar Centro sanitario', i18n: 'MENU.CHANGE_CENTER' },
-    { action: 'datetime',      icon: 'pi-clock',       label: '21/02/2026 17:06',         i18n: 'MENU.DATETIME', dataField: 'currentDateTime' },
+    { action: 'datetime',      icon: 'pi-clock',       label: '04/03/2026',         i18n: 'MENU.DATETIME', dataField: 'currentDateTime' },
     { action: 'preferences',   icon: 'pi-cog',         label: 'Preferencias',             i18n: 'MENU.PREFERENCES' },
     { action: 'view-config',   icon: 'pi-cog',         label: 'Herramienta de Configuración de Vistas', i18n: 'MENU.VIEW_CONFIG' },
     { action: 'refresh',       icon: 'pi-refresh',     label: 'Refrescar inicio',         i18n: 'MENU.REFRESH' },
