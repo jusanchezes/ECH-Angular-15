@@ -1,0 +1,44 @@
+Actúa como un Senior Frontend Developer especializado en HIS (Hospital Information Systems). Tu objetivo es refactorizar la pantalla measurements.html para implementar una vista de flujograma dinámico utilizando Angular 15 y PrimeNG 15.
+
+1. Arquitectura de la Interfaz (Master-Detail)
+Shell & Contexto: Mantén el Navigation Sidebar, el Top Header y el Clinical Banner (donde se ve el nombre del paciente Thomas Meyer Wood, sus alergias y riesgos). No modifiques el CSS global.
+
+Layout de Doble Panel: Divide el área de contenido principal en dos secciones:
+
+Panel Izquierdo (Grupos - 220px fija): Una lista vertical (p-listbox o similar) con los grupos de parámetros: Vital Signs, Fluids Balance, Pulmonary/Ventilation, Neurological, etc.
+
+Panel Derecho (Tabla de Flujo - Flexible): Una matriz de datos de alta densidad con scroll horizontal independiente.
+
+2. Barra de Acciones y Filtros
+Inyecta una Action Bar superior (dentro del panel de la tabla) que contenga:
+
+Filtros de Escala Temporal: Un grupo de botones (p-selectButton) con las opciones: 15 min, 1 h, 4 h, 8 h, 24 h.
+
+Navegación por Fecha: Un selector de fecha (p-calendar) flanqueado por iconos de flecha (anterior/siguiente) para moverse entre días.
+
+Botón de Acción Primaria: Botón "Register Vital Signs" destacado (estilo p-button-primary) con icono pi-plus-circle.
+
+3. Rejilla de Datos de Alta Densidad (p-table)
+Regla de Oro: Todos los textos, celdas y etiquetas deben usar estrictamente font-size: 13px (1.3rem).
+
+Estructura de Tabla:
+
+Filas: Parámetros clínicos (ej: Blood Pressure, HR, SpO2, Temp, Uresis).
+
+Columnas: Línea de tiempo (Día/Minuto). Las columnas deben generarse dinámicamente según el filtro de tiempo seleccionado.
+
+Comportamiento "Sticky": La primera columna (nombre del parámetro) debe permanecer fija a la izquierda mientras el usuario hace scroll horizontal por las horas.
+
+Alertas Visuales: Los valores que superen los umbrales de normalidad deben aparecer en negrita y color rojo.
+
+4. Componentes y UX
+Utiliza p-table con scrollable="true", p-panel para los contenedores y p-tooltip para mostrar quién registró el dato y en qué segundo exacto.
+
+Asegura que el padding sea mínimo para maximizar la cantidad de datos visibles sin necesidad de scroll vertical en una laptop de 14''.
+
+Instrucciones Adicionales para Replit
+"Implementa el scroll horizontal suave": El usuario debe poder navegar por las 24 horas del día sin saltos bruscos en la tabla.
+
+"Simula datos para Vital Signs": Asegura que al cargar la página se vea una progresión lógica (ej: una frecuencia cardíaca que varía entre 70 y 95 bpm) para validar el diseño.
+
+"Conecta el botón de Registro": Pide que el botón "Register Vital Signs" abra un componente de formulario (aunque sea un placeholder por ahora) para mantener la intención de uso.
