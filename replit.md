@@ -37,11 +37,12 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── medication-prescription.html # Medication Prescription — Vertical Master-Detail view with drug catalog, orders cart, vitals strip, detail form
 ├── patient-summary.html    # Patient Summary dashboard — 6 clinical panels (alerts, meds, notes, problems, vitals, results)
 ├── care-plans.html         # Care Administration Record (CAR) — full CAR grid with frozen columns, time slots, status cells
-├── measurements.html       # Measurements module (empty shell)
+├── measurements.html       # Measurements Flowchart — Master-Detail vital signs flowsheet with groups panel, time grid, threshold alerts
+├── measurements.js         # Measurements logic — mock data (5 parameter groups), time-scale switching, date nav, tooltips, registration modal
 ├── nurse-notes.html        # Nurse Notes — Nursing Overview Shift-Based View with 5 clinical panels + nurse action bar
 ├── protocols.html          # Protocols — high-density protocol list with status-colored rows, search, edit actions
 ├── protocols.js            # Protocols logic — mock data (10 protocols), table rendering, search filter, row selection
-├── theme-overrides.css     # UNIFIED stylesheet — all project styles with documented TOC (~3900 lines)
+├── theme-overrides.css     # UNIFIED stylesheet — all project styles with documented TOC (~5700 lines)
 ├── server.js               # Node.js static file server (port 5000)
 ├── Instructions.md         # EHR Design Project Core Rules
 ├── attached_assets/        # Reference files (legacy HTML mockup + screenshot)
@@ -128,6 +129,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-28: Implemented Measurements Flowchart — Master-Detail vital signs flowsheet with left groups panel (Vital Signs, Fluids Balance, Pulmonary, Respiratory, Neurological), right high-density time grid with sticky parameter column, time-scale filters (15m/1h/4h/8h/24h), date navigation, threshold-based alert coloring (red/bold for out-of-range values), hover tooltips showing registrant and timestamp, registration modal with dynamic form fields per group. Mock data with realistic clinical progressions. ms-* CSS classes in section 20⅞¾.
 - 2026-02-28: Implemented Protocols — high-density protocol list with 7 columns (Action, Creation Date, Protocol Name, Author, Department, Status, End Date), 10 mock protocols, conditional row formatting (green for Open, red for Closed), row selection highlight (soft blue), global search filter (name/author/department), edit icon actions. proto-* CSS classes in section 20⅞½.
 - 2026-02-28: Implemented Laboratory Orders — Balanced Master-Detail lab ordering view with laboratory catalog (15 tests across Hematology/Chemistry/Microbiology/Coagulation/Urinalysis), category filters, orders cart with visual states (Fasting in orange, STAT in red), specimen detail form (Priority, Date/Time, Frequency, Specimen Type, Collection Method, Volume, Fasting Required/Duration, Clinical Indication), coagulation safety alert showing active anticoagulants, validation for required fields, Review & Sign flow. lo-* CSS classes in section 20⅞. Linked from Diagnostic Tests "Create Laboratory Exam" button.
 - 2026-02-28: Implemented Imaging Orders — Balanced Master-Detail radiology ordering view with service catalog (13 exams, CT/MRI/XR/US modality filters), orders-for-signature cart with validation status, technical detail form (Priority, Timing, Clinical Indication, Contrast Protocol, Creatinine, Pregnancy Check, Portable), clinical context strip (eGFR/Dx/Contrast Allergy/Renal Risk tags), contrast safety alert, Review & Sign validation. io-* CSS classes in section 20½b. Linked from Diagnostic Tests "Create Radiology Exam" button.

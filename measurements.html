@@ -18,24 +18,73 @@
         <header class="top-bar" id="header-component"></header>
         <section class="clinical-banner" id="banner-component"></section>
 
-        <section class="action-bar" id="action-bar-component">
-            <!-- Module-specific action buttons go here later -->
-        </section>
+        <section class="action-bar" id="action-bar-component"></section>
 
-        <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
-            <!-- Module-specific filters go here later -->
-        </section>
+        <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar"></section>
 
-        <section class="module-content-area" id="module-content">
-            <div class="flex align-items-center justify-content-center" style="height:200px;color:var(--ech-text-secondary)">
-                <i class="pi pi-chart-line mr-2" style="font-size:1.5rem"></i>
-                <span class="fs-md" data-i18n="MODULE.MEASUREMENTS_PLACEHOLDER">Measurements — content area</span>
+        <section class="module-content-area" id="module-content" style="padding:0;">
+            <div class="ms-layout">
+                <div class="ms-groups-panel">
+                    <div class="ms-groups-title" data-i18n="MEASUREMENTS.GROUPS_TITLE">Groups</div>
+                    <ul class="ms-group-list" id="msGroupList"></ul>
+                </div>
+
+                <div class="ms-main-panel">
+                    <div class="ms-toolbar">
+                        <div class="ms-toolbar-left">
+                            <div class="ms-scale-group" id="msScaleGroup">
+                                <button class="ms-scale-btn" data-scale="15" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_15M">15m</button>
+                                <button class="ms-scale-btn" data-scale="60" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_1H">1h</button>
+                                <button class="ms-scale-btn active" data-scale="240" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_4H">4h</button>
+                                <button class="ms-scale-btn" data-scale="480" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_8H">8h</button>
+                                <button class="ms-scale-btn" data-scale="1440" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_24H">24h</button>
+                            </div>
+
+                            <div class="ms-date-nav">
+                                <button class="ms-date-nav-btn" onclick="msNavDate(-1)" data-i18n-title="MEASUREMENTS.PREV_DAY"><i class="pi pi-chevron-left"></i></button>
+                                <span class="ms-date-label" id="msDateLabel" data-field="measurementDate"></span>
+                                <button class="ms-date-nav-btn" onclick="msNavDate(1)" data-i18n-title="MEASUREMENTS.NEXT_DAY"><i class="pi pi-chevron-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="ms-toolbar-right">
+                            <button class="ms-register-btn" onclick="msOpenRegister()" data-i18n="MEASUREMENTS.REGISTER_VITAL_SIGNS">
+                                <i class="pi pi-plus-circle"></i>
+                                <span>Register Vital Signs</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="ms-table-wrapper" id="msTableWrapper">
+                        <table class="ms-table" data-i18n-title="MEASUREMENTS.TABLE_TITLE">
+                            <thead id="msTableHead"></thead>
+                            <tbody id="msTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 </div>
 
+<div class="ms-tooltip" id="msTooltip"></div>
+
+<div class="ms-modal-overlay" id="msModal">
+    <div class="ms-modal">
+        <div class="ms-modal-header">
+            <span data-i18n="MEASUREMENTS.REGISTER_TITLE">Register Vital Signs</span>
+            <button class="ms-modal-close" onclick="msCloseRegister()"><i class="pi pi-times"></i></button>
+        </div>
+        <div class="ms-modal-body" id="msModalBody"></div>
+        <div class="ms-modal-footer">
+            <button class="ms-btn-cancel" onclick="msCloseRegister()" data-i18n="COMMON.CANCEL">Cancel</button>
+            <button class="ms-btn-save" onclick="msSaveRegister()" data-i18n="COMMON.SAVE">Save</button>
+        </div>
+    </div>
+</div>
+
 <script src="layout.js"></script>
+<script src="measurements.js"></script>
 
 </body>
 </html>
