@@ -39,7 +39,8 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── care-plans.html         # Care Administration Record (CAR) — full CAR grid with frozen columns, time slots, status cells
 ├── measurements.html       # Measurements module (empty shell)
 ├── nurse-notes.html        # Nurse Notes — Nursing Overview Shift-Based View with 5 clinical panels + nurse action bar
-├── protocols.html          # Protocols module (empty shell)
+├── protocols.html          # Protocols — high-density protocol list with status-colored rows, search, edit actions
+├── protocols.js            # Protocols logic — mock data (10 protocols), table rendering, search filter, row selection
 ├── theme-overrides.css     # UNIFIED stylesheet — all project styles with documented TOC (~3900 lines)
 ├── server.js               # Node.js static file server (port 5000)
 ├── Instructions.md         # EHR Design Project Core Rules
@@ -73,6 +74,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 20½b. Imaging Orders (io)
 20⅞. Laboratory Orders (lo)
 20¾. Nurse Notes
+20⅞½. Protocols (protocols.html)
 21. User Menus & Overlays
 22. Utility Classes
 23. Responsive — Tablet (max-width: 1024px)
@@ -126,6 +128,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-28: Implemented Protocols — high-density protocol list with 7 columns (Action, Creation Date, Protocol Name, Author, Department, Status, End Date), 10 mock protocols, conditional row formatting (green for Open, red for Closed), row selection highlight (soft blue), global search filter (name/author/department), edit icon actions. proto-* CSS classes in section 20⅞½.
 - 2026-02-28: Implemented Laboratory Orders — Balanced Master-Detail lab ordering view with laboratory catalog (15 tests across Hematology/Chemistry/Microbiology/Coagulation/Urinalysis), category filters, orders cart with visual states (Fasting in orange, STAT in red), specimen detail form (Priority, Date/Time, Frequency, Specimen Type, Collection Method, Volume, Fasting Required/Duration, Clinical Indication), coagulation safety alert showing active anticoagulants, validation for required fields, Review & Sign flow. lo-* CSS classes in section 20⅞. Linked from Diagnostic Tests "Create Laboratory Exam" button.
 - 2026-02-28: Implemented Imaging Orders — Balanced Master-Detail radiology ordering view with service catalog (13 exams, CT/MRI/XR/US modality filters), orders-for-signature cart with validation status, technical detail form (Priority, Timing, Clinical Indication, Contrast Protocol, Creatinine, Pregnancy Check, Portable), clinical context strip (eGFR/Dx/Contrast Allergy/Renal Risk tags), contrast safety alert, Review & Sign validation. io-* CSS classes in section 20½b. Linked from Diagnostic Tests "Create Radiology Exam" button.
 - 2026-02-28: Implemented Medication Prescription — Vertical Master-Detail view with drug catalog search, orders-for-signature cart, vitals strip (Weight/Height/BMI/BSA), 4-column detail form, safety alerts module, Sign Order/Cancel actions. rx-* CSS classes in section 19½. Linked from MAR "New Medication" button. Added Prescription to sidebar nav.

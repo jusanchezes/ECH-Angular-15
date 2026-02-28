@@ -19,23 +19,40 @@
         <section class="clinical-banner" id="banner-component"></section>
 
         <section class="action-bar" id="action-bar-component">
-            <!-- Module-specific action buttons go here later -->
+            <button class="action-btn action-btn-primary" data-i18n="PROTO.ADD_PROTOCOL" onclick="handleAddProtocol()">
+                <i class="pi pi-plus"></i>
+                <span>Add Protocol</span>
+            </button>
+            <div class="action-bar-separator"></div>
+            <span class="module-search-wrapper">
+                <i class="pi pi-search module-search-icon"></i>
+                <input type="text" class="module-search-input" placeholder="Search by name, author or department…" data-i18n-title="PROTO.SEARCH_HINT" oninput="handleProtocolSearch(this)">
+            </span>
         </section>
 
-        <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
-            <!-- Module-specific filters go here later -->
-        </section>
-
-        <section class="module-content-area" id="module-content">
-            <div class="flex align-items-center justify-content-center" style="height:200px;color:var(--ech-text-secondary)">
-                <i class="pi pi-book mr-2" style="font-size:1.5rem"></i>
-                <span class="fs-md" data-i18n="MODULE.PROTOCOLS_PLACEHOLDER">Protocols — content area</span>
+        <section class="co-table-area" id="module-content">
+            <div class="co-table-scroll">
+                <table class="co-table">
+                    <thead>
+                        <tr>
+                            <th class="col-proto-action" data-i18n="PROTO.COL_ACTION">Action</th>
+                            <th class="col-proto-date" data-i18n="PROTO.COL_CREATION_DATE">Creation Date</th>
+                            <th class="col-proto-name" data-i18n="PROTO.COL_PROTOCOL_NAME">Protocol Name</th>
+                            <th class="col-proto-author" data-i18n="PROTO.COL_AUTHOR">Author</th>
+                            <th class="col-proto-dept" data-i18n="PROTO.COL_DEPARTMENT">Department</th>
+                            <th class="col-proto-status" data-i18n="PROTO.COL_STATUS">Status</th>
+                            <th class="col-proto-enddate" data-i18n="PROTO.COL_END_DATE">End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="protocolsTableBody"></tbody>
+                </table>
             </div>
         </section>
     </main>
 </div>
 
 <script src="layout.js"></script>
+<script src="protocols.js"></script>
 
 </body>
 </html>
