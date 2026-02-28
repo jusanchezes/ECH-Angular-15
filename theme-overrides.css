@@ -24,8 +24,9 @@
    17. DOCUMENTS                                      ~Line 2051
    18. RISK FACTORS                                   ~Line 2317
    19. MEDICATION (MAR)                               ~Line 2856
-   20. CARE PLANS (CAR)                               ~Line 3236
-   20¾. NURSE NOTES (nurse-notes.html)                ~Line 3716
+   19½. MEDICATION PRESCRIPTION (rx)                   ~Line 3282
+   20. CARE PLANS (CAR)
+   20¾. NURSE NOTES (nurse-notes.html)
    21. USER MENUS & OVERLAYS                          ~Line 3503
    22. UTILITY CLASSES                                ~Line 3661
    23. RESPONSIVE — TABLET (max-width: 1024px)        ~Line 3691
@@ -3276,6 +3277,441 @@ body {
     height: 20px;
     background: var(--ech-border);
     flex-shrink: 0;
+}
+
+
+/* ============================================================================
+   19½. MEDICATION PRESCRIPTION (rx)
+   --------------------------------------------------------------------------
+   Vertical Master-Detail prescription view with drug catalog, orders cart,
+   and detail form. Classes: .rx-*, .module-content-area.rx-mode
+   ============================================================================ */
+
+/* --- 19½a. Vitals strip --- */
+.rx-vitals-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    padding: 0.4rem 1.5rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid var(--ech-border);
+    font-size: 1rem;
+}
+.rx-vital-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+}
+.rx-vital-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.rx-vital-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ech-text-primary);
+}
+
+/* --- 19½b. Layout mode --- */
+.module-content-area.rx-mode {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --- 19½c. Upper section (catalog + orders) --- */
+.rx-upper-section {
+    display: flex;
+    height: 40%;
+    min-height: 180px;
+    border-bottom: 2px solid var(--ech-border);
+}
+
+.rx-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--ech-border);
+    overflow: hidden;
+}
+.rx-panel:last-child {
+    border-right: none;
+}
+
+.rx-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--ech-primary-light);
+    color: var(--ech-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--ech-primary-border);
+    flex-shrink: 0;
+}
+.rx-panel-header-orders {
+    background: #fff3e0;
+    color: #e65100;
+    border-bottom-color: #ffe0b2;
+}
+
+.rx-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+}
+
+/* --- 19½d. Drug catalog search --- */
+.rx-search-group {
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--ech-border);
+}
+.rx-search-icon {
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ech-text-secondary);
+    font-size: 0.9rem;
+}
+.rx-search-input {
+    width: 100%;
+    padding: 0.35rem 0.5rem 0.35rem 1.8rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    transition: border-color 0.15s;
+}
+.rx-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
+}
+
+/* --- 19½e. Catalog list items --- */
+.rx-catalog-list {
+    padding: 0;
+}
+.rx-catalog-item {
+    display: flex;
+    align-items: center;
+    padding: 0.45rem 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.1s;
+}
+.rx-catalog-item:hover {
+    background: var(--ech-primary-light);
+}
+.rx-catalog-item-active {
+    background: var(--ech-primary-light);
+    border-left: 3px solid var(--ech-primary);
+    font-weight: 600;
+}
+.rx-catalog-item-name {
+    font-size: 1rem;
+    color: var(--ech-text-primary);
+}
+.rx-catalog-empty {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--ech-text-secondary);
+    font-size: 1rem;
+}
+
+/* --- 19½f. Orders cart --- */
+.rx-orders-list {
+    padding: 0;
+}
+.rx-orders-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    color: var(--ech-text-secondary);
+    font-size: 1rem;
+}
+.rx-orders-empty .pi {
+    font-size: 1.8rem;
+    opacity: 0.4;
+}
+.rx-order-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 0.5rem;
+}
+.rx-order-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+.rx-order-item-drug {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ech-text-primary);
+}
+.rx-order-item-detail {
+    font-size: 0.9rem;
+    color: var(--ech-text-secondary);
+}
+.rx-order-item-detail .pi-calendar {
+    font-size: 0.85rem;
+    margin-right: 0.15rem;
+}
+.rx-order-remove {
+    background: none;
+    border: none;
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    transition: all 0.15s;
+}
+.rx-order-remove:hover {
+    color: var(--ech-danger);
+    background: #fff0f0;
+}
+
+/* --- 19½g. Lower section (detail form) --- */
+.rx-lower-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 0 1rem 0.75rem;
+}
+.rx-detail-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid var(--ech-primary);
+    margin-bottom: 0.75rem;
+}
+.rx-detail-title {
+    font-size: 1rem;
+    color: var(--ech-primary);
+    font-weight: 600;
+}
+.rx-detail-drug-name {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.rx-required-note {
+    font-size: 0.85rem;
+    color: var(--ech-primary);
+}
+.rx-required-star {
+    color: var(--ech-danger);
+    font-weight: 700;
+}
+
+/* --- 19½h. Form fields --- */
+.rx-form .grid {
+    margin: 0 -0.35rem;
+}
+.rx-form .grid > [class*="col-"] {
+    padding: 0 0.35rem;
+}
+.rx-field {
+    margin-bottom: 0.6rem;
+}
+.rx-label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ech-text-primary);
+    margin-bottom: 0.25rem;
+}
+.rx-input {
+    width: 100%;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    transition: border-color 0.15s;
+    box-sizing: border-box;
+}
+.rx-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
+}
+.rx-select-wrapper {
+    position: relative;
+}
+.rx-select {
+    width: 100%;
+    padding: 0.35rem 1.8rem 0.35rem 0.5rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+.rx-select:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
+}
+.rx-select-icon {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ech-text-secondary);
+    font-size: 0.75rem;
+    pointer-events: none;
+}
+.rx-input-icon-wrapper {
+    position: relative;
+}
+.rx-input-icon {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ech-text-secondary);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+.rx-input-number {
+    padding-right: 1.5rem;
+}
+.rx-number-up, .rx-number-down {
+    position: absolute;
+    right: 0.4rem;
+    font-size: 0.6rem;
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    pointer-events: none;
+}
+.rx-number-up { top: 0.2rem; }
+.rx-number-down { bottom: 0.2rem; }
+.rx-textarea {
+    width: 100%;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    resize: vertical;
+    min-height: 2.5rem;
+    transition: border-color 0.15s;
+    box-sizing: border-box;
+}
+.rx-textarea:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
+}
+
+/* --- 19½i. Safety alert box --- */
+.rx-safety-alert {
+    border: 1px solid #ffcdd2;
+    border-radius: 6px;
+    background: #fff5f5;
+    margin: 0.5rem 0;
+    overflow: hidden;
+}
+.rx-safety-alert-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    background: #ffebee;
+    color: #c62828;
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid #ffcdd2;
+}
+.rx-safety-alert-header .pi {
+    font-size: 1rem;
+}
+.rx-safety-alert-body {
+    padding: 0.5rem 0.75rem;
+}
+.rx-alert-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding: 0.3rem 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+.rx-alert-line .pi {
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    font-size: 0.9rem;
+}
+.rx-alert-danger {
+    color: #c62828;
+}
+.rx-alert-warning {
+    color: #e65100;
+}
+
+/* --- 19½j. Action buttons --- */
+.rx-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    padding: 0.75rem 0 0.25rem;
+    margin-top: auto;
+}
+.rx-btn {
+    padding: 0.4rem 1.2rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+}
+.rx-btn-primary {
+    background: var(--ech-primary);
+    color: #fff;
+    border-color: var(--ech-primary);
+}
+.rx-btn-primary:hover {
+    background: var(--ech-primary-dark);
+    border-color: var(--ech-primary-dark);
+}
+.rx-btn-secondary {
+    background: #fff;
+    color: var(--ech-text-secondary);
+    border-color: var(--ech-border);
+}
+.rx-btn-secondary:hover {
+    background: #f5f5f5;
+    color: var(--ech-text-primary);
 }
 
 

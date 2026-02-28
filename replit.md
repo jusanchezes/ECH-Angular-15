@@ -30,6 +30,7 @@ Clinical EHR (Electronic Health Record) application, migrating from legacy Java/
 ├── documents.html          # Documents module — clinical file manager with tab filters and document table
 ├── documents.js            # Documents logic — mock data, filtering, search, table rendering
 ├── medication.html         # Medication Administration Record (MAR) — full MAR grid with frozen columns, time slots, status cells
+├── medication-prescription.html # Medication Prescription — Vertical Master-Detail view with drug catalog, orders cart, vitals strip, detail form
 ├── patient-summary.html    # Patient Summary dashboard — 6 clinical panels (alerts, meds, notes, problems, vitals, results)
 ├── care-plans.html         # Care Administration Record (CAR) — full CAR grid with frozen columns, time slots, status cells
 ├── measurements.html       # Measurements module (empty shell)
@@ -118,6 +119,7 @@ All styles consolidated into a single file with 24 documented sections and a Tab
 - Module pages prepared as empty shells, content provided later by user
 
 ## Recent Changes
+- 2026-02-28: Implemented Medication Prescription — Vertical Master-Detail view with drug catalog search, orders-for-signature cart, vitals strip (Weight/Height/BMI/BSA), 4-column detail form, safety alerts module, Sign Order/Cancel actions. rx-* CSS classes in section 19½. Linked from MAR "New Medication" button. Added Prescription to sidebar nav.
 - 2026-02-26: Implemented Nurse Notes — Nursing Overview Shift-Based View with 5 panels (Handoff Report, Shift Checklist, Medications Due, Quick Assessments, Flowsheet Links), safety strip, and 6 nurse action buttons (Administer Medication/Care, Record Vitals/I&O/Assessment, Nursing Note), nn-* CSS classes in section 20¾
 - 2026-02-25: Implemented Patient Summary dashboard — 6 clinical panels (Alerts/Risks, Active Medication, Recent Notes, Active Problems, 24h Vitals Snapshot, Pending/Abnormal Results) with doctor action bar and ps-* CSS classes
 - 2026-02-25: Refactored Documents tabs from underlined text tabs (.doc-tab) to select-button-group (.sb-option) matching Medication filter pattern

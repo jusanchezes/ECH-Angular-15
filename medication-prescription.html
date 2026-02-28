@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="APP.PAGE_TITLE_PRESCRIPTION">ECH Medication Prescription</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
+    <link rel="stylesheet" href="theme-overrides.css">
+</head>
+<body>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar collapsed" id="sidebar-component"></aside>
+
+    <main class="main-content">
+        <header class="top-bar" id="header-component"></header>
+        <section class="clinical-banner" id="banner-component"></section>
+
+        <div class="rx-vitals-strip" data-i18n-title="RX.VITALS_STRIP">
+            <div class="rx-vital-item">
+                <span class="rx-vital-label" data-i18n="RX.WEIGHT">Weight</span>
+                <span class="rx-vital-value" data-field="patientWeight">60.0 Kg</span>
+            </div>
+            <div class="rx-vital-item">
+                <span class="rx-vital-label" data-i18n="RX.HEIGHT">Height</span>
+                <span class="rx-vital-value" data-field="patientHeight">160 cm</span>
+            </div>
+            <div class="rx-vital-item">
+                <span class="rx-vital-label" data-i18n="RX.BMI">BMI</span>
+                <span class="rx-vital-value" data-field="patientBMI">23.44</span>
+            </div>
+            <div class="rx-vital-item">
+                <span class="rx-vital-label" data-i18n="RX.BSA">BSA</span>
+                <span class="rx-vital-value" data-field="patientBSA">1.63 m²</span>
+            </div>
+        </div>
+
+        <section class="module-content-area rx-mode" id="module-content">
+
+            <div class="rx-upper-section">
+                <div class="rx-panel rx-panel-catalog">
+                    <div class="rx-panel-header">
+                        <i class="pi pi-search"></i>
+                        <span data-i18n="RX.DRUG_CATALOG">Drug Catalog</span>
+                    </div>
+                    <div class="rx-panel-body">
+                        <div class="rx-search-group">
+                            <i class="pi pi-search rx-search-icon"></i>
+                            <input type="text" class="rx-search-input" id="rxSearchInput" placeholder="Search by name or generic..." data-i18n-placeholder="RX.SEARCH_PLACEHOLDER" aria-label="Search drug catalog" oninput="rxFilterCatalog()">
+                        </div>
+                        <div class="rx-catalog-list" id="rxCatalogList"></div>
+                    </div>
+                </div>
+
+                <div class="rx-panel rx-panel-orders">
+                    <div class="rx-panel-header rx-panel-header-orders">
+                        <i class="pi pi-file-edit"></i>
+                        <span data-i18n="RX.ORDERS_FOR_SIGNATURE">Orders for Signature</span>
+                    </div>
+                    <div class="rx-panel-body">
+                        <div class="rx-orders-list" id="rxOrdersList">
+                            <div class="rx-orders-empty" id="rxOrdersEmpty">
+                                <i class="pi pi-inbox"></i>
+                                <span data-i18n="RX.NO_ORDERS">No orders pending signature</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rx-lower-section" id="rxDetailSection">
+                <div class="rx-detail-header-row">
+                    <span class="rx-detail-title" id="rxDetailTitle">
+                        <span data-i18n="RX.PRESCRIPTION_DETAIL">Prescription Detail:</span>
+                        <span class="rx-detail-drug-name" id="rxDetailDrugName">—</span>
+                    </span>
+                    <span class="rx-required-note" data-i18n="RX.REQUIRED_FIELDS">All required fields marked with <span class="rx-required-star">*</span></span>
+                </div>
+
+                <div class="rx-form" id="rxForm">
+                    <div class="grid">
+                        <div class="col-3">
+                            <div class="rx-field">
+                                <label class="rx-label" for="rxDose" data-i18n="RX.DOSE">Dose <span class="rx-required-star">*</span></label>
+                                <input type="text" class="rx-input" id="rxDose" data-field="dose" placeholder="e.g. 50 mg" data-i18n-placeholder="RX.DOSE_PLACEHOLDER">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="rx-field">
+                                <label class="rx-label" for="rxRoute" data-i18n="RX.ROUTE">Route <span class="rx-required-star">*</span></label>
+                                <div class="rx-select-wrapper">
+                                    <select class="rx-select" id="rxRoute" data-field="route">
+                                        <option value="Oral">Oral</option>
+                                        <option value="IV">IV</option>
+                                        <option value="IM">IM</option>
+                                        <option value="SC">SC</option>
+                                        <option value="Topical">Topical</option>
+                                        <option value="Inhaled">Inhaled</option>
+                                        <option value="Rectal">Rectal</option>
+                                        <option value="SL">SL</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down rx-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="rx-field">
+                                <label class="rx-label" for="rxFrequency" data-i18n="RX.FREQUENCY">Frequency <span class="rx-required-star">*</span></label>
+                                <div class="rx-select-wrapper">
+                                    <select class="rx-select" id="rxFrequency" data-field="frequency">
+                                        <option value="QD">QD (Once a day)</option>
+                                        <option value="BID">BID (Twice a day)</option>
+                                        <option value="TID">TID (Three times a day)</option>
+                                        <option value="QID">QID (Four times a day)</option>
+                                        <option value="Q4H">Q4H (Every 4 hours)</option>
+                                        <option value="Q6H">Q6H (Every 6 hours)</option>
+                                        <option value="Q8H">Q8H (Every 8 hours)</option>
+                                        <option value="Q12H">Q12H (Every 12 hours)</option>
+                                        <option value="PRN">PRN (As needed)</option>
+                                        <option value="STAT">STAT (Immediately)</option>
+                                    </select>
+                                    <i class="pi pi-chevron-down rx-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="rx-field">
+                                <label class="rx-label" for="rxPrnReason" data-i18n="RX.PRN_REASON">PRN Reason</label>
+                                <input type="text" class="rx-input" id="rxPrnReason" data-field="prnReason" placeholder="e.g. Hypertension" data-i18n-placeholder="RX.PRN_REASON_PLACEHOLDER">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-3">
+                            <div class="rx-field">
+                                <label class="rx-label" for="rxStartDate" data-i18n="RX.START_DATE">Start Date <span class="rx-required-star">*</span></label>
+                                <div class="rx-input-icon-wrapper">
+                                    <input type="text" class="rx-input" id="rxStartDate" data-field="startDate" placeholder="dd/mm/yyyy" value="15/12/2026">
+                                    <i class="pi pi-calendar rx-input-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="rx-field">
+                                <label class="rx-label" for="rxEndDate" data-i18n="RX.END_DATE">End Date <span class="rx-required-star">*</span></label>
+                                <div class="rx-input-icon-wrapper">
+                                    <input type="text" class="rx-input" id="rxEndDate" data-field="endDate" placeholder="dd/mm/yyyy" value="30/12/2026">
+                                    <i class="pi pi-calendar rx-input-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="rx-field">
+                                <label class="rx-label" for="rxDuration" data-i18n="RX.DURATION">Duration (Days)</label>
+                                <div class="rx-select-wrapper">
+                                    <input type="number" class="rx-input rx-input-number" id="rxDuration" data-field="duration" value="15" min="1">
+                                    <i class="pi pi-chevron-up rx-number-up"></i>
+                                    <i class="pi pi-chevron-down rx-number-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="rx-field">
+                                <label class="rx-label" for="rxDispenseQty" data-i18n="RX.DISPENSE_QTY">Dispense Qty</label>
+                                <div class="rx-select-wrapper">
+                                    <input type="text" class="rx-input" id="rxDispenseQty" data-field="dispenseQty" value="30 tab">
+                                    <i class="pi pi-chevron-down rx-select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-12">
+                            <div class="rx-field">
+                                <label class="rx-label" for="rxInstructions" data-i18n="RX.SPECIAL_INSTRUCTIONS">Special Instructions / Indications</label>
+                                <textarea class="rx-textarea" id="rxInstructions" data-field="specialInstructions" rows="2" placeholder="Notes for pharmacy or nursing..." data-i18n-placeholder="RX.INSTRUCTIONS_PLACEHOLDER"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rx-safety-alert" id="rxSafetyAlert" role="alert" aria-live="polite" style="display:none;">
+                        <div class="rx-safety-alert-header">
+                            <i class="pi pi-exclamation-triangle"></i>
+                            <span data-i18n="RX.SAFETY_ALERTS">Drug Safety Alerts</span>
+                        </div>
+                        <div class="rx-safety-alert-body" id="rxSafetyAlertBody"></div>
+                    </div>
+
+                    <div class="rx-actions">
+                        <button class="rx-btn rx-btn-secondary" onclick="rxCancel()" data-i18n="RX.CANCEL">Cancel</button>
+                        <button class="rx-btn rx-btn-primary" onclick="rxSignOrder()" data-i18n="RX.SIGN_ORDER">Sign Order</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+</div>
+
+<script src="layout.js"></script>
+<script>
+(function() {
+
+    var DRUG_CATALOG = [
+        { id: 1, name: 'METOPROLOL TARTRATE 50mg TAB', dose: '50 mg', route: 'Oral', freq: 'BID', category: 'Cardiovascular' },
+        { id: 2, name: 'FUROSEMIDE 40mg AMP', dose: '40 mg', route: 'IV', freq: 'BID', category: 'Diuretic' },
+        { id: 3, name: 'AMOXICILLINA 500mg CAPSULE', dose: '500 mg', route: 'Oral', freq: 'TID', category: 'Antibiotic' },
+        { id: 4, name: 'OMEPRAZOL 20mg CAPSULE', dose: '20 mg', route: 'Oral', freq: 'QD', category: 'GI' },
+        { id: 5, name: 'ATORVASTATIN 40mg TAB', dose: '40 mg', route: 'Oral', freq: 'QD', category: 'Lipids' },
+        { id: 6, name: 'ENOXAPARINA 40mg JERINGA', dose: '40 mg', route: 'SC', freq: 'QD', category: 'Anticoagulant' },
+        { id: 7, name: 'INSULINA ASPART 100U/mL', dose: '6 U', route: 'SC', freq: 'TID', category: 'Endocrine' },
+        { id: 8, name: 'PARACETAMOL 1g IV', dose: '1 g', route: 'IV', freq: 'PRN', category: 'Analgesic' },
+        { id: 9, name: 'CLORURO POTÁSICO 600mg TAB', dose: '600 mg', route: 'Oral', freq: 'TID', category: 'Electrolyte' },
+        { id: 10, name: 'MORPHINE SULFATE 5mg AMP', dose: '5 mg', route: 'IV', freq: 'PRN', category: 'Analgesic' },
+        { id: 11, name: 'LISINOPRIL 10mg TAB', dose: '10 mg', route: 'Oral', freq: 'QD', category: 'Cardiovascular' },
+        { id: 12, name: 'AMLODIPINE 5mg TAB', dose: '5 mg', route: 'Oral', freq: 'QD', category: 'Cardiovascular' }
+    ];
+
+    var SAFETY_RULES = {
+        1: { alerts: [
+            { type: 'interaction', severity: 'warning', message: 'Interaction: METOPROLOL + FUROSEMIDE — Monitor BP closely, risk of hypotension.' }
+        ]},
+        10: { alerts: [
+            { type: 'high-alert', severity: 'danger', message: 'High Alert Medication: MORPHINE — Requires double verification. Max Q4H.' }
+        ]},
+        7: { alerts: [
+            { type: 'high-alert', severity: 'danger', message: 'High Alert Medication: INSULIN — Check glucose before administration.' },
+            { type: 'duplicate', severity: 'warning', message: 'Duplicate Therapy: Patient already has an active INSULIN order.' }
+        ]}
+    };
+
+    var selectedDrug = null;
+    var ordersCart = [];
+
+    function renderCatalog(filter) {
+        var list = document.getElementById('rxCatalogList');
+        if (!list) return;
+        filter = (filter || '').toLowerCase();
+        var filtered = DRUG_CATALOG.filter(function(d) {
+            return !filter || d.name.toLowerCase().indexOf(filter) !== -1 || d.category.toLowerCase().indexOf(filter) !== -1;
+        });
+        if (filtered.length === 0) {
+            list.innerHTML = '<div class="rx-catalog-empty"><i class="pi pi-info-circle"></i> <span data-i18n="RX.NO_RESULTS">No results found</span></div>';
+            return;
+        }
+        list.innerHTML = filtered.map(function(d) {
+            var sel = selectedDrug && selectedDrug.id === d.id ? ' rx-catalog-item-active' : '';
+            return '<div class="rx-catalog-item' + sel + '" data-drug-id="' + d.id + '" onclick="rxSelectDrug(' + d.id + ')">' +
+                '<span class="rx-catalog-item-name">' + d.name + '</span>' +
+            '</div>';
+        }).join('');
+    }
+
+    function renderOrders() {
+        var list = document.getElementById('rxOrdersList');
+        var empty = document.getElementById('rxOrdersEmpty');
+        if (!list) return;
+        if (ordersCart.length === 0) {
+            if (empty) empty.style.display = '';
+            list.innerHTML = '';
+            list.appendChild(empty);
+            return;
+        }
+        if (empty) empty.style.display = 'none';
+        list.innerHTML = ordersCart.map(function(o, idx) {
+            return '<div class="rx-order-item">' +
+                '<div class="rx-order-item-info">' +
+                    '<span class="rx-order-item-drug">' + o.name + '</span>' +
+                    '<span class="rx-order-item-detail">' + o.route + ' | ' + o.freq + ' | ' +
+                        '<i class="pi pi-calendar"></i> ' + o.startDate + ' / ' + o.endDate + ' <strong>(' + o.duration + ' days)</strong>' +
+                    '</span>' +
+                '</div>' +
+                '<button class="rx-order-remove" onclick="rxRemoveOrder(' + idx + ')" title="Remove order" aria-label="Remove order"><i class="pi pi-trash"></i></button>' +
+            '</div>';
+        }).join('');
+    }
+
+    function populateForm(drug) {
+        document.getElementById('rxDetailDrugName').textContent = drug ? drug.name : '—';
+        document.getElementById('rxDose').value = drug ? drug.dose : '';
+        var routeSelect = document.getElementById('rxRoute');
+        if (drug) {
+            for (var i = 0; i < routeSelect.options.length; i++) {
+                if (routeSelect.options[i].value === drug.route) { routeSelect.selectedIndex = i; break; }
+            }
+        }
+        var freqSelect = document.getElementById('rxFrequency');
+        if (drug) {
+            for (var i = 0; i < freqSelect.options.length; i++) {
+                if (freqSelect.options[i].value === drug.freq) { freqSelect.selectedIndex = i; break; }
+            }
+        }
+        document.getElementById('rxPrnReason').value = '';
+        document.getElementById('rxStartDate').value = '15/12/2026';
+        document.getElementById('rxEndDate').value = '30/12/2026';
+        document.getElementById('rxDuration').value = '15';
+        document.getElementById('rxDispenseQty').value = drug ? '30 tab' : '';
+        document.getElementById('rxInstructions').value = '';
+
+        var alertBox = document.getElementById('rxSafetyAlert');
+        var alertBody = document.getElementById('rxSafetyAlertBody');
+        if (drug && SAFETY_RULES[drug.id]) {
+            var alerts = SAFETY_RULES[drug.id].alerts;
+            alertBody.innerHTML = alerts.map(function(a) {
+                var cls = a.severity === 'danger' ? 'rx-alert-danger' : 'rx-alert-warning';
+                return '<div class="rx-alert-line ' + cls + '"><i class="pi pi-exclamation-triangle"></i> ' + a.message + '</div>';
+            }).join('');
+            alertBox.style.display = '';
+        } else {
+            alertBox.style.display = 'none';
+        }
+    }
+
+    window.rxSelectDrug = function(id) {
+        selectedDrug = DRUG_CATALOG.find(function(d) { return d.id === id; }) || null;
+        renderCatalog(document.getElementById('rxSearchInput').value);
+        populateForm(selectedDrug);
+    };
+
+    window.rxFilterCatalog = function() {
+        var val = document.getElementById('rxSearchInput').value;
+        renderCatalog(val);
+    };
+
+    window.rxRemoveOrder = function(idx) {
+        ordersCart.splice(idx, 1);
+        renderOrders();
+    };
+
+    window.rxSignOrder = function() {
+        if (!selectedDrug) { alert('Please select a drug from the catalog first.'); return; }
+        var dose = document.getElementById('rxDose').value;
+        var route = document.getElementById('rxRoute').value;
+        var freq = document.getElementById('rxFrequency').value;
+        var startDate = document.getElementById('rxStartDate').value;
+        var endDate = document.getElementById('rxEndDate').value;
+        var duration = document.getElementById('rxDuration').value;
+
+        if (!dose || !startDate || !endDate) { alert('Please fill all required fields.'); return; }
+
+        ordersCart.push({
+            id: selectedDrug.id,
+            name: selectedDrug.name,
+            dose: dose,
+            route: route,
+            freq: freq,
+            startDate: startDate.replace(/\//g, '-'),
+            endDate: endDate.replace(/\//g, '-'),
+            duration: duration
+        });
+
+        renderOrders();
+        selectedDrug = null;
+        renderCatalog(document.getElementById('rxSearchInput').value);
+        populateForm(null);
+    };
+
+    window.rxCancel = function() {
+        selectedDrug = null;
+        renderCatalog('');
+        populateForm(null);
+        document.getElementById('rxSearchInput').value = '';
+    };
+
+    renderCatalog('');
+    renderOrders();
+    populateForm(null);
+
+})();
+</script>
+
+</body>
+</html>
