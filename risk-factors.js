@@ -102,7 +102,7 @@ function renderRowsHTML(records, isInactive) {
         </td></tr>`;
     }
     return records.map(r => {
-        const rowClass = isInactive ? 'rf-row rf-row-inactive' : 'rf-row';
+        const rowClass = isInactive ? 'ehr-row rf-row rf-row-inactive' : 'ehr-row rf-row';
         const severityClass = getSeverityClass(r.severity);
         const alertIcon = r.alert ? '<i class="pi pi-bell rf-alert-icon rf-alert-active"></i>' : '<i class="pi pi-bell rf-alert-icon rf-alert-inactive"></i>';
         const toggleLabel = isInactive ? 'Activate' : 'Deactivate';

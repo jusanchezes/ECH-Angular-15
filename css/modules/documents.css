@@ -3,18 +3,12 @@
      ============================================================================
      Clinical document manager with tabs, table, and action buttons.
      Will become DocumentsComponent (Angular Standalone Component).
-     
-     Note: Base table styles are in components.css.
+
+     Base table styles are in table.css (.ehr-table, .ehr-table-area, etc.).
+     This file contains only column widths and module-specific overrides.
      ============================================================================ */
 
-  /* ============================================================================
-   17. DOCUMENTS
-   --------------------------------------------------------------------------
-   Clinical document manager with tabs, table, and action buttons.
-   Classes: .doc-*, .col-doc-*
-   ============================================================================ */
-
-/* --- 17b. Document search --- */
+/* --- Document search --- */
 .doc-search-area {
     display: flex;
     align-items: center;
@@ -65,63 +59,7 @@
     color: white;
 }
 
-/* --- 17c. Table --- */
-.doc-table-area {
-    flex: 1;
-    overflow: hidden;
-    padding: 0;
-}
-
-.doc-table-scroll {
-    overflow: auto;
-    height: 100%;
-    width: 100%;
-}
-
-.doc-table {
-    border-collapse: collapse;
-    font-size: var(--fs-md);
-    width: 100%;
-    min-width: 900px;
-}
-
-.doc-table thead th {
-    background: var(--ech-primary-light);
-    color: var(--ech-primary-dark);
-    font-weight: 600;
-    font-size: var(--fs-md);
-    padding: 6px 10px;
-    text-align: left;
-    border-bottom: 2px solid var(--ech-primary-border);
-    white-space: nowrap;
-    position: sticky;
-    top: 0;
-    z-index: 3;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.15s;
-}
-
-.doc-table thead th:hover {
-    background: #d6e4f0;
-}
-
-.doc-table tbody td {
-    padding: 4px 10px;
-    border-bottom: 1px solid var(--ech-border-light);
-    vertical-align: middle;
-    font-size: var(--fs-md);
-}
-
-.doc-row {
-    transition: background 0.15s ease;
-}
-
-.doc-row:hover {
-    background: var(--ech-hover);
-}
-
-/* --- 17c. Column widths --- */
+/* --- Column widths --- */
 .col-doc-name { min-width: 240px; }
 .col-doc-author { min-width: 130px; }
 .col-doc-dept { min-width: 130px; }
@@ -131,7 +69,7 @@
 .col-doc-access { width: 80px; text-align: center; }
 .col-doc-actions { width: 110px; text-align: center; }
 
-/* --- 17d. Document-specific elements --- */
+/* --- Document-specific elements --- */
 .doc-link {
     color: var(--ech-primary);
     text-decoration: none;
@@ -230,6 +168,3 @@
 .doc-action-share:hover {
     background: #43a047;
 }
-
-
-  

@@ -112,7 +112,7 @@ function renderOrdersTable() {
             : '';
 
         return `
-            <tr class="co-row">
+            <tr class="ehr-row">
                 <td class="col-co-date" data-field="requestDate">
                     <span class="co-date-tag">${order.requestDate}</span>
                 </td>

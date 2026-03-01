@@ -3,16 +3,13 @@
      ============================================================================
      10-tab risk factor center with severity indicators and summary cards.
      Will become RiskFactorsComponent (Angular Standalone Component).
+
+     Base table styles are in table.css (.ehr-table, .ehr-table-area, etc.).
+     This file contains only column widths and module-specific overrides.
+     Classes: .rf-*, .col-rf-*
      ============================================================================ */
 
-  /* ============================================================================
-   18. RISK FACTORS
-   --------------------------------------------------------------------------
-   10-tab risk factor center with severity indicators and summary cards.
-   Classes: .rf-*, .col-rf-*
-   ============================================================================ */
-
-/* --- 18a. Action bar & search --- */
+/* --- Action bar & search --- */
 .rf-action-bar {
     background: var(--ech-surface);
     border-bottom: 1px solid var(--ech-border);
@@ -92,7 +89,7 @@
     box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
 }
 
-/* --- 18b. Category select-button-group (scrollable for 10 categories) --- */
+/* --- Category select-button-group (scrollable for 10 categories) --- */
 .rf-select-group {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -108,7 +105,7 @@
     border-radius: 3px;
 }
 
-/* --- 18c. Content area --- */
+/* --- Content area --- */
 .rf-content-area {
     flex: 1;
     overflow: hidden;
@@ -127,7 +124,7 @@
     display: flex;
 }
 
-/* --- 18b. Section headers (Active / Inactive) --- */
+/* --- Section headers (Active / Inactive) --- */
 .rf-section-header {
     display: flex;
     align-items: center;
@@ -180,51 +177,12 @@
     background: var(--ech-text-muted);
 }
 
-/* --- 18c. Risk factors table --- */
-.rf-table-scroll {
-    overflow: auto;
-    flex: 1;
-}
-
+/* --- Risk factors table override (min-width for 10 columns) --- */
 .rf-table {
-    border-collapse: collapse;
-    font-size: var(--fs-md);
-    width: 100%;
     min-width: 1000px;
 }
 
-.rf-table thead th {
-    background: var(--ech-primary-light);
-    color: var(--ech-primary-dark);
-    font-weight: 600;
-    font-size: var(--fs-md);
-    padding: 5px 10px;
-    text-align: left;
-    border-bottom: 2px solid var(--ech-primary-border);
-    white-space: nowrap;
-    position: sticky;
-    top: 0;
-    z-index: 3;
-    user-select: none;
-}
-
-.rf-table tbody td {
-    padding: 3px 10px;
-    border-bottom: 1px solid var(--ech-border-light);
-    vertical-align: middle;
-    font-size: var(--fs-md);
-    height: 32px;
-}
-
-.rf-table tbody tr {
-    transition: background 0.15s ease;
-}
-
-.rf-table tbody tr:hover {
-    background: var(--ech-hover);
-}
-
-/* --- 18d. Column widths --- */
+/* --- Column widths --- */
 .col-rf-type { min-width: 90px; }
 .col-rf-group { min-width: 110px; }
 .col-rf-risk { min-width: 200px; }
@@ -236,7 +194,7 @@
 .col-rf-alert { min-width: 50px; text-align: center; }
 .col-rf-actions { min-width: 70px; text-align: center; }
 
-/* --- 18e. Severity tags --- */
+/* --- Severity tags --- */
 .rf-severity-tag {
     display: inline-flex;
     align-items: center;
@@ -272,7 +230,7 @@
     color: var(--ech-text-secondary);
 }
 
-/* --- 18f. Alert indicators --- */
+/* --- Alert indicators --- */
 .rf-alert-icon {
     display: inline-flex;
     align-items: center;
@@ -302,7 +260,7 @@
     color: var(--ech-text-muted);
 }
 
-/* --- 18g. Row actions --- */
+/* --- Row actions --- */
 .rf-actions-group {
     display: flex;
     align-items: center;
@@ -340,7 +298,7 @@
     color: var(--ech-danger);
 }
 
-/* --- 18h. Row states --- */
+/* --- Row states --- */
 .rf-row-inactive {
     opacity: 0.55;
 }
@@ -362,7 +320,7 @@
     opacity: 0.5;
 }
 
-/* --- 18i. Empty states --- */
+/* --- Empty states --- */
 .rf-empty-state {
     display: flex;
     align-items: center;
@@ -388,7 +346,7 @@
     gap: 8px;
 }
 
-/* --- 18j. Summary cards --- */
+/* --- Summary cards --- */
 .rf-summary-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -484,5 +442,3 @@
 .rf-summary-card.rf-summary-success {
     border-left: 3px solid var(--ech-success);
 }
-
-  

@@ -75,7 +75,7 @@ function renderProtocolsTable() {
         const isOpen = protocol.status === 'Open';
         const isClosed = protocol.status === 'Closed';
         const isSelected = protocol.id === selectedProtocolId;
-        const rowClass = isSelected ? 'co-row proto-row-selected' : 'co-row';
+        const rowClass = isSelected ? 'ehr-row proto-row-selected' : 'ehr-row';
         const statusClass = isOpen ? 'proto-status-open' : (isClosed ? 'proto-status-closed' : '');
 
         return `

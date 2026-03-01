@@ -3,15 +3,12 @@
      ============================================================================
      High-density protocols list with conditional formatting by status.
      Will become ProtocolsComponent (Angular Standalone Component).
+
+     Base table styles are in table.css (.ehr-table, .ehr-table-area, etc.).
+     This file contains only column widths and protocol-specific overrides.
      ============================================================================ */
 
-  /* ============================================================================
-   20⅞½. PROTOCOLS (protocols.html)
-   --------------------------------------------------------------------------
-   High-density protocols list with conditional formatting by status.
-   Classes: .proto-*, .col-proto-*
-   ============================================================================ */
-
+/* --- Column widths --- */
 .col-proto-action {
     width: 50px;
     text-align: center;
@@ -43,6 +40,7 @@
     width: 110px;
 }
 
+/* --- Protocol-specific elements --- */
 .proto-name-link {
     color: var(--ech-primary);
     cursor: pointer;
@@ -61,6 +59,7 @@
     font-size: var(--fs-md);
 }
 
+/* --- Status indicators --- */
 .proto-status-open {
     background: #4caf50 !important;
     color: #000 !important;
@@ -71,6 +70,7 @@
     color: #000 !important;
 }
 
+/* --- Row selection --- */
 .proto-row-selected {
     background: #e3f2fd !important;
 }
@@ -86,6 +86,3 @@
 .proto-row-selected td.proto-status-closed {
     background: #f44336 !important;
 }
-
-
-  

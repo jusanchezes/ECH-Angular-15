@@ -144,7 +144,7 @@ function renderDocumentTable() {
             : '';
 
         return `
-            <tr class="doc-row">
+            <tr class="ehr-row">
                 <td class="col-doc-name"><a href="#" class="doc-link" onclick="handleDocAction('open',${doc.id});return false">${doc.name}</a></td>
                 <td class="col-doc-author">${doc.author}</td>
                 <td class="col-doc-dept">${doc.department}</td>

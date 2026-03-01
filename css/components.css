@@ -113,32 +113,23 @@
 
 
   /* ----------------------------------------------------------------------------
-     3. HIGH-DENSITY TABLE BASE — .p-datatable-sm
+     3. HIGH-DENSITY TABLE BASE — .p-datatable-sm / .patient-table
      --------------------------------------------------------------------------
-     Standard table pattern for all clinical data tables.
-     Row height: 32px (high-density standard for 14" clinical screens).
-     
-     All module tables (.patient-table, .doc-table, .rf-table, .co-table,
-     .mar-table, .car-table) inherit these base styles.
-     Module CSS files add only column widths and module-specific overrides.
+     Base table styles for non-module tables (patient-table, p-datatable-sm).
+     Module tables (Protocols, Documents, Risk Factors, Diagnostic Tests)
+     now use the unified .ehr-table classes from table.css.
      
      Will become PrimeNG p-table with [size]="sm" in Angular.
      -------------------------------------------------------------------------- */
   .p-datatable-sm,
-  .patient-table,
-  .doc-table,
-  .rf-table,
-  .co-table {
+  .patient-table {
       border-collapse: collapse;
       font-size: var(--fs-md);
       width: 100%;
   }
 
   .p-datatable-sm thead th,
-  .patient-table thead th,
-  .doc-table thead th,
-  .rf-table thead th,
-  .co-table thead th {
+  .patient-table thead th {
       background: var(--ech-primary-light);
       color: var(--ech-primary-dark);
       font-weight: 600;
@@ -155,16 +146,12 @@
   }
 
   .p-datatable-sm thead th:hover,
-  .patient-table thead th:hover,
-  .doc-table thead th:hover {
+  .patient-table thead th:hover {
       background: #d6e4f0;
   }
 
   .p-datatable-sm tbody td,
-  .patient-table tbody td,
-  .doc-table tbody td,
-  .rf-table tbody td,
-  .co-table tbody td {
+  .patient-table tbody td {
       padding: 4px 10px;
       border-bottom: 1px solid var(--ech-border-light);
       vertical-align: middle;
@@ -173,18 +160,12 @@
   }
 
   .p-datatable-sm tbody tr,
-  .patient-table tbody tr,
-  .doc-table tbody tr,
-  .rf-table tbody tr,
-  .co-table tbody tr {
+  .patient-table tbody tr {
       transition: background 0.15s ease;
   }
 
   .p-datatable-sm tbody tr:hover,
-  .patient-table tbody tr:hover,
-  .doc-table tbody tr:hover,
-  .rf-table tbody tr:hover,
-  .co-table tbody tr:hover {
+  .patient-table tbody tr:hover {
       background: var(--ech-hover);
   }
 

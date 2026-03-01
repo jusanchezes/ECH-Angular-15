@@ -20,6 +20,7 @@ The CSS is organized into a modular multi-file architecture, split from the orig
 css/
 ├── clinical-core.css        ← Design tokens, reset, typography, layout shell
 ├── components.css           ← Shared components: .btn-action, .btn-filter, .p-datatable-sm, tabs, search, pagination
+├── table.css                ← Unified table styles: .ehr-table, .ehr-table-area, .ehr-table-scroll, .ehr-row
 ├── header.css               ← #header-component styles + user menus/overlays
 ├── sidebar.css              ← #sidebar-component styles (collapsible nav drawer)
 ├── banner.css               ← #banner-component styles (sticky, max 80px, patient identity)
@@ -42,22 +43,27 @@ css/
     └── measurements.css     ← Vital signs flowsheet
 ```
 
-**Load order in HTML files:**
+**Load order in HTML files (for modules with tables):**
 1. `css/clinical-core.css`
 2. `css/components.css`
 3. `css/header.css`
 4. `css/sidebar.css`
 5. `css/banner.css`
 6. `css/action-bar.css`
-7. `css/modules/<module>.css` (page-specific)
-8. `css/utilities.css`
-9. `css/responsive.css`
+7. `css/table.css` (shared table base)
+8. `css/modules/<module>.css` (page-specific overrides)
+9. `css/utilities.css`
+10. `css/responsive.css`
 
 **Key conventions:**
 - `.btn-action` / `.action-btn`: Standard action buttons (aliased for backwards compat)
 - `.btn-filter`: Filter toggle buttons
-- `.p-datatable-sm`: High-density table base (32px row height)
-- All tables share base styles from `components.css`; module files add only overrides
+- `.ehr-table`: Unified high-density table base (32px row height) — used by Protocols, Documents, Risk Factors, Diagnostic Tests
+- `.ehr-table-area`: Table container with flex layout
+- `.ehr-table-scroll`: Scroll wrapper for horizontal/vertical overflow
+- `.ehr-row`: Standard table row with hover transition
+- `.p-datatable-sm` / `.patient-table`: Legacy table base for Patient List (in `components.css`)
+- Module CSS files add only column widths and module-specific overrides (status tags, severity indicators, etc.)
 - `#banner-component`: Always sticky, max-height 80px
 
 ## Component Identity System

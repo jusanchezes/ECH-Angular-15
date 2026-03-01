@@ -1,0 +1,95 @@
+/* ============================================================================
+     TABLE.CSS — Shared Clinical Data Table
+     ============================================================================
+     Unified table styles for all clinical data modules:
+     Protocols, Risk Factors, Diagnostic Tests, Documents.
+
+     Provides consistent structure for:
+       - Table area container (.ehr-table-area)
+       - Scroll wrapper (.ehr-table-scroll)
+       - Table base (.ehr-table)
+       - Header row (thead th)
+       - Body cells (tbody td)
+       - Row transitions & hover (.ehr-row)
+       - Empty state row
+
+     Module CSS files add only column widths and module-specific overrides
+     (status tags, severity indicators, action buttons, etc.).
+
+     Will become a shared PrimeNG p-table with [size]="sm" in Angular.
+     ============================================================================ */
+
+/* --- Table area container --- */
+.ehr-table-area {
+    flex: 1;
+    overflow: hidden;
+    padding: 0;
+}
+
+/* --- Scroll wrapper --- */
+.ehr-table-scroll {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+/* --- Table base --- */
+.ehr-table {
+    border-collapse: collapse;
+    font-size: var(--fs-md);
+    width: 100%;
+    min-width: 900px;
+}
+
+/* --- Table header --- */
+.ehr-table thead th {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+    font-weight: 600;
+    font-size: var(--fs-xs);
+    padding: 6px 10px;
+    text-align: left;
+    border-bottom: 2px solid var(--ech-primary-border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    user-select: none;
+    transition: background 0.15s;
+}
+
+.ehr-table thead th:hover {
+    background: #d6e4f0;
+}
+
+/* --- Table body --- */
+.ehr-table tbody td {
+    padding: 4px 10px;
+    border-bottom: 1px solid var(--ech-border-light);
+    vertical-align: middle;
+    font-size: var(--fs-md);
+    height: 32px;
+}
+
+/* --- Row transitions & hover --- */
+.ehr-row {
+    transition: background 0.15s ease;
+}
+
+.ehr-row:hover {
+    background: var(--ech-hover);
+}
+
+/* --- Empty state --- */
+.ehr-empty-row td {
+    text-align: center;
+    padding: 20px;
+    color: var(--ech-text-muted);
+    font-style: italic;
+}
+
+.ehr-empty-row .pi {
+    font-size: 1.2rem;
+    margin-right: 6px;
+    vertical-align: middle;
+}
