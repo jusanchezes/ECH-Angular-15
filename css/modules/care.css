@@ -80,7 +80,7 @@
 .mar-date-nav .date-label,
 .car-date-nav .date-label {
     font-weight: 700;
-    font-size: var(--fs-md);
+    font-size: var(--fs-xs);
     color: var(--ech-text);
     white-space: nowrap;
 }
@@ -134,7 +134,7 @@
     padding: 4px 8px 4px 28px;
     border: 1px solid var(--ech-border);
     border-radius: 4px;
-    font-size: var(--fs-md);
+    font-size: var(--fs-xs);
     outline: none;
     min-width: 160px;
     max-width: 220px;
