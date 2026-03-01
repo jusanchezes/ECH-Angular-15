@@ -239,11 +239,11 @@
         var list = document.getElementById('labDisciplineList');
         if (!list) return;
         list.innerHTML = DISCIPLINES.map(function (d) {
-            var active = d.id === currentDiscipline ? ' lab-discipline-active' : '';
+            var active = d.id === currentDiscipline ? ' active' : '';
             var count = ANALYTES.filter(function (a) { return a.discipline === d.id; }).length;
-            return '<li class="lab-discipline-item' + active + '" onclick="labSelectDiscipline(\'' + d.id + '\')">' +
-                '<span class="lab-discipline-label" data-i18n="' + d.i18n + '">' + d.label + '</span>' +
-                '<span class="lab-discipline-count">' + count + '</span>' +
+            return '<li class="results-panel-item' + active + '" onclick="labSelectDiscipline(\'' + d.id + '\')">' +
+                '<span data-i18n="' + d.i18n + '">' + d.label + '</span>' +
+                '<span class="results-panel-count">' + count + '</span>' +
                 '</li>';
         }).join('');
     }

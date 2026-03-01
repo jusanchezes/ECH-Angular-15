@@ -1,0 +1,303 @@
+/* ============================================================================
+   RESULTS-TABLE.CSS — Shared Results Layout (Panel + Table)
+   ============================================================================
+   Reusable classes for modules with a left-side category panel and a
+   high-density clinical results table on the right. Used by Laboratory
+   (disciplines) and Measurements (groups).
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   1. LAYOUT
+   -------------------------------------------------------------------------- */
+.results-layout {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 155px);
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ----------------------------------------------------------------------------
+   2. PANEL (Left sidebar — Disciplines / Groups)
+   -------------------------------------------------------------------------- */
+.results-panel {
+    width: 220px;
+    min-width: 180px;
+    max-width: 240px;
+    border-right: 1px solid var(--ech-border);
+    background: #fff;
+    overflow-y: auto;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.results-panel-title {
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.6rem 1rem;
+    color: var(--ech-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--ech-border);
+}
+
+.results-panel-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.results-panel-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--ech-text);
+    border-left: 3px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.results-panel-item:hover {
+    background: #f5f5f5;
+}
+
+.results-panel-item.active {
+    background: #e3f2fd;
+    border-left-color: var(--ech-primary);
+    font-weight: 600;
+    color: var(--ech-primary-dark);
+}
+
+.results-panel-count {
+    font-size: 0.85rem;
+    color: var(--ech-text-secondary);
+    background: #eee;
+    border-radius: 10px;
+    padding: 1px 7px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.results-panel-item.active .results-panel-count {
+    background: var(--ech-primary);
+    color: #fff;
+}
+
+/* ----------------------------------------------------------------------------
+   3. MAIN PANEL (Right content area)
+   -------------------------------------------------------------------------- */
+.results-main-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    min-width: 0;
+}
+
+/* ----------------------------------------------------------------------------
+   4. TABLE
+   -------------------------------------------------------------------------- */
+.results-table-wrapper {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+    table-layout: auto;
+}
+
+.results-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.results-table th {
+    background: #f5f5f5;
+    font-weight: 700;
+    padding: 0.4rem 0.6rem;
+    text-align: center;
+    border-bottom: 2px solid var(--ech-border);
+    white-space: nowrap;
+    font-size: 1rem;
+    color: var(--ech-text-secondary);
+}
+
+.results-table td {
+    padding: 0.35rem 0.6rem;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.results-table tbody tr:hover {
+    background: #fafafa;
+}
+
+/* ----------------------------------------------------------------------------
+   5. STICKY COLUMNS
+   -------------------------------------------------------------------------- */
+.results-col-sticky {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: #fff;
+}
+
+.results-table thead .results-col-sticky {
+    background: #f5f5f5;
+    z-index: 15;
+}
+
+/* ----------------------------------------------------------------------------
+   6. CELL STATUS CLASSES
+   -------------------------------------------------------------------------- */
+.results-cell-value {
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.results-cell-value:hover {
+    background: #e3f2fd;
+}
+
+.results-cell-high {
+    color: #c62828;
+    font-weight: 600;
+}
+
+.results-cell-low {
+    color: #1565c0;
+    font-weight: 600;
+}
+
+.results-cell-critical {
+    background: #ffebee !important;
+    color: #b71c1c;
+    font-weight: 700;
+    border: 1px solid #ef9a9a;
+}
+
+.results-cell-pending {
+    color: #e65100;
+    font-style: italic;
+}
+
+.results-cell-alert {
+    color: #d32f2f;
+    font-weight: 700;
+}
+
+.results-cell-empty {
+    color: var(--ech-text-disabled, #bbb);
+}
+
+/* ----------------------------------------------------------------------------
+   7. FLAG BADGES
+   -------------------------------------------------------------------------- */
+.results-flag-high {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #c62828;
+}
+
+.results-flag-low {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1565c0;
+}
+
+.results-flag-critical {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #b71c1c;
+    background: #ffcdd2;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+/* ----------------------------------------------------------------------------
+   8. EMPTY STATE
+   -------------------------------------------------------------------------- */
+.results-empty-row {
+    text-align: center !important;
+    color: var(--ech-text-secondary);
+    font-style: italic;
+    padding: 2rem !important;
+}
+
+/* ----------------------------------------------------------------------------
+   9. TREND ICONS & SPARKLINES
+   -------------------------------------------------------------------------- */
+.results-trend-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.results-trend-up {
+    color: #c62828;
+}
+
+.results-trend-up .pi {
+    color: #c62828;
+}
+
+.results-trend-down {
+    color: #1565c0;
+}
+
+.results-trend-down .pi {
+    color: #1565c0;
+}
+
+.results-trend-stable {
+    color: var(--ech-text-secondary);
+}
+
+.results-trend-critical {
+    color: #b71c1c;
+    font-weight: 700;
+}
+
+.results-trend-critical .pi {
+    color: #b71c1c;
+    font-weight: 700;
+}
+
+.results-sparkline {
+    vertical-align: middle;
+}
+
+/* ----------------------------------------------------------------------------
+   10. COLUMN PRESETS
+   -------------------------------------------------------------------------- */
+.results-col-name {
+    text-align: left !important;
+    min-width: 160px;
+    white-space: nowrap;
+}
+
+.results-col-ref {
+    min-width: 80px;
+    color: var(--ech-text-secondary);
+    font-size: 0.92rem;
+}
+
+.results-col-trend {
+    min-width: 60px;
+    text-align: center;
+}
+
+.results-col-date {
+    min-width: 110px;
+}

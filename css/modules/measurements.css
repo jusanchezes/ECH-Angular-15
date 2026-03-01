@@ -14,65 +14,6 @@
    Classes: .ms-*
    ============================================================================ */
 
-.ms-layout {
-    display: flex;
-    flex: 1;
-    height: calc(100vh - 155px);
-    min-height: 0;
-    overflow: hidden;
-}
-
-.ms-groups-panel {
-    width: 220px;
-    min-width: 220px;
-    border-right: 1px solid var(--ech-border);
-    background: #fff;
-    overflow-y: auto;
-    padding: 0;
-}
-
-.ms-groups-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--ech-text-secondary);
-    padding: 10px 14px 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-.ms-group-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.ms-group-item {
-    padding: 9px 14px;
-    font-size: 1rem;
-    color: var(--ech-text-primary);
-    cursor: pointer;
-    border-left: 3px solid transparent;
-    transition: background 0.15s, border-color 0.15s;
-}
-
-.ms-group-item:hover {
-    background: var(--ech-primary-light);
-}
-
-.ms-group-item.active {
-    background: var(--ech-primary-light);
-    border-left-color: var(--ech-primary);
-    color: var(--ech-primary);
-    font-weight: 600;
-}
-
-.ms-main-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-width: 0;
-}
 
 .ms-param-col {
     width: 200px;

@@ -24,7 +24,8 @@ css/
 ├── header.css               ← #header-component styles + user menus/overlays
 ├── sidebar.css              ← #sidebar-component styles (collapsible nav drawer)
 ├── banner.css               ← #banner-component styles (sticky, max 80px, patient identity)
-├── action-bar.css           ← #action-bar-component + #filter-bar styles
+├── action-bar.css           ← #action-bar-component + #filter-bar styles + shared toolbar
+├── results-table.css        ← Shared results layout: panel (groups/disciplines) + table
 ├── utilities.css            ← Generic helper classes
 ├── responsive.css           ← Media queries for tablet (≤1024px) and mobile (≤600px)
 └── modules/
@@ -49,10 +50,11 @@ css/
 4. `css/sidebar.css`
 5. `css/banner.css`
 6. `css/action-bar.css`
-7. `css/table.css` (shared table base)
-8. `css/modules/<module>.css` (page-specific overrides)
-9. `css/utilities.css`
-10. `css/responsive.css`
+7. `css/results-table.css` (shared panel + table for results modules)
+8. `css/table.css` (shared table base for list modules)
+10. `css/modules/<module>.css` (page-specific overrides)
+11. `css/utilities.css`
+12. `css/responsive.css`
 
 **Key conventions:**
 - `.btn-action` / `.action-btn`: Standard action buttons (aliased for backwards compat)
@@ -75,14 +77,22 @@ css/
 - `.toolbar-separator`: Vertical divider line between filter groups
 - Used across: Laboratory, Measurements, Medication (MAR), Care Plans (CAR)
 
-**Shared Results Table (`action-bar.css` — Section 11):**
+**Shared Results Layout (`results-table.css`):**
+- `.results-layout`: Flex container for panel + main content (replaces `.lab-layout`, `.ms-layout`)
+- `.results-panel`: Left sidebar for category lists (groups/disciplines) — 220px, border-right, overflow-y
+- `.results-panel-title`: Panel header (uppercase, bold 700, bottom border)
+- `.results-panel-list`: `<ul>` container (no list-style)
+- `.results-panel-item`: Category row with flex space-between, hover, border-left accent
+- `.results-panel-item.active`: Active state (blue bg, blue left border, bold blue text)
+- `.results-panel-count`: Pill badge with count (gray bg, active turns blue/white)
+- `.results-main-panel`: Right content area (flex column, overflow hidden)
 - `.results-table-wrapper`: Flex scroll container for results tables
-- `.results-table`: Base table with auto layout, sticky header, hover rows (matches Lab design)
+- `.results-table`: Base table with auto layout, sticky header, hover rows
 - `.results-col-sticky`: Sticky first column (analyte/parameter names)
 - `.results-col-name`, `.results-col-ref`, `.results-col-trend`, `.results-col-date`: Column type classes
 - `.results-cell-value`: Clickable data cell with hover effect
-- `.results-cell-high`, `.results-cell-low`, `.results-cell-critical`, `.results-cell-pending`, `.results-cell-alert`, `.results-cell-empty`: Clinical status cell styles
-- `.results-flag-high`, `.results-flag-low`, `.results-flag-critical`: Inline flag labels
+- `.results-cell-high/low/critical/pending/alert/empty`: Clinical status cell styles
+- `.results-flag-high/low/critical`: Inline flag labels
 - `.results-trend-icon`, `.results-trend-up/down/stable/critical`: Trend direction indicators
 - `.results-sparkline`: SVG sparkline alignment
 - `.results-empty-row`: Empty state row styling

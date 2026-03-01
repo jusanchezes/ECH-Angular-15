@@ -339,13 +339,25 @@
         list.innerHTML = '';
         GROUPS.forEach(function (g) {
             var li = document.createElement('li');
-            li.className = 'ms-group-item' + (g.id === currentGroup ? ' active' : '');
+            li.className = 'results-panel-item' + (g.id === currentGroup ? ' active' : '');
             li.setAttribute('data-group', g.id);
-            li.setAttribute('data-i18n', g.i18n);
-            li.textContent = g.label;
+            var count = getGroupParamCount(g.id);
+            li.innerHTML = '<span data-i18n="' + g.i18n + '">' + g.label + '</span>' +
+                '<span class="results-panel-count">' + count + '</span>';
             li.onclick = function () { msSelectGroup(g.id); };
             list.appendChild(li);
         });
+    }
+
+    function getGroupParamCount(groupId) {
+        if (groupId === 'all') {
+            var total = 0;
+            for (var key in PARAMETERS) {
+                if (PARAMETERS.hasOwnProperty(key)) total += PARAMETERS[key].length;
+            }
+            return total;
+        }
+        return PARAMETERS[groupId] ? PARAMETERS[groupId].length : 0;
     }
 
     function renderTable() {
