@@ -1,27 +1,27 @@
 /* ============================================================================
-     MEDICATION.CSS — Medication Module (MAR + Prescription)
+     CARE.CSS — Shared Care Module (MAR + CAR + Prescription)
      ============================================================================
-     MAR: Medication Administration Record grid with frozen columns and time slots.
-     Prescription: Drug catalog, ordering cart, and detail form.
-     Will become MedicationComponent / PrescriptionComponent (Angular Standalone).
+     Unified styles for Medication Administration Record (MAR) and Care
+     Administration Record (CAR) grids. Shared patterns use comma-separated
+     selectors; module-specific overrides follow in dedicated sections.
+     Prescription (rx) styles included at the end.
      ============================================================================ */
 
-  /* ============================================================================
-   19. MEDICATION (MAR)
-   --------------------------------------------------------------------------
-   Medication Administration Record grid with frozen columns and time slots.
-   Classes: .mar-*, .module-content-area.mar-mode
+/* ============================================================================
+   SECTION A — SHARED RULES (MAR + CAR)
    ============================================================================ */
 
-/* --- 19a. Action & filter bars --- */
-.mar-action-bar {
+/* --- A1. Action & filter bars --- */
+.mar-action-bar,
+.car-action-bar {
     display: flex;
     align-items: center;
     gap: 6px;
     flex-wrap: wrap;
 }
 
-.mar-filter-bar {
+.mar-filter-bar,
+.car-filter-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -29,20 +29,32 @@
     gap: 8px;
 }
 
-.mar-filter-left {
+.mar-filter-left,
+.car-filter-left {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
 }
 
-.mar-date-nav {
+.mar-filter-separator,
+.car-filter-separator {
+    width: 1px;
+    height: 20px;
+    background: var(--ech-border);
+    flex-shrink: 0;
+}
+
+/* --- A2. Date navigation --- */
+.mar-date-nav,
+.car-date-nav {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.mar-date-nav .date-nav-btn {
+.mar-date-nav .date-nav-btn,
+.car-date-nav .date-nav-btn {
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -58,20 +70,24 @@
     font-family: var(--ech-font-family);
 }
 
-.mar-date-nav .date-nav-btn:hover {
+.mar-date-nav .date-nav-btn:hover,
+.car-date-nav .date-nav-btn:hover {
     background: var(--ech-primary-light);
     border-color: var(--ech-primary);
     color: var(--ech-primary-dark);
 }
 
-.mar-date-nav .date-label {
+.mar-date-nav .date-label,
+.car-date-nav .date-label {
     font-weight: 700;
     font-size: var(--fs-md);
     color: var(--ech-text);
     white-space: nowrap;
 }
 
-.mar-legend {
+/* --- A3. Legend --- */
+.mar-legend,
+.car-legend {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -80,28 +96,60 @@
     flex-shrink: 0;
 }
 
-.mar-legend-item {
+.mar-legend-item,
+.car-legend-item {
     display: inline-flex;
     align-items: center;
     gap: 4px;
     white-space: nowrap;
 }
 
-.mar-legend-swatch {
+.mar-legend-swatch,
+.car-legend-swatch {
     width: 14px;
     height: 14px;
     border-radius: 3px;
     flex-shrink: 0;
 }
 
-.mar-legend-swatch.given { background: #e8f5e9; border: 1px solid #a5d6a7; }
-.mar-legend-swatch.due { background: #ffffff; border: 1px dashed var(--ech-border); }
-.mar-legend-swatch.hold { background: #fff3e0; border: 1px solid #ffcc80; }
-.mar-legend-swatch.not-given { background: #ffebee; border: 1px solid #ef9a9a; }
-.mar-legend-swatch.cancelled { background: #f5f5f5; border: 1px solid #bdbdbd; }
+/* --- A4. Search input --- */
+.mar-search-wrapper,
+.car-search-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
 
-/* --- 19b. Grid layout --- */
-.mar-grid-wrapper {
+.mar-search-icon,
+.car-search-icon {
+    position: absolute;
+    left: 8px;
+    font-size: 0.923rem;
+    color: var(--ech-text-muted);
+    pointer-events: none;
+}
+
+.mar-search-input,
+.car-search-input {
+    padding: 4px 8px 4px 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    min-width: 160px;
+    max-width: 220px;
+    font-family: var(--ech-font-family);
+}
+
+.mar-search-input:focus,
+.car-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.15);
+}
+
+/* --- A5. Grid layout --- */
+.mar-grid-wrapper,
+.car-grid-wrapper {
     flex: 1;
     overflow: hidden;
     display: flex;
@@ -109,7 +157,8 @@
     padding: 0 10px 10px;
 }
 
-.mar-table-container {
+.mar-table-container,
+.car-table-container {
     flex: 1;
     overflow: auto;
     border: 1px solid var(--ech-border);
@@ -118,7 +167,8 @@
     position: relative;
 }
 
-.mar-table {
+.mar-table,
+.car-table {
     border-collapse: separate;
     border-spacing: 0;
     width: max-content;
@@ -126,7 +176,8 @@
     font-size: var(--fs-md);
 }
 
-.mar-table thead th {
+.mar-table thead th,
+.car-table thead th {
     background: var(--ech-primary-light);
     color: var(--ech-primary-dark);
     font-weight: 600;
@@ -140,6 +191,157 @@
     z-index: 10;
 }
 
+.mar-table tbody td,
+.car-table tbody td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--ech-border-light);
+    vertical-align: middle;
+    text-align: center;
+    font-size: var(--fs-md);
+    height: 48px;
+}
+
+.mar-table tbody tr,
+.car-table tbody tr {
+    transition: background 0.15s;
+}
+
+.mar-table tbody tr:hover td,
+.car-table tbody tr:hover td {
+    background: var(--ech-hover);
+}
+
+/* --- A6. Time slot columns --- */
+.mar-time-col,
+.car-time-col {
+    min-width: 54px;
+}
+
+.mar-time-header,
+.car-time-header {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+}
+
+/* --- A7. Item info cell --- */
+.mar-med-info,
+.car-task-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mar-med-name,
+.car-task-name {
+    font-weight: 600;
+    color: var(--ech-text);
+    font-size: var(--fs-md);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+
+.mar-med-detail,
+.car-task-detail {
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+
+.mar-med-route,
+.car-task-freq {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.769rem;
+    color: var(--ech-text-muted);
+    margin-top: 1px;
+}
+
+/* --- A8. Status cells --- */
+.mar-cell,
+.car-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    min-height: 26px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    cursor: default;
+}
+
+.mar-cell-given,
+.car-cell-completed {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+}
+
+.mar-cell-due,
+.car-cell-pending {
+    background: var(--ech-surface);
+    border: 1px dashed var(--ech-border);
+    color: var(--ech-text-muted);
+}
+
+.mar-cell-not-given,
+.car-cell-overdue {
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: #c62828;
+}
+
+.mar-cell-empty,
+.car-cell-empty {
+    color: var(--ech-text-muted);
+}
+
+/* --- A9. Dot indicators --- */
+.mar-cell .mar-dot,
+.car-cell .car-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 3px;
+    flex-shrink: 0;
+}
+
+.mar-dot.dot-given,
+.car-dot.dot-completed {
+    background: #2e7d32;
+}
+
+.mar-dot.dot-due,
+.car-dot.dot-pending {
+    background: var(--ech-text-muted);
+}
+
+.car-dot.dot-overdue {
+    background: #c62828;
+}
+
+/* --- A10. Content area mode --- */
+.module-content-area.mar-mode,
+.module-content-area.car-mode {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ============================================================================
+   SECTION B — MAR-SPECIFIC RULES
+   ============================================================================ */
+
+/* --- B1. Frozen column headers --- */
 .mar-table thead th.mar-frozen {
     position: sticky;
     left: 0;
@@ -178,15 +380,7 @@
     left: 560px;
 }
 
-.mar-table tbody td {
-    padding: 4px 8px;
-    border-bottom: 1px solid var(--ech-border-light);
-    vertical-align: middle;
-    text-align: center;
-    font-size: var(--fs-md);
-    height: 48px;
-}
-
+/* --- B2. Frozen column cells --- */
 .mar-table tbody td.mar-frozen {
     position: sticky;
     left: 0;
@@ -225,105 +419,16 @@
     left: 560px;
 }
 
-.mar-table tbody tr {
-    transition: background 0.15s;
-}
-
-.mar-table tbody tr:hover td {
-    background: var(--ech-hover);
-}
-
+/* --- B3. Frozen column hover --- */
 .mar-table tbody tr:hover td.mar-frozen {
     background: var(--ech-hover);
 }
 
-/* --- 19c. Time slot columns --- */
-.mar-time-col {
-    min-width: 54px;
-}
-
-.mar-time-header {
-    font-size: var(--fs-xs);
-    font-weight: 600;
-}
-
-/* --- 19d. Medication info cell --- */
-.mar-med-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.mar-med-name {
-    font-weight: 600;
-    color: var(--ech-text);
-    font-size: var(--fs-md);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 300px;
-}
-
-.mar-med-detail {
-    font-size: var(--fs-xs);
-    color: var(--ech-text-secondary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 300px;
-}
-
-.mar-med-route {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    font-size: 0.769rem;
-    color: var(--ech-text-muted);
-    margin-top: 1px;
-}
-
-.mar-dose-info {
-    font-size: var(--fs-md);
-    color: var(--ech-text);
-    font-weight: 500;
-}
-
-/* --- 19e. Status cells --- */
-.mar-cell {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 38px;
-    min-height: 26px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: var(--fs-xs);
-    font-weight: 600;
-    cursor: default;
-}
-
-.mar-cell-given {
-    background: #e8f5e9;
-    border: 1px solid #a5d6a7;
-    color: #2e7d32;
-}
-
-.mar-cell-due {
-    background: var(--ech-surface);
-    border: 1px dashed var(--ech-border);
-    color: var(--ech-text-muted);
-}
-
+/* --- B4. MAR-only statuses --- */
 .mar-cell-hold {
     background: #fff3e0;
     border: 1px solid #ffcc80;
     color: #e65100;
-}
-
-.mar-cell-not-given {
-    background: #ffebee;
-    border: 1px solid #ef9a9a;
-    color: #c62828;
 }
 
 .mar-cell-cancelled {
@@ -333,10 +438,6 @@
     text-decoration: line-through;
 }
 
-.mar-cell-empty {
-    color: var(--ech-text-muted);
-}
-
 .mar-cell-sub {
     display: block;
     font-size: 0.769rem;
@@ -344,25 +445,32 @@
     opacity: 0.8;
 }
 
+/* --- B5. MAR-only indicators --- */
 .mar-high-alert {
     color: var(--ech-warning);
     font-size: 0.923rem;
     margin-right: 2px;
 }
 
-.mar-cell .mar-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    margin-right: 3px;
-    flex-shrink: 0;
+.mar-dot.dot-hold {
+    background: #e65100;
 }
 
-.mar-dot.dot-given { background: #2e7d32; }
-.mar-dot.dot-due { background: var(--ech-text-muted); }
-.mar-dot.dot-hold { background: #e65100; }
+/* --- B6. MAR-only legend swatches --- */
+.mar-legend-swatch.given { background: #e8f5e9; border: 1px solid #a5d6a7; }
+.mar-legend-swatch.due { background: #ffffff; border: 1px dashed var(--ech-border); }
+.mar-legend-swatch.hold { background: #fff3e0; border: 1px solid #ffcc80; }
+.mar-legend-swatch.not-given { background: #ffebee; border: 1px solid #ef9a9a; }
+.mar-legend-swatch.cancelled { background: #f5f5f5; border: 1px solid #bdbdbd; }
 
-/* --- 19f. Row actions --- */
+/* --- B7. MAR dose info --- */
+.mar-dose-info {
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    font-weight: 500;
+}
+
+/* --- B8. MAR row actions --- */
 .mar-row-actions {
     display: flex;
     align-items: center;
@@ -389,62 +497,62 @@
     color: var(--ech-primary);
 }
 
-.module-content-area.mar-mode {
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+
+/* ============================================================================
+   SECTION C — CAR-SPECIFIC RULES
+   ============================================================================ */
+
+/* --- C1. Frozen column (single column, 340px) --- */
+.car-table thead th.car-frozen {
+    position: sticky;
+    left: 0;
+    z-index: 12;
+    text-align: left;
+    background: var(--ech-primary-light);
+    min-width: 340px;
+    max-width: 340px;
+    border-right: 2px solid var(--ech-primary-border);
 }
 
-/* --- 19g. MAR search --- */
-.mar-search-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
+.car-table tbody td.car-frozen {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: var(--ech-surface);
+    text-align: left;
+    min-width: 340px;
+    max-width: 340px;
+    border-right: 2px solid var(--ech-border);
 }
 
-.mar-search-icon {
-    position: absolute;
-    left: 8px;
-    font-size: 0.923rem;
-    color: var(--ech-text-muted);
-    pointer-events: none;
+/* --- C2. Frozen column hover --- */
+.car-table tbody tr:hover td.car-frozen {
+    background: var(--ech-hover);
 }
 
-.mar-search-input {
-    padding: 4px 8px 4px 28px;
-    border: 1px solid var(--ech-border);
-    border-radius: 4px;
-    font-size: var(--fs-md);
-    outline: none;
-    min-width: 160px;
-    max-width: 220px;
-    font-family: var(--ech-font-family);
+/* --- C3. CAR-only legend swatches --- */
+.car-legend-swatch.completed { background: #e8f5e9; border: 1px solid #a5d6a7; }
+.car-legend-swatch.pending { background: #ffffff; border: 1px dashed var(--ech-border); }
+.car-legend-swatch.overdue { background: #ffebee; border: 1px solid #ef9a9a; }
+
+/* --- C4. CAR task name max-width (wider frozen col) --- */
+.car-task-name {
+    max-width: 320px;
 }
 
-.mar-search-input:focus {
-    border-color: var(--ech-primary);
-    box-shadow: 0 0 0 2px rgba(30,136,229,0.15);
-}
-
-
-  
-.mar-filter-separator {
-    width: 1px;
-    height: 20px;
-    background: var(--ech-border);
-    flex-shrink: 0;
+.car-task-detail {
+    max-width: 320px;
 }
 
 
 /* ============================================================================
-   19½. MEDICATION PRESCRIPTION (rx)
+   SECTION D — MEDICATION PRESCRIPTION (rx)
    --------------------------------------------------------------------------
    Vertical Master-Detail prescription view with drug catalog, orders cart,
    and detail form. Classes: .rx-*, .module-content-area.rx-mode
    ============================================================================ */
 
-/* --- 19½a. Vitals strip --- */
+/* --- D1. Vitals strip --- */
 .rx-vitals-strip {
     display: flex;
     align-items: center;
@@ -474,7 +582,7 @@
     color: var(--ech-text-primary);
 }
 
-/* --- 19½b. Layout mode --- */
+/* --- D2. Layout mode --- */
 .module-content-area.rx-mode {
     padding: 0;
     display: flex;
@@ -482,7 +590,7 @@
     overflow: hidden;
 }
 
-/* --- 19½c. Upper section (catalog + orders) --- */
+/* --- D3. Upper section (catalog + orders) --- */
 .rx-upper-section {
     display: flex;
     height: 40%;
@@ -525,7 +633,7 @@
     padding: 0;
 }
 
-/* --- 19½d. Drug catalog search --- */
+/* --- D4. Drug catalog search --- */
 .rx-search-group {
     position: relative;
     padding: 0.5rem 0.75rem;
@@ -555,7 +663,7 @@
     box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
 }
 
-/* --- 19½e. Catalog list items --- */
+/* --- D5. Catalog list items --- */
 .rx-catalog-list {
     padding: 0;
 }
@@ -587,7 +695,7 @@
     font-size: 1rem;
 }
 
-/* --- 19½f. Orders cart --- */
+/* --- D6. Orders cart --- */
 .rx-orders-list {
     padding: 0;
 }
@@ -648,7 +756,7 @@
     background: #fff0f0;
 }
 
-/* --- 19½g. Lower section (detail form) --- */
+/* --- D7. Lower section (detail form) --- */
 .rx-lower-section {
     flex: 1;
     display: flex;
@@ -682,7 +790,7 @@
     font-weight: 700;
 }
 
-/* --- 19½h. Form fields --- */
+/* --- D8. Form fields --- */
 .rx-form .grid {
     margin: 0 -0.35rem;
 }
@@ -789,7 +897,7 @@
     box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
 }
 
-/* --- 19½i. Safety alert box --- */
+/* --- D9. Safety alert box --- */
 .rx-safety-alert {
     border: 1px solid #ffcdd2;
     border-radius: 6px;
@@ -834,7 +942,7 @@
     color: #e65100;
 }
 
-/* --- 19½j. Action buttons --- */
+/* --- D10. Action buttons --- */
 .rx-actions {
     display: flex;
     justify-content: flex-end;
@@ -870,5 +978,3 @@
     background: #f5f5f5;
     color: var(--ech-text-primary);
 }
-
-  

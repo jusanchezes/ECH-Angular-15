@@ -33,8 +33,7 @@ css/
     ├── patient-summary.css  ← Patient summary + previous visits
     ├── documents.css        ← Document manager table + actions
     ├── risk-factors.css     ← Risk factors 10-tab center
-    ├── medication.css       ← MAR grid + prescription form
-    ├── care-plans.css       ← CAR grid
+    ├── care.css             ← MAR + CAR shared grid, filters, legend + prescription form
     ├── diagnostic-tests.css ← Clinical orders table
     ├── imaging-orders.css   ← Radiology ordering form
     ├── nurse-notes.css      ← Nursing overview panels
