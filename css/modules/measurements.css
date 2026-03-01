@@ -1,0 +1,376 @@
+/* ============================================================================
+     MEASUREMENTS.CSS — Measurements Flowchart Module
+     ============================================================================
+     Vital Signs flowsheet with master-detail layout.
+     Left panel: parameter group list. Right panel: high-density time grid.
+     Will become MeasurementsComponent (Angular Standalone Component).
+     ============================================================================ */
+
+  /* ============================================================================
+   20⅞¾. MEASUREMENTS FLOWCHART (measurements.html)
+   --------------------------------------------------------------------------
+   Flowchart / Vital Signs flowsheet with master-detail layout.
+   Left panel: parameter group list (220px). Right panel: high-density time grid.
+   Classes: .ms-*
+   ============================================================================ */
+
+.ms-layout {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 155px);
+    min-height: 0;
+    overflow: hidden;
+}
+
+.ms-groups-panel {
+    width: 220px;
+    min-width: 220px;
+    border-right: 1px solid var(--ech-border);
+    background: #fff;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.ms-groups-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    padding: 10px 14px 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.ms-group-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ms-group-item {
+    padding: 9px 14px;
+    font-size: 1rem;
+    color: var(--ech-text-primary);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.ms-group-item:hover {
+    background: var(--ech-primary-light);
+}
+
+.ms-group-item.active {
+    background: var(--ech-primary-light);
+    border-left-color: var(--ech-primary);
+    color: var(--ech-primary);
+    font-weight: 600;
+}
+
+.ms-main-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.ms-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--ech-border);
+    background: #fff;
+    flex-wrap: wrap;
+}
+
+.ms-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ms-toolbar-right {
+    margin-left: auto;
+}
+
+.ms-scale-group {
+    display: inline-flex;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.ms-scale-btn {
+    padding: 4px 10px;
+    font-size: 1rem;
+    border: none;
+    background: #fff;
+    color: var(--ech-text-primary);
+    cursor: pointer;
+    border-right: 1px solid var(--ech-border);
+    transition: background 0.15s, color 0.15s;
+    font-family: inherit;
+}
+
+.ms-scale-btn:last-child {
+    border-right: none;
+}
+
+.ms-scale-btn:hover {
+    background: var(--ech-primary-light);
+}
+
+.ms-scale-btn.active {
+    background: var(--ech-primary);
+    color: #fff;
+}
+
+.ms-date-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ms-date-nav-btn {
+    background: none;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    padding: 3px 6px;
+    cursor: pointer;
+    color: var(--ech-text-primary);
+    font-size: 1rem;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.ms-date-nav-btn:hover {
+    background: var(--ech-primary-light);
+}
+
+.ms-date-label {
+    font-size: 1rem;
+    font-weight: 600;
+    min-width: 110px;
+    text-align: center;
+}
+
+.ms-register-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    background: var(--ech-primary);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.ms-register-btn:hover {
+    background: var(--ech-primary-dark);
+}
+
+.ms-register-btn i {
+    font-size: 1rem;
+}
+
+.ms-table-wrapper {
+    flex: 1;
+    overflow: auto;
+    scroll-behavior: smooth;
+}
+
+.ms-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 1rem;
+}
+
+.ms-table th,
+.ms-table td {
+    padding: 4px 8px;
+    text-align: center;
+    border: 1px solid var(--ech-border);
+    white-space: nowrap;
+    font-size: 1rem;
+    height: 30px;
+}
+
+.ms-table thead th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.ms-table thead th.ms-param-col {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: #f8f9fa;
+}
+
+.ms-param-col {
+    text-align: left !important;
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #fff;
+    font-weight: 500;
+    color: var(--ech-text-primary);
+    border-right: 2px solid var(--ech-border) !important;
+}
+
+.ms-time-col {
+    width: 90px;
+    min-width: 90px;
+}
+
+.ms-cell-alert {
+    color: #d32f2f;
+    font-weight: 700;
+}
+
+.ms-cell-empty {
+    color: var(--ech-text-disabled, #bbb);
+}
+
+.ms-tooltip {
+    position: fixed;
+    background: #333;
+    color: #fff;
+    font-size: 0.85rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 9999;
+    white-space: nowrap;
+    display: none;
+}
+
+.ms-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.ms-modal-overlay.visible {
+    display: flex;
+}
+
+.ms-modal {
+    background: #fff;
+    border-radius: 8px;
+    width: 520px;
+    max-width: 95vw;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    overflow: hidden;
+}
+
+.ms-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--ech-primary);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.ms-modal-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.ms-modal-body {
+    padding: 16px;
+}
+
+.ms-form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.ms-form-label {
+    width: 160px;
+    min-width: 160px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ech-text-primary);
+    text-align: right;
+}
+
+.ms-form-input {
+    flex: 1;
+    padding: 5px 8px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.ms-form-unit {
+    font-size: 0.9rem;
+    color: var(--ech-text-secondary);
+    min-width: 50px;
+}
+
+.ms-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 10px 16px;
+    border-top: 1px solid var(--ech-border);
+}
+
+.ms-btn-cancel {
+    padding: 5px 16px;
+    background: #fff;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.ms-btn-save {
+    padding: 5px 16px;
+    background: var(--ech-primary);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.ms-btn-save:hover {
+    background: var(--ech-primary-dark);
+}
+
+  

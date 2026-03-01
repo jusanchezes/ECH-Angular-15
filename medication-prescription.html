@@ -6,17 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
     <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
-    <link rel="stylesheet" href="theme-overrides.css">
+    <link rel="stylesheet" href="css/clinical-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/action-bar.css">
+    <link rel="stylesheet" href="css/modules/medication.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
 <div class="layout">
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- BEGIN: Angular Standalone Component — SidebarComponent -->
     <aside class="sidebar collapsed" id="sidebar-component"></aside>
+    <!-- END: SidebarComponent -->
 
     <main class="main-content">
+        <!-- BEGIN: Angular Standalone Component — HeaderComponent -->
         <header class="top-bar" id="header-component"></header>
+        <!-- END: HeaderComponent -->
+        <!-- BEGIN: Angular Standalone Component — ClinicalBannerComponent -->
         <section class="clinical-banner" id="banner-component"></section>
+        <!-- END: ClinicalBannerComponent -->
 
         <div class="rx-vitals-strip" data-i18n-title="RX.VITALS_STRIP">
             <div class="rx-vital-item">

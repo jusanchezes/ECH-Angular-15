@@ -1,0 +1,142 @@
+/* ============================================================================
+     BANNER.CSS — #banner-component
+     ============================================================================
+     Patient identity & safety alerts strip.
+     Will become ClinicalBannerComponent (Angular Standalone Component).
+     
+     DENSITY RULE: position: sticky; max-height: 80px;
+     Contains: patient name, demographics, safety tags (allergies, DNR, risks)
+     ============================================================================ */
+
+  /* ============================================================================
+   7. CLINICAL BANNER
+   --------------------------------------------------------------------------
+   Patient identification and safety alerts strip.
+   Classes: .clinical-banner, .banner-row-1, .banner-row-2,
+            .patient-identity, .safety-tags, .p-tag-*
+   ============================================================================ */
+.clinical-banner {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 6px 12px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    max-height: 80px;
+    overflow: hidden;
+}
+
+.banner-row-1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.patient-identity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.patient-identity .patient-icon {
+    font-size: 1.538rem;
+    color: var(--ech-primary);
+    align-self: flex-start;
+    margin-top: 2px;
+}
+
+.patient-id-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.patient-name-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.patient-identity .patient-name {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+}
+
+.patient-identity .patient-gender-age {
+    font-size: var(--fs-md);
+    color: var(--ech-text-secondary);
+}
+
+.safety-tags {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.p-tag-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: white;
+    white-space: nowrap;
+}
+
+.p-tag-danger {
+    background: var(--ech-danger);
+}
+
+.p-tag-warning {
+    background: var(--ech-warning);
+}
+
+.p-tag-info {
+    background: var(--ech-info);
+}
+
+.p-tag-dnr {
+    background: var(--ech-danger);
+    font-weight: 800;
+    border: 2px solid #cc0000;
+}
+
+.banner-row-2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.patient-meta {
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.patient-meta .meta-separator {
+    color: var(--ech-border);
+}
+
+.clinical-danger { color: var(--ech-clinical-danger); }
+.clinical-warning { color: var(--ech-clinical-warning); }
+.clinical-info { color: var(--ech-clinical-info); }
+.p-tag-custom.clinical-danger,
+.p-tag-custom.clinical-warning,
+.p-tag-custom.clinical-info { color: white; }
+
+  

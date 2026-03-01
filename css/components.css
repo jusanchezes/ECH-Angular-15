@@ -1,0 +1,628 @@
+/* ============================================================================
+     COMPONENTS.CSS — Shared UI Components (Deduplicated)
+     ============================================================================
+     EHR Redesign Standard — Common reusable components used across all modules.
+     
+     CONTENTS:
+       1. Action Buttons (.btn-action / .action-btn)
+       2. Module Tabs
+       3. Search Input (shared pattern)
+       4. Date Navigation
+       5. Legend strips
+       6. High-Density Table Base (.p-datatable-sm)
+     
+     All button and table patterns are defined ONCE here.
+     Module-specific CSS files should only contain overrides.
+     ============================================================================ */
+
+
+  /* ----------------------------------------------------------------------------
+     1. ACTION BUTTONS — .btn-action (alias: .action-btn)
+     --------------------------------------------------------------------------
+     Standard action buttons used in action bars across all modules.
+     .btn-action = .action-btn (kept for backwards compatibility)
+     .btn-action-primary = .action-btn-primary
+     Will become shared ButtonModule in Angular.
+     -------------------------------------------------------------------------- */
+  .action-btn,
+  .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border: 1px solid var(--ech-border);
+      border-radius: 4px;
+      background: var(--ech-surface);
+      color: var(--ech-text);
+      font-size: var(--fs-md);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+      font-family: var(--ech-font-family);
+  }
+
+  .action-btn .pi,
+  .btn-action .pi {
+      font-size: 0.923rem;
+  }
+
+  .action-btn:hover,
+  .btn-action:hover {
+      background: var(--ech-primary-light);
+      border-color: var(--ech-primary);
+      color: var(--ech-primary-dark);
+  }
+
+  .action-btn-primary,
+  .btn-action-primary {
+      background: var(--ech-primary);
+      color: white;
+      border-color: var(--ech-primary);
+      font-weight: 600;
+  }
+
+  .action-btn-primary:hover,
+  .btn-action-primary:hover {
+      background: var(--ech-primary-dark);
+      border-color: var(--ech-primary-dark);
+      color: white;
+  }
+
+  .action-bar-separator {
+      width: 1px;
+      height: 20px;
+      background: var(--ech-border);
+      flex-shrink: 0;
+  }
+
+
+  /* ----------------------------------------------------------------------------
+     2. FILTER BUTTONS — .btn-filter
+     --------------------------------------------------------------------------
+     Filter toggle buttons used in filter bars.
+     Will become shared FilterButtonComponent in Angular.
+     -------------------------------------------------------------------------- */
+  .btn-filter,
+  .select-button-group .sb-option {
+      padding: 4px 10px;
+      font-size: var(--fs-md);
+      cursor: pointer;
+      background: var(--ech-surface);
+      border: none;
+      border-right: 1px solid var(--ech-border);
+      transition: all 0.15s;
+      color: var(--ech-text);
+  }
+
+  .btn-filter:last-child,
+  .select-button-group .sb-option:last-child {
+      border-right: none;
+  }
+
+  .btn-filter:hover,
+  .select-button-group .sb-option:hover {
+      background: var(--ech-primary-light);
+  }
+
+  .btn-filter.active,
+  .select-button-group .sb-option.active {
+      background: var(--ech-primary);
+      color: white;
+      font-weight: 600;
+  }
+
+
+  /* ----------------------------------------------------------------------------
+     3. HIGH-DENSITY TABLE BASE — .p-datatable-sm
+     --------------------------------------------------------------------------
+     Standard table pattern for all clinical data tables.
+     Row height: 32px (high-density standard for 14" clinical screens).
+     
+     All module tables (.patient-table, .doc-table, .rf-table, .co-table,
+     .mar-table, .car-table) inherit these base styles.
+     Module CSS files add only column widths and module-specific overrides.
+     
+     Will become PrimeNG p-table with [size]="sm" in Angular.
+     -------------------------------------------------------------------------- */
+  .p-datatable-sm,
+  .patient-table,
+  .doc-table,
+  .rf-table,
+  .co-table {
+      border-collapse: collapse;
+      font-size: var(--fs-md);
+      width: 100%;
+  }
+
+  .p-datatable-sm thead th,
+  .patient-table thead th,
+  .doc-table thead th,
+  .rf-table thead th,
+  .co-table thead th {
+      background: var(--ech-primary-light);
+      color: var(--ech-primary-dark);
+      font-weight: 600;
+      font-size: var(--fs-xs);
+      padding: 6px 10px;
+      text-align: left;
+      border-bottom: 2px solid var(--ech-primary-border);
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      user-select: none;
+      transition: background 0.15s;
+  }
+
+  .p-datatable-sm thead th:hover,
+  .patient-table thead th:hover,
+  .doc-table thead th:hover {
+      background: #d6e4f0;
+  }
+
+  .p-datatable-sm tbody td,
+  .patient-table tbody td,
+  .doc-table tbody td,
+  .rf-table tbody td,
+  .co-table tbody td {
+      padding: 4px 10px;
+      border-bottom: 1px solid var(--ech-border-light);
+      vertical-align: middle;
+      font-size: var(--fs-md);
+      height: 32px;
+  }
+
+  .p-datatable-sm tbody tr,
+  .patient-table tbody tr,
+  .doc-table tbody tr,
+  .rf-table tbody tr,
+  .co-table tbody tr {
+      transition: background 0.15s ease;
+  }
+
+  .p-datatable-sm tbody tr:hover,
+  .patient-table tbody tr:hover,
+  .doc-table tbody tr:hover,
+  .rf-table tbody tr:hover,
+  .co-table tbody tr:hover {
+      background: var(--ech-hover);
+  }
+
+
+  /* ----------------------------------------------------------------------------
+     4. MODULE TABS — Shared tab navigation
+     --------------------------------------------------------------------------
+     Horizontal tab bars used across modules.
+     Will become TabBarComponent (Angular Standalone Component).
+     -------------------------------------------------------------------------- */
+  /* ============================================================================
+   10. MODULE TABS (SHARED)
+   --------------------------------------------------------------------------
+   Horizontal tab navigation used by the Patient List tab bar (.tab-btn).
+   Documents and Risk Factors now use select-button-group (sections 9, 17, 18b).
+   ============================================================================ */
+
+/* --- 10a. Module filter tabs container (Documents, Risk Factors) --- */
+.module-tabs-bar {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 0 12px;
+    flex-shrink: 0;
+}
+
+.module-tabs-row {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.module-tabs-row::-webkit-scrollbar {
+    height: 3px;
+}
+
+.module-tabs-row::-webkit-scrollbar-thumb {
+    background: var(--ech-border);
+    border-radius: 3px;
+}
+
+.module-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    font-size: var(--fs-md);
+    color: var(--ech-primary);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    font-family: var(--ech-font-family);
+    font-weight: 500;
+    gap: 5px;
+}
+
+.module-tab:hover {
+    background: rgba(30, 136, 229, 0.06);
+}
+
+.module-tab.module-tab-active {
+    font-weight: 600;
+    border-bottom-color: var(--ech-primary);
+    background: rgba(30, 136, 229, 0.08);
+}
+
+.module-tab .module-tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 16px;
+    padding: 0 5px;
+    border-radius: 8px;
+    font-size: 0.692rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+.module-tab.module-tab-active .module-tab-count {
+    background: var(--ech-primary-dark);
+}
+
+/* --- 10c. Patient list tab bar (index.html) --- */
+.tab-bar {
+    background: #eef1f5;
+    border-bottom: 1px solid var(--ech-border);
+    flex-shrink: 0;
+}
+
+.tab-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    min-height: 38px;
+}
+
+.tab-bar-tabs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    font-size: var(--fs-md);
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    font-family: var(--ech-font-family);
+}
+
+.tab-btn:hover {
+    color: var(--ech-primary);
+    background: rgba(30, 136, 229, 0.06);
+}
+
+.tab-btn-active {
+    color: var(--ech-primary);
+    font-weight: 600;
+    border-bottom-color: var(--ech-primary);
+    background: rgba(30, 136, 229, 0.08);
+}
+
+.tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    font-size: 0.769rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+.tab-btn:not(.tab-btn-active) .tab-count {
+    background: #aab2bd;
+}
+
+.tab-bar-actions {
+    flex-shrink: 0;
+}
+
+.tab-config-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.tab-config-btn:hover {
+    border-color: var(--ech-primary);
+    color: var(--ech-primary);
+    background: var(--ech-primary-light);
+}
+
+
+
+  /* ----------------------------------------------------------------------------
+     5. SEARCH INPUT — Shared search pattern
+     --------------------------------------------------------------------------
+     Reusable search input with icon, used by Timeline, Documents,
+     Risk Factors, MAR, and Patient List.
+     Will become SearchInputComponent (Angular Standalone Component).
+     -------------------------------------------------------------------------- */
+  /* ============================================================================
+   11. SEARCH INPUT (SHARED)
+   --------------------------------------------------------------------------
+   Reusable search input pattern with icon.
+   Used by: Timeline (.search-input), Documents (.doc-search-*),
+            Risk Factors (.rf-search-*), MAR (.mar-search-*),
+            Patient List toolbar (.toolbar-search-*)
+   ============================================================================ */
+.search-input {
+    padding: 4px 8px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    min-width: 140px;
+    max-width: 200px;
+}
+
+.search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.15);
+}
+
+.module-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.module-search-icon {
+    position: absolute;
+    left: 8px;
+    font-size: 0.923rem;
+    color: var(--ech-text-muted);
+    pointer-events: none;
+}
+
+.module-search-input {
+    padding: 5px 12px 5px 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    width: 220px;
+    font-family: var(--ech-font-family);
+}
+
+.module-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
+}
+
+.module-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 11px;
+    font-size: 0.769rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+.module-search-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+
+
+  /* ----------------------------------------------------------------------------
+     6. DATE NAVIGATION — Shared date nav strip
+     --------------------------------------------------------------------------
+     Previous / Today / Next date navigation used by MAR and CAR.
+     Will become DateNavComponent (Angular Standalone Component).
+     -------------------------------------------------------------------------- */
+  /* ============================================================================
+   12. DATE NAVIGATION (SHARED)
+   --------------------------------------------------------------------------
+   Previous / Today / Next date navigation strip.
+   Used by MAR and CAR pages.
+   ============================================================================ */
+.date-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.date-nav .date-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: var(--ech-font-family);
+}
+
+.date-nav .date-nav-btn:hover {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
+    color: var(--ech-primary-dark);
+}
+
+.date-nav .date-label {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    white-space: nowrap;
+}
+
+.filter-separator {
+    width: 1px;
+    height: 20px;
+    background: var(--ech-border);
+    flex-shrink: 0;
+}
+
+
+
+  /* ----------------------------------------------------------------------------
+     7. LEGEND — Shared color-coded legend strips
+     --------------------------------------------------------------------------
+     Used by MAR, CAR, and Lab results grids.
+     -------------------------------------------------------------------------- */
+  /* ============================================================================
+   13. LEGEND (SHARED)
+   --------------------------------------------------------------------------
+   Color-coded legend strips for MAR and CAR grids.
+   ============================================================================ */
+.module-legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    flex-shrink: 0;
+}
+
+.module-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.module-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.module-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+
+
+  /* ----------------------------------------------------------------------------
+     8. ROW DROPDOWN — Shared context menu
+     --------------------------------------------------------------------------
+     Right-click / action dropdown for table rows.
+     -------------------------------------------------------------------------- */
+  .row-dropdown {
+      position: absolute;
+      right: 0;
+      top: 22px;
+      background: var(--ech-surface);
+      border: 1px solid var(--ech-border);
+      border-radius: 4px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      min-width: 130px;
+      z-index: 100;
+      display: none;
+  }
+
+  .row-dropdown.show {
+      display: block;
+  }
+
+  .row-dropdown .rd-item {
+      padding: 6px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--fs-md);
+  }
+
+  .row-dropdown .rd-item:hover {
+      background: var(--ech-primary-light);
+  }
+
+
+  /* ----------------------------------------------------------------------------
+     9. PAGINATION — Shared pagination controls
+     -------------------------------------------------------------------------- */
+  .pagination-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--ech-border);
+      border-radius: 4px;
+      background: var(--ech-surface);
+      color: var(--ech-text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: var(--fs-md);
+  }
+
+  .pagination-btn:hover {
+      border-color: var(--ech-primary);
+      color: var(--ech-primary);
+      background: var(--ech-primary-light);
+  }
+
+  .pagination-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 0 8px;
+      font-size: var(--fs-md);
+      font-weight: 600;
+      color: var(--ech-text);
+  }
+
+  .pagination-current {
+      color: var(--ech-primary);
+      font-weight: 700;
+  }
+
+  .pagination-separator {
+      color: var(--ech-text-muted);
+  }
+  

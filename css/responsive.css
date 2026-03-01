@@ -1,0 +1,224 @@
+/* ============================================================================
+     RESPONSIVE.CSS — Media Queries
+     ============================================================================
+     Responsive overrides for tablet (≤1024px) and mobile (≤600px).
+     ============================================================================ */
+
+  /* ============================================================================
+   23. RESPONSIVE — TABLET (max-width: 1024px)
+   --------------------------------------------------------------------------
+   Sidebar becomes fixed overlay, filter bars stack, tables adapt.
+   ============================================================================ */
+@media (max-width: 1024px) {
+
+    /* --- Sidebar --- */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: var(--ech-bottom-bar-height);
+        z-index: 500;
+        width: var(--ech-sidebar-width);
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        box-shadow: 4px 0 12px rgba(0,0,0,0.1);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar.collapsed {
+        width: var(--ech-sidebar-width);
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 499;
+        display: none;
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .top-bar-left .hamburger {
+        display: flex !important;
+    }
+
+    /* --- Timeline --- */
+    .p-timeline-event-opposite {
+        flex: 0 0 45px;
+        padding: 4px 4px 4px 6px;
+    }
+
+    .p-timeline-event-marker {
+        width: 22px;
+        height: 22px;
+    }
+
+    .p-timeline-event-marker .pi {
+        font-size: 0.615rem !important;
+    }
+
+    .tl-dept {
+        display: none;
+    }
+
+    /* --- Filter bar --- */
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    /* --- Clinical banner --- */
+    .patient-meta {
+        font-size: var(--fs-xs);
+    }
+
+    .banner-row-1 {
+        gap: 4px;
+    }
+
+
+    .doc-search-input,
+    .module-search-input {
+        width: 100%;
+    }
+
+    .doc-search-area,
+    .module-search-area {
+        width: 100%;
+    }
+
+    .doc-search-wrapper,
+    .module-search-wrapper {
+        flex: 1;
+    }
+
+    /* --- Risk factors --- */
+    .rf-action-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        padding: 6px 10px;
+    }
+
+    .rf-action-bar .action-bar-left,
+    .rf-action-bar .action-bar-right {
+        width: 100%;
+    }
+
+    .rf-search-input {
+        width: 100%;
+    }
+
+    .rf-search-wrapper {
+        flex: 1;
+    }
+
+    .module-tabs-row .module-tab {
+        padding: 6px 10px;
+        font-size: var(--fs-xs);
+    }
+
+    .rf-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ms-groups-panel {
+        width: 160px;
+        min-width: 160px;
+    }
+
+    .ms-toolbar {
+        gap: 8px;
+        padding: 4px 8px;
+    }
+
+    .ms-param-col {
+        width: 150px;
+        min-width: 150px;
+        max-width: 150px;
+    }
+}
+
+
+
+  /* ============================================================================
+   24. RESPONSIVE — MOBILE (max-width: 600px)
+   --------------------------------------------------------------------------
+   Compact layout for small screens.
+   ============================================================================ */
+@media (max-width: 600px) {
+
+    /* --- Timeline --- */
+    .p-timeline-event-opposite {
+        flex: 0 0 40px;
+        font-size: var(--fs-xs);
+    }
+
+    .p-timeline-event-separator {
+        flex: 0 0 24px;
+    }
+
+    .p-timeline-event-marker {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* --- Clinical banner --- */
+    .safety-tags {
+        gap: 3px;
+    }
+
+    .p-tag-custom {
+        font-size: 0.692rem;
+        padding: 1px 5px;
+    }
+
+    .banner-row-2 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* --- Risk factors --- */
+    .rf-action-bar {
+        padding: 4px 8px;
+    }
+
+    .rf-btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .module-tab {
+        padding: 5px 8px;
+        font-size: var(--fs-xs);
+    }
+
+    .rf-table {
+        min-width: 800px;
+    }
+
+    .col-rf-comment {
+        display: none;
+    }
+
+    .col-rf-catalogued {
+        display: none;
+    }
+}
+
+  

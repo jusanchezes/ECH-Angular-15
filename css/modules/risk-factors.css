@@ -1,0 +1,488 @@
+/* ============================================================================
+     RISK-FACTORS.CSS — Risk Factors Module
+     ============================================================================
+     10-tab risk factor center with severity indicators and summary cards.
+     Will become RiskFactorsComponent (Angular Standalone Component).
+     ============================================================================ */
+
+  /* ============================================================================
+   18. RISK FACTORS
+   --------------------------------------------------------------------------
+   10-tab risk factor center with severity indicators and summary cards.
+   Classes: .rf-*, .col-rf-*
+   ============================================================================ */
+
+/* --- 18a. Action bar & search --- */
+.rf-action-bar {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+.rf-action-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rf-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--ech-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: var(--ech-font-family);
+    transition: background 0.15s;
+}
+
+.rf-btn-primary:hover {
+    background: var(--ech-primary-dark);
+}
+
+.rf-btn-primary .pi {
+    font-size: 1rem;
+}
+
+.rf-action-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.rf-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.rf-search-icon {
+    position: absolute;
+    left: 8px;
+    font-size: 0.923rem;
+    color: var(--ech-text-muted);
+    pointer-events: none;
+}
+
+.rf-search-input {
+    padding: 5px 12px 5px 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    width: 240px;
+    font-family: var(--ech-font-family);
+}
+
+.rf-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
+}
+
+/* --- 18b. Category select-button-group (scrollable for 10 categories) --- */
+.rf-select-group {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.rf-select-group::-webkit-scrollbar {
+    height: 3px;
+}
+
+.rf-select-group::-webkit-scrollbar-thumb {
+    background: var(--ech-border);
+    border-radius: 3px;
+}
+
+/* --- 18c. Content area --- */
+.rf-content-area {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.rf-tab-panel {
+    display: none;
+    flex: 1;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.rf-tab-panel.rf-tab-panel-active {
+    display: flex;
+}
+
+/* --- 18b. Section headers (Active / Inactive) --- */
+.rf-section-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    font-size: var(--fs-md);
+    font-weight: 700;
+    color: var(--ech-text);
+    background: var(--ech-bg);
+    border-bottom: 1px solid var(--ech-border-light);
+    flex-shrink: 0;
+}
+
+.rf-section-header .pi {
+    font-size: 0.923rem;
+}
+
+.rf-section-header-active {
+    color: var(--ech-success);
+}
+
+.rf-section-header-active .pi {
+    color: var(--ech-success);
+}
+
+.rf-section-header-inactive {
+    color: var(--ech-text-secondary);
+}
+
+.rf-section-header-inactive .pi {
+    color: var(--ech-text-muted);
+}
+
+.rf-section-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 9px;
+    font-size: 0.692rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+    margin-left: 4px;
+}
+
+.rf-section-header-inactive .rf-section-count {
+    background: var(--ech-text-muted);
+}
+
+/* --- 18c. Risk factors table --- */
+.rf-table-scroll {
+    overflow: auto;
+    flex: 1;
+}
+
+.rf-table {
+    border-collapse: collapse;
+    font-size: var(--fs-md);
+    width: 100%;
+    min-width: 1000px;
+}
+
+.rf-table thead th {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+    font-weight: 600;
+    font-size: var(--fs-md);
+    padding: 5px 10px;
+    text-align: left;
+    border-bottom: 2px solid var(--ech-primary-border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    user-select: none;
+}
+
+.rf-table tbody td {
+    padding: 3px 10px;
+    border-bottom: 1px solid var(--ech-border-light);
+    vertical-align: middle;
+    font-size: var(--fs-md);
+    height: 32px;
+}
+
+.rf-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.rf-table tbody tr:hover {
+    background: var(--ech-hover);
+}
+
+/* --- 18d. Column widths --- */
+.col-rf-type { min-width: 90px; }
+.col-rf-group { min-width: 110px; }
+.col-rf-risk { min-width: 200px; }
+.col-rf-catalogued { min-width: 80px; text-align: center; }
+.col-rf-comment { min-width: 160px; }
+.col-rf-author { min-width: 120px; }
+.col-rf-date { min-width: 100px; white-space: nowrap; }
+.col-rf-severity { min-width: 80px; text-align: center; }
+.col-rf-alert { min-width: 50px; text-align: center; }
+.col-rf-actions { min-width: 70px; text-align: center; }
+
+/* --- 18e. Severity tags --- */
+.rf-severity-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.rf-severity-severe {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.rf-severity-high {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.rf-severity-moderate {
+    background: #fff8e1;
+    color: #f9a825;
+}
+
+.rf-severity-low {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.rf-severity-none {
+    background: var(--ech-bg);
+    color: var(--ech-text-secondary);
+}
+
+/* --- 18f. Alert indicators --- */
+.rf-alert-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.923rem;
+}
+
+.rf-alert-active {
+    color: var(--ech-danger);
+    background: #ffebee;
+}
+
+.rf-alert-inactive {
+    color: var(--ech-text-muted);
+    opacity: 0.4;
+}
+
+.rf-catalogued-yes {
+    color: var(--ech-success);
+    font-weight: 600;
+}
+
+.rf-catalogued-no {
+    color: var(--ech-text-muted);
+}
+
+/* --- 18g. Row actions --- */
+.rf-actions-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.rf-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.923rem;
+    transition: all 0.15s;
+    background: transparent;
+    color: var(--ech-text-secondary);
+}
+
+.rf-action-btn:hover {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary);
+}
+
+.rf-action-edit:hover {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary);
+}
+
+.rf-action-deactivate:hover {
+    background: #ffebee;
+    color: var(--ech-danger);
+}
+
+/* --- 18h. Row states --- */
+.rf-row-inactive {
+    opacity: 0.55;
+}
+
+.rf-row-inactive td {
+    color: var(--ech-text-muted) !important;
+}
+
+.rf-row-inactive .rf-severity-tag {
+    background: var(--ech-bg);
+    color: var(--ech-text-muted);
+}
+
+.rf-row-inactive .rf-alert-icon {
+    opacity: 0.3;
+}
+
+.rf-row-inactive .rf-action-btn {
+    opacity: 0.5;
+}
+
+/* --- 18i. Empty states --- */
+.rf-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    color: var(--ech-text-muted);
+    font-size: var(--fs-md);
+    font-style: italic;
+}
+
+.rf-empty-state .pi {
+    font-size: 1.2rem;
+}
+
+.rf-no-results {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    color: var(--ech-text-muted);
+    font-size: var(--fs-md);
+    gap: 8px;
+}
+
+/* --- 18j. Summary cards --- */
+.rf-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+    padding: 10px 12px;
+    overflow-y: auto;
+}
+
+.rf-summary-card {
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.rf-summary-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-color: var(--ech-primary-border);
+}
+
+.rf-summary-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.rf-summary-card-title {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rf-summary-card-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    font-size: 0.692rem;
+    font-weight: 700;
+    background: var(--ech-primary);
+    color: white;
+}
+
+.rf-summary-card-body {
+    font-size: var(--fs-md);
+    color: var(--ech-text-secondary);
+}
+
+.rf-summary-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    border-bottom: 1px solid var(--ech-border-light);
+}
+
+.rf-summary-item:last-child {
+    border-bottom: none;
+}
+
+.rf-summary-item .rf-severity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.rf-severity-dot.dot-severe { background: #c62828; }
+.rf-severity-dot.dot-high { background: #e65100; }
+.rf-severity-dot.dot-moderate { background: #f9a825; }
+.rf-severity-dot.dot-low { background: #2e7d32; }
+
+.rf-summary-card.rf-summary-danger {
+    border-left: 3px solid var(--ech-danger);
+}
+
+.rf-summary-card.rf-summary-warning {
+    border-left: 3px solid var(--ech-warning);
+}
+
+.rf-summary-card.rf-summary-info {
+    border-left: 3px solid var(--ech-primary);
+}
+
+.rf-summary-card.rf-summary-success {
+    border-left: 3px solid var(--ech-success);
+}
+
+  

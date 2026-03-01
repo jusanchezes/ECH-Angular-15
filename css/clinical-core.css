@@ -1,0 +1,158 @@
+/* ============================================================================
+     CLINICAL-CORE.CSS — Global Design Foundation
+     ============================================================================
+     EHR Redesign Standard for Angular 15
+     
+     Contains: Design Tokens (CSS Custom Properties), Base Reset, Typography,
+     and Layout Shell. These styles are the foundation for every screen.
+     
+     Safety Color System:
+       - Red   (--ech-danger / --ech-clinical-danger): Critical alerts, allergies, DNR
+       - Yellow (--ech-warning / --ech-clinical-warning): Warnings, pending actions
+       - Blue  (--ech-primary / --ech-info / --ech-clinical-info): Information, navigation
+       - Green (--ech-success / --ech-clinical-success): Completed, normal values
+     
+     DTO Field Map (data-field attributes used across the application):
+     ─────────────────────────────────────────────────────────────────
+     HEADER:
+       userName, userService, userDepartment, wardName, alertCount, messageCount
+     BANNER (Patient Identity):
+       patientGenderIcon, patientName, patientDemographics, patientMeta,
+       patientRecId, patientEpisode, patientRoom, patientClient, allergyList
+     PATIENT SUMMARY:
+       alertRisk_1, riskName, riskDate, riskDoctor,
+       medication_1, medName, medLastAdmin, medNextAdmin,
+       note_1, noteSpecialty, noteExcerpt,
+       problem_1, problemName, problemStatus, problemsLastUpdate,
+       vitalBP, vitalHR, vitalTemp, vitalRR, vitalSpO2
+     IMAGING ORDERS:
+       priority, timing, clinicalIndication, contrastProtocol,
+       creatinine, pregnancyCheck, portable
+     NURSE NOTES:
+       handoff_sbar, handoff_events, check_ivLines, check_catheters,
+       check_woundCare, check_turnReposition, medDue_1, medDueTime,
+       medDueName, scoreGCS, gcsValue, scoreRASS
+     PROTOCOLS:
+       action, creationDate, protocolName, author, department, status, endDate
+     DIAGNOSTIC TESTS:
+       requestDate, testType, requestName, comment, seeRequest,
+       authorName, resultDate, seeResult, accessWeb, actionLink
+     MEASUREMENTS:
+       bpSys, bpDia (and dynamic fields via JS parameters)
+     ============================================================================ */
+
+
+  /* ============================================================================
+   1. CSS CUSTOM PROPERTIES (Design Tokens)
+   --------------------------------------------------------------------------
+   All colors, spacing, typography and layout variables.
+   Change these to re-theme the entire application.
+   ============================================================================ */
+:root {
+    --ech-primary: #1e88e5;
+    --ech-primary-dark: #1565c0;
+    --ech-primary-light: #e3f2fd;
+    --ech-primary-border: #bbdefb;
+    --ech-danger: #ff4d4f;
+    --ech-warning: #faad14;
+    --ech-info: #1976d2;
+    --ech-success: #52c41a;
+    --ech-bg: #f5f7fa;
+    --ech-surface: #ffffff;
+    --ech-text: #2c3e50;
+    --ech-text-secondary: #777777;
+    --ech-text-muted: #999999;
+    --ech-border: #e0e0e0;
+    --ech-border-light: #f0f0f0;
+    --ech-hover: #f4faff;
+    --ech-sidebar-width: 180px;
+    --ech-sidebar-collapsed: 56px;
+    --ech-banner-height: auto;
+    --ech-bottom-bar-height: 0px;
+    --ech-clinical-danger: #ff4d4f;
+    --ech-clinical-warning: #faad14;
+    --ech-clinical-info: #1976d2;
+    --ech-clinical-success: #4caf50;
+    --ech-clinical-success-dark: #2e7d32;
+    --ech-clinical-success-light: #e8f5e9;
+    --ech-clinical-orange: #ff9800;
+    --ech-clinical-orange-dark: #f57c00;
+    --ech-font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    --fs-xl: 2.5rem;
+    --fs-lg: 2.0rem;
+    --fs-md: 1.3rem;
+    --fs-xs: 1.0rem;
+}
+
+
+
+  /* ============================================================================
+   2. BASE & RESET
+   ============================================================================ */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 13px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--ech-font-family);
+    font-size: var(--fs-xs);
+    color: var(--ech-text);
+    background: var(--ech-bg);
+    height: 100%;
+    overflow: hidden;
+}
+
+
+
+  /* ============================================================================
+   3. FONT SIZE UTILITIES
+   ============================================================================ */
+.fs-xs  { font-size: 1.0rem !important; }
+.fs-md  { font-size: 1.3rem !important; }
+.fs-lg  { font-size: 2.0rem !important; }
+.fs-xl  { font-size: 2.5rem !important; }
+.fs-xxl { font-size: 3.0rem !important; }
+
+
+
+  /* ============================================================================
+   4. LAYOUT SHELL
+   --------------------------------------------------------------------------
+   Main flex container that holds sidebar + main content.
+   ============================================================================ */
+.layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.layout-no-sidebar {
+    grid-template-columns: 1fr;
+}
+
+.main-full-width {
+    margin-left: 0;
+}
+
+.module-content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+
+  

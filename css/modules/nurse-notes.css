@@ -1,0 +1,206 @@
+/* ============================================================================
+     NURSE-NOTES.CSS — Nurse Notes Module
+     ============================================================================
+     Nursing Overview with shift-based view, clinical panels, and quick actions.
+     Will become NurseNotesComponent (Angular Standalone Component).
+     ============================================================================ */
+
+  /* ============================================================================
+   20¾. NURSE NOTES (nurse-notes.html)
+   --------------------------------------------------------------------------
+   Nursing Overview — Shift-Based View with clinical panels and quick actions.
+   Classes: .nn-*
+   ============================================================================ */
+
+/* --- 20¾a. Nurse Notes Content Layout --- */
+.nn-content {
+    padding: 8px 12px;
+    overflow-y: auto;
+}
+
+.nn-grid {
+    margin: 0;
+}
+
+/* --- 20¾b. Safety Strip --- */
+.nn-safety-strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.nn-safety-label {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    margin-right: 4px;
+}
+
+.nn-safety-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.nn-safety-tag-danger {
+    background: #ffebee;
+    color: var(--ech-danger);
+}
+
+.nn-safety-tag-warning {
+    background: #fff8e1;
+    color: #e65100;
+}
+
+.nn-safety-tag-info {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+}
+
+/* --- 20¾c. Panel overrides --- */
+.nn-panel {
+    margin-bottom: 8px;
+}
+
+/* --- 20¾d. Checklist items --- */
+.nn-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: var(--fs-md);
+    border-bottom: 1px solid var(--ech-border-light);
+}
+
+.nn-checklist-item:last-child {
+    border-bottom: none;
+}
+
+.nn-checklist-bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ech-primary);
+    flex-shrink: 0;
+}
+
+.nn-checklist-bullet-pending {
+    background: var(--ech-text-secondary);
+}
+
+.nn-checklist-bullet-done {
+    background: var(--ech-success);
+}
+
+/* --- 20¾e. Medication due items --- */
+.nn-med-due-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: var(--fs-md);
+    border-bottom: 1px solid var(--ech-border-light);
+}
+
+.nn-med-due-item:last-child {
+    border-bottom: none;
+}
+
+.nn-med-time {
+    font-weight: 600;
+    color: var(--ech-text);
+    white-space: nowrap;
+    margin-right: 8px;
+}
+
+.nn-med-name {
+    flex: 1;
+}
+
+/* --- 20¾f. Quick Assessment scores --- */
+.nn-assessment-grid {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 4px 0;
+}
+
+.nn-score-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-md);
+}
+
+.nn-score-label {
+    font-weight: 600;
+    color: var(--ech-text);
+}
+
+.nn-score-value {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    padding: 2px 8px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-bg);
+    font-weight: 600;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+}
+
+/* --- 20¾g. Flowsheet links --- */
+.nn-flowsheet-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 4px 0;
+}
+
+.nn-flowsheet-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-xs);
+    color: var(--ech-primary);
+    text-decoration: none;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    padding: 3px 10px;
+    background: var(--ech-surface);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.nn-flowsheet-link:hover {
+    background: var(--ech-hover);
+    border-color: var(--ech-primary);
+}
+
+.nn-flowsheet-sep {
+    color: var(--ech-border);
+    font-size: var(--fs-xs);
+}
+
+/* --- 20¾h. Section title --- */
+.nn-section-title {
+    font-weight: 700;
+    font-size: var(--fs-lg);
+    color: var(--ech-text);
+    padding: 4px 0 8px 0;
+}
+
+
+  

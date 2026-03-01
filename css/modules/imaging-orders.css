@@ -1,0 +1,552 @@
+/* ============================================================================
+     IMAGING-ORDERS.CSS — Imaging Orders Module
+     ============================================================================
+     Balanced Master-Detail layout for radiology exam ordering.
+     Will become ImagingOrdersComponent (Angular Standalone Component).
+     ============================================================================ */
+
+  /* ============================================================================
+   20½. IMAGING ORDERS (io)
+   --------------------------------------------------------------------------
+   Balanced Master-Detail layout for radiology exam ordering with service
+   catalog, orders cart, and technical detail form.
+   Classes: .io-*, .module-content-area.io-mode
+   ============================================================================ */
+
+/* --- 20½a. Layout mode --- */
+.module-content-area.io-mode {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --- 20½b. Clinical context strip --- */
+.io-context-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 1.5rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid var(--ech-border);
+    font-size: 1rem;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+.io-context-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.io-context-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.io-context-separator {
+    color: var(--ech-text-secondary);
+}
+.io-text-danger {
+    color: var(--ech-danger);
+    font-weight: 700;
+}
+.io-context-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 1rem;
+}
+.io-context-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.io-context-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ech-text);
+}
+.io-tag-danger {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: var(--ech-danger);
+    color: #fff;
+    white-space: nowrap;
+}
+.io-tag-warning {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: var(--ech-warning);
+    color: #fff;
+    white-space: nowrap;
+}
+
+/* --- 20½c. Upper section (catalog + orders) --- */
+.io-upper-section {
+    display: flex;
+    height: 35%;
+    min-height: 160px;
+    border-bottom: 2px solid var(--ech-border);
+}
+
+.io-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--ech-border);
+    overflow: hidden;
+}
+.io-panel:last-child {
+    border-right: none;
+}
+
+.io-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--ech-primary-light);
+    color: var(--ech-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--ech-primary-border);
+    flex-shrink: 0;
+}
+.io-panel-header-orders {
+    background: #fff3e0;
+    color: #e65100;
+    border-bottom-color: #ffe0b2;
+}
+
+.io-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+}
+
+/* --- 20½d. Service catalog search --- */
+.io-search-group {
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--ech-border);
+}
+.io-search-icon {
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ech-text-secondary);
+    font-size: 0.9rem;
+}
+.io-search-input {
+    width: 100%;
+    padding: 0.35rem 0.5rem 0.35rem 1.8rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    transition: border-color 0.15s;
+}
+.io-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
+}
+
+/* --- 20½e. Modality filter buttons --- */
+.io-modality-filters {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    border-bottom: 1px solid var(--ech-border);
+    flex-wrap: wrap;
+}
+.io-modality-btn {
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    background: var(--ech-surface);
+    color: var(--ech-text);
+    transition: all 0.15s;
+}
+.io-modality-btn:hover {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
+    color: var(--ech-primary-dark);
+}
+.io-modality-btn.active {
+    background: var(--ech-primary);
+    color: #fff;
+    border-color: var(--ech-primary);
+}
+
+/* --- 20½f. Catalog list items --- */
+.io-catalog-list {
+    padding: 0;
+}
+.io-catalog-item {
+    display: flex;
+    align-items: center;
+    padding: 0.45rem 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.1s;
+}
+.io-catalog-item:hover {
+    background: var(--ech-primary-light);
+}
+.io-catalog-item-active {
+    background: var(--ech-primary-light);
+    border-left: 3px solid var(--ech-primary);
+    font-weight: 600;
+}
+.io-catalog-item-name {
+    font-size: 1rem;
+    color: var(--ech-text);
+}
+.io-catalog-item-modality {
+    font-size: 0.85rem;
+    color: var(--ech-text-secondary);
+    margin-left: auto;
+    padding-left: 0.5rem;
+    font-weight: 600;
+}
+.io-catalog-empty {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--ech-text-secondary);
+    font-size: 1rem;
+}
+
+/* --- 20½g. Orders cart --- */
+.io-orders-list {
+    padding: 0;
+}
+.io-orders-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    color: var(--ech-text-secondary);
+    font-size: 1rem;
+}
+.io-orders-empty .pi {
+    font-size: 1.8rem;
+    opacity: 0.4;
+}
+.io-order-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+.io-order-item:hover {
+    background: #fef9f0;
+}
+.io-order-item-active {
+    background: #fff3e0;
+    border-left: 3px solid #e65100;
+}
+.io-order-item-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+.io-order-status-ok {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2e7d32;
+}
+.io-order-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+.io-order-item-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ech-text);
+}
+.io-order-item-detail {
+    font-size: 0.9rem;
+    color: var(--ech-text-secondary);
+}
+.io-order-status-error {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ech-danger);
+}
+.io-order-remove {
+    background: none;
+    border: none;
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    transition: all 0.15s;
+}
+.io-order-remove:hover {
+    color: var(--ech-danger);
+    background: #fff0f0;
+}
+
+/* --- 20½h. Lower section (detail form) --- */
+.io-lower-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 0 1rem 0.75rem;
+}
+.io-detail-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid var(--ech-primary);
+    margin-bottom: 0.75rem;
+}
+.io-detail-title {
+    font-size: 1rem;
+    color: var(--ech-primary);
+    font-weight: 600;
+}
+.io-detail-exam-name {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.io-required-note {
+    font-size: 0.85rem;
+    color: var(--ech-primary);
+}
+.io-required-star {
+    color: var(--ech-danger);
+    font-weight: 700;
+}
+
+/* --- 20½i. Form fields --- */
+.io-form .grid {
+    margin: 0 -0.35rem;
+}
+.io-form .grid > [class*="col-"] {
+    padding: 0 0.35rem;
+}
+.io-field {
+    margin-bottom: 0.6rem;
+}
+.io-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ech-text);
+    margin-bottom: 0.25rem;
+}
+.io-input {
+    width: 100%;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    transition: border-color 0.15s;
+    box-sizing: border-box;
+}
+.io-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
+}
+.io-input[readonly] {
+    background: #f5f5f5;
+    color: var(--ech-text-secondary);
+    cursor: default;
+}
+.io-select {
+    width: 100%;
+    padding: 0.35rem 1.8rem 0.35rem 0.5rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+.io-select:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
+}
+.io-select-wrapper {
+    position: relative;
+}
+.io-select-icon {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ech-text-secondary);
+    font-size: 0.75rem;
+    pointer-events: none;
+}
+.io-textarea {
+    width: 100%;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    resize: vertical;
+    min-height: 2.5rem;
+    transition: border-color 0.15s;
+    box-sizing: border-box;
+}
+.io-textarea:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.12);
+}
+.io-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1rem;
+    padding-top: 0.35rem;
+}
+.io-checkbox-group input[type="checkbox"] {
+    accent-color: var(--ech-primary);
+    width: 16px;
+    height: 16px;
+}
+.io-checkbox-label {
+    font-size: 1rem;
+    color: var(--ech-text);
+    cursor: pointer;
+}
+.io-checkbox-note {
+    font-size: 0.85rem;
+    color: var(--ech-text-secondary);
+    font-style: italic;
+}
+.io-input-readonly {
+    background: #f5f5f5;
+    color: var(--ech-text-secondary);
+    cursor: default;
+}
+
+/* --- 20½j. Safety alert box --- */
+.io-safety-alert {
+    border: 1px solid #ffe0b2;
+    border-radius: 6px;
+    background: #fff8e1;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: #e65100;
+}
+.io-safety-alert .pi {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+.io-safety-alert-text {
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* --- 20½k. Footer bar --- */
+.io-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid var(--ech-border);
+    background: var(--ech-surface);
+    flex-shrink: 0;
+}
+.io-error-summary {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ech-danger);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.io-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.io-btn {
+    padding: 0.4rem 1.2rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+}
+.io-btn-primary {
+    background: var(--ech-primary);
+    color: #fff;
+    border-color: var(--ech-primary);
+}
+.io-btn-primary:hover {
+    background: var(--ech-primary-dark);
+    border-color: var(--ech-primary-dark);
+}
+.io-btn-primary:disabled {
+    background: #b0bec5;
+    border-color: #b0bec5;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+.io-btn-secondary {
+    background: #fff;
+    color: var(--ech-text-secondary);
+    border-color: var(--ech-border);
+}
+.io-btn-secondary:hover {
+    background: #f5f5f5;
+    color: var(--ech-text);
+}
+
+  

@@ -1,0 +1,153 @@
+/* ============================================================================
+     SIDEBAR.CSS — #sidebar-component
+     ============================================================================
+     Collapsible navigation drawer with module menu items.
+     Will become SidebarComponent (Angular Standalone Component).
+     
+     States: expanded (180px) | collapsed (56px)
+     Persists via localStorage.
+     ============================================================================ */
+
+  /* ============================================================================
+   5. SIDEBAR
+   --------------------------------------------------------------------------
+   Collapsible navigation sidebar with menu items.
+   Classes: .sidebar, .sidebar.collapsed, .sidebar-nav, .menu-item
+   ============================================================================ */
+.sidebar {
+    width: var(--ech-sidebar-width);
+    background: var(--ech-surface);
+    border-right: 1px solid var(--ech-border);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.2s ease;
+    overflow: hidden;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.sidebar.collapsed {
+    width: var(--ech-sidebar-collapsed);
+}
+
+.sidebar-header {
+    background: var(--ech-primary);
+    color: white;
+    padding: 10px 12px;
+    font-weight: 700;
+    font-size: var(--fs-lg);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 50px;
+    cursor: pointer;
+}
+
+.sidebar-header .pi {
+    font-size: var(--fs-lg);
+}
+
+.sidebar-header .logo-text {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.sidebar.collapsed .logo-text {
+    display: none;
+}
+
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4px 0;
+}
+
+.sidebar-nav .menu-item {
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    border-left: 3px solid transparent;
+    text-decoration: none;
+}
+
+.sidebar-nav .menu-item:hover {
+    background: var(--ech-primary-light);
+    border-left-color: var(--ech-primary);
+}
+
+.sidebar-nav .menu-item.active {
+    background: var(--ech-primary-light);
+    border-left-color: var(--ech-primary);
+    font-weight: 600;
+    color: var(--ech-primary-dark);
+}
+
+.sidebar-nav .menu-item .pi {
+    font-size: 1.154rem;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.sidebar-nav .menu-item .menu-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar.collapsed .menu-label {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-nav .menu-item {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar.collapsed .sidebar-nav .menu-item.active {
+    background: var(--ech-primary-light);
+    border-left: 3px solid var(--ech-primary);
+}
+
+.sidebar.collapsed .sidebar-nav .menu-item.active .pi {
+    color: var(--ech-primary-dark);
+}
+
+.sidebar.collapsed .sidebar-nav .menu-item .pi {
+    font-size: 1.308rem;
+}
+
+.sidebar.collapsed .sidebar-header {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar-toggle {
+    padding: 8px;
+    text-align: center;
+    cursor: pointer;
+    border-top: 1px solid var(--ech-border);
+    color: var(--ech-text-secondary);
+    font-size: 1.077rem;
+}
+
+.sidebar-toggle:hover {
+    background: var(--ech-primary-light);
+}
+
+.sidebar.collapsed .sidebar-toggle .pi {
+    transform: rotate(180deg);
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    padding: 10px 0;
+}
+
+
+  

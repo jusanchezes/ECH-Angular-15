@@ -1,0 +1,221 @@
+/* ============================================================================
+     ACTION-BAR.CSS — #action-bar-component & #filter-bar
+     ============================================================================
+     Shared action bar with quick-action buttons and filter controls.
+     
+     #action-bar-component: Horizontal bar with action buttons.
+     Will become ActionBarComponent (Angular Standalone Component).
+     
+     #filter-bar: Filter strip with select-button groups, multi-selects.
+     Will become FilterBarComponent (Angular Standalone Component).
+     ============================================================================ */
+
+  /* ============================================================================
+   8. ACTION BAR (SHARED)
+   --------------------------------------------------------------------------
+   Horizontal bar with quick-action buttons, used by Timeline, MAR, CAR,
+   Risk Factors, and Previous Visits pages.
+   Classes: .action-bar, .action-bar-left, .action-bar-right, .action-bar-spread
+   Note: .action-btn / .btn-action base styles are in components.css (single source of truth)
+   ============================================================================ */
+.action-bar {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.action-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.action-bar-spread {
+    justify-content: space-between;
+}
+
+
+
+  /* ============================================================================
+   9. FILTER BAR & CONTROLS (SHARED)
+   --------------------------------------------------------------------------
+   Horizontal filter strip with select-button groups and multi-selects.
+   Used by Timeline and shared across modules.
+   Classes: .filter-bar, .filter-group, .select-button-group, .multi-select-*
+   ============================================================================ */
+.filter-bar {
+    background: var(--ech-surface);
+    margin: 6px 10px 4px;
+    padding: 6px 10px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.filter-group label {
+    font-size: var(--fs-md);
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    white-space: nowrap;
+}
+
+.select-button-group {
+    display: inline-flex;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.select-button-group .sb-option {
+    padding: 4px 10px;
+    font-size: var(--fs-md);
+    cursor: pointer;
+    background: var(--ech-surface);
+    border: none;
+    border-right: 1px solid var(--ech-border);
+    transition: all 0.15s;
+    color: var(--ech-text);
+}
+
+.select-button-group .sb-option:last-child {
+    border-right: none;
+}
+
+.select-button-group .sb-option:hover {
+    background: var(--ech-primary-light);
+}
+
+.select-button-group .sb-option.active {
+    background: var(--ech-primary);
+    color: white;
+    font-weight: 600;
+}
+
+.multi-select-wrapper {
+    position: relative;
+}
+
+.multi-select-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    cursor: pointer;
+    background: var(--ech-surface);
+    min-width: 120px;
+}
+
+.multi-select-btn:hover {
+    border-color: var(--ech-primary);
+}
+
+.multi-select-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    min-width: 160px;
+    z-index: 150;
+    display: none;
+    padding: 4px 0;
+}
+
+.multi-select-panel.show {
+    display: block;
+}
+
+.multi-select-panel .ms-option {
+    padding: 6px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-md);
+}
+
+.multi-select-panel .ms-option:hover {
+    background: var(--ech-primary-light);
+}
+
+.ms-option input[type="checkbox"] {
+    accent-color: var(--ech-primary);
+}
+
+.column-toggle-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    cursor: pointer;
+    background: var(--ech-surface);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--ech-text-secondary);
+}
+
+.column-toggle-btn:hover {
+    border-color: var(--ech-primary);
+    color: var(--ech-primary);
+}
+
+.column-panel {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    min-width: 160px;
+    z-index: 150;
+    display: none;
+    padding: 4px 0;
+}
+
+.column-panel.show {
+    display: block;
+}
+
+.column-panel .col-option {
+    padding: 6px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-md);
+}
+
+.column-panel .col-option:hover {
+    background: var(--ech-primary-light);
+}
+
+  

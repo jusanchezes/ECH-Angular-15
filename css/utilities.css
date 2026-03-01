@@ -1,0 +1,36 @@
+/* ============================================================================
+     UTILITIES.CSS — Generic Helper Classes
+     ============================================================================
+     Utility/helper classes used across the project.
+     ============================================================================ */
+
+  /* ============================================================================
+   22. UTILITY CLASSES
+   --------------------------------------------------------------------------
+   Generic helper classes used across the project.
+   ============================================================================ */
+.hidden {
+    display: none !important;
+}
+
+.icon-md {
+    font-size: var(--fs-md);
+}
+
+.icon-lg {
+    font-size: var(--fs-md);
+}
+
+.text-primary-color {
+    color: var(--ech-primary);
+}
+
+.text-xs {
+    font-size: var(--fs-xs);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+  

@@ -1,0 +1,91 @@
+/* ============================================================================
+     PROTOCOLS.CSS — Protocols Module
+     ============================================================================
+     High-density protocols list with conditional formatting by status.
+     Will become ProtocolsComponent (Angular Standalone Component).
+     ============================================================================ */
+
+  /* ============================================================================
+   20⅞½. PROTOCOLS (protocols.html)
+   --------------------------------------------------------------------------
+   High-density protocols list with conditional formatting by status.
+   Classes: .proto-*, .col-proto-*
+   ============================================================================ */
+
+.col-proto-action {
+    width: 50px;
+    text-align: center;
+}
+
+.col-proto-date {
+    width: 110px;
+}
+
+.col-proto-name {
+    min-width: 220px;
+}
+
+.col-proto-author {
+    width: 160px;
+}
+
+.col-proto-dept {
+    width: 150px;
+}
+
+.col-proto-status {
+    width: 80px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.col-proto-enddate {
+    width: 110px;
+}
+
+.proto-name-link {
+    color: var(--ech-primary);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.proto-name-link:hover {
+    text-decoration: underline;
+}
+
+.proto-edit-icon {
+    color: var(--ech-primary) !important;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: var(--fs-md);
+}
+
+.proto-status-open {
+    background: #4caf50 !important;
+    color: #000 !important;
+}
+
+.proto-status-closed {
+    background: #f44336 !important;
+    color: #000 !important;
+}
+
+.proto-row-selected {
+    background: #e3f2fd !important;
+}
+
+.proto-row-selected td {
+    background: inherit;
+}
+
+.proto-row-selected td.proto-status-open {
+    background: #4caf50 !important;
+}
+
+.proto-row-selected td.proto-status-closed {
+    background: #f44336 !important;
+}
+
+
+  

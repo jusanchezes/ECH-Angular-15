@@ -6,7 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
     <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
-    <link rel="stylesheet" href="theme-overrides.css">
+    <link rel="stylesheet" href="css/clinical-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/action-bar.css">
+    <link rel="stylesheet" href="css/modules/timeline.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
@@ -17,17 +25,24 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- COMPONENT BOUNDARY: <ech-sidebar> — Injected by layout.js -->
+    <!-- BEGIN: Angular Standalone Component — SidebarComponent -->
     <aside class="sidebar collapsed" id="sidebar-component"></aside>
+    <!-- END: SidebarComponent -->
 
     <main class="main-content">
 
         <!-- COMPONENT BOUNDARY: <ech-header> — Injected by layout.js -->
+        <!-- BEGIN: Angular Standalone Component — HeaderComponent -->
         <header class="top-bar" id="header-component"></header>
+        <!-- END: HeaderComponent -->
 
         <!-- COMPONENT BOUNDARY: <ech-clinical-banner> — Injected by layout.js -->
+        <!-- BEGIN: Angular Standalone Component — ClinicalBannerComponent -->
         <section class="clinical-banner" id="banner-component"></section>
+        <!-- END: ClinicalBannerComponent -->
 
         <!actions bar; unique per module page -->
+        <!-- BEGIN: Angular Standalone Component — ActionBarComponent -->
         <section class="action-bar" id="action-bar-component">
             <button class="action-btn action-btn-primary" onclick="handleQuickAction('Add Clinical Note')" data-i18n-title="ACTIONS.ADD_NOTE" title="Add Clinical Note">
                 <i class="pi pi-plus"></i> <span data-i18n="ACTIONS.ADD_NOTE">Add Note</span>
@@ -49,8 +64,10 @@
                 <i class="pi pi-file-pdf"></i> <span data-i18n="ACTIONS.GENERATE_REPORT">Report</span>
             </button>
         </section>
+        <!-- END: ActionBarComponent -->
 
         <!-- FILTER BAR: Timeline-specific filters. Angular: TimelineFilterComponent -->
+        <!-- BEGIN: Angular Standalone Component — FilterBarComponent -->
         <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
             <div class="filter-group flex align-items-center gap-1">
                 <label data-i18n="FILTER.TIME"><i class="pi pi-clock"></i> Time:</label>
@@ -98,6 +115,7 @@
                 </div>
             </div>
         </section>
+        <!-- END: FilterBarComponent -->
 
         <!-- TIMELINE CONTENT: Angular equivalent: <p-timeline> component with custom templates -->
         <section class="timeline-area" id="timeline-area">

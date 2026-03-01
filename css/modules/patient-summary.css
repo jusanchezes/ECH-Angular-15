@@ -1,0 +1,347 @@
+/* ============================================================================
+     PATIENT-SUMMARY.CSS — Patient Summary & Previous Visits Module
+     ============================================================================
+     Master-detail episode list with clinical detail panels.
+     Will become PatientSummaryComponent (Angular Standalone Component).
+     ============================================================================ */
+
+  /* ============================================================================
+   16. PATIENT SUMMARY / PREVIOUS VISITS
+   --------------------------------------------------------------------------
+   Master-detail episode list with clinical detail panels.
+   Classes: .pv-split, .pv-episode-list, .pv-detail, .pv-panel, .pv-badge-*
+   ============================================================================ */
+.pv-split {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    gap: 0;
+}
+
+.pv-episode-list {
+    width: 30%;
+    min-width: 180px;
+    max-width: 260px;
+    border-right: 1px solid var(--ech-border);
+    overflow-y: auto;
+    background: var(--ech-surface);
+    flex-shrink: 0;
+}
+
+.pv-episode-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid var(--ech-border-light);
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    transition: background 0.15s, border-color 0.15s;
+    line-height: 1.4;
+}
+
+.pv-episode-item:hover {
+    background: var(--ech-hover);
+    border-left-color: var(--ech-primary-border);
+}
+
+.pv-episode-item.active {
+    background: var(--ech-primary-light);
+    border-left-color: var(--ech-primary);
+    font-weight: 600;
+    color: var(--ech-primary-dark);
+}
+
+.pv-episode-date {
+    font-weight: 700;
+    font-size: var(--fs-md);
+}
+
+.pv-episode-type {
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    text-transform: uppercase;
+}
+
+.pv-detail {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 12px 20px;
+    background: var(--ech-bg);
+}
+
+.pv-panel {
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.pv-panel-header {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--ech-border-light);
+    color: var(--ech-text);
+}
+
+.pv-panel-body {
+    padding: 6px 10px;
+}
+
+.pv-alert-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 0;
+    font-size: var(--fs-md);
+    border-bottom: 1px solid var(--ech-border-light);
+}
+
+.pv-alert-row:last-child {
+    border-bottom: none;
+}
+
+.pv-alert-doctor {
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    white-space: nowrap;
+}
+
+.pv-diag-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-md);
+}
+
+.pv-diag-table td {
+    padding: 3px 6px;
+    border-bottom: 1px solid var(--ech-border-light);
+    vertical-align: middle;
+}
+
+.pv-diag-table tr:last-child td {
+    border-bottom: none;
+}
+
+.pv-diag-code {
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    width: 60px;
+}
+
+.pv-badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.pv-badge-active {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.pv-badge-resolved {
+    background: #f5f5f5;
+    color: #9e9e9e;
+}
+
+.pv-badge-high-risk {
+    background: var(--ech-danger);
+    color: white;
+    font-size: 0.769rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+.pv-badge-pending {
+    color: var(--ech-success);
+    font-weight: 600;
+    font-size: var(--fs-xs);
+}
+
+.pv-badge-abnormal {
+    color: var(--ech-danger);
+    font-weight: 600;
+    font-size: var(--fs-xs);
+}
+
+.pv-med-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 0;
+    font-size: var(--fs-md);
+    border-bottom: 1px solid var(--ech-border-light);
+    gap: 8px;
+}
+
+.pv-med-row:last-child {
+    border-bottom: none;
+}
+
+.pv-med-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pv-med-dose-time {
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    white-space: nowrap;
+}
+
+.pv-snapshot-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px 12px;
+    font-size: var(--fs-md);
+}
+
+.pv-snapshot-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+}
+
+.pv-snapshot-label {
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    min-width: 50px;
+}
+
+.pv-snapshot-value {
+    color: var(--ech-text);
+}
+
+.pv-test-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 0;
+    font-size: var(--fs-md);
+    border-bottom: 1px solid var(--ech-border-light);
+}
+
+.pv-test-row:last-child {
+    border-bottom: none;
+}
+
+.pv-panel-header.pv-panel-header-link {
+    color: var(--ech-primary);
+    text-decoration: underline;
+}
+
+.module-content-area.pv-no-padding {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- 16b. Patient Summary Dashboard --- */
+.ps-content {
+    padding: 8px 12px;
+    overflow-y: auto;
+}
+
+.ps-grid {
+    margin: 0;
+}
+
+.ps-panel {
+    margin-bottom: 8px;
+}
+
+.ps-icon-checked {
+    color: var(--ech-primary);
+    font-size: 1.1rem;
+}
+
+.ps-icon-pending {
+    color: var(--ech-text-secondary);
+    font-size: 1.1rem;
+}
+
+.ps-med-row {
+    padding: 6px 0;
+}
+
+.ps-med-next {
+    font-size: var(--fs-md);
+    font-weight: 600;
+    color: var(--ech-text);
+}
+
+.ps-note-title {
+    font-size: var(--fs-md);
+    margin-bottom: 2px;
+}
+
+.ps-note-excerpt {
+    font-size: var(--fs-md);
+    color: var(--ech-text-secondary);
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.ps-note-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-xs);
+    color: var(--ech-primary);
+    text-decoration: none;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    background: var(--ech-surface);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.ps-note-link:hover {
+    background: var(--ech-hover);
+}
+
+.ps-problem-num {
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    margin-right: 4px;
+}
+
+.ps-panel-footer {
+    padding-top: 6px;
+    margin-top: 4px;
+    border-top: 1px solid var(--ech-border-light);
+}
+
+.ps-trend-down {
+    color: var(--ech-primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.ps-trend-up {
+    color: var(--ech-danger);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.ps-result-abnormal {
+    color: var(--ech-danger);
+    font-weight: 600;
+}
+
+.ps-result-pending {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+}
+
+
+  
