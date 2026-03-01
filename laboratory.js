@@ -201,19 +201,19 @@
     }
 
     function getTrendIcon(analyte) {
-        if (analyte.isText) return '<span class="lab-trend-icon lab-trend-stable">—</span>';
+        if (analyte.isText) return '<span class="results-trend-icon results-trend-stable">—</span>';
         var vals = analyte.values.slice(0, 3).filter(function (v) { return v !== null && v !== undefined; });
-        if (vals.length < 2) return '<span class="lab-trend-icon lab-trend-stable">—</span>';
+        if (vals.length < 2) return '<span class="results-trend-icon results-trend-stable">—</span>';
 
         var hasCritical = analyte.isCritical && analyte.isCritical[0];
-        if (hasCritical) return '<span class="lab-trend-icon lab-trend-critical"><i class="pi pi-exclamation-circle"></i></span>';
+        if (hasCritical) return '<span class="results-trend-icon results-trend-critical"><i class="pi pi-exclamation-circle"></i></span>';
 
         var diff = vals[0] - vals[1];
         var pct = Math.abs(diff) / (Math.abs(vals[1]) || 1) * 100;
 
-        if (pct < 3) return '<span class="lab-trend-icon lab-trend-stable">—</span>';
-        if (diff > 0) return '<span class="lab-trend-icon lab-trend-up"><i class="pi pi-arrow-up-right"></i></span>';
-        return '<span class="lab-trend-icon lab-trend-down"><i class="pi pi-arrow-down-right"></i></span>';
+        if (pct < 3) return '<span class="results-trend-icon results-trend-stable">—</span>';
+        if (diff > 0) return '<span class="results-trend-icon results-trend-up"><i class="pi pi-arrow-up-right"></i></span>';
+        return '<span class="results-trend-icon results-trend-down"><i class="pi pi-arrow-down-right"></i></span>';
     }
 
     function getSparklineSVG(analyte) {
@@ -230,7 +230,7 @@
             var y = h - ((v - min) / range) * h;
             return x.toFixed(1) + ',' + y.toFixed(1);
         }).join(' ');
-        return '<svg class="lab-sparkline" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">' +
+        return '<svg class="results-sparkline" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">' +
             '<polyline points="' + points + '" fill="none" stroke="var(--ech-primary)" stroke-width="1.5" />' +
             '</svg>';
     }
@@ -267,11 +267,11 @@
         if (!thead || !tbody) return;
 
         var headHtml = '<tr>' +
-            '<th class="lab-col-analyte lab-sticky-col" data-i18n="LAB.COL_ANALYTE">Analyte</th>' +
-            '<th class="lab-col-ref" data-i18n="LAB.COL_REF_RANGE">Ref. Range</th>' +
-            '<th class="lab-col-trend" data-i18n="LAB.COL_TREND">Trend</th>';
+            '<th class="results-col-name results-col-sticky" data-i18n="LAB.COL_ANALYTE">Analyte</th>' +
+            '<th class="results-col-ref" data-i18n="LAB.COL_REF_RANGE">Ref. Range</th>' +
+            '<th class="results-col-trend" data-i18n="LAB.COL_TREND">Trend</th>';
         for (var d = 0; d < dates.length; d++) {
-            headHtml += '<th class="lab-col-date">' + dates[d] + '</th>';
+            headHtml += '<th class="results-col-date">' + dates[d] + '</th>';
         }
         headHtml += '</tr>';
         thead.innerHTML = headHtml;
@@ -279,7 +279,7 @@
         var analytes = getFilteredAnalytes();
 
         if (analytes.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="' + (3 + visibleDates) + '" class="lab-empty-row" data-i18n="LAB.NO_RESULTS">No results found for the current filters.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="' + (3 + visibleDates) + '" class="results-empty-row" data-i18n="LAB.NO_RESULTS">No results found for the current filters.</td></tr>';
             return;
         }
 
@@ -287,29 +287,29 @@
         for (var i = 0; i < analytes.length; i++) {
             var a = analytes[i];
             bodyHtml += '<tr>';
-            bodyHtml += '<td class="lab-col-analyte lab-sticky-col"><strong>' + a.name + '</strong></td>';
-            bodyHtml += '<td class="lab-col-ref">' + a.refRange + '</td>';
-            bodyHtml += '<td class="lab-col-trend">' + (showTrendView ? getSparklineSVG(a) : getTrendIcon(a)) + '</td>';
+            bodyHtml += '<td class="results-col-name results-col-sticky"><strong>' + a.name + '</strong></td>';
+            bodyHtml += '<td class="results-col-ref">' + a.refRange + '</td>';
+            bodyHtml += '<td class="results-col-trend">' + (showTrendView ? getSparklineSVG(a) : getTrendIcon(a)) + '</td>';
 
             for (var j = 0; j < visibleDates; j++) {
                 var val = a.values[j];
                 var flag = getFlag(a, j);
-                var cellClass = 'lab-cell-value';
+                var cellClass = 'results-cell-value';
                 var flagLabel = '';
 
                 if (flag === 'critical') {
-                    cellClass += ' lab-cell-critical';
-                    flagLabel = ' <span class="lab-flag-critical">(!!)</span>';
+                    cellClass += ' results-cell-critical';
+                    flagLabel = ' <span class="results-flag-critical">(!!)</span>';
                 } else if (flag === 'high') {
-                    cellClass += ' lab-cell-high';
-                    flagLabel = ' <span class="lab-flag-high">(H)</span>';
+                    cellClass += ' results-cell-high';
+                    flagLabel = ' <span class="results-flag-high">(H)</span>';
                 } else if (flag === 'low') {
-                    cellClass += ' lab-cell-low';
-                    flagLabel = ' <span class="lab-flag-low">(L)</span>';
+                    cellClass += ' results-cell-low';
+                    flagLabel = ' <span class="results-flag-low">(L)</span>';
                 } else if (flag === 'abnormal') {
-                    cellClass += ' lab-cell-high';
+                    cellClass += ' results-cell-high';
                 } else if (flag === 'pending') {
-                    cellClass += ' lab-cell-pending';
+                    cellClass += ' results-cell-pending';
                 }
 
                 var displayVal = (val !== null && val !== undefined) ? val : '—';
@@ -343,7 +343,7 @@
     window.labSetTimeRange = function (btn) {
         var range = parseInt(btn.getAttribute('data-range'), 10);
         currentTimeRange = range;
-        var btns = document.querySelectorAll('.lab-time-btn');
+        var btns = document.querySelectorAll('.toolbar-segment-btn');
         for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
         btn.classList.add('active');
         renderTable();

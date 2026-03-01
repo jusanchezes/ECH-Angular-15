@@ -37,53 +37,7 @@
     flex-wrap: wrap;
 }
 
-.mar-filter-separator,
-.car-filter-separator {
-    width: 1px;
-    height: 20px;
-    background: var(--ech-border);
-    flex-shrink: 0;
-}
-
-/* --- A2. Date navigation --- */
-.mar-date-nav,
-.car-date-nav {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.mar-date-nav .date-nav-btn,
-.car-date-nav .date-nav-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 10px;
-    border: 1px solid var(--ech-border);
-    border-radius: 4px;
-    background: var(--ech-surface);
-    color: var(--ech-text);
-    font-size: var(--fs-xs);
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    font-family: var(--ech-font-family);
-}
-
-.mar-date-nav .date-nav-btn:hover,
-.car-date-nav .date-nav-btn:hover {
-    background: var(--ech-primary-light);
-    border-color: var(--ech-primary);
-    color: var(--ech-primary-dark);
-}
-
-.mar-date-nav .date-label,
-.car-date-nav .date-label {
-    font-weight: 700;
-    font-size: var(--fs-xs);
-    color: var(--ech-text);
-    white-space: nowrap;
-}
+/* --- A2. Date navigation, separators, search — now in action-bar.css (shared) --- */
 
 /* --- A3. Legend --- */
 .mar-legend,
@@ -112,40 +66,7 @@
     flex-shrink: 0;
 }
 
-/* --- A4. Search input --- */
-.mar-search-wrapper,
-.car-search-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-}
-
-.mar-search-icon,
-.car-search-icon {
-    position: absolute;
-    left: 8px;
-    font-size: 0.923rem;
-    color: var(--ech-text-muted);
-    pointer-events: none;
-}
-
-.mar-search-input,
-.car-search-input {
-    padding: 4px 8px 4px 28px;
-    border: 1px solid var(--ech-border);
-    border-radius: 4px;
-    font-size: var(--fs-xs);
-    outline: none;
-    min-width: 160px;
-    max-width: 220px;
-    font-family: var(--ech-font-family);
-}
-
-.mar-search-input:focus,
-.car-search-input:focus {
-    border-color: var(--ech-primary);
-    box-shadow: 0 0 0 2px rgba(30,136,229,0.15);
-}
+/* --- A4. Search input — now in action-bar.css (shared) --- */
 
 /* --- A5. Grid layout --- */
 .mar-grid-wrapper,

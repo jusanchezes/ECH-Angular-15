@@ -260,7 +260,7 @@
     }
 
     function msGetTrendIcon(param, data, slots) {
-        if (param.isText) return '<span class="ms-trend-icon ms-trend-stable">—</span>';
+        if (param.isText) return '<span class="results-trend-icon results-trend-stable">—</span>';
 
         var vals = [];
         for (var i = 0; i < slots.length; i++) {
@@ -276,21 +276,21 @@
             }
         }
 
-        if (vals.length < 2) return '<span class="ms-trend-icon ms-trend-stable">—</span>';
+        if (vals.length < 2) return '<span class="results-trend-icon results-trend-stable">—</span>';
 
         var latest = vals[vals.length - 1];
         var prev = vals[vals.length - 2];
 
         if (isCritical(param, latest.raw)) {
-            return '<span class="ms-trend-icon ms-trend-critical"><i class="pi pi-exclamation-circle"></i></span>';
+            return '<span class="results-trend-icon results-trend-critical"><i class="pi pi-exclamation-circle"></i></span>';
         }
 
         var diff = latest.value - prev.value;
         var pct = Math.abs(diff) / (Math.abs(prev.value) || 1) * 100;
 
-        if (pct < 3) return '<span class="ms-trend-icon ms-trend-stable">—</span>';
-        if (diff > 0) return '<span class="ms-trend-icon ms-trend-up"><i class="pi pi-arrow-up-right"></i></span>';
-        return '<span class="ms-trend-icon ms-trend-down"><i class="pi pi-arrow-down-right"></i></span>';
+        if (pct < 3) return '<span class="results-trend-icon results-trend-stable">—</span>';
+        if (diff > 0) return '<span class="results-trend-icon results-trend-up"><i class="pi pi-arrow-up-right"></i></span>';
+        return '<span class="results-trend-icon results-trend-down"><i class="pi pi-arrow-down-right"></i></span>';
     }
 
     function msGetSparklineSVG(param, data, slots) {
@@ -320,7 +320,7 @@
             var y = h - ((v - min) / range) * h;
             return x.toFixed(1) + ',' + y.toFixed(1);
         }).join(' ');
-        return '<svg class="ms-sparkline" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">' +
+        return '<svg class="results-sparkline" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">' +
             '<polyline points="' + points + '" fill="none" stroke="var(--ech-primary)" stroke-width="1.5" />' +
             '</svg>';
     }
@@ -356,12 +356,12 @@
         var filtered = getFilteredParams(params, data, slots);
 
         var thead = document.getElementById('msTableHead');
-        var headHtml = '<tr><th class="ms-param-col" data-i18n="MEASUREMENTS.COL_PARAMETER">Parameter</th>';
+        var headHtml = '<tr><th class="results-col-name results-col-sticky ms-param-col" data-i18n="MEASUREMENTS.COL_PARAMETER">Parameter</th>';
         if (showTrendView) {
-            headHtml += '<th class="ms-col-trend" data-i18n="MEASUREMENTS.COL_TREND">Trend</th>';
+            headHtml += '<th class="results-col-trend" data-i18n="MEASUREMENTS.COL_TREND">Trend</th>';
         }
         slots.forEach(function (s) {
-            headHtml += '<th class="ms-time-col">' + s + '</th>';
+            headHtml += '<th class="results-col-date">' + s + '</th>';
         });
         headHtml += '</tr>';
         thead.innerHTML = headHtml;
@@ -370,25 +370,25 @@
 
         if (filtered.length === 0) {
             var colSpan = 1 + (showTrendView ? 1 : 0) + slots.length;
-            tbody.innerHTML = '<tr><td colspan="' + colSpan + '" class="ms-empty-row" data-i18n="MEASUREMENTS.NO_RESULTS">No results found for the current filters.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="' + colSpan + '" class="results-empty-row" data-i18n="MEASUREMENTS.NO_RESULTS">No results found for the current filters.</td></tr>';
             return;
         }
 
         var bodyHtml = '';
         filtered.forEach(function (param) {
-            bodyHtml += '<tr><td class="ms-param-col">' + param.name + '</td>';
+            bodyHtml += '<tr><td class="results-col-name results-col-sticky ms-param-col">' + param.name + '</td>';
             if (showTrendView) {
-                bodyHtml += '<td class="ms-col-trend">' + msGetSparklineSVG(param, data, slots) + '</td>';
+                bodyHtml += '<td class="results-col-trend">' + msGetSparklineSVG(param, data, slots) + '</td>';
             }
             slots.forEach(function (slot) {
                 var cell = data[param.field] ? data[param.field][slot] : null;
                 if (cell && cell.value !== null && cell.value !== undefined) {
                     var critical = isCritical(param, cell.value);
                     var alert = isAlert(param, cell.value);
-                    var cls = critical ? 'ms-cell-critical' : (alert ? 'ms-cell-alert' : '');
+                    var cls = 'results-cell-value' + (critical ? ' results-cell-critical' : (alert ? ' results-cell-alert' : ''));
                     bodyHtml += '<td class="' + cls + '" data-nurse="' + cell.nurse + '" data-time="' + slot + ':' + cell.second + '">' + cell.value + '</td>';
                 } else {
-                    bodyHtml += '<td class="ms-cell-empty">-</td>';
+                    bodyHtml += '<td class="results-cell-empty">-</td>';
                 }
             });
             bodyHtml += '</tr>';
@@ -476,7 +476,7 @@
 
     window.msSetScale = function (btn) {
         currentScale = parseInt(btn.getAttribute('data-scale'), 10);
-        var btns = document.querySelectorAll('.ms-scale-btn');
+        var btns = document.querySelectorAll('.toolbar-segment-btn');
         btns.forEach(function (b) { b.classList.remove('active'); });
         btn.classList.add('active');
         renderTable();

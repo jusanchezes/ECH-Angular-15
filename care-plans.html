@@ -73,44 +73,44 @@
         <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
             <div class="car-filter-bar">
                 <div class="car-filter-left">
-                    <div class="car-date-nav">
-                        <button class="date-nav-btn" onclick="carNavDate(-1)">
+                    <div class="toolbar-date-nav">
+                        <button class="toolbar-date-btn" onclick="carNavDate(-1)">
                             <i class="pi pi-chevron-left"></i> <span id="carPrevLabel">Yesterday</span>
                         </button>
-                        <span class="date-label" data-field="carDate" id="carDateLabel">Today</span>
-                        <button class="date-nav-btn" onclick="carNavDate(1)">
+                        <span class="toolbar-date-label" data-field="carDate" id="carDateLabel">Today</span>
+                        <button class="toolbar-date-btn" onclick="carNavDate(1)">
                             <span id="carNextLabel">Tomorrow</span> <i class="pi pi-chevron-right"></i>
                         </button>
                     </div>
 
-                    <div class="car-filter-separator"></div>
+                    <div class="toolbar-separator"></div>
 
                     <div class="filter-group">
                         <label data-i18n="CAR.TIME_WINDOW">Window:</label>
-                        <div class="select-button-group" id="carTimeWindow">
-                            <button class="sb-option" data-value="2" onclick="setCarTimeWindow(this)">2h</button>
-                            <button class="sb-option active" data-value="4" onclick="setCarTimeWindow(this)">4h</button>
-                            <button class="sb-option" data-value="12" onclick="setCarTimeWindow(this)">12h</button>
+                        <div class="toolbar-segment-group" id="carTimeWindow">
+                            <button class="toolbar-segment-btn" data-value="2" onclick="setCarTimeWindow(this)">2h</button>
+                            <button class="toolbar-segment-btn active" data-value="4" onclick="setCarTimeWindow(this)">4h</button>
+                            <button class="toolbar-segment-btn" data-value="12" onclick="setCarTimeWindow(this)">12h</button>
                         </div>
                     </div>
 
-                    <div class="car-filter-separator"></div>
+                    <div class="toolbar-separator"></div>
 
                     <div class="filter-group">
                         <label data-i18n="CAR.CARE_TYPE">Type:</label>
-                        <div class="select-button-group" id="carCareType">
-                            <button class="sb-option active" data-value="all" onclick="setCarCareType(this)">All</button>
-                            <button class="sb-option" data-value="current" onclick="setCarCareType(this)">Current</button>
-                            <button class="sb-option" data-value="scheduled" onclick="setCarCareType(this)">Scheduled</button>
-                            <button class="sb-option" data-value="prn" onclick="setCarCareType(this)">PRN</button>
+                        <div class="toolbar-segment-group" id="carCareType">
+                            <button class="toolbar-segment-btn active" data-value="all" onclick="setCarCareType(this)">All</button>
+                            <button class="toolbar-segment-btn" data-value="current" onclick="setCarCareType(this)">Current</button>
+                            <button class="toolbar-segment-btn" data-value="scheduled" onclick="setCarCareType(this)">Scheduled</button>
+                            <button class="toolbar-segment-btn" data-value="prn" onclick="setCarCareType(this)">PRN</button>
                         </div>
                     </div>
 
-                    <div class="car-filter-separator"></div>
+                    <div class="toolbar-separator"></div>
 
-                    <div class="car-search-wrapper">
-                        <i class="pi pi-search car-search-icon"></i>
-                        <input type="text" class="car-search-input" id="carSearchInput" placeholder="Search care task..." data-i18n-placeholder="CAR.SEARCH_PLACEHOLDER" oninput="filterCarTable()">
+                    <div class="toolbar-search-wrapper">
+                        <i class="pi pi-search"></i>
+                        <input type="text" class="toolbar-search-input" id="carSearchInput" placeholder="Search care task..." data-i18n-placeholder="CAR.SEARCH_PLACEHOLDER" oninput="filterCarTable()">
                     </div>
                 </div>
 
@@ -403,14 +403,14 @@
     }
 
     window.setCarTimeWindow = function(btn) {
-        document.querySelectorAll('#carTimeWindow .sb-option').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('#carTimeWindow .toolbar-segment-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
         carTimeWindow = parseInt(btn.dataset.value, 10);
         renderTable();
     };
 
     window.setCarCareType = function(btn) {
-        document.querySelectorAll('#carCareType .sb-option').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('#carCareType .toolbar-segment-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
         carCareType = btn.dataset.value;
         renderTable();

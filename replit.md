@@ -65,6 +65,29 @@ css/
 - Module CSS files add only column widths and module-specific overrides (status tags, severity indicators, etc.)
 - `#banner-component`: Always sticky, max-height 80px
 
+**Shared Toolbar System (`action-bar.css` — Section 10):**
+- `.module-toolbar`: Horizontal toolbar inside module panels (used by Lab, Measurements)
+- `.module-toolbar-left`, `.module-toolbar-right`: Left/right flex containers
+- `.toolbar-segment-group` + `.toolbar-segment-btn`: Segmented button group (e.g., time range: 24h/48h/72h, scale: 15m/1h/4h)
+- `.toolbar-filter-group` + `.toolbar-filter-btn`: Toggle filter buttons (e.g., Abnormal Only, Critical Only, Trend View)
+- `.toolbar-date-nav` + `.toolbar-date-btn` + `.toolbar-date-label`: Date navigation with chevron buttons
+- `.toolbar-search-wrapper` + `.toolbar-search-input`: Inline search input with icon
+- `.toolbar-separator`: Vertical divider line between filter groups
+- Used across: Laboratory, Measurements, Medication (MAR), Care Plans (CAR)
+
+**Shared Results Table (`action-bar.css` — Section 11):**
+- `.results-table-wrapper`: Flex scroll container for results tables
+- `.results-table`: Base table with auto layout, sticky header, hover rows (matches Lab design)
+- `.results-col-sticky`: Sticky first column (analyte/parameter names)
+- `.results-col-name`, `.results-col-ref`, `.results-col-trend`, `.results-col-date`: Column type classes
+- `.results-cell-value`: Clickable data cell with hover effect
+- `.results-cell-high`, `.results-cell-low`, `.results-cell-critical`, `.results-cell-pending`, `.results-cell-alert`, `.results-cell-empty`: Clinical status cell styles
+- `.results-flag-high`, `.results-flag-low`, `.results-flag-critical`: Inline flag labels
+- `.results-trend-icon`, `.results-trend-up/down/stable/critical`: Trend direction indicators
+- `.results-sparkline`: SVG sparkline alignment
+- `.results-empty-row`: Empty state row styling
+- Used across: Laboratory, Measurements
+
 ## Component Identity System
 All screens use standardized IDs for Angular migration:
 - `sidebar-component` → SidebarComponent

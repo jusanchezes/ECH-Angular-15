@@ -52,32 +52,32 @@
                 </div>
 
                 <div class="ms-main-panel">
-                    <div class="ms-toolbar">
-                        <div class="ms-toolbar-left">
-                            <div class="ms-scale-group" id="msScaleGroup">
-                                <button class="ms-scale-btn" data-scale="15" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_15M">15m</button>
-                                <button class="ms-scale-btn" data-scale="60" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_1H">1h</button>
-                                <button class="ms-scale-btn active" data-scale="240" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_4H">4h</button>
-                                <button class="ms-scale-btn" data-scale="480" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_8H">8h</button>
-                                <button class="ms-scale-btn" data-scale="1440" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_24H">24h</button>
+                    <div class="module-toolbar">
+                        <div class="module-toolbar-left">
+                            <div class="toolbar-segment-group" id="msScaleGroup">
+                                <button class="toolbar-segment-btn" data-scale="15" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_15M">15m</button>
+                                <button class="toolbar-segment-btn" data-scale="60" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_1H">1h</button>
+                                <button class="toolbar-segment-btn active" data-scale="240" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_4H">4h</button>
+                                <button class="toolbar-segment-btn" data-scale="480" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_8H">8h</button>
+                                <button class="toolbar-segment-btn" data-scale="1440" onclick="msSetScale(this)" data-i18n="MEASUREMENTS.SCALE_24H">24h</button>
                             </div>
 
-                            <div class="ms-date-nav">
-                                <button class="ms-date-nav-btn" onclick="msNavDate(-1)" data-i18n-title="MEASUREMENTS.PREV_DAY"><i class="pi pi-chevron-left"></i></button>
-                                <span class="ms-date-label" id="msDateLabel" data-field="measurementDate"></span>
-                                <button class="ms-date-nav-btn" onclick="msNavDate(1)" data-i18n-title="MEASUREMENTS.NEXT_DAY"><i class="pi pi-chevron-right"></i></button>
+                            <div class="toolbar-date-nav">
+                                <button class="toolbar-date-btn" onclick="msNavDate(-1)" data-i18n-title="MEASUREMENTS.PREV_DAY"><i class="pi pi-chevron-left"></i></button>
+                                <span class="toolbar-date-label" id="msDateLabel" data-field="measurementDate"></span>
+                                <button class="toolbar-date-btn" onclick="msNavDate(1)" data-i18n-title="MEASUREMENTS.NEXT_DAY"><i class="pi pi-chevron-right"></i></button>
                             </div>
 
-                            <div class="ms-filter-group">
-                                <button class="ms-filter-btn" id="msBtnAbnormal" onclick="msToggleAbnormal()" data-i18n="MEASUREMENTS.BTN_ABNORMAL">Abnormal Only</button>
-                                <button class="ms-filter-btn" id="msBtnCritical" onclick="msToggleCritical()" data-i18n="MEASUREMENTS.BTN_CRITICAL">Critical Only</button>
-                                <button class="ms-filter-btn" id="msBtnTrend" onclick="msToggleTrendView()"><i class="pi pi-chart-line"></i> <span data-i18n="MEASUREMENTS.BTN_TREND">Trend View</span></button>
+                            <div class="toolbar-filter-group">
+                                <button class="toolbar-filter-btn" id="msBtnAbnormal" onclick="msToggleAbnormal()" data-i18n="MEASUREMENTS.BTN_ABNORMAL">Abnormal Only</button>
+                                <button class="toolbar-filter-btn" id="msBtnCritical" onclick="msToggleCritical()" data-i18n="MEASUREMENTS.BTN_CRITICAL">Critical Only</button>
+                                <button class="toolbar-filter-btn" id="msBtnTrend" onclick="msToggleTrendView()"><i class="pi pi-chart-line"></i> <span data-i18n="MEASUREMENTS.BTN_TREND">Trend View</span></button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="ms-table-wrapper" id="msTableWrapper">
-                        <table class="ms-table" data-i18n-title="MEASUREMENTS.TABLE_TITLE">
+                    <div class="results-table-wrapper" id="msTableWrapper">
+                        <table class="results-table ms-table" data-i18n-title="MEASUREMENTS.TABLE_TITLE">
                             <thead id="msTableHead"></thead>
                             <tbody id="msTableBody"></tbody>
                         </table>

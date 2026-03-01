@@ -60,44 +60,44 @@
         <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
             <div class="mar-filter-bar">
                 <div class="mar-filter-left">
-                    <div class="mar-date-nav">
-                        <button class="date-nav-btn" onclick="marNavDate(-1)">
+                    <div class="toolbar-date-nav">
+                        <button class="toolbar-date-btn" onclick="marNavDate(-1)">
                             <i class="pi pi-chevron-left"></i> <span id="marPrevLabel">Yesterday</span>
                         </button>
-                        <span class="date-label" data-field="marDate" id="marDateLabel">Today</span>
-                        <button class="date-nav-btn" onclick="marNavDate(1)">
+                        <span class="toolbar-date-label" data-field="marDate" id="marDateLabel">Today</span>
+                        <button class="toolbar-date-btn" onclick="marNavDate(1)">
                             <span id="marNextLabel">Tomorrow</span> <i class="pi pi-chevron-right"></i>
                         </button>
                     </div>
 
-                    <div class="mar-filter-separator"></div>
+                    <div class="toolbar-separator"></div>
 
                     <div class="filter-group">
                         <label data-i18n="MAR.TIME_WINDOW">Window:</label>
-                        <div class="select-button-group" id="marTimeWindow">
-                            <button class="sb-option" data-value="2" onclick="setMarTimeWindow(this)">2h</button>
-                            <button class="sb-option active" data-value="4" onclick="setMarTimeWindow(this)">4h</button>
-                            <button class="sb-option" data-value="12" onclick="setMarTimeWindow(this)">12h</button>
+                        <div class="toolbar-segment-group" id="marTimeWindow">
+                            <button class="toolbar-segment-btn" data-value="2" onclick="setMarTimeWindow(this)">2h</button>
+                            <button class="toolbar-segment-btn active" data-value="4" onclick="setMarTimeWindow(this)">4h</button>
+                            <button class="toolbar-segment-btn" data-value="12" onclick="setMarTimeWindow(this)">12h</button>
                         </div>
                     </div>
 
-                    <div class="mar-filter-separator"></div>
+                    <div class="toolbar-separator"></div>
 
                     <div class="filter-group">
                         <label data-i18n="MAR.CARE_TYPE">Type:</label>
-                        <div class="select-button-group" id="marCareType">
-                            <button class="sb-option active" data-value="all" onclick="setMarCareType(this)">All</button>
-                            <button class="sb-option" data-value="current" onclick="setMarCareType(this)">Current</button>
-                            <button class="sb-option" data-value="scheduled" onclick="setMarCareType(this)">Scheduled</button>
-                            <button class="sb-option" data-value="prn" onclick="setMarCareType(this)">PRN</button>
+                        <div class="toolbar-segment-group" id="marCareType">
+                            <button class="toolbar-segment-btn active" data-value="all" onclick="setMarCareType(this)">All</button>
+                            <button class="toolbar-segment-btn" data-value="current" onclick="setMarCareType(this)">Current</button>
+                            <button class="toolbar-segment-btn" data-value="scheduled" onclick="setMarCareType(this)">Scheduled</button>
+                            <button class="toolbar-segment-btn" data-value="prn" onclick="setMarCareType(this)">PRN</button>
                         </div>
                     </div>
 
-                    <div class="mar-filter-separator"></div>
+                    <div class="toolbar-separator"></div>
 
-                    <div class="mar-search-wrapper">
-                        <i class="pi pi-search mar-search-icon"></i>
-                        <input type="text" class="mar-search-input" id="marSearchInput" placeholder="Search medication..." data-i18n-placeholder="MAR.SEARCH_PLACEHOLDER" oninput="filterMarTable()">
+                    <div class="toolbar-search-wrapper">
+                        <i class="pi pi-search"></i>
+                        <input type="text" class="toolbar-search-input" id="marSearchInput" placeholder="Search medication..." data-i18n-placeholder="MAR.SEARCH_PLACEHOLDER" oninput="filterMarTable()">
                     </div>
                 </div>
 
@@ -462,14 +462,14 @@
     }
 
     window.setMarTimeWindow = function(btn) {
-        document.querySelectorAll('#marTimeWindow .sb-option').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('#marTimeWindow .toolbar-segment-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
         marTimeWindow = parseInt(btn.dataset.value, 10);
         renderTable();
     };
 
     window.setMarCareType = function(btn) {
-        document.querySelectorAll('#marCareType .sb-option').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('#marCareType .toolbar-segment-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
         marCareType = btn.dataset.value;
         renderTable();
