@@ -128,7 +128,7 @@ Full DTO field map documented in `css/clinical-core.css` header comment.
 - **`layout.js`**: Core shell engine — injects Header, Sidebar, Banner across all pages
 - **`layout_list.js`**: List-specific layout for patient list views
 - **`mock-clinical-data.js`**: Centralized mock data store — all clinical data consolidated under `MockClinicalData` global object. Organized hierarchically: `patients[]`, `patientClinicalContext{46: {...}}`, `catalogs{}`. Includes REST/DTO Java contract documentation in header.
-- **`clinical-data.service.js`**: Service layer (IIFE pattern) — `ClinicalDataService` is the single access point for all clinical data. Methods: `getPatientList()`, `getPatient()`, `getTimeline()`, `getLaboratory()`, `getMeasurements()`, `getRiskFactors()`, `getDiagnosticTests()`, `getMedicationMAR()`, `getCarePlans()`, `getDocuments()`, `getProtocols()`, `getSummary()`, `getPreviousVisits()`, `getLabCatalog()`, `getRadiologyCatalog()`, etc. Includes Angular HttpClient migration notes.
+- **`clinical-data.service.js`**: Service layer (IIFE pattern) — `ClinicalDataService` is the single access point for all clinical data. Methods: `getPatientList()`, `getEDPatientList()`, `getPatient()`, `getTimeline()`, `getLaboratory()`, `getMeasurements()`, `getRiskFactors()`, `getDiagnosticTests()`, `getMedicationMAR()`, `getCarePlans()`, `getDocuments()`, `getProtocols()`, `getSummary()`, `getPreviousVisits()`, `getLabCatalog()`, `getRadiologyCatalog()`, etc. Includes Angular HttpClient migration notes.
 - **Module JS files**: Each page has its own JS with UI/rendering logic only — data sourced exclusively from `ClinicalDataService`
 - **Script load order in HTML**: `mock-clinical-data.js` → `clinical-data.service.js` → `layout.js` → page-specific JS
 - **`theme-overrides.css.bak`**: Archived original monolithic CSS (backup)
@@ -136,6 +136,7 @@ Full DTO field map documented in `css/clinical-core.css` header comment.
 ## Key Features and Modules
 - **Dashboard (`index.html`)**: Main entry point with tile grid linking to all clinical modules
 - **Patient List (`inpatients.html`)**: Inpatient list with 11-column clinical table (linked from dashboard)
+- **ED Tracking Board (`ed.html`)**: Emergency Department tracking board with ESI acuity badges, status pills, LOS tracking, alert chips (+N overflow), quick filters (All/Waiting Room/In Room/Dispo/High Acuity), High-Risk toggle, sortable columns, search, and right-side patient detail drawer
 - **Timeline (`timeline.html`)**: Chronological event timeline
 - **Previous Visits (`previous-visits.html`)**: Master-detail episode list
 - **Risk Factors (`risk-factors.html`)**: 10-tab risk control center

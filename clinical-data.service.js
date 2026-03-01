@@ -177,6 +177,10 @@ var ClinicalDataService = (function () {
 
         getRadiologyCatalog: function () {
             return MockClinicalData.catalogs.radiologyCatalog;
+        },
+
+        getEDPatientList: function () {
+            return MockClinicalData.edPatients;
         }
     };
 

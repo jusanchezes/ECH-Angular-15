@@ -50,6 +50,13 @@ const TAB_CONFIGS = {
         { id: 'icu-current',       label: 'Current ICU',       i18n: 'TABS.ICU_CURRENT',       count: 6,  active: true },
         { id: 'icu-pending',       label: 'Pending Transfer',  i18n: 'TABS.ICU_PENDING',       count: 2,  active: false },
         { id: 'icu-discharged',    label: 'ICU Discharged',    i18n: 'TABS.ICU_DISCHARGED',    count: 4,  active: false }
+    ],
+    'ed-list': [
+        { id: 'ed-all',            label: 'All',               i18n: 'TABS.ED_ALL',            count: 10, active: true },
+        { id: 'ed-waiting',        label: 'Waiting Room',      i18n: 'TABS.ED_WAITING',        count: 3,  active: false },
+        { id: 'ed-inroom',         label: 'In Room',           i18n: 'TABS.ED_IN_ROOM',        count: 5,  active: false },
+        { id: 'ed-dispo',          label: 'Dispo',             i18n: 'TABS.ED_DISPO',          count: 2,  active: false },
+        { id: 'ed-high-acuity',    label: 'High Acuity',       i18n: 'TABS.ED_HIGH_ACUITY',    count: 3,  active: false }
     ]
 };
 

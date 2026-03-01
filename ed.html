@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="APP.ED_TITLE">ECH Emergency Department</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
+    <link rel="stylesheet" href="css/clinical-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/action-bar.css">
+    <link rel="stylesheet" href="css/modules/patient-list.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-page-type="patient-list" data-list-type="ed-list">
+
+<div class="layout layout-no-sidebar">
+
+    <main class="main-content main-full-width">
+
+        <header class="top-bar" id="header-component"></header>
+
+        <nav class="tab-bar" id="tab-bar-component"></nav>
+
+        <div class="list-toolbar" id="toolbar-component"></div>
+
+        <section class="patient-list-area" id="patient-list-component">
+            <div class="table-scroll-container">
+                <div class="patient-list-container" id="edListContainer">
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<div class="ed-drawer-overlay" id="edDrawerOverlay" onclick="closeEDDrawer()"></div>
+<div class="ed-drawer" id="edDrawer">
+    <div class="ed-drawer-header">
+        <span class="ed-drawer-title" id="edDrawerTitle">Patient Details</span>
+        <button class="ed-drawer-close" onclick="closeEDDrawer()"><i class="pi pi-times"></i></button>
+    </div>
+    <div class="ed-drawer-body" id="edDrawerBody"></div>
+</div>
+
+<script src="mock-clinical-data.js"></script>
+<script src="clinical-data.service.js"></script>
+<script src="layout.js"></script>
+<script src="layout_list.js"></script>
+<script src="ed.js"></script>
+
+</body>
+</html>
