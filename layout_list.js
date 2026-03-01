@@ -57,6 +57,15 @@ const TAB_CONFIGS = {
         { id: 'ed-inroom',         label: 'In Room',           i18n: 'TABS.ED_IN_ROOM',        count: 5,  active: false },
         { id: 'ed-dispo',          label: 'Dispo',             i18n: 'TABS.ED_DISPO',          count: 2,  active: false },
         { id: 'ed-high-acuity',    label: 'High Acuity',       i18n: 'TABS.ED_HIGH_ACUITY',    count: 3,  active: false }
+    ],
+    'day-hospital-list': [
+        { id: 'day-all',           label: 'All',               i18n: 'TABS.DAY_ALL',           count: 14, active: true },
+        { id: 'day-scheduled',     label: 'Scheduled',         i18n: 'TABS.DAY_SCHEDULED',     count: 3,  active: false },
+        { id: 'day-arrived',       label: 'Arrived',           i18n: 'TABS.DAY_ARRIVED',       count: 2,  active: false },
+        { id: 'day-infusing',      label: 'Infusing',          i18n: 'TABS.DAY_INFUSING',      count: 4,  active: false },
+        { id: 'day-ready',         label: 'Ready for Discharge', i18n: 'TABS.DAY_READY',       count: 2,  active: false },
+        { id: 'day-completed',     label: 'Completed',         i18n: 'TABS.DAY_COMPLETED',     count: 2,  active: false },
+        { id: 'day-noshow',        label: 'No-show',           i18n: 'TABS.DAY_NOSHOW',        count: 1,  active: false }
     ]
 };
 

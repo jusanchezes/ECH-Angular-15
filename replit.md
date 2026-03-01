@@ -137,6 +137,7 @@ Full DTO field map documented in `css/clinical-core.css` header comment.
 - **Dashboard (`index.html`)**: Main entry point with tile grid linking to all clinical modules
 - **Patient List (`inpatients.html`)**: Inpatient list with 11-column clinical table (linked from dashboard)
 - **ED Tracking Board (`ed.html`)**: Emergency Department tracking board with ESI acuity badges, status pills, LOS tracking, alert chips (+N overflow), quick filters (All/Waiting Room/In Room/Dispo/High Acuity), High-Risk toggle, sortable columns, search, and right-side patient detail drawer
+- **Day Hospital (`day-hospital.html`)**: Day Unit / Infusion Center patient list with scheduled time, chair/bay, pathway type, phase status pills, duration tracking, alert chips (+N overflow), quick filters (All/Scheduled/Arrived/Infusing/Ready for Discharge/Completed/No-show), High-Risk toggle, sortable columns (Time/Chair/Status/Remaining), search by name/chair/pathway/status, and right-side detail drawer with status timeline and quick actions (Open Chart, Record Vitals, Start Infusion, Mark Completed, Add Note). Uses `day-hospital.js` with inline mock data (14 patients). CSS additions in `patient-list.css` use `day-` prefix and are scoped by `[data-list-type="day-hospital-list"]`
 - **Timeline (`timeline.html`)**: Chronological event timeline
 - **Previous Visits (`previous-visits.html`)**: Master-detail episode list
 - **Risk Factors (`risk-factors.html`)**: 10-tab risk control center

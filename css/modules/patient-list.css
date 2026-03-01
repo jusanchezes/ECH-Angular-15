@@ -588,4 +588,116 @@
       .ed-drawer { width: 100vw; max-width: 100vw; }
   }
 
+  /* ============================================================================
+     DAY HOSPITAL — Minimal day-hospital-specific additions
+     ============================================================================ */
+
+  .day-col-time { width: 80px; }
+  .day-col-chair { width: 90px; }
+  .day-col-pathway { min-width: 150px; }
+  .day-col-duration { width: 120px; }
+  .day-col-nurse { min-width: 130px; }
+
+  [data-list-type="day-hospital-list"] .patient-table {
+      min-width: 1050px;
+  }
+
+  .day-status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: 10px;
+      font-size: 0.769rem;
+      font-weight: 600;
+      white-space: nowrap;
+  }
+
+  .day-status-scheduled     { background: #e3f2fd; color: #1565c0; }
+  .day-status-arrived       { background: #e8f5e9; color: #2e7d32; }
+  .day-status-preassessment { background: #f3e5f5; color: #6a1b9a; }
+  .day-status-labspending   { background: #e0f7fa; color: #00695c; }
+  .day-status-premeds       { background: #fff8e1; color: #f57f17; }
+  .day-status-infusing      { background: #e8eaf6; color: #283593; }
+  .day-status-observation   { background: #fce4ec; color: #c62828; }
+  .day-status-ready         { background: #e0f2f1; color: #00796b; }
+  .day-status-completed     { background: #efebe9; color: #4e342e; }
+  .day-status-noshow        { background: #fafafa; color: #757575; }
+
+  .day-duration-bar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.846rem;
+  }
+
+  .day-duration-elapsed {
+      font-weight: 700;
+      color: var(--ech-text);
+  }
+
+  .day-duration-remaining {
+      color: var(--ech-text-muted);
+  }
+
+  .day-timeline-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  }
+
+  .day-timeline-list li {
+      position: relative;
+      padding: 6px 0 6px 20px;
+      font-size: var(--fs-md);
+      color: var(--ech-text-muted);
+      border-left: 2px solid var(--ech-border);
+  }
+
+  .day-timeline-list li::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ech-border);
+  }
+
+  .day-timeline-list li.day-timeline-active {
+      color: var(--ech-primary);
+      font-weight: 700;
+      border-left-color: var(--ech-primary);
+  }
+
+  .day-timeline-list li.day-timeline-active::before {
+      background: var(--ech-primary);
+  }
+
+  .day-timeline-list li.day-timeline-done {
+      color: var(--ech-text);
+      border-left-color: var(--ech-success, #2e7d32);
+  }
+
+  .day-timeline-list li.day-timeline-done::before {
+      background: var(--ech-success, #2e7d32);
+  }
+
+  /* --- Day Hospital Responsive --- */
+  @media (max-width: 1200px) {
+      [data-list-type="day-hospital-list"] .patient-table .day-col-nurse { display: none; }
+  }
+
+  @media (max-width: 1024px) {
+      [data-list-type="day-hospital-list"] .patient-table .day-col-pathway { display: none; }
+      [data-list-type="day-hospital-list"] .patient-table .col-alerts { display: none; }
+      [data-list-type="day-hospital-list"] .patient-table { min-width: 650px; }
+  }
+
+  @media (max-width: 768px) {
+      [data-list-type="day-hospital-list"] .patient-table .day-col-duration { display: none; }
+      [data-list-type="day-hospital-list"] .patient-table { min-width: 450px; }
+      .ed-drawer { width: 100vw; max-width: 100vw; }
+  }
+
   
