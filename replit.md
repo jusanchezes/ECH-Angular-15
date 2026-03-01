@@ -110,7 +110,7 @@ Full DTO field map documented in `css/clinical-core.css` header comment.
 - **Medication MAR (`medication.html`)**: Administration record grid with frozen columns
 - **Medication Prescription (`medication-prescription.html`)**: Drug catalog and ordering
 - **Patient Summary (`patient-summary.html`)**: 6-panel clinical dashboard
-- **Care Plans (`care-plans.html`)**: Care administration record grid
+- **Care Plans (`care-plans.html`)**: Care administration record grid with filter bar matching MAR (time window, care type, search)
 - **Measurements (`measurements.html`)**: Vital signs flowsheet with "All" group, Abnormal/Critical/Trend filtering, and action-bar Register button
 - **Nurse Notes (`nurse-notes.html`)**: Shift-based nursing overview
 - **Protocols (`protocols.html`)**: Protocol list with status formatting

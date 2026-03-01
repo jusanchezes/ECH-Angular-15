@@ -44,6 +44,19 @@
                     <span>New PRN/Continuous</span>
                 </button>
                 <div class="action-bar-separator"></div>
+                <button class="action-btn" data-i18n="CAR.ROUND" onclick="void(0)">
+                    <i class="pi pi-users"></i>
+                    <span>Round Patients</span>
+                </button>
+                <button class="action-btn" data-i18n="CAR.PLA" onclick="void(0)">
+                    <i class="pi pi-file"></i>
+                    <span>Plan of Care</span>
+                </button>
+                <button class="action-btn" data-i18n="CAR.PRN" onclick="void(0)">
+                    <i class="pi pi-replay"></i>
+                    <span>PRN/Continuous</span>
+                </button>
+                <div class="action-bar-separator"></div>
                 <button class="action-btn" data-i18n="CAR.PRINT_CAR" onclick="void(0)">
                     <i class="pi pi-print"></i>
                     <span>Print CAR</span>
@@ -59,37 +72,52 @@
         <!-- BEGIN: Angular Standalone Component — FilterBarComponent -->
         <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="filter-bar">
             <div class="car-filter-bar">
-                <div class="car-date-nav">
-                    <button class="date-nav-btn" data-i18n="CAR.ROUND" onclick="void(0)">
-                        Round Patients <i class="pi pi-chevron-right"></i>
-                    </button>
-                    <button class="date-nav-btn" data-i18n="CAR.YESTERDAY" onclick="void(0)">
-                        <i class="pi pi-chevron-left"></i> Yesterday
-                    </button>
-                    <span class="date-label" data-field="carDate" data-i18n="CAR.TODAY_DATE">Today</span>
-                    <button class="date-nav-btn" data-i18n="CAR.TOMORROW" onclick="void(0)">
-                        Tomorrow <i class="pi pi-chevron-right"></i>
-                    </button>
-                    <button class="date-nav-btn" data-i18n="CAR.PLA" onclick="void(0)">
-                        Plan of Care <i class="pi pi-chevron-right"></i>
-                    </button>
-                    <button class="date-nav-btn" data-i18n="CAR.PRN" onclick="void(0)">
-                        PRN/Continuous <i class="pi pi-chevron-right"></i>
-                    </button>
+                <div class="car-filter-left">
+                    <div class="car-date-nav">
+                        <button class="date-nav-btn" onclick="carNavDate(-1)">
+                            <i class="pi pi-chevron-left"></i> <span id="carPrevLabel">Yesterday</span>
+                        </button>
+                        <span class="date-label" data-field="carDate" id="carDateLabel">Today</span>
+                        <button class="date-nav-btn" onclick="carNavDate(1)">
+                            <span id="carNextLabel">Tomorrow</span> <i class="pi pi-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="car-filter-separator"></div>
+
+                    <div class="filter-group">
+                        <label data-i18n="CAR.TIME_WINDOW">Window:</label>
+                        <div class="select-button-group" id="carTimeWindow">
+                            <button class="sb-option" data-value="2" onclick="setCarTimeWindow(this)">2h</button>
+                            <button class="sb-option active" data-value="4" onclick="setCarTimeWindow(this)">4h</button>
+                            <button class="sb-option" data-value="12" onclick="setCarTimeWindow(this)">12h</button>
+                        </div>
+                    </div>
+
+                    <div class="car-filter-separator"></div>
+
+                    <div class="filter-group">
+                        <label data-i18n="CAR.CARE_TYPE">Type:</label>
+                        <div class="select-button-group" id="carCareType">
+                            <button class="sb-option active" data-value="all" onclick="setCarCareType(this)">All</button>
+                            <button class="sb-option" data-value="current" onclick="setCarCareType(this)">Current</button>
+                            <button class="sb-option" data-value="scheduled" onclick="setCarCareType(this)">Scheduled</button>
+                            <button class="sb-option" data-value="prn" onclick="setCarCareType(this)">PRN</button>
+                        </div>
+                    </div>
+
+                    <div class="car-filter-separator"></div>
+
+                    <div class="car-search-wrapper">
+                        <i class="pi pi-search car-search-icon"></i>
+                        <input type="text" class="car-search-input" id="carSearchInput" placeholder="Search care task..." data-i18n-placeholder="CAR.SEARCH_PLACEHOLDER" oninput="filterCarTable()">
+                    </div>
                 </div>
+
                 <div class="car-legend">
-                    <span class="car-legend-item">
-                        <span class="car-legend-dot completed"></span>
-                        <span data-i18n="CAR.LEGEND_COMPLETED">Completed</span>
-                    </span>
-                    <span class="car-legend-item">
-                        <span class="car-legend-dot pending"></span>
-                        <span data-i18n="CAR.LEGEND_PENDING">Pending</span>
-                    </span>
-                    <span class="car-legend-item">
-                        <span class="car-legend-dot overdue"></span>
-                        <span data-i18n="CAR.LEGEND_OVERDUE">Overdue</span>
-                    </span>
+                    <span class="car-legend-item"><span class="car-legend-swatch completed"></span> <span data-i18n="CAR.LEGEND_COMPLETED">Completed</span></span>
+                    <span class="car-legend-item"><span class="car-legend-swatch pending"></span> <span data-i18n="CAR.LEGEND_PENDING">Pending</span></span>
+                    <span class="car-legend-item"><span class="car-legend-swatch overdue"></span> <span data-i18n="CAR.LEGEND_OVERDUE">Overdue</span></span>
                 </div>
             </div>
         </section>
@@ -99,18 +127,7 @@
             <div class="car-grid-wrapper">
                 <div class="car-table-container">
                     <table class="car-table" data-i18n-title="CAR.TABLE_TITLE">
-                        <thead>
-                            <tr>
-                                <th class="car-frozen" data-i18n="CAR.COL_TASK">Care Task (Frequency)</th>
-                                <th class="car-time-col">08:00</th>
-                                <th class="car-time-col">10:00</th>
-                                <th class="car-time-col">12:00</th>
-                                <th class="car-time-col">14:00</th>
-                                <th class="car-time-col">16:00</th>
-                                <th class="car-time-col">18:00</th>
-                                <th class="car-time-col">20:00</th>
-                                <th class="car-time-col">22:00</th>
-                            </tr>
+                        <thead id="car-table-head">
                         </thead>
                         <tbody id="car-table-body">
                         </tbody>
@@ -124,214 +141,288 @@
 <script src="layout.js"></script>
 <script>
 (function() {
-    const CAR_DATA = [
+    var carTimeWindow = 4;
+    var carCareType = 'all';
+
+    var TIME_SLOTS = {
+        2:  ['06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','00:00'],
+        4:  ['08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00'],
+        12: ['08:00','20:00']
+    };
+
+    var CAR_DATA = [
         {
             task: 'Respiratory Monitoring',
             detail: 'Goal: Breathing adequate | Q2H',
             icon: 'pi-cloud',
-            category: 'Respiratorio',
-            discipline: 'Enfermería',
-            slots: [
-                { time: '08:11', status: 'completed' },
-                { time: '10:05', status: 'completed' },
-                { time: '12:02', status: 'completed' },
-                { time: 'MISSING', status: 'overdue' },
-                { time: '--', status: 'pending' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' }
-            ]
+            category: 'current',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: '08:11', status: 'completed' },
+                '10:00': { time: '10:05', status: 'completed' },
+                '12:00': { time: '12:02', status: 'completed' },
+                '14:00': { time: 'MISSING', status: 'overdue' },
+                '16:00': { time: '--', status: 'pending' },
+                '18:00': { time: '--', status: 'pending' },
+                '20:00': { time: null, status: 'empty' },
+                '22:00': { time: null, status: 'empty' },
+                '00:00': { time: null, status: 'empty' }
+            }
         },
         {
             task: 'Subclavian Care',
             detail: 'Cleaning and dressing | Q24H',
             icon: 'pi-heart',
-            category: 'Heridas',
-            discipline: 'Enfermería',
-            slots: [
-                { time: '-', status: 'empty' },
-                { time: '10:20', status: 'completed' },
-                { time: '-', status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' }
-            ]
+            category: 'current',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: '-', status: 'empty' },
+                '10:00': { time: '10:20', status: 'completed' },
+                '12:00': { time: '-', status: 'empty' },
+                '14:00': { time: null, status: 'empty' },
+                '16:00': { time: null, status: 'empty' },
+                '18:00': { time: null, status: 'empty' },
+                '20:00': { time: null, status: 'empty' },
+                '22:00': { time: null, status: 'empty' },
+                '00:00': { time: null, status: 'empty' }
+            }
         },
         {
             task: 'Oral Hygiene',
             detail: 'Teeth brushing + mouthwash | Q8H',
             icon: 'pi-filter',
-            category: 'Higiene',
-            discipline: 'TCAE',
-            slots: [
-                { time: '08:30', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' }
-            ]
+            category: 'current',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: '08:30', status: 'completed' },
+                '10:00': { time: null, status: 'empty' },
+                '12:00': { time: null, status: 'empty' },
+                '14:00': { time: null, status: 'empty' },
+                '16:00': { time: '--', status: 'pending' },
+                '18:00': { time: null, status: 'empty' },
+                '20:00': { time: null, status: 'empty' },
+                '22:00': { time: '--', status: 'pending' },
+                '00:00': { time: null, status: 'empty' }
+            }
         },
         {
             task: 'Bed Bath',
             detail: 'Full bed bath + skin check | Q24H',
             icon: 'pi-filter',
-            category: 'Higiene',
-            discipline: 'TCAE',
-            slots: [
-                { time: '09:15', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' }
-            ]
+            category: 'current',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: null, status: 'empty' },
+                '10:00': { time: '09:15', status: 'completed' },
+                '12:00': { time: null, status: 'empty' },
+                '14:00': { time: null, status: 'empty' },
+                '16:00': { time: null, status: 'empty' },
+                '18:00': { time: null, status: 'empty' },
+                '20:00': { time: null, status: 'empty' },
+                '22:00': { time: null, status: 'empty' },
+                '00:00': { time: null, status: 'empty' }
+            }
         },
         {
             task: 'Mobilisation',
             detail: 'Chair transfer + walking 10m | Q4H',
             icon: 'pi-directions',
-            category: 'Movilización',
-            discipline: 'Fisio',
-            slots: [
-                { time: '08:45', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: '12:30', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' }
-            ]
+            category: 'scheduled',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: '08:45', status: 'completed' },
+                '10:00': { time: null, status: 'empty' },
+                '12:00': { time: '12:30', status: 'completed' },
+                '14:00': { time: null, status: 'empty' },
+                '16:00': { time: '--', status: 'pending' },
+                '18:00': { time: null, status: 'empty' },
+                '20:00': { time: '--', status: 'pending' },
+                '22:00': { time: null, status: 'empty' },
+                '00:00': { time: null, status: 'empty' }
+            }
         },
         {
             task: 'Fall Risk Assessment',
             detail: 'Morse scale reassessment | Q12H',
             icon: 'pi-shield',
-            category: 'Seguridad',
-            discipline: 'Enfermería',
-            slots: [
-                { time: '08:00', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' }
-            ]
+            category: 'current',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: '08:00', status: 'completed' },
+                '10:00': { time: null, status: 'empty' },
+                '12:00': { time: null, status: 'empty' },
+                '14:00': { time: null, status: 'empty' },
+                '16:00': { time: null, status: 'empty' },
+                '18:00': { time: null, status: 'empty' },
+                '20:00': { time: '--', status: 'pending' },
+                '22:00': { time: null, status: 'empty' },
+                '00:00': { time: null, status: 'empty' }
+            }
         },
         {
             task: 'Pain Assessment',
             detail: 'VAS scale + intervention | Q4H',
             icon: 'pi-exclamation-circle',
-            category: 'Dolor',
-            discipline: 'Enfermería',
-            slots: [
-                { time: '08:20', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: '12:15', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' }
-            ]
+            category: 'current',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: '08:20', status: 'completed' },
+                '10:00': { time: null, status: 'empty' },
+                '12:00': { time: '12:15', status: 'completed' },
+                '14:00': { time: null, status: 'empty' },
+                '16:00': { time: '--', status: 'pending' },
+                '18:00': { time: null, status: 'empty' },
+                '20:00': { time: '--', status: 'pending' },
+                '22:00': { time: null, status: 'empty' },
+                '00:00': { time: null, status: 'empty' }
+            }
         },
         {
             task: 'Nutrition Intake',
             detail: 'Meal intake % + fluid balance | Q8H',
             icon: 'pi-apple',
-            category: 'Nutrición',
-            discipline: 'TCAE',
-            slots: [
-                { time: '09:00', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: 'MISSING', status: 'overdue' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' }
-            ]
+            category: 'scheduled',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: null, status: 'empty' },
+                '10:00': { time: '09:00', status: 'completed' },
+                '12:00': { time: null, status: 'empty' },
+                '14:00': { time: 'MISSING', status: 'overdue' },
+                '16:00': { time: null, status: 'empty' },
+                '18:00': { time: null, status: 'empty' },
+                '20:00': { time: null, status: 'empty' },
+                '22:00': { time: '--', status: 'pending' },
+                '00:00': { time: null, status: 'empty' }
+            }
         },
         {
             task: 'Urine Output',
             detail: 'Catheter care + output Q4H',
             icon: 'pi-trash',
-            category: 'Eliminación',
-            discipline: 'Enfermería',
-            slots: [
-                { time: '08:00', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: '12:05', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' }
-            ]
+            category: 'current',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: '08:00', status: 'completed' },
+                '10:00': { time: null, status: 'empty' },
+                '12:00': { time: '12:05', status: 'completed' },
+                '14:00': { time: null, status: 'empty' },
+                '16:00': { time: '--', status: 'pending' },
+                '18:00': { time: null, status: 'empty' },
+                '20:00': { time: '--', status: 'pending' },
+                '22:00': { time: null, status: 'empty' },
+                '00:00': { time: null, status: 'empty' }
+            }
         },
         {
             task: 'Wound Dressing Change',
             detail: 'Abdominal wound, Betadine | Q12H',
             icon: 'pi-heart',
-            category: 'Heridas',
-            discipline: 'Enfermería',
-            slots: [
-                { time: '08:40', status: 'completed' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: null, status: 'empty' },
-                { time: '--', status: 'pending' },
-                { time: null, status: 'empty' }
-            ]
+            category: 'prn',
+            slots: {
+                '06:00': { time: null, status: 'empty' },
+                '08:00': { time: '08:40', status: 'completed' },
+                '10:00': { time: null, status: 'empty' },
+                '12:00': { time: null, status: 'empty' },
+                '14:00': { time: null, status: 'empty' },
+                '16:00': { time: null, status: 'empty' },
+                '18:00': { time: null, status: 'empty' },
+                '20:00': { time: '--', status: 'pending' },
+                '22:00': { time: null, status: 'empty' },
+                '00:00': { time: null, status: 'empty' }
+            }
         }
     ];
 
     function renderCell(slot) {
         if (!slot || slot.status === 'empty') {
-            return slot && slot.time ? `<span class="car-cell car-cell-empty">${slot.time}</span>` : '';
+            return slot && slot.time ? '<span class="car-cell car-cell-empty">' + slot.time + '</span>' : '';
         }
         if (slot.status === 'completed') {
-            return `<span class="car-cell car-cell-completed"><span class="car-dot dot-completed"></span>${slot.time}</span>`;
+            return '<span class="car-cell car-cell-completed"><span class="car-dot dot-completed"></span>' + slot.time + '</span>';
         }
         if (slot.status === 'overdue') {
-            return `<span class="car-cell car-cell-overdue"><span class="car-dot dot-overdue"></span>${slot.time}</span>`;
+            return '<span class="car-cell car-cell-overdue"><span class="car-dot dot-overdue"></span>' + slot.time + '</span>';
         }
         if (slot.status === 'pending') {
-            return `<span class="car-cell car-cell-pending"><span class="car-dot dot-pending"></span>${slot.time}</span>`;
+            return '<span class="car-cell car-cell-pending"><span class="car-dot dot-pending"></span>' + slot.time + '</span>';
         }
         return '';
     }
 
-    function renderTable() {
-        const tbody = document.getElementById('car-table-body');
-        if (!tbody) return;
+    function getFilteredData() {
+        var searchVal = (document.getElementById('carSearchInput') || {}).value || '';
+        searchVal = searchVal.toLowerCase();
 
-        tbody.innerHTML = CAR_DATA.map(row => {
-            const slotCells = row.slots.map(s => `<td class="car-time-col">${renderCell(s)}</td>`).join('');
-            return `<tr>
-                <td class="car-frozen">
-                    <div class="car-task-info">
-                        <span class="car-task-name">
-                            <i class="pi ${row.icon}" style="margin-right:4px;font-size:var(--fs-xs)"></i>${row.task}
-                        </span>
-                        <span class="car-task-detail">${row.detail}</span>
-                    </div>
-                </td>
-                ${slotCells}
-            </tr>`;
+        return CAR_DATA.filter(function(item) {
+            if (carCareType !== 'all' && item.category !== carCareType) return false;
+            if (searchVal && item.task.toLowerCase().indexOf(searchVal) === -1 &&
+                item.detail.toLowerCase().indexOf(searchVal) === -1) return false;
+            return true;
+        });
+    }
+
+    function renderTable() {
+        var thead = document.getElementById('car-table-head');
+        var tbody = document.getElementById('car-table-body');
+        if (!thead || !tbody) return;
+
+        var slots = TIME_SLOTS[carTimeWindow] || TIME_SLOTS[4];
+
+        var headHtml = '<tr>';
+        headHtml += '<th class="car-frozen" data-i18n="CAR.COL_TASK">Care Task (Frequency)</th>';
+        for (var i = 0; i < slots.length; i++) {
+            headHtml += '<th class="car-time-col">' + slots[i] + '</th>';
+        }
+        headHtml += '</tr>';
+        thead.innerHTML = headHtml;
+
+        var data = getFilteredData();
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="' + (1 + slots.length) + '" style="text-align:center;padding:20px;color:var(--ech-text-secondary)"><i class="pi pi-info-circle"></i> No care tasks match the current filters.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = data.map(function(row) {
+            var slotCells = slots.map(function(t) {
+                var s = row.slots[t] || { status: 'empty' };
+                return '<td class="car-time-col">' + renderCell(s) + '</td>';
+            }).join('');
+
+            return '<tr data-category="' + row.category + '">' +
+                '<td class="car-frozen">' +
+                    '<div class="car-task-info">' +
+                        '<span class="car-task-name">' +
+                            '<i class="pi ' + row.icon + '" style="margin-right:4px;font-size:var(--fs-xs)"></i>' + row.task +
+                        '</span>' +
+                        '<span class="car-task-detail">' + row.detail + '</span>' +
+                    '</div>' +
+                '</td>' +
+                slotCells +
+            '</tr>';
         }).join('');
     }
+
+    window.setCarTimeWindow = function(btn) {
+        document.querySelectorAll('#carTimeWindow .sb-option').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        carTimeWindow = parseInt(btn.dataset.value, 10);
+        renderTable();
+    };
+
+    window.setCarCareType = function(btn) {
+        document.querySelectorAll('#carCareType .sb-option').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        carCareType = btn.dataset.value;
+        renderTable();
+    };
+
+    window.filterCarTable = function() {
+        renderTable();
+    };
+
+    window.carNavDate = function(dir) {
+        console.log('Navigate CAR date:', dir > 0 ? 'next' : 'previous');
+    };
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', renderTable);

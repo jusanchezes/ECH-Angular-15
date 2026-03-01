@@ -25,6 +25,14 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 8px;
+}
+
+.car-filter-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .car-date-nav {
@@ -62,12 +70,20 @@
     white-space: nowrap;
 }
 
+.car-filter-separator {
+    width: 1px;
+    height: 20px;
+    background: var(--ech-border);
+    flex-shrink: 0;
+}
+
 .car-legend {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-size: var(--fs-xs);
     color: var(--ech-text-secondary);
+    flex-shrink: 0;
 }
 
 .car-legend-item {
@@ -77,16 +93,47 @@
     white-space: nowrap;
 }
 
-.car-legend-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+.car-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
     flex-shrink: 0;
 }
 
-.car-legend-dot.completed { background: var(--ech-success); }
-.car-legend-dot.pending { background: var(--ech-text-muted); }
-.car-legend-dot.overdue { background: var(--ech-danger); }
+.car-legend-swatch.completed { background: #e8f5e9; border: 1px solid #a5d6a7; }
+.car-legend-swatch.pending { background: #ffffff; border: 1px dashed var(--ech-border); }
+.car-legend-swatch.overdue { background: #ffebee; border: 1px solid #ef9a9a; }
+
+/* --- 20a-search. Search input --- */
+.car-search-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.car-search-icon {
+    position: absolute;
+    left: 8px;
+    font-size: 0.923rem;
+    color: var(--ech-text-muted);
+    pointer-events: none;
+}
+
+.car-search-input {
+    padding: 4px 8px 4px 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    outline: none;
+    min-width: 160px;
+    max-width: 220px;
+    font-family: var(--ech-font-family);
+}
+
+.car-search-input:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30,136,229,0.15);
+}
 
 /* --- 20b. Grid layout --- */
 .car-grid-wrapper {
@@ -221,9 +268,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 54px;
-    min-height: 30px;
-    padding: 2px 8px;
+    min-width: 38px;
+    min-height: 26px;
+    padding: 2px 6px;
     border-radius: 4px;
     font-size: var(--fs-xs);
     font-weight: 600;
@@ -237,7 +284,7 @@
 }
 
 .car-cell-pending {
-    background: #f5f5f5;
+    background: var(--ech-surface);
     border: 1px dashed var(--ech-border);
     color: var(--ech-text-muted);
 }
@@ -256,13 +303,13 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    margin-right: 4px;
+    margin-right: 3px;
     flex-shrink: 0;
 }
 
-.car-dot.dot-completed { background: var(--ech-success); }
+.car-dot.dot-completed { background: #2e7d32; }
 .car-dot.dot-pending { background: var(--ech-text-muted); }
-.car-dot.dot-overdue { background: var(--ech-danger); }
+.car-dot.dot-overdue { background: #c62828; }
 
 .module-content-area.car-mode {
     padding: 0;
@@ -270,6 +317,3 @@
     display: flex;
     flex-direction: column;
 }
-
-
-  
