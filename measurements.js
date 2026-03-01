@@ -368,7 +368,7 @@
         var filtered = getFilteredParams(params, data, slots);
 
         var thead = document.getElementById('msTableHead');
-        var headHtml = '<tr><th class="results-col-name results-col-sticky ms-param-col" data-i18n="MEASUREMENTS.COL_PARAMETER">Parameter</th>';
+        var headHtml = '<tr><th class="results-col-name results-col-sticky" data-i18n="MEASUREMENTS.COL_PARAMETER">Parameter</th>';
         if (showTrendView) {
             headHtml += '<th class="results-col-trend" data-i18n="MEASUREMENTS.COL_TREND">Trend</th>';
         }
@@ -388,7 +388,7 @@
 
         var bodyHtml = '';
         filtered.forEach(function (param) {
-            bodyHtml += '<tr><td class="results-col-name results-col-sticky ms-param-col">' + param.name + '</td>';
+            bodyHtml += '<tr><td class="results-col-name results-col-sticky"><strong>' + param.name + '</strong></td>';
             if (showTrendView) {
                 bodyHtml += '<td class="results-col-trend">' + msGetSparklineSVG(param, data, slots) + '</td>';
             }
