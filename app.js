@@ -8,81 +8,8 @@
  *   calls to Java REST API endpoints returning DTOs.
  */
 
-/** Mock patient context data. Angular: replaced by PatientService.getPatient() → PatientDTO from Java REST API */
-const PatientData = {
-    name: "THOMAS MEYER WOOD",
-    dob: "11/07/1990",
-    age: 35,
-    gender: "Male",
-    genderIcon: "pi-user",
-    recId: 46,
-    episode: 283,
-    room: "Bed 201",
-    department: "Adult Emergency",
-    client: "CLIENTE 01",
-    daysAdmitted: 514,
-    allergies: [
-        { label: "Penicillin Allergy", severity: "danger" },
-        { label: "Latex Allergy", severity: "danger" }
-    ],
-    risks: [
-        { label: "Fall Risk", severity: "warning" },
-        { label: "VTE Risk", severity: "info" }
-    ],
-    dnr: true,
-    hospital: "Healthcare Provider A1",
-    ward: "Inpatients",
-    currentDate: "20/02/2026",
-    attendingPhysician: "Dr. Rory Rogers",
-    serviceUnit: "A1MGCARD - Cardiology"
-};
-
-/** Mock timeline entries. Angular: replaced by TimelineService.getEntries() → TimelineEntryDTO[] from Java REST API */
-const TimelineData = [
-    {
-        date: "Thursday 2 October 2025",
-        entries: [
-            { time: "17:44", type: "Exam", dept: "Radiology", description: "Contrast-Enhanced Ultrasound (CEUS) Requested", author: "Nurs. Adam Dixon", role: "Nursing", card: "A1MGCARD - Nursing", actions: ["Edit", "Delete", "View Details"] },
-            { time: "17:44", type: "Exam", dept: "Radiology", description: "MRI of the Spine", author: "Nurs. Adam Dixon", role: "Nursing", card: "A1MGCARD - Nursing", actions: ["Edit", "Delete", "View Details"] },
-            { time: "17:44", type: "Exam", dept: "Radiology", description: "Comparative Hip X-Ray", author: "Nurs. Adam Dixon", role: "Nursing", card: "A1MGCARD - Nursing", actions: ["Edit", "Delete", "View Details"] }
-        ]
-    },
-    {
-        date: "Thursday 9 October 2025",
-        entries: [
-            { time: "12:37", type: "Surgery", dept: "Cardiology", description: "Aortic Aneurysm Repair - Surgery Request", author: "Dr. Rory Rogers", role: "Physician", card: "A1MGCARD - Cardiology", actions: ["Edit", "Cancel", "View Details"] }
-        ]
-    },
-    {
-        date: "Wednesday 15 October 2025",
-        entries: [
-            { time: "10:52", type: "Images", dept: "Radiology", description: "CT Abdomen - Images Series", author: "Dr. Rory Rogers", role: "Physician", card: "Cardiology", actions: ["View Images", "View Details"] },
-            { time: "10:52", type: "Images", dept: "Cardiology", description: "Holter Monitoring (24-Hour ECG Recording) - Images Series", author: "Dr. Rory Rogers", role: "Physician", card: "A1MGCARD - Cardiology", actions: ["View Images", "View Details"] },
-            { time: "11:14", type: "Exam", dept: "Laboratory", description: "Laboratory Test Request", author: "Dr. Rory Rogers", role: "Physician", card: "A1MGCARD - Cardiology", actions: ["Edit", "View Details"] },
-            { time: "14:56", type: "Images", dept: "Laboratory", description: "Laboratory - Images Series", author: "Dr. Rory Rogers", role: "Physician", card: "Cardiology", actions: ["View Images"] },
-            { time: "21:35", type: "Exam", dept: "Radiology", description: "Cervical Spine X-Ray Request", author: "Dr. Rory Rogers", role: "Physician", card: "A1MGCARD - Cardiology", actions: ["Edit", "View Details"] }
-        ]
-    },
-    {
-        date: "Thursday 16 October 2025",
-        entries: [
-            { time: "10:33", type: "Care", dept: "Nursing", description: "Establish optimal analgesic dosage for optimal pain relief - Every 24 Hours", author: "Dr. Rory Rogers", role: "Physician", card: "A1MGCARD - Cardiology", actions: ["Edit", "View Details"] },
-            { time: "10:33", type: "Surgery", dept: "Cardiology", description: "Cholecystectomy - Surgery Request", author: "Dr. Rory Rogers", role: "Physician", card: "A1MGCARD - Cardiology", actions: ["Edit", "Cancel", "View Details"] },
-            { time: "14:20", type: "Medication", dept: "Nursing", description: "Enoxaparin 40mg SC administered", author: "Nurs. Adam Dixon", role: "Nursing", card: "A1MGCARD - Nursing", actions: ["Edit", "View MAR"] },
-            { time: "15:00", type: "Note", dept: "Adult Emergency", description: "Patient reviewed - stable overnight, oxygen 2L nasal cannula", author: "Dr. Rory Rogers", role: "Physician", card: "A1MGCARD - Cardiology", actions: ["Edit", "Delete"] },
-            { time: "16:45", type: "Vitals", dept: "Nursing", description: "BP 128/82, HR 76, Temp 36.8°C, SpO2 97%", author: "Nurs. Adam Dixon", role: "Nursing", card: "A1MGCARD - Nursing", actions: ["View Chart"] }
-        ]
-    },
-    {
-        date: "Friday 17 October 2025",
-        entries: [
-            { time: "08:00", type: "Note", dept: "Adult Emergency", description: "Morning round - Patient comfortable, no acute complaints", author: "Dr. Rory Rogers", role: "Physician", card: "A1MGCARD - Cardiology", actions: ["Edit", "Delete"] },
-            { time: "09:30", type: "Medication", dept: "Pharmacy", description: "Metoprolol 50mg PO administered", author: "Nurs. Adam Dixon", role: "Nursing", card: "A1MGCARD - Nursing", actions: ["Edit", "View MAR"] },
-            { time: "11:00", type: "Exam", dept: "Laboratory", description: "Complete Blood Count + Metabolic Panel", author: "Dr. Rory Rogers", role: "Physician", card: "A1MGCARD - Cardiology", actions: ["Edit", "View Results"] },
-            { time: "14:15", type: "Care", dept: "Nursing", description: "Wound dressing change - Surgical site clean, no signs of infection", author: "Nurs. Adam Dixon", role: "Nursing", card: "A1MGCARD - Nursing", actions: ["Edit", "View Details"] }
-        ]
-    }
-];
+var PatientData = ClinicalDataService.getPatient();
+var TimelineData = ClinicalDataService.getTimeline();
 
 /** Timeline filter state. Angular: managed by TimelineFilterService with BehaviorSubject observables */
 let currentTimeFilter = 'full';

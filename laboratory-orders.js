@@ -12,31 +12,8 @@
 
 (function () {
 
-    var LAB_CATALOG = [
-        { id: 1, name: 'Complete Blood Count (CBC)', category: 'Hematology', specimenType: 'Blood', defaultVolume: '4 mL', fastingRequired: false, isCoagulation: false },
-        { id: 2, name: 'Hemoglobin A1c', category: 'Hematology', specimenType: 'Blood', defaultVolume: '3 mL', fastingRequired: false, isCoagulation: false },
-        { id: 3, name: 'Reticulocyte Count', category: 'Hematology', specimenType: 'Blood', defaultVolume: '3 mL', fastingRequired: false, isCoagulation: false },
-        { id: 4, name: 'Basic Metabolic Panel (BMP)', category: 'Chemistry', specimenType: 'Blood', defaultVolume: '5 mL', fastingRequired: true, isCoagulation: false },
-        { id: 5, name: 'Comprehensive Metabolic Panel (CMP)', category: 'Chemistry', specimenType: 'Blood', defaultVolume: '5 mL', fastingRequired: true, isCoagulation: false },
-        { id: 6, name: 'Lipid Panel', category: 'Chemistry', specimenType: 'Blood', defaultVolume: '5 mL', fastingRequired: true, isCoagulation: false },
-        { id: 7, name: 'Blood Culture (Aerobic/Anaerobic)', category: 'Microbiology', specimenType: 'Blood', defaultVolume: '10 mL', fastingRequired: false, isCoagulation: false },
-        { id: 8, name: 'Urine Culture & Sensitivity', category: 'Microbiology', specimenType: 'Urine', defaultVolume: '10 mL', fastingRequired: false, isCoagulation: false },
-        { id: 9, name: 'Wound Culture & Gram Stain', category: 'Microbiology', specimenType: 'Swab', defaultVolume: 'N/A', fastingRequired: false, isCoagulation: false },
-        { id: 10, name: 'INR / Prothrombin Time (PT)', category: 'Coagulation', specimenType: 'Blood', defaultVolume: '3 mL', fastingRequired: false, isCoagulation: true },
-        { id: 11, name: 'Partial Thromboplastin Time (PTT)', category: 'Coagulation', specimenType: 'Blood', defaultVolume: '3 mL', fastingRequired: false, isCoagulation: true },
-        { id: 12, name: 'D-Dimer', category: 'Coagulation', specimenType: 'Blood', defaultVolume: '3 mL', fastingRequired: false, isCoagulation: true },
-        { id: 13, name: 'Urinalysis (UA)', category: 'Urinalysis', specimenType: 'Urine', defaultVolume: '30 mL', fastingRequired: false, isCoagulation: false },
-        { id: 14, name: 'Urine Microalbumin/Creatinine Ratio', category: 'Urinalysis', specimenType: 'Urine', defaultVolume: '15 mL', fastingRequired: false, isCoagulation: false },
-        { id: 15, name: 'Thyroid Stimulating Hormone (TSH)', category: 'Chemistry', specimenType: 'Blood', defaultVolume: '4 mL', fastingRequired: false, isCoagulation: false }
-    ];
-
-    var PATIENT_CONTEXT = {
-        activeAnticoagulants: [
-            { name: 'Warfarin', dose: '5 mg', frequency: 'Daily' }
-        ],
-        lastINR: 2.8,
-        bleedingRisk: 'Moderate'
-    };
+    var LAB_CATALOG = ClinicalDataService.getLabCatalog();
+    var PATIENT_CONTEXT = ClinicalDataService.getLabOrdersContext() || {};
 
     var activeCategoryFilter = null;
     var selectedExam = null;

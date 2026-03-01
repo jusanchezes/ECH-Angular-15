@@ -10,53 +10,7 @@
  * ---------------------------------------------------------------------------
  */
 
-/** @type {Array<Object>} Mock clinical orders — maps to ClinicalOrderDTO */
-const ORDERS_DATA = [
-    {
-        id: 1,
-        requestDate: '27/11/25',
-        request: 'BILIRUBIN, SGPT, HDL, GLUCOSE, FBC',
-        comment: 'Routine metabolic panel',
-        author: 'Dr.Rory Rogers',
-        resultDate: null,
-        hasResult: false,
-        accessWeb: false,
-        type: 'laboratory'
-    },
-    {
-        id: 2,
-        requestDate: '16/10/25',
-        request: 'MRI OF THE BRAIN',
-        comment: '',
-        author: 'Dr.Rory Rogers',
-        resultDate: '15/10/2025 14:56',
-        hasResult: true,
-        accessWeb: true,
-        type: 'radiology'
-    },
-    {
-        id: 3,
-        requestDate: '16/09/25',
-        request: 'CT ABDOMEN',
-        comment: '',
-        author: 'Dr.Rory Rogers',
-        resultDate: '15/10/2025 10:53',
-        hasResult: true,
-        accessWeb: true,
-        type: 'radiology'
-    },
-    {
-        id: 4,
-        requestDate: '02/10/25',
-        request: 'MRI OF THE SPINE',
-        comment: '',
-        author: 'Nurs.Adam Dixon',
-        resultDate: null,
-        hasResult: false,
-        accessWeb: false,
-        type: 'radiology'
-    }
-];
+var ORDERS_DATA = ClinicalDataService.getDiagnosticTests();
 
 let activeTestTypeFilter = 'all';
 

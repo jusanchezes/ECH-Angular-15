@@ -236,7 +236,135 @@
     </main>
 </div>
 
+<script src="mock-clinical-data.js"></script>
+<script src="clinical-data.service.js"></script>
 <script src="layout.js"></script>
+<script>
+(function() {
+    function renderSummary() {
+        var data = ClinicalDataService.getSummary();
+        if (!data) return;
+
+        var alertsContainer = document.querySelector('[data-field="alertRisk_1"]');
+        if (alertsContainer && data.alertsRisks) {
+            var aParent = alertsContainer.parentElement;
+            aParent.innerHTML = '';
+            data.alertsRisks.forEach(function(alert, i) {
+                var iconClass = alert.status === 'acknowledged' ? 'pi-check-circle ps-icon-checked' : 'pi-circle ps-icon-pending';
+                var iconTitle = alert.status === 'acknowledged' ? 'Acknowledged' : 'Pending';
+                var div = document.createElement('div');
+                div.className = 'pv-alert-row';
+                div.setAttribute('data-field', 'alertRisk_' + (i + 1));
+                div.innerHTML = '<div><span data-field="riskName">' + alert.name + '</span>' +
+                    '<span class="pv-alert-doctor" data-field="riskDate"> ' + alert.date + ' - </span>' +
+                    '<span class="pv-alert-doctor" data-field="riskDoctor">' + alert.doctor + '</span></div>' +
+                    '<i class="pi ' + iconClass + '" title="' + iconTitle + '"></i>';
+                aParent.appendChild(div);
+            });
+        }
+
+        var medContainer = document.querySelector('[data-field="medication_1"]');
+        if (medContainer && data.activeMedications) {
+            var mParent = medContainer.parentElement;
+            mParent.innerHTML = '';
+            data.activeMedications.forEach(function(med, i) {
+                var div = document.createElement('div');
+                div.className = 'pv-med-row ps-med-row';
+                div.setAttribute('data-field', 'medication_' + (i + 1));
+                var hrBadge = med.highRisk ? '<span class="pv-badge pv-badge-high-risk">HIGH-RISK</span>' : '';
+                var nextHtml = med.nextAdmin ? '<div class="pv-med-dose-time ps-med-next"><span>Next:</span> <span>' + med.nextAdmin + '</span></div>' : '';
+                div.innerHTML = '<div class="pv-med-name"><div>' + hrBadge +
+                    '<strong data-field="medName">' + med.name + '</strong>' +
+                    '<div class="pv-med-dose-time"><span>Last:</span> <span data-field="medLastAdmin">' + med.lastAdmin + '</span></div>' +
+                    '</div></div>' + nextHtml;
+                mParent.appendChild(div);
+            });
+        }
+
+        var noteContainer = document.querySelector('[data-field="note_1"]');
+        if (noteContainer && data.recentNotes) {
+            var nParent = noteContainer.parentElement;
+            nParent.innerHTML = '';
+            data.recentNotes.forEach(function(note, i) {
+                var div = document.createElement('div');
+                div.setAttribute('data-field', 'note_' + (i + 1));
+                div.innerHTML = '<div class="ps-note-title"><strong>' + note.title + '</strong>' +
+                    '<span class="pv-alert-doctor"> (<span data-field="noteSpecialty">' + note.specialty + '</span>)</span></div>' +
+                    '<div class="ps-note-excerpt" data-field="noteExcerpt">' + note.excerpt + '</div>' +
+                    '<a href="#" class="ps-note-link" onclick="handleQuickAction(\'View Problem Plan\'); return false;">' +
+                    '<span>Go to</span> <i class="pi pi-external-link" style="font-size:0.75rem"></i></a>';
+                nParent.appendChild(div);
+            });
+        }
+
+        var probContainer = document.querySelector('[data-field="problem_1"]');
+        if (probContainer && data.activeProblems) {
+            var pParent = probContainer.parentElement;
+            var footerEl = pParent.querySelector('.ps-panel-footer');
+            var footerHtml = footerEl ? footerEl.outerHTML : '';
+            pParent.innerHTML = '';
+            data.activeProblems.forEach(function(prob, i) {
+                var div = document.createElement('div');
+                div.className = 'pv-alert-row';
+                div.setAttribute('data-field', 'problem_' + (i + 1));
+                div.innerHTML = '<span><span class="ps-problem-num">' + (i + 1) + '.</span> <span data-field="problemName">' + prob.name + '</span></span>' +
+                    '<span class="pv-badge pv-badge-active" data-field="problemStatus">' + prob.status + '</span>';
+                pParent.appendChild(div);
+            });
+            if (data.problemsLastUpdate) {
+                var footer = document.createElement('div');
+                footer.className = 'ps-panel-footer';
+                footer.innerHTML = '<span class="pv-alert-doctor" data-field="problemsLastUpdate">' + data.problemsLastUpdate + '</span>';
+                pParent.appendChild(footer);
+            }
+        }
+
+        if (data.vitalsSnapshot) {
+            var vs = data.vitalsSnapshot;
+            var trendIcon = function(trend) {
+                if (trend === 'down') return ' <i class="pi pi-arrow-down ps-trend-down" title="Decreasing"></i>';
+                if (trend === 'up') return ' <i class="pi pi-arrow-up ps-trend-up" title="Increasing"></i>';
+                return '';
+            };
+            var bpEl = document.querySelector('[data-field="vitalBP"] .pv-snapshot-value');
+            if (bpEl) bpEl.innerHTML = '<strong>' + vs.bp.value + '</strong>' + trendIcon(vs.bp.trend);
+            var hrEl = document.querySelector('[data-field="vitalHR"] .pv-snapshot-value');
+            if (hrEl) hrEl.innerHTML = '<strong>' + vs.hr.value + '</strong>' + trendIcon(vs.hr.trend);
+            var tempEl = document.querySelector('[data-field="vitalTemp"] .pv-snapshot-value');
+            if (tempEl) tempEl.innerHTML = '<strong>' + vs.temp.value + '</strong>' + trendIcon(vs.temp.trend);
+            var spo2El = document.querySelector('[data-field="vitalSpO2"] .pv-snapshot-value');
+            if (spo2El) spo2El.innerHTML = '<strong>' + vs.spo2.value + '</strong> ' + (vs.spo2.detail || '') + trendIcon(vs.spo2.trend);
+            var balEl = document.querySelector('[data-field="vitalBalance"] .pv-snapshot-value');
+            if (balEl) balEl.innerHTML = '<strong>' + vs.balance.value + '</strong>' + trendIcon(vs.balance.trend);
+            var urEl = document.querySelector('[data-field="vitalUrine"] .pv-snapshot-value');
+            if (urEl) urEl.innerHTML = '<strong>' + vs.urine.value + '</strong>' + trendIcon(vs.urine.trend);
+        }
+
+        var resContainer = document.querySelector('[data-field="result_1"]');
+        if (resContainer && data.pendingResults) {
+            var rParent = resContainer.parentElement;
+            rParent.innerHTML = '';
+            data.pendingResults.forEach(function(res, i) {
+                var div = document.createElement('div');
+                div.className = 'pv-test-row';
+                div.setAttribute('data-field', 'result_' + (i + 1));
+                if (res.type === 'abnormal') {
+                    div.innerHTML = '<span class="ps-result-abnormal" data-field="resultName">' + res.name + '</span>';
+                } else {
+                    div.innerHTML = '<span data-field="resultName">' + res.name + '</span><span class="ps-result-pending">PEND</span>';
+                }
+                rParent.appendChild(div);
+            });
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderSummary);
+    } else {
+        renderSummary();
+    }
+})();
+</script>
 
 </body>
 </html>

@@ -198,7 +198,75 @@
     </main>
 </div>
 
+<script src="mock-clinical-data.js"></script>
+<script src="clinical-data.service.js"></script>
 <script src="layout.js"></script>
+<script>
+(function() {
+    function renderNurseNotes() {
+        var data = ClinicalDataService.getNurseNotes();
+        if (!data) return;
+
+        var handoffContainer = document.querySelector('[data-field="handoff_sbar"]');
+        if (handoffContainer && data.handoffItems) {
+            var parent = handoffContainer.parentElement;
+            parent.innerHTML = '';
+            data.handoffItems.forEach(function(item) {
+                var div = document.createElement('div');
+                div.className = 'nn-checklist-item';
+                div.setAttribute('data-field', 'handoff_' + item.id);
+                div.innerHTML = '<span class="nn-checklist-bullet nn-checklist-bullet-' + item.status + '"></span>' +
+                    '<span>' + item.label + '</span>';
+                parent.appendChild(div);
+            });
+        }
+
+        var checklistFirst = document.querySelector('[data-field="check_ivLines"]');
+        if (checklistFirst && data.shiftChecklist) {
+            var clParent = checklistFirst.parentElement;
+            clParent.innerHTML = '';
+            data.shiftChecklist.forEach(function(item) {
+                var div = document.createElement('div');
+                div.className = 'nn-checklist-item';
+                div.setAttribute('data-field', 'check_' + item.id);
+                div.innerHTML = '<span class="nn-checklist-bullet nn-checklist-bullet-' + item.status + '"></span>' +
+                    '<span>' + item.label + '</span>';
+                clParent.appendChild(div);
+            });
+        }
+
+        var medFirst = document.querySelector('[data-field="medDue_1"]');
+        if (medFirst && data.medicationsDue) {
+            var medParent = medFirst.parentElement;
+            medParent.innerHTML = '';
+            data.medicationsDue.forEach(function(med) {
+                var div = document.createElement('div');
+                div.className = 'nn-med-due-item';
+                div.setAttribute('data-field', 'medDue_' + med.id);
+                var badgeHtml = med.highRisk ? ' <span class="pv-badge pv-badge-high-risk">HIGH-RISK</span>' : '';
+                div.innerHTML = '<span class="nn-med-time">' + med.time + '</span>' +
+                    '<span class="nn-med-name">' + med.name + '</span>' + badgeHtml;
+                medParent.appendChild(div);
+            });
+        }
+
+        if (data.quickAssessments) {
+            var gcsEl = document.querySelector('[data-field="gcsValue"]');
+            var rassEl = document.querySelector('[data-field="rassValue"]');
+            var painEl = document.querySelector('[data-field="painValue"]');
+            if (gcsEl) gcsEl.textContent = data.quickAssessments.gcs;
+            if (rassEl) rassEl.textContent = data.quickAssessments.rass;
+            if (painEl) painEl.textContent = data.quickAssessments.painScore;
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderNurseNotes);
+    } else {
+        renderNurseNotes();
+    }
+})();
+</script>
 
 </body>
 </html>

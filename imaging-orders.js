@@ -12,27 +12,8 @@
 
 (function () {
 
-    var RADIOLOGY_CATALOG = [
-        { id: 1, name: 'CT Abdomen/Pelvis w IV Contrast', modality: 'CT', requiresContrast: true, contrastProtocol: 'IV Only' },
-        { id: 2, name: 'CT Chest w IV Contrast', modality: 'CT', requiresContrast: true, contrastProtocol: 'IV Only' },
-        { id: 3, name: 'CT Head without Contrast', modality: 'CT', requiresContrast: false, contrastProtocol: 'None' },
-        { id: 4, name: 'CT Angiography Chest (PE Protocol)', modality: 'CT', requiresContrast: true, contrastProtocol: 'IV Only' },
-        { id: 5, name: 'MRI Brain w/wo Contrast', modality: 'MRI', requiresContrast: true, contrastProtocol: 'IV Only' },
-        { id: 6, name: 'MRI Lumbar Spine', modality: 'MRI', requiresContrast: false, contrastProtocol: 'None' },
-        { id: 7, name: 'MRI Knee without Contrast', modality: 'MRI', requiresContrast: false, contrastProtocol: 'None' },
-        { id: 8, name: 'XR Chest 1 View Portable', modality: 'XR', requiresContrast: false, contrastProtocol: 'None' },
-        { id: 9, name: 'XR Knee 2 Views', modality: 'XR', requiresContrast: false, contrastProtocol: 'None' },
-        { id: 10, name: 'XR Abdomen AP', modality: 'XR', requiresContrast: false, contrastProtocol: 'None' },
-        { id: 11, name: 'US Abdomen Complete', modality: 'US', requiresContrast: false, contrastProtocol: 'None' },
-        { id: 12, name: 'US Renal/Bladder', modality: 'US', requiresContrast: false, contrastProtocol: 'None' },
-        { id: 13, name: 'CT Abdomen/Pelvis w IV+Oral Contrast', modality: 'CT', requiresContrast: true, contrastProtocol: 'IV+Oral' }
-    ];
-
-    var PATIENT_CONTEXT = {
-        eGFR: 42,
-        creatinine: 1.4,
-        contrastAllergy: true
-    };
+    var RADIOLOGY_CATALOG = ClinicalDataService.getRadiologyCatalog();
+    var PATIENT_CONTEXT = ClinicalDataService.getImagingOrdersContext() || {};
 
     var activeModalityFilter = null;
     var selectedExam = null;

@@ -10,36 +10,7 @@
  * ---------------------------------------------------------------------------
  */
 
-/** @type {Array<Object>} Mock protocols data — maps to ProtocolDTO */
-const PROTOCOLS_DATA = [
-    {
-        id: 1,
-        creationDate: '15/01/2026',
-        protocolName: 'Acute Coronary Syndrome Pathway',
-        author: 'Dr. Rory Rogers',
-        department: 'Cardiology',
-        status: 'Open',
-        endDate: ''
-    },
-    {
-        id: 2,
-        creationDate: '03/12/2025',
-        protocolName: 'Post-Operative Recovery Protocol',
-        author: 'Dr. Sarah Mitchell',
-        department: 'General Surgery',
-        status: 'Closed',
-        endDate: '28/02/2026'
-    },
-    {
-        id: 3,
-        creationDate: '22/11/2025',
-        protocolName: 'Stroke Management Pathway',
-        author: 'Dr. James Chen',
-        department: 'Neurology',
-        status: 'Open',
-        endDate: ''
-    }
-];
+var PROTOCOLS_DATA = ClinicalDataService.getProtocols();
 
 let selectedProtocolId = null;
 let searchTerm = '';

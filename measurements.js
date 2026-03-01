@@ -13,50 +13,13 @@
  */
 
 (function () {
-    var GROUPS = [
-        { id: 'all', label: 'All', i18n: 'MEASUREMENTS.GROUP_ALL' },
-        { id: 'vital-signs', label: 'Vital Signs', i18n: 'MEASUREMENTS.GROUP_VITAL_SIGNS' },
-        { id: 'fluids-balance', label: 'Fluids Balance', i18n: 'MEASUREMENTS.GROUP_FLUIDS_BALANCE' },
-        { id: 'pulmonary', label: 'Pulmonary - Mech. Vent.', i18n: 'MEASUREMENTS.GROUP_PULMONARY' },
-        { id: 'respiratory', label: 'Respiratory - Lung Mech.', i18n: 'MEASUREMENTS.GROUP_RESPIRATORY' },
-        { id: 'neurological', label: 'Neurological', i18n: 'MEASUREMENTS.GROUP_NEUROLOGICAL' }
-    ];
-
-    var PARAMETERS = {
-        'vital-signs': [
-            { name: 'Blood Pressure (mmHg)', field: 'bp', unit: 'mmHg', low: null, high: null, isBP: true },
-            { name: 'Oxygen saturation (%)', field: 'spo2', unit: '%', low: 90, high: 100 },
-            { name: 'Heart Rate (bpm)', field: 'hr', unit: 'bpm', low: 60, high: 100 },
-            { name: 'Temperature (°C)', field: 'temp', unit: '°C', low: 36.0, high: 37.5 }
-        ],
-        'fluids-balance': [
-            { name: 'Uresis (ml)', field: 'uresis', unit: 'ml', low: 30, high: 400 },
-            { name: 'IV Intake (ml)', field: 'ivIntake', unit: 'ml', low: null, high: null },
-            { name: 'Oral Intake (ml)', field: 'oralIntake', unit: 'ml', low: null, high: null },
-            { name: 'Total Balance (ml)', field: 'totalBalance', unit: 'ml', low: -500, high: 500 }
-        ],
-        'pulmonary': [
-            { name: 'FiO2 (%)', field: 'fio2', unit: '%', low: 21, high: 60 },
-            { name: 'PEEP (cmH2O)', field: 'peep', unit: 'cmH2O', low: 0, high: 10 },
-            { name: 'Tidal Volume (ml)', field: 'tidalVol', unit: 'ml', low: 350, high: 600 },
-            { name: 'RR (rpm)', field: 'rr', unit: 'rpm', low: 12, high: 20 }
-        ],
-        'respiratory': [
-            { name: 'Compliance (ml/cmH2O)', field: 'compliance', unit: 'ml/cmH2O', low: 50, high: 100 },
-            { name: 'Resistance (cmH2O/L/s)', field: 'resistance', unit: 'cmH2O/L/s', low: null, high: 15 },
-            { name: 'Peak Pressure (cmH2O)', field: 'peakPressure', unit: 'cmH2O', low: null, high: 30 }
-        ],
-        'neurological': [
-            { name: 'Glasgow Score', field: 'glasgow', unit: '', low: 13, high: 15 },
-            { name: 'Pupil Response', field: 'pupil', unit: '', low: null, high: null, isText: true },
-            { name: 'RASS Score', field: 'rass', unit: '', low: -1, high: 1 }
-        ]
-    };
-
-    var THRESHOLDS_BP = { sysLow: 90, sysHigh: 180, diaLow: 50, diaHigh: 110 };
-    var CRITICAL_BP = { sysLow: 80, sysHigh: 200, diaLow: 40, diaHigh: 120 };
-
-    var NURSES = ['Dr. Garcia', 'Nurse Smith', 'Nurse Johnson', 'Dr. Patel', 'Nurse Williams'];
+    var msData = ClinicalDataService.getMeasurements();
+    var GROUPS = msData ? msData.groups : [];
+    var PARAMETERS = msData ? msData.parameters : {};
+    var msThresholds = ClinicalDataService.getMeasurementThresholds();
+    var THRESHOLDS_BP = msThresholds ? msThresholds.thresholdsBP : { sysLow: 90, sysHigh: 180, diaLow: 50, diaHigh: 110 };
+    var CRITICAL_BP = msThresholds ? msThresholds.criticalBP : { sysLow: 80, sysHigh: 200, diaLow: 40, diaHigh: 120 };
+    var NURSES = ClinicalDataService.getMeasurementNurses();
 
     var currentGroup = 'vital-signs';
     var currentScale = 240;

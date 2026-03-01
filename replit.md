@@ -126,7 +126,10 @@ Full DTO field map documented in `css/clinical-core.css` header comment.
 - **Static multi-page app** served by Node.js (`server.js`)
 - **`layout.js`**: Core shell engine — injects Header, Sidebar, Banner across all pages
 - **`layout_list.js`**: List-specific layout for patient list views
-- **Module JS files**: Each page has its own JS with mock data and business logic
+- **`mock-clinical-data.js`**: Centralized mock data store — all clinical data consolidated under `MockClinicalData` global object. Organized hierarchically: `patients[]`, `patientClinicalContext{46: {...}}`, `catalogs{}`. Includes REST/DTO Java contract documentation in header.
+- **`clinical-data.service.js`**: Service layer (IIFE pattern) — `ClinicalDataService` is the single access point for all clinical data. Methods: `getPatientList()`, `getPatient()`, `getTimeline()`, `getLaboratory()`, `getMeasurements()`, `getRiskFactors()`, `getDiagnosticTests()`, `getMedicationMAR()`, `getCarePlans()`, `getDocuments()`, `getProtocols()`, `getSummary()`, `getPreviousVisits()`, `getLabCatalog()`, `getRadiologyCatalog()`, etc. Includes Angular HttpClient migration notes.
+- **Module JS files**: Each page has its own JS with UI/rendering logic only — data sourced exclusively from `ClinicalDataService`
+- **Script load order in HTML**: `mock-clinical-data.js` → `clinical-data.service.js` → `layout.js` → page-specific JS
 - **`theme-overrides.css.bak`**: Archived original monolithic CSS (backup)
 
 ## Key Features and Modules
