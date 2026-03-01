@@ -155,6 +155,37 @@
     text-align: center;
 }
 
+.ms-filter-group {
+    display: inline-flex;
+    gap: 0.35rem;
+}
+
+.ms-filter-btn {
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--ech-text);
+    transition: background 0.15s, border-color 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: inherit;
+}
+
+.ms-filter-btn:hover {
+    background: #f0f0f0;
+}
+
+.ms-filter-btn.active {
+    background: var(--ech-primary);
+    color: #fff;
+    border-color: var(--ech-primary);
+    font-weight: 600;
+}
+
 .ms-register-btn {
     display: inline-flex;
     align-items: center;
@@ -237,13 +268,60 @@
     min-width: 90px;
 }
 
+.ms-col-trend {
+    width: 80px;
+    min-width: 80px;
+    text-align: center;
+}
+
 .ms-cell-alert {
     color: #d32f2f;
     font-weight: 700;
 }
 
+.ms-cell-critical {
+    color: #b71c1c;
+    font-weight: 700;
+    background: #ffebee;
+}
+
 .ms-cell-empty {
     color: var(--ech-text-disabled, #bbb);
+}
+
+.ms-empty-row {
+    text-align: center;
+    color: var(--ech-text-secondary);
+    font-style: italic;
+    padding: 24px 8px !important;
+}
+
+.ms-trend-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.ms-trend-up {
+    color: #d32f2f;
+}
+
+.ms-trend-down {
+    color: #1565c0;
+}
+
+.ms-trend-stable {
+    color: var(--ech-text-secondary);
+}
+
+.ms-trend-critical {
+    color: #b71c1c;
+    font-weight: 700;
+}
+
+.ms-sparkline {
+    vertical-align: middle;
 }
 
 .ms-tooltip {
@@ -372,5 +450,3 @@
 .ms-btn-save:hover {
     background: var(--ech-primary-dark);
 }
-
-  

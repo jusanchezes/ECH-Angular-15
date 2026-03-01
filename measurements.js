@@ -4,6 +4,7 @@
  *   Groups panel on the left, time-based data table on the right.
  *   Supports time-scale switching, date navigation, threshold alerts,
  *   hover tooltips, and a registration modal.
+ *   Includes Abnormal/Critical filtering and Trend view (sparklines).
  *
  *   ANGULAR 15 MIGRATION:
  *   - MeasurementsComponent (Standalone) with inject(VitalSignsService)
@@ -13,6 +14,7 @@
 
 (function () {
     var GROUPS = [
+        { id: 'all', label: 'All', i18n: 'MEASUREMENTS.GROUP_ALL' },
         { id: 'vital-signs', label: 'Vital Signs', i18n: 'MEASUREMENTS.GROUP_VITAL_SIGNS' },
         { id: 'fluids-balance', label: 'Fluids Balance', i18n: 'MEASUREMENTS.GROUP_FLUIDS_BALANCE' },
         { id: 'pulmonary', label: 'Pulmonary - Mech. Vent.', i18n: 'MEASUREMENTS.GROUP_PULMONARY' },
@@ -52,6 +54,7 @@
     };
 
     var THRESHOLDS_BP = { sysLow: 90, sysHigh: 180, diaLow: 50, diaHigh: 110 };
+    var CRITICAL_BP = { sysLow: 80, sysHigh: 200, diaLow: 40, diaHigh: 120 };
 
     var NURSES = ['Dr. Garcia', 'Nurse Smith', 'Nurse Johnson', 'Dr. Patel', 'Nurse Williams'];
 
@@ -59,6 +62,10 @@
     var currentScale = 240;
     var currentDate = new Date(2025, 7, 19);
     var mockDataCache = {};
+
+    var showAbnormalOnly = false;
+    var showCriticalOnly = false;
+    var showTrendView = false;
 
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
@@ -179,6 +186,154 @@
         return false;
     }
 
+    function isCritical(param, val) {
+        if (val === null || val === undefined) return false;
+        if (param.isBP) {
+            var parts = String(val).split('/');
+            if (parts.length !== 2) return false;
+            var sys = parseInt(parts[0], 10);
+            var dia = parseInt(parts[1], 10);
+            return sys < CRITICAL_BP.sysLow || sys > CRITICAL_BP.sysHigh ||
+                   dia < CRITICAL_BP.diaLow || dia > CRITICAL_BP.diaHigh;
+        }
+        if (param.isText) return val === 'Fixed';
+        var n = parseFloat(val);
+        if (isNaN(n)) return false;
+        if (param.field === 'spo2') return n < 85;
+        if (param.field === 'hr') return n < 40 || n > 150;
+        if (param.field === 'temp') return n < 35.0 || n > 39.5;
+        if (param.field === 'glasgow') return n <= 8;
+        if (param.low !== null && param.high !== null) {
+            var range = param.high - param.low;
+            return n < (param.low - range * 0.3) || n > (param.high + range * 0.3);
+        }
+        return false;
+    }
+
+    function getActiveParams() {
+        if (currentGroup === 'all') {
+            var all = [];
+            var groupKeys = Object.keys(PARAMETERS);
+            for (var i = 0; i < groupKeys.length; i++) {
+                all = all.concat(PARAMETERS[groupKeys[i]]);
+            }
+            return all;
+        }
+        return PARAMETERS[currentGroup] || [];
+    }
+
+    function getActiveData(slots) {
+        if (currentGroup === 'all') {
+            var merged = {};
+            var groupKeys = Object.keys(PARAMETERS);
+            for (var i = 0; i < groupKeys.length; i++) {
+                var gData = generateMockData(groupKeys[i], currentDate, slots);
+                for (var field in gData) {
+                    if (gData.hasOwnProperty(field)) {
+                        merged[field] = gData[field];
+                    }
+                }
+            }
+            return merged;
+        }
+        return generateMockData(currentGroup, currentDate, slots);
+    }
+
+    function msHasAnyAbnormal(param, data, slots) {
+        for (var i = 0; i < slots.length; i++) {
+            var cell = data[param.field] ? data[param.field][slots[i]] : null;
+            if (cell && cell.value !== null && cell.value !== undefined) {
+                if (isAlert(param, cell.value)) return true;
+            }
+        }
+        return false;
+    }
+
+    function msHasAnyCritical(param, data, slots) {
+        for (var i = 0; i < slots.length; i++) {
+            var cell = data[param.field] ? data[param.field][slots[i]] : null;
+            if (cell && cell.value !== null && cell.value !== undefined) {
+                if (isCritical(param, cell.value)) return true;
+            }
+        }
+        return false;
+    }
+
+    function msGetTrendIcon(param, data, slots) {
+        if (param.isText) return '<span class="ms-trend-icon ms-trend-stable">—</span>';
+
+        var vals = [];
+        for (var i = 0; i < slots.length; i++) {
+            var cell = data[param.field] ? data[param.field][slots[i]] : null;
+            if (cell && cell.value !== null && cell.value !== undefined) {
+                var v;
+                if (param.isBP) {
+                    v = parseFloat(String(cell.value).split('/')[0]);
+                } else {
+                    v = parseFloat(cell.value);
+                }
+                if (!isNaN(v)) vals.push({ value: v, raw: cell.value });
+            }
+        }
+
+        if (vals.length < 2) return '<span class="ms-trend-icon ms-trend-stable">—</span>';
+
+        var latest = vals[vals.length - 1];
+        var prev = vals[vals.length - 2];
+
+        if (isCritical(param, latest.raw)) {
+            return '<span class="ms-trend-icon ms-trend-critical"><i class="pi pi-exclamation-circle"></i></span>';
+        }
+
+        var diff = latest.value - prev.value;
+        var pct = Math.abs(diff) / (Math.abs(prev.value) || 1) * 100;
+
+        if (pct < 3) return '<span class="ms-trend-icon ms-trend-stable">—</span>';
+        if (diff > 0) return '<span class="ms-trend-icon ms-trend-up"><i class="pi pi-arrow-up-right"></i></span>';
+        return '<span class="ms-trend-icon ms-trend-down"><i class="pi pi-arrow-down-right"></i></span>';
+    }
+
+    function msGetSparklineSVG(param, data, slots) {
+        if (param.isText) return '';
+
+        var vals = [];
+        for (var i = 0; i < slots.length; i++) {
+            var cell = data[param.field] ? data[param.field][slots[i]] : null;
+            if (cell && cell.value !== null && cell.value !== undefined) {
+                var v;
+                if (param.isBP) {
+                    v = parseFloat(String(cell.value).split('/')[0]);
+                } else {
+                    v = parseFloat(cell.value);
+                }
+                if (!isNaN(v)) vals.push(v);
+            }
+        }
+
+        if (vals.length < 2) return '';
+        var min = Math.min.apply(null, vals);
+        var max = Math.max.apply(null, vals);
+        var range = max - min || 1;
+        var w = 60, h = 20;
+        var points = vals.map(function (v, i) {
+            var x = (i / (vals.length - 1)) * w;
+            var y = h - ((v - min) / range) * h;
+            return x.toFixed(1) + ',' + y.toFixed(1);
+        }).join(' ');
+        return '<svg class="ms-sparkline" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">' +
+            '<polyline points="' + points + '" fill="none" stroke="var(--ech-primary)" stroke-width="1.5" />' +
+            '</svg>';
+    }
+
+    function getFilteredParams(params, data, slots) {
+        if (!showAbnormalOnly && !showCriticalOnly) return params;
+        return params.filter(function (param) {
+            if (showCriticalOnly) return msHasAnyCritical(param, data, slots);
+            if (showAbnormalOnly) return msHasAnyAbnormal(param, data, slots);
+            return true;
+        });
+    }
+
     function renderGroups() {
         var list = document.getElementById('msGroupList');
         list.innerHTML = '';
@@ -195,11 +350,16 @@
 
     function renderTable() {
         var slots = generateTimeSlots(currentScale);
-        var params = PARAMETERS[currentGroup];
-        var data = generateMockData(currentGroup, currentDate, slots);
+        var params = getActiveParams();
+        var data = getActiveData(slots);
+
+        var filtered = getFilteredParams(params, data, slots);
 
         var thead = document.getElementById('msTableHead');
         var headHtml = '<tr><th class="ms-param-col" data-i18n="MEASUREMENTS.COL_PARAMETER">Parameter</th>';
+        if (showTrendView) {
+            headHtml += '<th class="ms-col-trend" data-i18n="MEASUREMENTS.COL_TREND">Trend</th>';
+        }
         slots.forEach(function (s) {
             headHtml += '<th class="ms-time-col">' + s + '</th>';
         });
@@ -207,14 +367,25 @@
         thead.innerHTML = headHtml;
 
         var tbody = document.getElementById('msTableBody');
+
+        if (filtered.length === 0) {
+            var colSpan = 1 + (showTrendView ? 1 : 0) + slots.length;
+            tbody.innerHTML = '<tr><td colspan="' + colSpan + '" class="ms-empty-row" data-i18n="MEASUREMENTS.NO_RESULTS">No results found for the current filters.</td></tr>';
+            return;
+        }
+
         var bodyHtml = '';
-        params.forEach(function (param) {
+        filtered.forEach(function (param) {
             bodyHtml += '<tr><td class="ms-param-col">' + param.name + '</td>';
+            if (showTrendView) {
+                bodyHtml += '<td class="ms-col-trend">' + msGetSparklineSVG(param, data, slots) + '</td>';
+            }
             slots.forEach(function (slot) {
                 var cell = data[param.field] ? data[param.field][slot] : null;
                 if (cell && cell.value !== null && cell.value !== undefined) {
+                    var critical = isCritical(param, cell.value);
                     var alert = isAlert(param, cell.value);
-                    var cls = alert ? 'ms-cell-alert' : '';
+                    var cls = critical ? 'ms-cell-critical' : (alert ? 'ms-cell-alert' : '');
                     bodyHtml += '<td class="' + cls + '" data-nurse="' + cell.nurse + '" data-time="' + slot + ':' + cell.second + '">' + cell.value + '</td>';
                 } else {
                     bodyHtml += '<td class="ms-cell-empty">-</td>';
@@ -259,10 +430,16 @@
     }
 
     function renderModalForm() {
-        var params = PARAMETERS[currentGroup];
+        var modalParams;
+        if (currentGroup === 'all') {
+            modalParams = PARAMETERS['vital-signs'];
+        } else {
+            modalParams = PARAMETERS[currentGroup];
+        }
+        var groupLabel = currentGroup === 'all' ? 'All' : GROUPS.find(function (g) { return g.id === currentGroup; }).label;
         var body = document.getElementById('msModalBody');
-        var html = '<div style="margin-bottom:10px;font-size:1rem;color:var(--ech-text-secondary);" data-i18n="MEASUREMENTS.REGISTER_GROUP_LABEL">Group: <strong>' + GROUPS.find(function (g) { return g.id === currentGroup; }).label + '</strong></div>';
-        params.forEach(function (param) {
+        var html = '<div style="margin-bottom:10px;font-size:1rem;color:var(--ech-text-secondary);" data-i18n="MEASUREMENTS.REGISTER_GROUP_LABEL">Group: <strong>' + groupLabel + '</strong></div>';
+        modalParams.forEach(function (param) {
             if (param.isText) {
                 html += '<div class="ms-form-row">';
                 html += '<label class="ms-form-label">' + param.name + '</label>';
@@ -308,6 +485,28 @@
     window.msNavDate = function (dir) {
         currentDate = new Date(currentDate.getTime() + dir * 86400000);
         renderDateLabel();
+        renderTable();
+    };
+
+    window.msToggleAbnormal = function () {
+        showAbnormalOnly = !showAbnormalOnly;
+        if (!showAbnormalOnly) showCriticalOnly = false;
+        document.getElementById('msBtnAbnormal').classList.toggle('active', showAbnormalOnly);
+        document.getElementById('msBtnCritical').classList.toggle('active', showCriticalOnly);
+        renderTable();
+    };
+
+    window.msToggleCritical = function () {
+        showCriticalOnly = !showCriticalOnly;
+        if (showCriticalOnly) showAbnormalOnly = true;
+        document.getElementById('msBtnCritical').classList.toggle('active', showCriticalOnly);
+        document.getElementById('msBtnAbnormal').classList.toggle('active', showAbnormalOnly);
+        renderTable();
+    };
+
+    window.msToggleTrendView = function () {
+        showTrendView = !showTrendView;
+        document.getElementById('msBtnTrend').classList.toggle('active', showTrendView);
         renderTable();
     };
 

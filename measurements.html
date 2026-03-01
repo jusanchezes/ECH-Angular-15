@@ -33,7 +33,11 @@
         <!-- END: ClinicalBannerComponent -->
 
         <!-- BEGIN: Angular Standalone Component — ActionBarComponent -->
-        <section class="action-bar" id="action-bar-component"></section>
+        <section class="action-bar" id="action-bar-component">
+            <button class="action-btn action-btn-primary" onclick="msOpenRegister()" data-i18n-title="MEASUREMENTS.REGISTER_VITAL_SIGNS" title="Register Vital Signs">
+                <i class="pi pi-plus-circle"></i> <span data-i18n="MEASUREMENTS.REGISTER_VITAL_SIGNS">Register Vital Signs</span>
+            </button>
+        </section>
         <!-- END: ActionBarComponent -->
 
         <!-- BEGIN: Angular Standalone Component — FilterBarComponent -->
@@ -63,13 +67,12 @@
                                 <span class="ms-date-label" id="msDateLabel" data-field="measurementDate"></span>
                                 <button class="ms-date-nav-btn" onclick="msNavDate(1)" data-i18n-title="MEASUREMENTS.NEXT_DAY"><i class="pi pi-chevron-right"></i></button>
                             </div>
-                        </div>
 
-                        <div class="ms-toolbar-right">
-                            <button class="ms-register-btn" onclick="msOpenRegister()" data-i18n="MEASUREMENTS.REGISTER_VITAL_SIGNS">
-                                <i class="pi pi-plus-circle"></i>
-                                <span>Register Vital Signs</span>
-                            </button>
+                            <div class="ms-filter-group">
+                                <button class="ms-filter-btn" id="msBtnAbnormal" onclick="msToggleAbnormal()" data-i18n="MEASUREMENTS.BTN_ABNORMAL">Abnormal Only</button>
+                                <button class="ms-filter-btn" id="msBtnCritical" onclick="msToggleCritical()" data-i18n="MEASUREMENTS.BTN_CRITICAL">Critical Only</button>
+                                <button class="ms-filter-btn" id="msBtnTrend" onclick="msToggleTrendView()"><i class="pi pi-chart-line"></i> <span data-i18n="MEASUREMENTS.BTN_TREND">Trend View</span></button>
+                            </div>
                         </div>
                     </div>
 
