@@ -1,0 +1,58 @@
+You are a senior frontend engineer working on my ECH web project.
+
+Goal:
+Create a new Day Hospital module screen that renders a patient list similar to my existing `inpatient.html`, reusing my existing `patient-list.css`. The screen should support “Hospital de Día / Day Unit / Infusion Center” workflows (patients scheduled today, chair/slot, phase/status).
+
+Project constraints:
+- Reuse `patient-list.css` as-is. Do NOT introduce a new CSS framework.
+- Match the DOM structure and class naming used by `inpatient.html` so styles apply automatically.
+- Add only minimal extra classes prefixed with `day-` if absolutely necessary.
+
+Deliverables:
+1) Create `day-hospital.html` and `day-hospital.js` (vanilla JS).
+2) The page must look like the inpatient list page (same top bar, search, table layout) but with Day Hospital columns.
+3) Provide mock data (10–15 rows) if a data source is not present.
+
+Data model (use a JS array called `patients`):
+Each patient should include:
+- id, name, dob, age, gender
+- scheduledTime (HH:MM), arrivalTime (optional)
+- chair (e.g., C01, C02) OR bay/room (e.g., Bay 3)
+- pathwayType (e.g., Chemo, Transfusion, Iron infusion, Biologic infusion)
+- phaseStatus (e.g., Scheduled, Arrived, Pre-assessment, Labs pending, Premeds, Infusing, Observation, Ready for discharge, Completed, No-show)
+- estimatedDurationMin, elapsedMin, remainingMin (or compute from timestamps)
+- alerts (array of risk/alert strings) and flags (e.g., isolation, allergy, high-risk meds)
+- assignedNurse, orderingProvider (optional)
+
+UI requirements:
+A) Header:
+- Title: “Day Hospital”
+- Search input: search by name, chair, pathwayType, status
+- Quick filters (chips/buttons): All, Scheduled, Arrived, Infusing, Ready for discharge, Completed, No-show
+- Toggle: “High-risk only” (patients with any alerts OR isolation OR high-risk meds)
+
+B) Table columns (similar density to inpatient):
+- Time (scheduledTime)
+- Patient (Name + Age + Gender)
+- Chair/Bay
+- Pathway / Treatment type
+- Status (phaseStatus) as a compact pill/badge
+- Duration (elapsed/remaining or ETA)
+- Alerts (chips using existing alert chip styles; show max 3 + “+N” with tooltip)
+
+C) Behaviors:
+- Sticky table header.
+- Sortable columns: Time, Chair, Status, Remaining time.
+- Clicking a row opens a right-side drawer (or modal if drawer not available) showing:
+  - Basic details, status timeline (simple list), and quick actions (placeholders):
+    “Open Chart”, “Record Vitals”, “Start Infusion”, “Mark Completed”, “Add Note”.
+- Responsive behavior for smaller widths:
+  - Hide less critical columns first (e.g., provider, pathwayType) but keep Time, Patient, Chair, Status.
+
+Implementation notes:
+- Follow `inpatient.html` structure so `patient-list.css` applies. If `inpatient.html` has reusable components or a specific container layout, copy it.
+- Use pure HTML/JS; no external libraries.
+- For alerts, limit to 3 visible chips; implement “+N” with a native `title` tooltip listing the hidden alerts.
+
+Output:
+Return full source code for `day-hospital.html` and `day-hospital.js`.
