@@ -137,20 +137,14 @@
         grid-template-columns: 1fr;
     }
 
-    .ms-groups-panel {
+    .results-panel {
         width: 160px;
         min-width: 160px;
     }
 
-    .ms-toolbar {
+    .module-toolbar {
         gap: 8px;
         padding: 4px 8px;
-    }
-
-    .ms-param-col {
-        width: 150px;
-        min-width: 150px;
-        max-width: 150px;
     }
 }
 
