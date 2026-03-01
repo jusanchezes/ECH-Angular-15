@@ -2,21 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="APP.PATIENT_LIST_TITLE">ECH Patient List</title>
+    <title data-i18n="APP.DASHBOARD_TITLE">ECH — Panel Principal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
     <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
     <link rel="stylesheet" href="css/clinical-core.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/sidebar.css">
-    <link rel="stylesheet" href="css/banner.css">
-    <link rel="stylesheet" href="css/action-bar.css">
-    <link rel="stylesheet" href="css/modules/patient-list.css">
+    <link rel="stylesheet" href="css/modules/dashboard.css">
     <link rel="stylesheet" href="css/utilities.css">
     <link rel="stylesheet" href="css/responsive.css">
 </head>
-<body data-page-type="patient-list" data-list-type="patient-list">
+<body data-page-type="dashboard">
 
 <div class="layout layout-no-sidebar">
 
@@ -26,16 +23,139 @@
         <header class="top-bar" id="header-component"></header>
         <!-- END: HeaderComponent -->
 
-        <nav class="tab-bar" id="tab-bar-component"></nav>
+        <!-- BEGIN: Angular Standalone Component — DashboardComponent -->
+        <section class="dashboard-area" id="dashboard-component">
+            <div class="dashboard-grid">
 
-        <div class="list-toolbar" id="toolbar-component"></div>
+                <a href="inpatients.html" class="dashboard-tile" data-i18n="DASHBOARD.PATIENT_MGMT">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-users"></i></div>
+                    <span class="dashboard-tile-label">Gestión de Pacientes</span>
+                </a>
 
-        <section class="patient-list-area" id="patient-list-component">
-            <div class="table-scroll-container">
-                <div class="patient-list-container" id="patientListContainer">
-                </div>
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.HOSPITALIZED">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-building"></i></div>
+                    <span class="dashboard-tile-label">Gestión de Hospitalizados</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.DAY_HOSPITAL">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-building"></i></div>
+                    <span class="dashboard-tile-label">Gestión de Hospital de día</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.SHORT_STAY">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-building"></i></div>
+                    <span class="dashboard-tile-label">Gestión de Corta estancia</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.EMERGENCIES">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-bolt"></i></div>
+                    <span class="dashboard-tile-label">Gestión de Urgencias</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.NEWBORNS">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-circle"></i></div>
+                    <span class="dashboard-tile-label">Gestión de Recién nacidos</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.SURGERIES">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-sliders-h"></i></div>
+                    <span class="dashboard-tile-label">Gestión de Cirugías</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.DIAGNOSTIC_TESTS">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-search"></i></div>
+                    <span class="dashboard-tile-label">Pruebas diagnósticas</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.OUTPATIENT">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-id-card"></i></div>
+                    <span class="dashboard-tile-label">Gestión de Consultas Externas</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.PHYSIOTHERAPY">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-heart"></i></div>
+                    <span class="dashboard-tile-label">Physiotherapy Management</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.BED_BLOCKING">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-lock"></i></div>
+                    <span class="dashboard-tile-label">Bloqueo de Camas</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.CODING">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-sync"></i></div>
+                    <span class="dashboard-tile-label">Codificación</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.SCHEDULING">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-calendar"></i></div>
+                    <span class="dashboard-tile-label">Gestión de Agendas</span>
+                </a>
+
+                <a href="#" class="dashboard-tile" data-i18n="DASHBOARD.CONFIGURATION">
+                    <div class="dashboard-tile-actions">
+                        <button class="tile-action-btn" title="Editar"><i class="pi pi-external-link"></i></button>
+                        <button class="tile-action-btn" title="Opciones"><i class="pi pi-ellipsis-v"></i></button>
+                    </div>
+                    <div class="dashboard-tile-icon"><i class="pi pi-cog"></i></div>
+                    <span class="dashboard-tile-label">Configuración</span>
+                </a>
+
             </div>
         </section>
+        <!-- END: DashboardComponent -->
 
     </main>
 </div>
@@ -43,8 +163,6 @@
 <script src="mock-clinical-data.js"></script>
 <script src="clinical-data.service.js"></script>
 <script src="layout.js"></script>
-<script src="layout_list.js"></script>
-<script src="patients.js"></script>
 
 </body>
 </html>

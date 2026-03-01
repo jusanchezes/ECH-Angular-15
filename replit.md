@@ -40,7 +40,8 @@ css/
     ├── nurse-notes.css      ← Nursing overview panels
     ├── laboratory.css       ← Lab orders + results viewer
     ├── protocols.css        ← Protocols list
-    └── measurements.css     ← Vital signs flowsheet
+    ├── measurements.css     ← Vital signs flowsheet
+    └── dashboard.css        ← Dashboard tile grid (module index)
 ```
 
 **Load order in HTML files (for modules with tables):**
@@ -133,7 +134,8 @@ Full DTO field map documented in `css/clinical-core.css` header comment.
 - **`theme-overrides.css.bak`**: Archived original monolithic CSS (backup)
 
 ## Key Features and Modules
-- **Patient List (`index.html`)**: Entry point with 11-column clinical table
+- **Dashboard (`index.html`)**: Main entry point with tile grid linking to all clinical modules
+- **Patient List (`inpatients.html`)**: Inpatient list with 11-column clinical table (linked from dashboard)
 - **Timeline (`timeline.html`)**: Chronological event timeline
 - **Previous Visits (`previous-visits.html`)**: Master-detail episode list
 - **Risk Factors (`risk-factors.html`)**: 10-tab risk control center

@@ -367,12 +367,14 @@ function bindGlobalEvents() {
  * - Patient-context pages: Header + Sidebar + Banner + Alert Overlay
  */
 function initLayout() {
-    const isPatientList = document.body.hasAttribute('data-page-type') &&
-                          document.body.getAttribute('data-page-type') === 'patient-list';
+    const pageType = document.body.getAttribute('data-page-type') || '';
+    const isPatientList = pageType === 'patient-list';
+    const isDashboard = pageType === 'dashboard';
+    const isShellOnly = isPatientList || isDashboard;
 
-    renderHeader({ showHamburger: !isPatientList });
+    renderHeader({ showHamburger: !isShellOnly });
 
-    if (!isPatientList) {
+    if (!isShellOnly) {
         renderSidebar();
         renderBanner();
     }
