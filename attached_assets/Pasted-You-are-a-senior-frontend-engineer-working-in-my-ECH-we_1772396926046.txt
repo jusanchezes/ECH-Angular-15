@@ -1,0 +1,44 @@
+You are a senior frontend engineer working in my ECH web project.
+
+Goal:
+Create a new ED module screen that looks and behaves like my existing `inpatient.html` list view, but tailored for Emergency Department tracking. Reuse my existing stylesheet `patient-list.css` (do not create a new CSS system; only add minimal ED-specific classes if strictly necessary).
+
+Inputs already in the project:
+- `inpatient.html` (layout and structure reference)
+- `patient-list.css` (must be used)
+- A JSON data source (or JS array) called `patients` with fields similar to:
+  id, name, dob, age, gender, location (waiting room/bed/room), department,
+  attendingPhysician, triageAcuity (e.g., ESI 1–5), chiefComplaint,
+  arrivalTime, LOSMinutes, status (e.g., Waiting, In Triage, In Room, With Provider, Imaging, Lab, Dispo),
+  alerts (array of strings or objects), and optional task flags (labsPending, imagingPending, medsDue).
+
+Deliverable:
+1) Create `ed.html` and `ed.js` (or inline script) that renders an ED Tracking Board.
+2) The UI must be a table/list similar to inpatient list:
+   - Sticky header row
+   - Search box (by name, complaint, room)
+   - Sortable columns (at least LOS, acuity, location)
+   - Row click opens a right-side drawer (or modal) with quick actions (open patient chart placeholder links)
+3) Columns required in the ED list:
+   - Patient (Name + Age + Gender)
+   - Location (Waiting Room / Bed / Room)
+   - Acuity (ESI) as a compact badge
+   - Chief Complaint
+   - Status (e.g., Waiting/Triage/With provider/Imaging/Lab/Dispo)
+   - LOS (minutes or hh:mm)
+   - Alerts (chips/badges using the same style as inpatient alert chips)
+4) Filters required:
+   - Quick filters: All, Waiting Room, In Room, Dispo, High Acuity (ESI 1–2)
+   - Toggle: “Abnormal only” equivalent = “High-risk only” (patients with any alert OR ESI 1–2)
+5) Alert chips:
+   - Reuse the existing chip/badge style from `patient-list.css`.
+   - Limit to 3 chips visible; show “+N” for the remainder with tooltip.
+6) Make it responsive for 14” and down to tablet width:
+   - At smaller widths, collapse less important columns (e.g., hide DOB, show only LOS+Status).
+7) Provide mock `patients` data (10 rows) if not available, including a mix of ESI levels, statuses, and alerts.
+8) Keep code clean and readable, no frameworks. Vanilla HTML/CSS/JS.
+
+Implementation details:
+- Follow the DOM structure and class naming conventions used in `inpatient.html` so `patient-list.css` styles apply.
+- Only add a few new classes prefixed `ed-` if needed (e.g., `ed-acuity-badge`, `ed-status-pill`).
+- Ensure no external dependencies.
