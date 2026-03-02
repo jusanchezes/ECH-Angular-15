@@ -127,6 +127,9 @@ mock-clinical-data.js  →  clinical-data.service.js  →  module JS files  → 
 3. **Module JS files** (e.g. `laboratory.js`, `measurements.js`) call `ClinicalDataService` methods and render data into the HTML via `data-field` selectors.
 4. For production Angular 15, each `ClinicalDataService` method maps 1:1 to an `HttpClient.get()` call against the REST endpoints documented in `API_contracts.md`.
 
+## Strategic Documentation
+- **`transform.md`**: Business Case document — strategic alignment of the EHR Redesign with 2026 industry trends across five pillars: Composable Architecture, AI-Ready Data, FHIR-Centric Interoperability, High-Density UX, and Cloud-Native Readiness. Intended for stakeholder and development team presentation.
+
 ## System Architecture
 - **Static multi-page app** served by Node.js (`server.js`)
 - **`layout.js`**: Core shell engine — injects Header, Sidebar, Banner across all pages
