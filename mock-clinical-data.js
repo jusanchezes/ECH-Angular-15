@@ -3,42 +3,37 @@
  * @file mock-clinical-data.js — Centralized Mock Clinical Data (EHR Redesign)
  * =============================================================================
  *
- * CONTRATO REST / DTO DE JAVA (Punto 3 — Documentación de Contratos)
- * -------------------------------------------------------------------
- * Este objeto simula el DTO de Java PatientClinicalContext.java
- * que será servido vía GET /api/clinical/context/{id}
+ * CONTRATO REST / DTO — Ver API_contracts.md para especificación completa
+ * -----------------------------------------------------------------------
+ * Este objeto simula los DTOs Java servidos por la API REST /api/v1/*.
+ * Cada propiedad coincide 1:1 con el campo del DTO y el data-field del HTML.
  *
  * Endpoint principal:
- *   GET /api/clinical/context/{id} → PatientClinicalContext.java
+ *   GET /api/v1/clinical/context/{patientId} → PatientClinicalContextDTO
  *
- * Sub-DTOs mapeados:
- *   - PatientListDTO[]               → GET /api/patients
- *   - PatientDTO                     → GET /api/patients/{id}
- *   - TimelineEntryDTO[]             → GET /api/clinical/timeline/{patientId}
- *   - AnalyteDTO[]                   → GET /api/clinical/laboratory/{patientId}
- *   - VitalSignParameterDTO          → GET /api/clinical/measurements/{patientId}
- *   - RiskFactorDTO                  → GET /api/clinical/risk-factors/{patientId}
- *   - ClinicalOrderDTO[]             → GET /api/clinical/diagnostic-tests/{patientId}
- *   - MedicationAdminRecordDTO[]     → GET /api/clinical/medication/{patientId}
- *   - CarePlanTaskDTO[]              → GET /api/clinical/care-plans/{patientId}
- *   - ClinicalDocumentDTO[]          → GET /api/clinical/documents/{patientId}
- *   - ProtocolDTO[]                  → GET /api/clinical/protocols/{patientId}
- *   - AlertRiskDTO[]                 → GET /api/clinical/summary/{patientId}/alerts
- *   - ActiveMedicationDTO[]          → GET /api/clinical/summary/{patientId}/medications
- *   - ClinicalNoteDTO[]              → GET /api/clinical/summary/{patientId}/notes
- *   - ProblemDTO[]                   → GET /api/clinical/summary/{patientId}/problems
- *   - VitalsSnapshotDTO              → GET /api/clinical/summary/{patientId}/vitals-snapshot
- *   - LabResultDTO[]                 → GET /api/clinical/summary/{patientId}/pending-results
- *   - PreviousVisitDTO[]             → GET /api/clinical/previous-visits/{patientId}
- *   - NurseNotesContextDTO           → GET /api/clinical/nurse-notes/{patientId}
- *   - LabCatalogItemDTO[]            → GET /api/catalogs/laboratory
- *   - RadiologyCatalogItemDTO[]      → GET /api/catalogs/radiology
- *   - DisciplineDTO[]                → GET /api/catalogs/laboratory/disciplines
+ * Sub-DTOs mapeados (ver API_contracts.md §2–§20 para tipado completo):
+ *   - PatientListDTO[]               → GET /api/v1/patients
+ *   - PatientListDTO                 → GET /api/v1/patients/{id}
+ *   - TimelineEntryGroupDTO[]        → GET /api/v1/clinical/timeline/{patientId}
+ *   - LaboratoryContextDTO           → GET /api/v1/clinical/laboratory/{patientId}
+ *   - MeasurementsContextDTO         → GET /api/v1/clinical/measurements/{patientId}
+ *   - RiskFactorsContextDTO          → GET /api/v1/clinical/risk-factors/{patientId}
+ *   - ClinicalOrderDTO[]             → GET /api/v1/clinical/diagnostic-tests/{patientId}
+ *   - MedicationContextDTO           → GET /api/v1/clinical/medication/{patientId}
+ *   - CarePlanTaskDTO[]              → GET /api/v1/clinical/care-plans/{patientId}
+ *   - ClinicalDocumentDTO[]          → GET /api/v1/clinical/documents/{patientId}
+ *   - ProtocolDTO[]                  → GET /api/v1/clinical/protocols/{patientId}
+ *   - PatientSummaryDTO              → GET /api/v1/clinical/summary/{patientId}/*
+ *   - NurseNotesContextDTO           → GET /api/v1/clinical/nurse-notes/{patientId}
+ *   - PreviousVisitDTO[]             → GET /api/v1/clinical/previous-visits/{patientId}
+ *   - LabCatalogItemDTO[]            → GET /api/v1/catalogs/laboratory
+ *   - RadiologyCatalogItemDTO[]      → GET /api/v1/catalogs/radiology
+ *   - DisciplineDTO[]                → GET /api/v1/catalogs/laboratory/disciplines
  *
  * Para producción:
  *   Sustituir MockClinicalData por llamadas HttpClient.get() a los endpoints
  *   REST listados arriba. Cada sub-DTO se mapea 1:1 con la estructura aquí
- *   definida.
+ *   definida. Consultar API_contracts.md para interfaces TypeScript y tipado Java.
  *
  * =============================================================================
  */

@@ -115,19 +115,24 @@ HTML comments mark Angular component boundaries:
 ```
 
 ## Data Binding (Java DTO Mapping)
-All dynamic data points use `data-field="dtoFieldName"` attributes. Key mappings:
-- **Header**: userName, userService, userDepartment, wardName, alertCount, messageCount
-- **Banner**: patientGenderIcon, patientName, patientDemographics, patientMeta, patientRecId, patientEpisode, patientRoom, patientClient, allergyList
-- **Patient Summary**: vitalBP, vitalHR, vitalTemp, vitalRR, vitalSpO2, medName, medLastAdmin, medNextAdmin
-- **Forms**: priority, timing, clinicalIndication, dose, route, frequency, etc.
+All dynamic data points use `data-field="dtoFieldName"` attributes in the HTML.
+For full technical details on REST endpoints, Java DTOs, TypeScript interfaces, and `data-field` ↔ DTO mappings, see **[`API_contracts.md`](API_contracts.md)**.
 
-Full DTO field map documented in `css/clinical-core.css` header comment.
+### Data consumption flow (current prototype)
+```
+mock-clinical-data.js  →  clinical-data.service.js  →  module JS files  →  HTML (data-field)
+```
+1. **`mock-clinical-data.js`** holds all mock data under the `MockClinicalData` global object (patients, clinical context per patient, catalogs).
+2. **`clinical-data.service.js`** (`ClinicalDataService` IIFE) is the single access point — modules never read `MockClinicalData` directly.
+3. **Module JS files** (e.g. `laboratory.js`, `measurements.js`) call `ClinicalDataService` methods and render data into the HTML via `data-field` selectors.
+4. For production Angular 15, each `ClinicalDataService` method maps 1:1 to an `HttpClient.get()` call against the REST endpoints documented in `API_contracts.md`.
 
 ## System Architecture
 - **Static multi-page app** served by Node.js (`server.js`)
 - **`layout.js`**: Core shell engine — injects Header, Sidebar, Banner across all pages
 - **`layout_list.js`**: List-specific layout for patient list views
-- **`mock-clinical-data.js`**: Centralized mock data store — all clinical data consolidated under `MockClinicalData` global object. Organized hierarchically: `patients[]`, `patientClinicalContext{46: {...}}`, `catalogs{}`. Includes REST/DTO Java contract documentation in header.
+- **`API_contracts.md`**: Especificación completa de contratos REST/DTO — endpoints, Java DTOs, TypeScript interfaces, mapeos `data-field` ↔ DTO, tipado estricto
+- **`mock-clinical-data.js`**: Centralized mock data store — all clinical data consolidated under `MockClinicalData` global object. Organized hierarchically: `patients[]`, `patientClinicalContext{46: {...}}`, `catalogs{}`. Contract reference in header points to `API_contracts.md`.
 - **`clinical-data.service.js`**: Service layer (IIFE pattern) — `ClinicalDataService` is the single access point for all clinical data. Methods: `getPatientList()`, `getEDPatientList()`, `getPatient()`, `getTimeline()`, `getLaboratory()`, `getMeasurements()`, `getRiskFactors()`, `getDiagnosticTests()`, `getMedicationMAR()`, `getCarePlans()`, `getDocuments()`, `getProtocols()`, `getSummary()`, `getPreviousVisits()`, `getLabCatalog()`, `getRadiologyCatalog()`, etc. Includes Angular HttpClient migration notes.
 - **Module JS files**: Each page has its own JS with UI/rendering logic only — data sourced exclusively from `ClinicalDataService`
 - **Script load order in HTML**: `mock-clinical-data.js` → `clinical-data.service.js` → `layout.js` → page-specific JS

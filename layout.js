@@ -17,14 +17,10 @@
  *     id="banner-component"    → <ech-clinical-banner>
  *     id="alert-panel"         → <ech-alert-panel>
  *
- *   DATA BINDING:
- *   All dynamic values use data-field="dtoFieldName" attributes that map directly to Java DTOs:
- *     data-field="userName"        → UserDTO.fullName
- *     data-field="userService"     → UserDTO.serviceName
- *     data-field="userDepartment"  → UserDTO.departmentName
- *     data-field="wardName"        → WardDTO.wardName
- *     data-field="patientName"     → PatientDTO.fullName
- *     data-field="allergyList"     → PatientDTO.safetyAlerts[]
+ *   DATA BINDING — Ver API_contracts.md §2 y §17 para contratos completos:
+ *     Header:  GET /api/v1/user/session       → UserSessionDTO  (userName, userService, userDepartment, wardName)
+ *     Header:  GET /api/v1/notifications/count → NotificationCountDTO (alertCount, messageCount)
+ *     Banner:  GET /api/v1/patients/{id}       → PatientListDTO  (patientName, patientDemographics, allergyList, etc.)
  *   Angular: These become {{ patient.fullName }} template bindings with async pipe.
  *
  *   REM SCALING:
