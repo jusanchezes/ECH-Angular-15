@@ -14,8 +14,8 @@
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.25rem;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -23,7 +23,7 @@
 .dashboard-tile {
     background: #ffffff;
     border-radius: 10px;
-    padding: 1.25rem 0.75rem 1rem;
+    padding: 1.5rem 1rem 1.25rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,7 +34,7 @@
     transition: box-shadow 0.2s, transform 0.15s;
     text-decoration: none;
     color: inherit;
-    min-height: 120px;
+    min-height: 140px;
     border: 1px solid #e0e6f0;
 }
 
@@ -68,14 +68,14 @@
 }
 
 .dashboard-tile-icon {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     color: var(--ech-primary, #3B82F6);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.85rem;
     line-height: 1;
 }
 
 .dashboard-tile-label {
-    font-size: 0.8rem;
+    font-size: 13px;
     font-weight: 600;
     color: #1e293b;
     line-height: 1.3;
