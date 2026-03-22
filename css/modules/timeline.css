@@ -291,15 +291,22 @@
     gap: 2px;
 }
 
+.tl-doc-row {
+    cursor: pointer;
+}
+
+.tl-doc-row:hover {
+    background: rgba(92, 107, 192, 0.05);
+    border-radius: 4px;
+}
+
 .tl-doc-link {
     color: var(--ech-primary);
-    cursor: pointer;
     font-weight: 500;
-    text-decoration: none;
     font-size: var(--fs-md);
 }
 
-.tl-doc-link:hover {
+.tl-doc-row:hover .tl-doc-link {
     text-decoration: underline;
     color: var(--ech-primary-dark);
 }

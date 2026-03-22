@@ -208,14 +208,18 @@ function renderTimeline() {
                 html += `<div class="tl-event-header">${headerParts.join('<span class="tl-sep">·</span>')}</div>`;
 
                 group.forEach(entry => {
-                    html += `<div class="tl-sub-item">`;
+                    if (entry.docId) {
+                        html += `<div class="tl-sub-item tl-doc-row" onclick="tlOpenDocModal('${entry.docId}')" title="Open document">`;
+                    } else {
+                        html += `<div class="tl-sub-item">`;
+                    }
 
                     /* Description */
                     if (visibleColumns.description) {
                         if (entry.docId) {
                             const statusTag = DocPreview.getStatusTag(entry.docStatus);
                             html += `<span class="tl-description tl-doc-desc">` +
-                                `<span class="tl-doc-link" onclick="tlOpenDocModal('${entry.docId}')">${entry.description}</span>` +
+                                `<span class="tl-doc-link">${entry.description}</span>` +
                                 `<span class="tl-doc-meta">${entry.docType}&nbsp;·&nbsp;${statusTag}</span>` +
                                 `</span>`;
                         } else {
@@ -226,7 +230,7 @@ function renderTimeline() {
                     /* Actions */
                     if (visibleColumns.actions) {
                         if (entry.docId) {
-                            html += `<span class="tl-sub-actions">` +
+                            html += `<span class="tl-sub-actions" onclick="event.stopPropagation()">` +
                                 `<span class="action-icon pi pi-ellipsis-v" onclick="toggleRowMenu(event, this)" title="Actions"></span>` +
                                 `<div class="row-dropdown">` +
                                 `<div class="rd-item" onclick="tlOpenDocModal('${entry.docId}')"><i class="pi pi-eye"></i> View Document</div>` +
