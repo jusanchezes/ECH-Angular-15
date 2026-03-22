@@ -28,6 +28,12 @@
  */
 
 /* ============================================================
+ * CURRENT USER (simulated session — replace with auth token in Angular)
+ * Angular: Reemplazado por AuthService.currentUser$ observable
+ * ============================================================ */
+var CURRENT_USER = { name: 'Dr. Rory Rogers', department: 'Cardiology' };
+
+/* ============================================================
  * TAB CONFIGURATIONS
  * Define las pestañas disponibles para cada tipo de lista.
  * Para crear una nueva lista, añade una nueva clave aquí.
@@ -35,11 +41,11 @@
  * ============================================================ */
 const TAB_CONFIGS = {
     'patient-list': [
-        { id: 'arrivals-today',    label: 'Arrivals Today',    i18n: 'TABS.ARRIVALS_TODAY',    count: 12, active: true },
-        { id: 'planned-arrivals',  label: 'Planned Arrivals',  i18n: 'TABS.PLANNED_ARRIVALS',  count: 5,  active: false },
-        { id: 'all-inpatients',    label: 'All Inpatients',    i18n: 'TABS.ALL_INPATIENTS',    count: 48, active: false },
-        { id: 'discharges-today',  label: 'Discharges Today',  i18n: 'TABS.DISCHARGES_TODAY',  count: 3,  active: false },
-        { id: 'pending-admission', label: 'Pending Admission', i18n: 'TABS.PENDING_ADMISSION', count: 7,  active: false }
+        { id: 'loc-all',       label: 'All Inpatients',      i18n: 'TABS.LOC_ALL',       count: 12, active: true  },
+        { id: 'loc-recent',    label: 'Recently Admitted',   i18n: 'TABS.LOC_RECENT',    count: 3,  active: false },
+        { id: 'loc-discharge', label: 'Planned Discharges',  i18n: 'TABS.LOC_DISCHARGE', count: 2,  active: false },
+        { id: 'loc-icu',       label: 'ICU / PACU',          i18n: 'TABS.LOC_ICU',       count: 1,  active: false },
+        { id: 'loc-surgery',   label: 'Patients in Surgery', i18n: 'TABS.LOC_SURGERY',   count: 1,  active: false }
     ],
     'discharge-list': [
         { id: 'pending-discharge', label: 'Pending Discharge', i18n: 'TABS.PENDING_DISCHARGE', count: 8,  active: true },
@@ -59,23 +65,18 @@ const TAB_CONFIGS = {
         { id: 'ed-high-acuity',    label: 'High Acuity',       i18n: 'TABS.ED_HIGH_ACUITY',    count: 3,  active: false }
     ],
     'day-hospital-list': [
-        { id: 'day-all',           label: 'All',               i18n: 'TABS.DAY_ALL',           count: 14, active: true },
-        { id: 'day-scheduled',     label: 'Scheduled',         i18n: 'TABS.DAY_SCHEDULED',     count: 3,  active: false },
-        { id: 'day-arrived',       label: 'Arrived',           i18n: 'TABS.DAY_ARRIVED',       count: 2,  active: false },
-        { id: 'day-infusing',      label: 'Infusing',          i18n: 'TABS.DAY_INFUSING',      count: 4,  active: false },
-        { id: 'day-ready',         label: 'Ready for Discharge', i18n: 'TABS.DAY_READY',       count: 2,  active: false },
-        { id: 'day-completed',     label: 'Completed',         i18n: 'TABS.DAY_COMPLETED',     count: 2,  active: false },
-        { id: 'day-noshow',        label: 'No-show',           i18n: 'TABS.DAY_NOSHOW',        count: 1,  active: false }
+        { id: 'loc-all',       label: 'All Day Cases',       i18n: 'TABS.LOC_ALL',       count: 14, active: true  },
+        { id: 'loc-recent',    label: 'Recently Admitted',   i18n: 'TABS.LOC_RECENT',    count: 10, active: false },
+        { id: 'loc-discharge', label: 'Planned Discharges',  i18n: 'TABS.LOC_DISCHARGE', count: 1,  active: false },
+        { id: 'loc-icu',       label: 'ICU / PACU',          i18n: 'TABS.LOC_ICU',       count: 1,  active: false },
+        { id: 'loc-surgery',   label: 'Patients in Surgery', i18n: 'TABS.LOC_SURGERY',   count: 0,  active: false }
     ],
     'surgical-list': [
-        { id: 'surg-all',          label: 'All',               i18n: 'TABS.SURG_ALL',          count: 12, active: true },
-        { id: 'surg-requested',    label: 'Requested',         i18n: 'TABS.SURG_REQUESTED',    count: 2,  active: false },
-        { id: 'surg-scheduled',    label: 'Scheduled',         i18n: 'TABS.SURG_SCHEDULED',    count: 3,  active: false },
-        { id: 'surg-preop',        label: 'Pre-op Pending',    i18n: 'TABS.SURG_PREOP',        count: 1,  active: false },
-        { id: 'surg-ready',        label: 'Ready',             i18n: 'TABS.SURG_READY',        count: 1,  active: false },
-        { id: 'surg-in-theatre',   label: 'In Theatre',        i18n: 'TABS.SURG_IN_THEATRE',   count: 2,  active: false },
-        { id: 'surg-completed',    label: 'Completed',         i18n: 'TABS.SURG_COMPLETED',    count: 2,  active: false },
-        { id: 'surg-cancelled',    label: 'Cancelled',         i18n: 'TABS.SURG_CANCELLED',    count: 1,  active: false }
+        { id: 'loc-all',       label: 'All Cases',           i18n: 'TABS.LOC_ALL',       count: 12, active: true  },
+        { id: 'loc-recent',    label: 'Recently Admitted',   i18n: 'TABS.LOC_RECENT',    count: 5,  active: false },
+        { id: 'loc-discharge', label: 'Planned Discharges',  i18n: 'TABS.LOC_DISCHARGE', count: 2,  active: false },
+        { id: 'loc-icu',       label: 'ICU / PACU',          i18n: 'TABS.LOC_ICU',       count: 0,  active: false },
+        { id: 'loc-surgery',   label: 'In Theatre',          i18n: 'TABS.LOC_SURGERY',   count: 2,  active: false }
     ]
 };
 
@@ -151,6 +152,17 @@ function renderToolbar() {
                         <i class="pi pi-angle-double-right"></i>
                     </button>
                 </div>
+                <div class="scope-filter-group">
+                    <button class="scope-btn scope-btn-active" data-scope="all" onclick="handleScopeChange('all')">
+                        <i class="pi pi-users"></i> All Patients
+                    </button>
+                    <button class="scope-btn" data-scope="mine" onclick="handleScopeChange('mine')">
+                        <i class="pi pi-user"></i> My Patients
+                    </button>
+                    <button class="scope-btn" data-scope="dept" onclick="handleScopeChange('dept')">
+                        <i class="pi pi-building"></i> My Department
+                    </button>
+                </div>
             </div>
             <div class="toolbar-center">
                 <button class="toolbar-action-btn" onclick="handleToolbarAction('pdf')" title="Export PDF" data-i18n-title="TOOLBAR.EXPORT_PDF">
@@ -202,16 +214,20 @@ function handleToolbarAction(action) {
     console.log('Toolbar action:', action);
 }
 
+function handleScopeChange(scope) {
+    document.querySelectorAll('.scope-btn').forEach(function(btn) {
+        btn.classList.toggle('scope-btn-active', btn.getAttribute('data-scope') === scope);
+    });
+    console.log('Scope changed:', scope);
+}
+
 function handleToolbarSearch(value) {
-    const badge = document.getElementById('toolbarSearchBadge');
-    if (badge) {
-        const count = value.length > 0 ? PatientListData.filter(p =>
-            p.name.toLowerCase().includes(value.toLowerCase())
-        ).length : PatientListData.length;
-        badge.textContent = count;
-    }
     if (typeof filterPatientList === 'function') {
         filterPatientList(value);
+    } else if (typeof filterDayList === 'function') {
+        filterDayList(value);
+    } else if (typeof filterSurgList === 'function') {
+        filterSurgList(value);
     }
 }
 

@@ -114,7 +114,8 @@ var MockClinicalData = {
             alerts: ["VTE Risk"],
             statusMeds: "ok",
             statusOrders: "ok",
-            statusVitals: "new"
+            statusVitals: "new",
+            plannedDischarge: true
         },
         {
             id: 49,
@@ -154,7 +155,8 @@ var MockClinicalData = {
             alerts: [],
             statusMeds: "ok",
             statusOrders: "pending",
-            statusVitals: "ok"
+            statusVitals: "ok",
+            inSurgery: true
         },
         {
             id: 51,
@@ -294,7 +296,8 @@ var MockClinicalData = {
             alerts: ["Asthma", "Latex Allergy"],
             statusMeds: "ok",
             statusOrders: "pending",
-            statusVitals: "new"
+            statusVitals: "new",
+            plannedDischarge: true
         }
     ],
 

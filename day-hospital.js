@@ -1,11 +1,11 @@
 var dayPatients = [
     { id: 101, name: 'María García López', dob: '1958-03-14', age: 67, gender: 'Female', scheduledTime: '08:00', arrivalTime: '07:45', chair: 'C01', pathwayType: 'Chemo', phaseStatus: 'Infusing', estimatedDurationMin: 180, elapsedMin: 95, remainingMin: 85, alerts: ['Allergy: Penicillin', 'High-Risk Meds', 'Fall Risk'], flags: ['high-risk-meds'], assignedNurse: 'Ana Ruiz', orderingProvider: 'Dr. Fernández' },
     { id: 102, name: 'Carlos Martínez Ruiz', dob: '1970-07-22', age: 55, gender: 'Male', scheduledTime: '08:30', arrivalTime: '08:20', chair: 'C02', pathwayType: 'Iron Infusion', phaseStatus: 'Observation', estimatedDurationMin: 120, elapsedMin: 110, remainingMin: 10, alerts: [], flags: [], assignedNurse: 'Laura Sánchez', orderingProvider: 'Dr. López' },
-    { id: 103, name: 'Elena Rodríguez Díaz', dob: '1985-11-03', age: 40, gender: 'Female', scheduledTime: '09:00', arrivalTime: '08:55', chair: 'C03', pathwayType: 'Biologic Infusion', phaseStatus: 'Premeds', estimatedDurationMin: 240, elapsedMin: 30, remainingMin: 210, alerts: ['Allergy: Sulfa', 'Isolation'], flags: ['isolation'], assignedNurse: 'Pedro Gómez', orderingProvider: 'Dr. Navarro' },
+    { id: 103, name: 'Elena Rodríguez Díaz', dob: '1985-11-03', age: 40, gender: 'Female', scheduledTime: '09:00', arrivalTime: '08:55', chair: 'C03', pathwayType: 'Biologic Infusion', phaseStatus: 'Premeds', estimatedDurationMin: 240, elapsedMin: 30, remainingMin: 210, alerts: ['Allergy: Sulfa', 'Isolation'], flags: ['isolation'], assignedNurse: 'Pedro Gómez', orderingProvider: 'Dr. Rory Rogers', department: 'Cardiology' },
     { id: 104, name: 'José Antonio Pérez', dob: '1962-01-19', age: 64, gender: 'Male', scheduledTime: '09:00', arrivalTime: '09:05', chair: 'Bay 1', pathwayType: 'Chemo', phaseStatus: 'Infusing', estimatedDurationMin: 300, elapsedMin: 60, remainingMin: 240, alerts: ['High-Risk Meds', 'DNR'], flags: ['high-risk-meds'], assignedNurse: 'Ana Ruiz', orderingProvider: 'Dr. Fernández' },
     { id: 105, name: 'Lucía Hernández Gil', dob: '1990-05-30', age: 35, gender: 'Female', scheduledTime: '09:30', arrivalTime: '09:25', chair: 'C04', pathwayType: 'Transfusion', phaseStatus: 'Labs Pending', estimatedDurationMin: 150, elapsedMin: 15, remainingMin: 135, alerts: ['Allergy: Latex'], flags: [], assignedNurse: 'Laura Sánchez', orderingProvider: 'Dr. Moreno' },
     { id: 106, name: 'Fernando Muñoz Vega', dob: '1955-09-11', age: 70, gender: 'Male', scheduledTime: '10:00', arrivalTime: null, chair: 'C05', pathwayType: 'Chemo', phaseStatus: 'Scheduled', estimatedDurationMin: 210, elapsedMin: 0, remainingMin: 210, alerts: ['Fall Risk', 'Pacemaker', 'Allergy: Contrast', 'Neutropenia'], flags: ['high-risk-meds'], assignedNurse: 'Pedro Gómez', orderingProvider: 'Dr. Fernández' },
-    { id: 107, name: 'Ana Belén Torres', dob: '1978-12-25', age: 47, gender: 'Female', scheduledTime: '10:00', arrivalTime: '09:50', chair: 'C06', pathwayType: 'Biologic Infusion', phaseStatus: 'Pre-assessment', estimatedDurationMin: 180, elapsedMin: 20, remainingMin: 160, alerts: [], flags: [], assignedNurse: 'Carmen Vidal', orderingProvider: 'Dr. Navarro' },
+    { id: 107, name: 'Ana Belén Torres', dob: '1978-12-25', age: 47, gender: 'Female', scheduledTime: '10:00', arrivalTime: '09:50', chair: 'C06', pathwayType: 'Biologic Infusion', phaseStatus: 'Pre-assessment', estimatedDurationMin: 180, elapsedMin: 20, remainingMin: 160, alerts: [], flags: [], assignedNurse: 'Carmen Vidal', orderingProvider: 'Dr. Rory Rogers', department: 'Cardiology' },
     { id: 108, name: 'Miguel Ángel Soto', dob: '1948-04-07', age: 77, gender: 'Male', scheduledTime: '07:30', arrivalTime: '07:25', chair: 'Bay 2', pathwayType: 'Transfusion', phaseStatus: 'Ready for Discharge', estimatedDurationMin: 120, elapsedMin: 120, remainingMin: 0, alerts: ['DNR', 'Fall Risk'], flags: [], assignedNurse: 'Ana Ruiz', orderingProvider: 'Dr. López' },
     { id: 109, name: 'Isabel Romero Castro', dob: '1966-08-16', age: 59, gender: 'Female', scheduledTime: '10:30', arrivalTime: null, chair: 'C07', pathwayType: 'Iron Infusion', phaseStatus: 'Scheduled', estimatedDurationMin: 90, elapsedMin: 0, remainingMin: 90, alerts: [], flags: [], assignedNurse: 'Laura Sánchez', orderingProvider: 'Dr. Moreno' },
     { id: 110, name: 'Pablo Jiménez Reyes', dob: '1982-02-28', age: 44, gender: 'Male', scheduledTime: '08:00', arrivalTime: '07:50', chair: 'C08', pathwayType: 'Chemo', phaseStatus: 'Completed', estimatedDurationMin: 180, elapsedMin: 180, remainingMin: 0, alerts: ['High-Risk Meds'], flags: ['high-risk-meds'], assignedNurse: 'Carmen Vidal', orderingProvider: 'Dr. Fernández' },
@@ -17,9 +17,10 @@ var dayPatients = [
 
 var daySortField = null;
 var daySortAsc = true;
-var dayActiveFilter = 'day-all';
+var dayLocFilter = 'loc-all';
 var dayHighRiskOnly = false;
 var daySearchTerm = '';
+var dayScopeFilter = 'all';
 
 var DAY_PHASE_ORDER = ['Scheduled', 'Arrived', 'Pre-assessment', 'Labs Pending', 'Premeds', 'Infusing', 'Observation', 'Ready for Discharge', 'Completed', 'No-show'];
 
@@ -46,16 +47,23 @@ function filterPatientList(searchTerm) {
 function wireDayTabs() {
     var origHandleTabClick = window.handleTabClick;
     window.handleTabClick = function (tabId) {
-        if (tabId.startsWith('day-')) {
+        if (tabId.startsWith('loc-')) {
             var buttons = document.querySelectorAll('.tab-btn');
             buttons.forEach(function (btn) { btn.classList.remove('tab-btn-active'); });
             var activeBtn = document.querySelector('[data-tab-id="' + tabId + '"]');
             if (activeBtn) activeBtn.classList.add('tab-btn-active');
-            dayActiveFilter = tabId;
+            dayLocFilter = tabId;
             renderDayList();
         } else if (origHandleTabClick) {
             origHandleTabClick(tabId);
         }
+    };
+
+    var origHandleScopeChange = window.handleScopeChange;
+    window.handleScopeChange = function (scope) {
+        if (origHandleScopeChange) origHandleScopeChange(scope);
+        dayScopeFilter = scope;
+        renderDayList();
     };
 }
 
@@ -150,18 +158,24 @@ function formatMinutes(min) {
 function getFilteredDayPatients() {
     var list = dayPatients.slice();
 
-    if (dayActiveFilter === 'day-scheduled') {
-        list = list.filter(function (p) { return p.phaseStatus === 'Scheduled'; });
-    } else if (dayActiveFilter === 'day-arrived') {
-        list = list.filter(function (p) { return p.phaseStatus === 'Arrived' || p.phaseStatus === 'Pre-assessment' || p.phaseStatus === 'Labs Pending' || p.phaseStatus === 'Premeds'; });
-    } else if (dayActiveFilter === 'day-infusing') {
-        list = list.filter(function (p) { return p.phaseStatus === 'Infusing'; });
-    } else if (dayActiveFilter === 'day-ready') {
-        list = list.filter(function (p) { return p.phaseStatus === 'Ready for Discharge' || p.phaseStatus === 'Observation'; });
-    } else if (dayActiveFilter === 'day-completed') {
-        list = list.filter(function (p) { return p.phaseStatus === 'Completed'; });
-    } else if (dayActiveFilter === 'day-noshow') {
-        list = list.filter(function (p) { return p.phaseStatus === 'No-show'; });
+    if (dayLocFilter === 'loc-recent') {
+        list = list.filter(function (p) { return p.arrivalTime !== null; });
+    } else if (dayLocFilter === 'loc-discharge') {
+        list = list.filter(function (p) { return p.phaseStatus === 'Ready for Discharge'; });
+    } else if (dayLocFilter === 'loc-icu') {
+        list = list.filter(function (p) { return p.phaseStatus === 'Observation'; });
+    } else if (dayLocFilter === 'loc-surgery') {
+        list = list.filter(function (p) { return false; });
+    }
+
+    if (dayScopeFilter === 'mine') {
+        list = list.filter(function (p) {
+            return p.orderingProvider === CURRENT_USER.name;
+        });
+    } else if (dayScopeFilter === 'dept') {
+        list = list.filter(function (p) {
+            return p.department === CURRENT_USER.department;
+        });
     }
 
     if (dayHighRiskOnly) {

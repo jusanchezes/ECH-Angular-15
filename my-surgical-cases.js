@@ -56,7 +56,8 @@ var surgicalCases = [
         estimatedDurationMin: 240,
         readiness: 60,
         alerts: ['DNR', 'Anticoagulation'],
-        surgeon: 'Dr. Fernández',           anesthesiologist: 'Dr. Rueda'
+        surgeon: 'Dr. Rory Rogers',         anesthesiologist: 'Dr. Rueda',
+        department: 'Cardiology'
     },
     {
         id: 205,
@@ -128,7 +129,8 @@ var surgicalCases = [
         estimatedDurationMin: 60,
         readiness: 10,
         alerts: [],
-        surgeon: 'Dr. Fernández',           anesthesiologist: 'Dr. Rueda'
+        surgeon: 'Dr. Rory Rogers',         anesthesiologist: 'Dr. Rueda',
+        department: 'General Surgery'
     },
     {
         id: 211,
@@ -161,7 +163,8 @@ var surgicalCases = [
  * ============================================================ */
 var surgSortField   = null;
 var surgSortAsc     = true;
-var surgActiveFilter = 'surg-all';
+var surgLocFilter   = 'loc-all';
+var surgScopeFilter = 'all';
 var surgSearchTerm  = '';
 
 var SURG_STATUS_ORDER = [
@@ -195,16 +198,23 @@ function wireSurgSearch() {
 function wireSurgTabs() {
     var origHandleTabClick = window.handleTabClick;
     window.handleTabClick = function (tabId) {
-        if (tabId.startsWith('surg-')) {
+        if (tabId.startsWith('loc-')) {
             var buttons = document.querySelectorAll('.tab-btn');
             buttons.forEach(function (btn) { btn.classList.remove('tab-btn-active'); });
             var activeBtn = document.querySelector('[data-tab-id="' + tabId + '"]');
             if (activeBtn) activeBtn.classList.add('tab-btn-active');
-            surgActiveFilter = tabId;
+            surgLocFilter = tabId;
             renderSurgList();
         } else if (origHandleTabClick) {
             origHandleTabClick(tabId);
         }
+    };
+
+    var origHandleScopeChange = window.handleScopeChange;
+    window.handleScopeChange = function (scope) {
+        if (origHandleScopeChange) origHandleScopeChange(scope);
+        surgScopeFilter = scope;
+        renderSurgList();
     };
 }
 
@@ -293,18 +303,26 @@ function formatSurgMinutes(min) {
 function getFilteredSurgCases() {
     var list = surgicalCases.slice();
 
-    var filterMap = {
-        'surg-requested':   function (c) { return c.status === 'Requested'; },
-        'surg-scheduled':   function (c) { return c.status === 'Scheduled'; },
-        'surg-preop':       function (c) { return c.status === 'Pre-op Pending'; },
-        'surg-ready':       function (c) { return c.status === 'Ready'; },
-        'surg-in-theatre':  function (c) { return c.status === 'In Theatre'; },
-        'surg-completed':   function (c) { return c.status === 'Completed'; },
-        'surg-cancelled':   function (c) { return c.status === 'Cancelled'; }
-    };
+    if (surgLocFilter === 'loc-recent') {
+        list = list.filter(function (c) {
+            return c.status === 'Scheduled' || c.status === 'Pre-op Pending' || c.status === 'Requested';
+        });
+    } else if (surgLocFilter === 'loc-discharge') {
+        list = list.filter(function (c) { return c.status === 'Completed'; });
+    } else if (surgLocFilter === 'loc-icu') {
+        list = list.filter(function () { return false; });
+    } else if (surgLocFilter === 'loc-surgery') {
+        list = list.filter(function (c) { return c.status === 'In Theatre'; });
+    }
 
-    if (filterMap[surgActiveFilter]) {
-        list = list.filter(filterMap[surgActiveFilter]);
+    if (surgScopeFilter === 'mine') {
+        list = list.filter(function (c) {
+            return c.surgeon === CURRENT_USER.name;
+        });
+    } else if (surgScopeFilter === 'dept') {
+        list = list.filter(function (c) {
+            return c.department === CURRENT_USER.department;
+        });
     }
 
     if (surgSearchTerm) {

@@ -700,4 +700,65 @@
       .ed-drawer { width: 100vw; max-width: 100vw; }
   }
 
-  
+/* ============================================================
+   SCOPE FILTER SEGMENT (All Patients / My Patients / My Dept)
+   ============================================================ */
+.scope-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 10px;
+    background: var(--ech-surface-alt, #f0f4f8);
+    border: 1px solid var(--ech-border);
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.scope-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    font-size: 11.5px;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+    color: var(--ech-text-secondary, #6b7280);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+}
+
+.scope-btn:hover {
+    background: var(--ech-surface, #fff);
+    color: var(--ech-text, #111827);
+}
+
+.scope-btn-active {
+    background: var(--ech-primary, #2563eb) !important;
+    color: #fff !important;
+}
+
+.scope-btn-active:hover {
+    background: var(--ech-primary-dark, #1d4ed8) !important;
+    color: #fff !important;
+}
+
+.scope-btn .pi {
+    font-size: 11px;
+}
+
+/* Empty-state row for filtered patient list */
+.pat-empty-state {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--ech-text-secondary, #6b7280);
+    font-size: 13px;
+}
+
+.pat-empty-state .pi {
+    font-size: 20px;
+    margin-right: 8px;
+    opacity: 0.5;
+}

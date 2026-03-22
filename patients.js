@@ -22,10 +22,84 @@
  *    11. Acciones           → Icono vertical pi-ellipsis-v
  */
 
+var patLocActiveFilter = 'loc-all';
+var patScopeFilter     = 'all';
+var patSearchTerm      = '';
+
 function initPatientList() {
+    wirePatientsFilters();
     renderPatientList();
 }
 
+/* ============================================================
+ * WIRE FILTERS — location tabs + scope change
+ * ============================================================ */
+function wirePatientsFilters() {
+    var origHandleTabClick = window.handleTabClick;
+    window.handleTabClick = function(tabId) {
+        if (tabId.startsWith('loc-')) {
+            var buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(function(btn) { btn.classList.remove('tab-btn-active'); });
+            var activeBtn = document.querySelector('[data-tab-id="' + tabId + '"]');
+            if (activeBtn) activeBtn.classList.add('tab-btn-active');
+            patLocActiveFilter = tabId;
+            renderPatientList();
+        } else if (origHandleTabClick) {
+            origHandleTabClick(tabId);
+        }
+    };
+
+    var origHandleScopeChange = window.handleScopeChange;
+    window.handleScopeChange = function(scope) {
+        if (origHandleScopeChange) origHandleScopeChange(scope);
+        patScopeFilter = scope;
+        renderPatientList();
+    };
+}
+
+/* ============================================================
+ * FILTERING
+ * ============================================================ */
+function getFilteredPatients() {
+    var list = ClinicalDataService.getPatientList().slice();
+
+    if (patLocActiveFilter === 'loc-recent') {
+        list = list.filter(function(p) { return p.daysAdmitted <= 3; });
+    } else if (patLocActiveFilter === 'loc-discharge') {
+        list = list.filter(function(p) { return p.plannedDischarge === true; });
+    } else if (patLocActiveFilter === 'loc-icu') {
+        list = list.filter(function(p) {
+            return (p.room && p.room.toLowerCase().includes('icu')) ||
+                   p.department === 'Intensive Care';
+        });
+    } else if (patLocActiveFilter === 'loc-surgery') {
+        list = list.filter(function(p) { return p.inSurgery === true; });
+    }
+
+    if (patScopeFilter === 'mine') {
+        list = list.filter(function(p) {
+            return p.attendingPhysician === CURRENT_USER.name;
+        });
+    } else if (patScopeFilter === 'dept') {
+        list = list.filter(function(p) {
+            return p.department === CURRENT_USER.department ||
+                   (p.serviceUnit && p.serviceUnit.includes(CURRENT_USER.department));
+        });
+    }
+
+    if (patSearchTerm) {
+        list = list.filter(function(p) {
+            var text = (p.name + ' ' + (p.room || '') + ' ' + p.attendingPhysician + ' ' + p.medicalProblem).toLowerCase();
+            return text.includes(patSearchTerm);
+        });
+    }
+
+    return list;
+}
+
+/* ============================================================
+ * ALERT HELPERS
+ * ============================================================ */
 function getAlertSeverity(alert) {
     if (alert.includes('Allergy') || alert.includes('High-Risk')) return 'danger';
     if (alert === 'DNR' || alert === 'Isolation') return 'dnr';
@@ -53,9 +127,14 @@ function getStatusIcon(status, type) {
     return `<span class="${cls}" title="${type}: ${status}"><i class="pi ${icon}"></i>${dotNew}${dotAlert}</span>`;
 }
 
+/* ============================================================
+ * RENDER
+ * ============================================================ */
 function renderPatientList() {
     const container = document.getElementById('patientListContainer');
     if (!container) return;
+
+    const patients = getFilteredPatients();
 
     let html = '';
     html += `<table class="patient-table w-full">`;
@@ -74,79 +153,83 @@ function renderPatientList() {
     html += `</tr></thead>`;
     html += `<tbody>`;
 
-    var PatientListData = ClinicalDataService.getPatientList();
+    if (patients.length === 0) {
+        html += `<tr><td colspan="11" class="pat-empty-state"><i class="pi pi-inbox"></i> No patients match the current filter.</td></tr>`;
+    } else {
+        patients.forEach(patient => {
+            const genderIcon = patient.gender === 'Male' ? 'pi-mars' : 'pi-venus';
+            const genderColor = patient.gender === 'Male' ? 'color: var(--ech-primary)' : 'color: #e91e63';
+            const admissionIcon = patient.admissionType === 'emergency'
+                ? '<i class="pi pi-bolt admission-icon admission-emergency" title="Urgencias"></i>'
+                : '<i class="pi pi-home admission-icon admission-inpatient" title="Hospitalizado"></i>';
 
-    PatientListData.forEach(patient => {
-        const genderIcon = patient.gender === 'Male' ? 'pi-mars' : 'pi-venus';
-        const genderColor = patient.gender === 'Male' ? 'color: var(--ech-primary)' : 'color: #e91e63';
-        const admissionIcon = patient.admissionType === 'emergency'
-            ? '<i class="pi pi-bolt admission-icon admission-emergency" title="Urgencias"></i>'
-            : '<i class="pi pi-home admission-icon admission-inpatient" title="Hospitalizado"></i>';
+            const daysClass = patient.daysAdmitted > 30 ? 'days-highlight days-long' : (patient.daysAdmitted > 7 ? 'days-highlight days-medium' : 'days-highlight');
 
-        const daysClass = patient.daysAdmitted > 30 ? 'days-highlight days-long' : (patient.daysAdmitted > 7 ? 'days-highlight days-medium' : 'days-highlight');
+            html += `<tr class="patient-row cursor-pointer" onclick="navigateToPatient(${patient.id})" data-patient-id="${patient.id}">`;
 
-        html += `<tr class="patient-row cursor-pointer" onclick="navigateToPatient(${patient.id})" data-patient-id="${patient.id}">`;
+            html += `<td class="col-room"><span class="room-number">${patient.room}</span></td>`;
 
-        html += `<td class="col-room"><span class="room-number">${patient.room}</span></td>`;
+            html += `<td class="col-admission">${admissionIcon}</td>`;
 
-        html += `<td class="col-admission">${admissionIcon}</td>`;
+            html += `<td class="col-patient">
+                        <span class="patient-name-cell">${patient.name}</span>
+                        <span class="patient-sub-info">Rec ID ${patient.id} &middot; Ep. ${patient.episode}</span>
+                     </td>`;
 
-        html += `<td class="col-patient">
-                    <span class="patient-name-cell">${patient.name}</span>
-                    <span class="patient-sub-info">Rec ID ${patient.id} &middot; Ep. ${patient.episode}</span>
-                 </td>`;
+            html += `<td class="col-age-sex">
+                        <span>${patient.age}</span>
+                        <i class="pi ${genderIcon}" style="${genderColor}"></i>
+                     </td>`;
 
-        html += `<td class="col-age-sex">
-                    <span>${patient.age}</span>
-                    <i class="pi ${genderIcon}" style="${genderColor}"></i>
-                 </td>`;
+            html += `<td class="col-problem"><span class="problem-text">${patient.medicalProblem}</span></td>`;
 
-        html += `<td class="col-problem"><span class="problem-text">${patient.medicalProblem}</span></td>`;
+            html += `<td class="col-physician"><span class="physician-name">${patient.attendingPhysician}</span></td>`;
 
-        html += `<td class="col-physician"><span class="physician-name">${patient.attendingPhysician}</span></td>`;
+            html += `<td class="col-payer">${patient.payer}</td>`;
 
-        html += `<td class="col-payer">${patient.payer}</td>`;
+            html += `<td class="col-alerts">`;
+            if (patient.alerts && patient.alerts.length > 0) {
+                patient.alerts.forEach(alert => {
+                    const severity = getAlertSeverity(alert);
+                    const icon = getAlertIcon(alert);
+                    html += `<span class="p-tag-custom p-tag-${severity}" title="${alert}"><i class="pi ${icon}"></i> ${alert}</span> `;
+                });
+            } else {
+                html += `<span class="no-alerts">—</span>`;
+            }
+            html += `</td>`;
 
-        html += `<td class="col-alerts">`;
-        if (patient.alerts.length > 0) {
-            patient.alerts.forEach(alert => {
-                const severity = getAlertSeverity(alert);
-                const icon = getAlertIcon(alert);
-                html += `<span class="p-tag-custom p-tag-${severity}" title="${alert}"><i class="pi ${icon}"></i> ${alert}</span> `;
-            });
-        } else {
-            html += `<span class="no-alerts">—</span>`;
-        }
-        html += `</td>`;
+            html += `<td class="col-days"><span class="${daysClass}">${patient.daysAdmitted}</span></td>`;
 
-        html += `<td class="col-days"><span class="${daysClass}">${patient.daysAdmitted}</span></td>`;
+            html += `<td class="col-status">
+                        <div class="status-icons-group">
+                            ${getStatusIcon(patient.statusMeds, 'meds')}
+                            ${getStatusIcon(patient.statusOrders, 'orders')}
+                            ${getStatusIcon(patient.statusVitals, 'vitals')}
+                        </div>
+                     </td>`;
 
-        html += `<td class="col-status">
-                    <div class="status-icons-group">
-                        ${getStatusIcon(patient.statusMeds, 'meds')}
-                        ${getStatusIcon(patient.statusOrders, 'orders')}
-                        ${getStatusIcon(patient.statusVitals, 'vitals')}
-                    </div>
-                 </td>`;
+            html += `<td class="col-actions">
+                        <button class="row-action-btn" onclick="event.stopPropagation(); toggleRowMenu(${patient.id})" title="Acciones">
+                            <i class="pi pi-ellipsis-v"></i>
+                        </button>
+                        <div class="row-dropdown" id="rowMenu-${patient.id}">
+                            <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('view', ${patient.id})"><i class="pi pi-eye"></i> Ver Detalle</button>
+                            <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('notes', ${patient.id})"><i class="pi pi-pencil"></i> Notas</button>
+                            <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('orders', ${patient.id})"><i class="pi pi-file"></i> Órdenes</button>
+                            <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('meds', ${patient.id})"><i class="pi pi-box"></i> Medicación</button>
+                        </div>
+                     </td>`;
 
-        html += `<td class="col-actions">
-                    <button class="row-action-btn" onclick="event.stopPropagation(); toggleRowMenu(${patient.id})" title="Acciones">
-                        <i class="pi pi-ellipsis-v"></i>
-                    </button>
-                    <div class="row-dropdown" id="rowMenu-${patient.id}">
-                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('view', ${patient.id})"><i class="pi pi-eye"></i> Ver Detalle</button>
-                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('notes', ${patient.id})"><i class="pi pi-pencil"></i> Notas</button>
-                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('orders', ${patient.id})"><i class="pi pi-file"></i> Órdenes</button>
-                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('meds', ${patient.id})"><i class="pi pi-box"></i> Medicación</button>
-                    </div>
-                 </td>`;
-
-        html += `</tr>`;
-    });
+            html += `</tr>`;
+        });
+    }
 
     html += `</tbody></table>`;
-
     container.innerHTML = html;
+
+    const badge = document.getElementById('toolbarSearchBadge');
+    if (badge) badge.textContent = patients.length;
 }
 
 function navigateToPatient(patientId) {
@@ -168,16 +251,8 @@ function handleRowAction(action, patientId) {
 }
 
 function filterPatientList(searchTerm) {
-    const rows = document.querySelectorAll('.patient-row');
-    let visibleCount = 0;
-    rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        const match = !searchTerm || text.includes(searchTerm.toLowerCase());
-        row.style.display = match ? '' : 'none';
-        if (match) visibleCount++;
-    });
-    const badge = document.getElementById('toolbarSearchBadge');
-    if (badge) badge.textContent = visibleCount;
+    patSearchTerm = (searchTerm || '').toLowerCase();
+    renderPatientList();
 }
 
 document.addEventListener('click', function(e) {
