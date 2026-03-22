@@ -369,7 +369,7 @@ function openOpDrawer(apptId) {
     html += '<div class="ed-drawer-value"><span class="op-status-pill ' + statusClass + '">' + appt.status + '</span></div>';
     html += '</div>';
 
-    if (appt.waitMin > 0 || appt.delayMin > 0) {
+    if (appt.waitMinutes > 0 || appt.delayMinutes > 0) {
         html += '<div class="ed-drawer-section">';
         html += '<div class="ed-drawer-label">Wait / Delay</div>';
         html += '<div class="ed-drawer-value">' + formatOpWaitDelay(appt) + '</div>';
