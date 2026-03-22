@@ -49,6 +49,7 @@ var PW_DATA = {
         {
             id: 'dl1',
             tab: 'urgent-prep',
+            warehouse: 'central',
             priority: 'urgent',
             patient: {
                 name: 'THOMAS MEYER WOOD',
@@ -82,6 +83,7 @@ var PW_DATA = {
         {
             id: 'dl2',
             tab: 'urgent-prep',
+            warehouse: 'central',
             priority: 'urgent',
             patient: {
                 name: 'ANNA KOWALSKI',
@@ -115,6 +117,7 @@ var PW_DATA = {
         {
             id: 'dl3',
             tab: 'urgent-prep',
+            warehouse: 'central',
             priority: 'urgent',
             patient: {
                 name: 'ELENA GARCIA MORALES',
@@ -148,6 +151,7 @@ var PW_DATA = {
         {
             id: 'dl4',
             tab: 'pend-prep',
+            warehouse: 'central',
             priority: 'normal',
             patient: {
                 name: 'JUAN PÉREZ',
@@ -177,6 +181,7 @@ var PW_DATA = {
         {
             id: 'dl5',
             tab: 'pend-prep',
+            warehouse: 'central',
             priority: 'normal',
             patient: {
                 name: 'JAMES O\'BRIEN',
@@ -206,6 +211,7 @@ var PW_DATA = {
         {
             id: 'dl6',
             tab: 'pend-prep',
+            warehouse: 'central',
             priority: 'normal',
             patient: {
                 name: 'MARIA SANTOS FERREIRA',
@@ -239,6 +245,7 @@ var PW_DATA = {
         {
             id: 'dl7',
             tab: 'pend-prep',
+            warehouse: 'central',
             priority: 'normal',
             patient: {
                 name: 'RAFAEL MENDEZ CRUZ',
@@ -268,6 +275,7 @@ var PW_DATA = {
         {
             id: 'dl8',
             tab: 'prepared',
+            warehouse: 'central',
             priority: 'normal',
             patient: {
                 name: 'CARLOS VEGA RUIZ',
@@ -297,6 +305,7 @@ var PW_DATA = {
         {
             id: 'dl9',
             tab: 'dispensed',
+            warehouse: 'central',
             priority: 'normal',
             patient: {
                 name: 'LUISA FERNÁNDEZ ALBA',
@@ -556,6 +565,7 @@ function getPWFilteredLines() {
     var q = PW_STATE.searchQuery.toLowerCase().trim();
     return PW_DATA.lines.filter(function(line) {
         if (line.tab !== PW_STATE.activeTab) return false;
+        if (PW_STATE.selectedWarehouse !== 'all' && line.warehouse && line.warehouse !== PW_STATE.selectedWarehouse) return false;
         if (PW_STATE.selectedWard !== 'all' && line.patient.ward.indexOf(PW_STATE.selectedWard) === -1) return false;
         if (q) {
             var haystack = (line.patient.name + ' ' + line.medication.name).toLowerCase();
@@ -563,6 +573,21 @@ function getPWFilteredLines() {
         }
         return true;
     });
+}
+
+/** Returns the count of lines matching a given tab under current warehouse/ward/search filters */
+function getPWTabCount(tabId) {
+    var q = PW_STATE.searchQuery.toLowerCase().trim();
+    return PW_DATA.lines.filter(function(line) {
+        if (line.tab !== tabId) return false;
+        if (PW_STATE.selectedWarehouse !== 'all' && line.warehouse && line.warehouse !== PW_STATE.selectedWarehouse) return false;
+        if (PW_STATE.selectedWard !== 'all' && line.patient.ward.indexOf(PW_STATE.selectedWard) === -1) return false;
+        if (q) {
+            var haystack = (line.patient.name + ' ' + line.medication.name).toLowerCase();
+            if (haystack.indexOf(q) === -1) return false;
+        }
+        return true;
+    }).length;
 }
 
 /** Escapes HTML special characters to prevent XSS */
