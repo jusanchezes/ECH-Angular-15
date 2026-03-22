@@ -1,9 +1,25 @@
 var DOCUMENTS_DATA = ClinicalDataService.getDocuments();
 
+var _docCtrl = DocPreview.createController({
+    getData: function () { return DOCUMENTS_DATA; },
+    previewPaneId: 'doc-preview-pane',
+    previewBodyId: 'doc-preview-body',
+    containerId: 'doc-workspace',
+    previewOpenClass: 'preview-open',
+    hideContainerOnModal: true,
+    getPreviewFooterHtml: function (doc) {
+        return '<div class="doc-preview-footer">' +
+            '<button class="doc-preview-footer-btn" onclick="handleDocAction(\'download\',' + doc.id + ')"><i class="pi pi-file-pdf"></i> Download PDF</button>' +
+            '<button class="doc-preview-footer-btn" onclick="handleDocAction(\'print\',' + doc.id + ')"><i class="pi pi-print"></i> Print</button>' +
+            '</div>';
+    },
+    modalId: 'doc-reading-modal',
+    modalContentId: 'doc-reading-content'
+});
+
 let currentFilter = 'all';
 let currentQuickFilter = 'all';
 let currentSearch = '';
-let currentPreviewDocId = null;
 
 function getFilteredDocuments() {
     let docs = DOCUMENTS_DATA;
@@ -49,12 +65,9 @@ function renderDocumentTable() {
     const docs = getFilteredDocuments();
     if (badge) badge.textContent = docs.length;
 
-    if (currentPreviewDocId !== null && !docs.find(d => d.id === currentPreviewDocId)) {
-        currentPreviewDocId = null;
-        const workspace = document.getElementById('doc-workspace');
-        const previewPane = document.getElementById('doc-preview-pane');
-        if (workspace) workspace.classList.remove('preview-open');
-        if (previewPane) previewPane.style.display = 'none';
+    const currentId = _docCtrl.getCurrentDocId();
+    if (currentId !== null && !docs.find(d => d.id === currentId)) {
+        _docCtrl.closePreview();
     }
 
     if (docs.length === 0) {
@@ -67,6 +80,8 @@ function renderDocumentTable() {
             </tr>`;
         return;
     }
+
+    const activeId = _docCtrl.getCurrentDocId();
 
     tbody.innerHTML = docs.map(doc => {
         const keyStar = doc.keyDocument
@@ -82,7 +97,7 @@ function renderDocumentTable() {
         const encounterLabel = doc.encounter || doc.admission
             ? `<span class="doc-encounter-badge">${doc.encounter || doc.admission}</span>`
             : '<span style="color:var(--ech-text-muted)">—</span>';
-        const isActive = doc.id === currentPreviewDocId ? ' doc-row-active' : '';
+        const isActive = doc.id === activeId ? ' doc-row-active' : '';
 
         return `
             <tr class="ehr-row doc-table-row${isActive}" onclick="openDocPreview(${doc.id})">
@@ -130,61 +145,21 @@ function searchDocuments(value) {
 }
 
 function openDocPreview(docId) {
-    const doc = DOCUMENTS_DATA.find(d => d.id === docId);
-    if (!doc) return;
-
-    currentPreviewDocId = docId;
-
-    const workspace = document.getElementById('doc-workspace');
-    const previewPane = document.getElementById('doc-preview-pane');
-    const previewBody = document.getElementById('doc-preview-body');
-
-    if (!workspace || !previewPane || !previewBody) return;
-
-    previewPane.style.display = '';
-    workspace.classList.add('preview-open');
-
-    const footerHtml =
-        `<div class="doc-preview-footer">` +
-        `<button class="doc-preview-footer-btn" onclick="handleDocAction('download',${doc.id})"><i class="pi pi-file-pdf"></i> Download PDF</button>` +
-        `<button class="doc-preview-footer-btn" onclick="handleDocAction('print',${doc.id})"><i class="pi pi-print"></i> Print</button>` +
-        `</div>`;
-
-    previewBody.innerHTML = DocPreview.buildPreviewBodyHtml(doc, footerHtml);
-
+    _docCtrl.openPreview(docId);
     renderDocumentTable();
 }
 
 function closeDocPreview() {
-    currentPreviewDocId = null;
-    const workspace = document.getElementById('doc-workspace');
-    const previewPane = document.getElementById('doc-preview-pane');
-    if (workspace) workspace.classList.remove('preview-open');
-    if (previewPane) previewPane.style.display = 'none';
+    _docCtrl.closePreview();
     renderDocumentTable();
 }
 
 function openReadingModal() {
-    const doc = DOCUMENTS_DATA.find(d => d.id === currentPreviewDocId);
-    if (!doc) return;
-
-    const workspace = document.getElementById('doc-workspace');
-    const modal = document.getElementById('doc-reading-modal');
-    const content = document.getElementById('doc-reading-content');
-
-    if (!modal || !content) return;
-
-    workspace.style.display = 'none';
-    modal.style.display = '';
-
-    content.innerHTML = DocPreview.buildReadingContentHtml(doc);
+    _docCtrl.openModal();
 }
 
 function closeReadingModal() {
-    const workspace = document.getElementById('doc-workspace');
-    const modal = document.getElementById('doc-reading-modal');
-    if (workspace) workspace.style.display = '';
-    if (modal) modal.style.display = 'none';
+    _docCtrl.closeModal();
 }
 
 function handleDocAction(action, docId) {
@@ -193,6 +168,6 @@ function handleDocAction(action, docId) {
     console.log(`Document action: ${action} on "${doc.name}" (ID: ${docId})`);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     renderDocumentTable();
 });

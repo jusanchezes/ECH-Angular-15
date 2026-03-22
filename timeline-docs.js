@@ -2,15 +2,36 @@
  * @file timeline-docs.js — Documents & Notes section for the Timeline page
  * @description Renders a filterable document table with inline preview panel
  *   and full reading modal, sourced from the current encounter documents.
- *   Uses DocPreview shared utilities (doc-preview-shared.js).
+ *   Delegates lifecycle management to DocPreview.createController()
+ *   (doc-preview-shared.js) and rendering helpers to DocPreview.* utilities.
  *   Angular equivalent: TimelineDocsComponent (standalone).
  */
 
 var TL_DOCS_DATA = ClinicalDataService.getEncounterDocuments();
 
+var _tlPreviewCtrl = DocPreview.createController({
+    getData: function () { return TL_DOCS_DATA; },
+    previewPaneId: 'tl-doc-preview-pane',
+    previewBodyId: 'tl-doc-preview-body',
+    containerId: 'tl-doc-workspace',
+    previewOpenClass: 'preview-open',
+    getPreviewFooterHtml: function (doc) {
+        return '<div class="doc-preview-footer">' +
+            '<button class="doc-preview-footer-btn" onclick="tlHandleDocAction(\'download\',\'' + doc.id + '\')"><i class="pi pi-file-pdf"></i> Download PDF</button>' +
+            '<button class="doc-preview-footer-btn" onclick="tlHandleDocAction(\'print\',\'' + doc.id + '\')"><i class="pi pi-print"></i> Print</button>' +
+            '</div>';
+    },
+    modalId: 'tl-doc-reading-modal',
+    modalContentId: 'tl-doc-reading-content'
+});
+
 var tlCurrentQuickFilter = 'all';
-var tlCurrentPreviewDocId = null;
 var tlDocsSectionCollapsed = false;
+
+/* -----------------------------------------------------------------------
+   Clinical note types (for Notes Only / Documents Only filter)
+----------------------------------------------------------------------- */
+var TL_NOTE_TYPES = ['nursing note', 'progress note', 'doctor note', 'clinical note'];
 
 /* -----------------------------------------------------------------------
    Filtering
@@ -18,17 +39,16 @@ var tlDocsSectionCollapsed = false;
 function tlGetFilteredDocs() {
     var docs = TL_DOCS_DATA;
 
-    var NOTE_TYPES = ['nursing note', 'progress note', 'doctor note', 'clinical note'];
     if (tlCurrentQuickFilter === 'notes-only') {
-        docs = docs.filter(function(d) { return NOTE_TYPES.indexOf(d.type.toLowerCase()) !== -1; });
+        docs = docs.filter(function (d) { return TL_NOTE_TYPES.indexOf(d.type.toLowerCase()) !== -1; });
     } else if (tlCurrentQuickFilter === 'documents-only') {
-        docs = docs.filter(function(d) { return NOTE_TYPES.indexOf(d.type.toLowerCase()) === -1; });
+        docs = docs.filter(function (d) { return TL_NOTE_TYPES.indexOf(d.type.toLowerCase()) === -1; });
     } else if (tlCurrentQuickFilter === 'draft-only') {
-        docs = docs.filter(function(d) { return d.status === 'draft'; });
+        docs = docs.filter(function (d) { return d.status === 'draft'; });
     } else if (tlCurrentQuickFilter === 'signed-only') {
-        docs = docs.filter(function(d) { return d.status === 'signed'; });
+        docs = docs.filter(function (d) { return d.status === 'signed'; });
     } else if (tlCurrentQuickFilter === 'latest') {
-        docs = docs.slice().sort(function(a, b) {
+        docs = docs.slice().sort(function (a, b) {
             return DocPreview.parseDateStr(b.date) - DocPreview.parseDateStr(a.date);
         }).slice(0, 5);
     }
@@ -54,9 +74,11 @@ function tlRenderDocTable() {
     if (!tbody) return;
 
     var docs = tlGetFilteredDocs();
+    var activeId = _tlPreviewCtrl.getCurrentDocId();
 
-    if (tlCurrentPreviewDocId !== null && !docs.find(function(d) { return d.id === tlCurrentPreviewDocId; })) {
-        tlCloseDocPreview();
+    if (activeId !== null && !docs.find(function (d) { return d.id === activeId; })) {
+        _tlPreviewCtrl.closePreview();
+        activeId = null;
     }
 
     if (docs.length === 0) {
@@ -64,12 +86,12 @@ function tlRenderDocTable() {
         return;
     }
 
-    tbody.innerHTML = docs.map(function(doc) {
+    tbody.innerHTML = docs.map(function (doc) {
         var keyStar = doc.keyDocument
             ? '<span class="doc-key-star" title="Key clinical document"><i class="pi pi-star-fill"></i></span>'
             : '';
         var statusTag = DocPreview.getStatusTag(doc.status);
-        var isActive = doc.id === tlCurrentPreviewDocId ? ' doc-row-active' : '';
+        var isActive = doc.id === activeId ? ' doc-row-active' : '';
 
         return '<tr class="ehr-row doc-table-row' + isActive + '" onclick="tlOpenDocPreview(\'' + doc.id + '\')">' +
             '<td class="tl-col-key">' + keyStar + '</td>' +
@@ -96,7 +118,7 @@ function tlRenderDocTable() {
 function tlSetQuickFilter(qf) {
     tlCurrentQuickFilter = qf;
     var chips = document.querySelectorAll('#tlDocQuickFilters .doc-qf-chip');
-    chips.forEach(function(c) { c.classList.remove('active'); });
+    chips.forEach(function (c) { c.classList.remove('active'); });
     var active = document.querySelector('#tlDocQuickFilters .doc-qf-chip[data-qf="' + qf + '"]');
     if (active) active.classList.add('active');
     tlRenderDocTable();
@@ -110,74 +132,38 @@ function tlToggleDocsSection() {
     var body = document.getElementById('tl-docs-body');
     var icon = document.getElementById('tlDocsToggleIcon');
     if (body) body.classList.toggle('collapsed', tlDocsSectionCollapsed);
-    if (icon) {
-        icon.className = tlDocsSectionCollapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up';
-    }
+    if (icon) icon.className = tlDocsSectionCollapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up';
 }
 
 /* -----------------------------------------------------------------------
-   Preview panel
+   Preview panel — delegates lifecycle to _tlPreviewCtrl
 ----------------------------------------------------------------------- */
 function tlOpenDocPreview(docId) {
-    var doc = TL_DOCS_DATA.find(function(d) { return d.id === docId; });
-    if (!doc) return;
-
-    tlCurrentPreviewDocId = docId;
-
-    var workspace = document.getElementById('tl-doc-workspace');
-    var previewPane = document.getElementById('tl-doc-preview-pane');
-    var previewBody = document.getElementById('tl-doc-preview-body');
-
-    if (!workspace || !previewPane || !previewBody) return;
-
-    previewPane.style.display = '';
-    workspace.classList.add('preview-open');
-
-    var footerHtml =
-        '<div class="doc-preview-footer">' +
-        '<button class="doc-preview-footer-btn" onclick="tlHandleDocAction(\'download\',\'' + doc.id + '\')"><i class="pi pi-file-pdf"></i> Download PDF</button>' +
-        '<button class="doc-preview-footer-btn" onclick="tlHandleDocAction(\'print\',\'' + doc.id + '\')"><i class="pi pi-print"></i> Print</button>' +
-        '</div>';
-
-    previewBody.innerHTML = DocPreview.buildPreviewBodyHtml(doc, footerHtml);
-
+    _tlPreviewCtrl.openPreview(docId);
     tlRenderDocTable();
 }
 
 function tlCloseDocPreview() {
-    tlCurrentPreviewDocId = null;
-    var workspace = document.getElementById('tl-doc-workspace');
-    var previewPane = document.getElementById('tl-doc-preview-pane');
-    if (workspace) workspace.classList.remove('preview-open');
-    if (previewPane) previewPane.style.display = 'none';
+    _tlPreviewCtrl.closePreview();
     tlRenderDocTable();
 }
 
 /* -----------------------------------------------------------------------
-   Reading modal (fixed overlay)
+   Reading modal — delegates lifecycle to _tlPreviewCtrl
 ----------------------------------------------------------------------- */
 function tlOpenReadingModal() {
-    var doc = TL_DOCS_DATA.find(function(d) { return d.id === tlCurrentPreviewDocId; });
-    if (!doc) return;
-
-    var modal = document.getElementById('tl-doc-reading-modal');
-    var content = document.getElementById('tl-doc-reading-content');
-    if (!modal || !content) return;
-
-    modal.style.display = '';
-    content.innerHTML = DocPreview.buildReadingContentHtml(doc);
+    _tlPreviewCtrl.openModal();
 }
 
 function tlCloseReadingModal() {
-    var modal = document.getElementById('tl-doc-reading-modal');
-    if (modal) modal.style.display = 'none';
+    _tlPreviewCtrl.closeModal();
 }
 
 /* -----------------------------------------------------------------------
    Actions (prototype — console only)
 ----------------------------------------------------------------------- */
 function tlHandleDocAction(action, docId) {
-    var doc = TL_DOCS_DATA.find(function(d) { return d.id === docId; });
+    var doc = TL_DOCS_DATA.find(function (d) { return d.id === docId; });
     if (!doc) return;
     console.log('Timeline doc action:', action, 'on "' + doc.name + '" (ID: ' + docId + ')');
 }
@@ -185,7 +171,7 @@ function tlHandleDocAction(action, docId) {
 /* -----------------------------------------------------------------------
    Init
 ----------------------------------------------------------------------- */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('tlDocTableBody')) {
         tlRenderDocTable();
     }
