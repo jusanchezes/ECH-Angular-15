@@ -72,9 +72,6 @@ function renderOpToolbar() {
                     '<input type="text" class="toolbar-search-input" placeholder="Search Patient..." id="opSearch" oninput="filterOpList(this.value)">' +
                     '<span class="toolbar-search-badge" id="opSearchBadge">18</span>' +
                 '</div>' +
-                '<button class="op-walkin-btn" onclick="opAddWalkin()">' +
-                    '<i class="pi pi-plus"></i> Add Walk-in' +
-                '</button>' +
             '</div>' +
         '</div>';
 }
@@ -432,10 +429,22 @@ function opHandleAction(action, apptId) {
     console.log('Outpatient action:', action, 'for appointment:', apptId);
 }
 
+function injectOpWalkinBtn() {
+    var actions = document.querySelector('.tab-bar-actions');
+    if (!actions) return;
+    var btn = document.createElement('button');
+    btn.className = 'op-walkin-btn';
+    btn.title = 'Add Walk-in Appointment';
+    btn.innerHTML = '<i class="pi pi-plus"></i> Add Walk-in';
+    btn.onclick = opAddWalkin;
+    actions.insertBefore(btn, actions.firstChild);
+}
+
 function initOutpatient() {
     var wardLabel = document.querySelector('[data-field="wardName"]');
     if (wardLabel) wardLabel.textContent = 'Outpatient Appointments';
     renderOpToolbar();
+    injectOpWalkinBtn();
     updateOpTabCounts();
     renderOpList();
     wireOpTabs();

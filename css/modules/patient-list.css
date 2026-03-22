@@ -763,10 +763,7 @@
     opacity: 0.5;
 }
 
-/* ============================================================
-   OUTPATIENT APPOINTMENTS — Column widths, status pills,
-   day-navigation toolbar, and auxiliary elements.
-   ============================================================ */
+/* === OUTPATIENT APPOINTMENTS === */
 
 /* --- Column widths ---------------------------------------- */
 .op-col-time       { width: 72px;  min-width: 64px;  }
