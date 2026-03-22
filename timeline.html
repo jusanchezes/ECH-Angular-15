@@ -98,6 +98,27 @@
                 </div>
             </div>
 
+            <div class="filter-group flex align-items-center gap-1">
+                <label><i class="pi pi-tag"></i> Type:</label>
+                <div class="multi-select-wrapper">
+                    <div class="multi-select-btn flex align-items-center gap-1 fs-xs" onclick="toggleTypeSelect()">
+                        <span id="typeLabel">All Types</span>
+                        <i class="pi pi-chevron-down ml-auto text-xs"></i>
+                    </div>
+                    <div class="multi-select-panel" id="typePanel">
+                        <label class="ms-option"><input type="checkbox" value="All" checked onchange="updateTypeFilter(this)"> All</label>
+                        <label class="ms-option"><input type="checkbox" value="Document" onchange="updateTypeFilter(this)"> Document</label>
+                        <label class="ms-option"><input type="checkbox" value="Note" onchange="updateTypeFilter(this)"> Note</label>
+                        <label class="ms-option"><input type="checkbox" value="Exam" onchange="updateTypeFilter(this)"> Exam</label>
+                        <label class="ms-option"><input type="checkbox" value="Medication" onchange="updateTypeFilter(this)"> Medication</label>
+                        <label class="ms-option"><input type="checkbox" value="Images" onchange="updateTypeFilter(this)"> Images</label>
+                        <label class="ms-option"><input type="checkbox" value="Care" onchange="updateTypeFilter(this)"> Care</label>
+                        <label class="ms-option"><input type="checkbox" value="Surgery" onchange="updateTypeFilter(this)"> Surgery</label>
+                        <label class="ms-option"><input type="checkbox" value="Vitals" onchange="updateTypeFilter(this)"> Vitals</label>
+                    </div>
+                </div>
+            </div>
+
             <div class="filter-group flex-1 flex align-items-center gap-1">
                 <label><i class="pi pi-search"></i></label>
                 <input type="text" class="search-input w-full fs-xs" id="searchInput" placeholder="Search timeline..." data-i18n-placeholder="FILTER.SEARCH_PLACEHOLDER">
@@ -152,7 +173,6 @@
 <script src="clinical-data.service.js"></script>
 <script src="layout.js"></script>
 <script src="doc-preview-shared.js"></script>
-<script src="timeline-docs.js"></script>
 <script src="app.js"></script>
 
 </body>
