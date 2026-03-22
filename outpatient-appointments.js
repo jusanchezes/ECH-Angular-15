@@ -88,9 +88,6 @@ function opOpenCalendar() {
     console.log('Calendar picker opened');
 }
 
-function opAddWalkin() {
-    console.log('Add Walk-in clicked');
-}
 
 function updateOpTabCounts() {
     var all = opAppointments;
@@ -429,22 +426,10 @@ function opHandleAction(action, apptId) {
     console.log('Outpatient action:', action, 'for appointment:', apptId);
 }
 
-function injectOpWalkinBtn() {
-    var actions = document.querySelector('.tab-bar-actions');
-    if (!actions) return;
-    var btn = document.createElement('button');
-    btn.className = 'op-walkin-btn';
-    btn.title = 'Add Walk-in Appointment';
-    btn.innerHTML = '<i class="pi pi-plus"></i> Add Walk-in';
-    btn.onclick = opAddWalkin;
-    actions.insertBefore(btn, actions.firstChild);
-}
-
 function initOutpatient() {
     var wardLabel = document.querySelector('[data-field="wardName"]');
     if (wardLabel) wardLabel.textContent = 'Outpatient Appointments';
     renderOpToolbar();
-    injectOpWalkinBtn();
     updateOpTabCounts();
     renderOpList();
     wireOpTabs();
