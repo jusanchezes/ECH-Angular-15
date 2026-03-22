@@ -274,6 +274,10 @@ function renderDayList() {
     html += '</tr></thead>';
     html += '<tbody>';
 
+    if (patients.length === 0) {
+        html += '<tr><td colspan="8" class="pat-empty-state"><i class="pi pi-inbox"></i> No patients match the current filter.</td></tr>';
+    }
+
     patients.forEach(function (patient) {
         var genderIcon = patient.gender === 'Male' ? 'pi-mars' : 'pi-venus';
         var genderColor = patient.gender === 'Male' ? 'color: var(--ech-primary)' : 'color: #e91e63';
