@@ -69,13 +69,15 @@
             display: none;
         }
         /* Column widths for timeline doc table */
-        .tl-col-key    { width: 30px; text-align: center; }
-        .tl-col-name   { min-width: 180px; }
-        .tl-col-author { min-width: 140px; }
-        .tl-col-type   { min-width: 120px; }
-        .tl-col-date   { min-width: 130px; white-space: nowrap; }
-        .tl-col-status { width: 88px; text-align: center; }
-        .tl-col-actions { width: 70px; text-align: center; }
+        .tl-col-key      { width: 30px; text-align: center; }
+        .tl-col-name     { min-width: 170px; }
+        .tl-col-author   { min-width: 130px; }
+        .tl-col-dept     { min-width: 110px; }
+        .tl-col-type     { min-width: 110px; }
+        .tl-col-date     { min-width: 130px; white-space: nowrap; }
+        .tl-col-status   { width: 86px; text-align: center; }
+        .tl-col-encounter { min-width: 108px; }
+        .tl-col-actions  { width: 70px; text-align: center; }
     </style>
 </head>
 <body>
@@ -200,8 +202,8 @@
                     <button class="doc-qf-chip doc-qf-signed" data-qf="signed-only" onclick="tlSetQuickFilter('signed-only')">
                         <i class="pi pi-check-circle"></i> Signed Only
                     </button>
-                    <button class="doc-qf-chip" data-qf="key-only" onclick="tlSetQuickFilter('key-only')">
-                        <i class="pi pi-star"></i> Key Documents
+                    <button class="doc-qf-chip" data-qf="latest" onclick="tlSetQuickFilter('latest')">
+                        <i class="pi pi-clock"></i> Latest
                     </button>
                 </div>
                 <button class="tl-docs-toggle-btn" title="Collapse / expand" onclick="tlToggleDocsSection()">
@@ -220,9 +222,11 @@
                                         <th class="tl-col-key"></th>
                                         <th class="tl-col-name">Name</th>
                                         <th class="tl-col-author">Author</th>
+                                        <th class="tl-col-dept">Department</th>
                                         <th class="tl-col-type">Type</th>
                                         <th class="tl-col-date">Date</th>
                                         <th class="tl-col-status">Status</th>
+                                        <th class="tl-col-encounter">Encounter</th>
                                         <th class="tl-col-actions">Actions</th>
                                     </tr>
                                 </thead>
@@ -282,6 +286,7 @@
 <script src="mock-clinical-data.js"></script>
 <script src="clinical-data.service.js"></script>
 <script src="layout.js"></script>
+<script src="doc-preview-shared.js"></script>
 <script src="timeline-docs.js"></script>
 <script src="app.js"></script>
 

@@ -21,7 +21,7 @@ function getFilteredDocuments() {
     } else if (currentQuickFilter === 'all-history') {
         docs = docs.filter(d => d.encounter !== 'ENC-2026-001' && d.admission !== 'ADM-2026-001');
     } else if (currentQuickFilter === 'latest-reports') {
-        docs = docs.slice().sort((a, b) => parseDateStr(b.date) - parseDateStr(a.date)).slice(0, 5);
+        docs = docs.slice().sort((a, b) => DocPreview.parseDateStr(b.date) - DocPreview.parseDateStr(a.date)).slice(0, 5);
     } else if (currentQuickFilter === 'draft-only') {
         docs = docs.filter(d => d.status === 'draft');
     } else if (currentQuickFilter === 'signed-only') {
@@ -39,25 +39,6 @@ function getFilteredDocuments() {
     }
 
     return docs;
-}
-
-function parseDateStr(dateStr) {
-    const parts = dateStr.split(/[\/ ]/);
-    if (parts.length >= 3) {
-        return new Date(parts[2], parts[1] - 1, parts[0]);
-    }
-    return new Date(0);
-}
-
-function getStatusTag(status) {
-    const map = {
-        signed:   { cls: 'doc-status-signed',   label: 'Signed' },
-        draft:    { cls: 'doc-status-draft',     label: 'Draft' },
-        amended:  { cls: 'doc-status-amended',   label: 'Amended' },
-        external: { cls: 'doc-status-external',  label: 'External' }
-    };
-    const s = map[status] || { cls: 'doc-status-draft', label: status };
-    return `<span class="doc-status-tag ${s.cls}">${s.label}</span>`;
 }
 
 function renderDocumentTable() {
@@ -91,7 +72,7 @@ function renderDocumentTable() {
         const keyStar = doc.keyDocument
             ? `<span class="doc-key-star" title="Key clinical document"><i class="pi pi-star-fill"></i></span>`
             : '';
-        const statusTag = getStatusTag(doc.status);
+        const statusTag = DocPreview.getStatusTag(doc.status);
         const accessIcon = doc.accessWeb
             ? '<span class="doc-access-icon doc-access-active"><i class="pi pi-globe"></i></span>'
             : '<span class="doc-access-icon doc-access-inactive"><i class="pi pi-globe"></i></span>';
@@ -163,41 +144,13 @@ function openDocPreview(docId) {
     previewPane.style.display = '';
     workspace.classList.add('preview-open');
 
-    const isDraft = doc.status === 'draft';
-    const isReadOnly = doc.status === 'signed' || doc.status === 'amended';
-    const isExternal = doc.status === 'external';
+    const footerHtml =
+        `<div class="doc-preview-footer">` +
+        `<button class="doc-preview-footer-btn" onclick="handleDocAction('download',${doc.id})"><i class="pi pi-file-pdf"></i> Download PDF</button>` +
+        `<button class="doc-preview-footer-btn" onclick="handleDocAction('print',${doc.id})"><i class="pi pi-print"></i> Print</button>` +
+        `</div>`;
 
-    let bannerHtml = '';
-    if (isDraft) {
-        bannerHtml = `<div class="doc-preview-banner doc-preview-banner-draft"><i class="pi pi-pencil"></i> Draft — not yet signed</div>`;
-    } else if (isReadOnly) {
-        bannerHtml = `<div class="doc-preview-banner doc-preview-banner-signed"><i class="pi pi-lock"></i> Read-only — document is signed</div>`;
-    } else if (isExternal) {
-        bannerHtml = `<div class="doc-preview-banner doc-preview-banner-external"><i class="pi pi-external-link"></i> External document</div>`;
-    }
-
-    const encounterLine = (doc.encounter || doc.admission)
-        ? `<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Encounter</span><span>${doc.encounter || doc.admission}</span></div>`
-        : '';
-
-    previewBody.innerHTML = `
-        ${bannerHtml}
-        <div class="doc-preview-title">${doc.name}</div>
-        <div class="doc-preview-meta">
-            <div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Author</span><span>${doc.author}</span></div>
-            <div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Department</span><span>${doc.department}</span></div>
-            <div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Date</span><span>${doc.date}</span></div>
-            <div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Type</span><span>${doc.type}</span></div>
-            <div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Status</span><span>${getStatusTag(doc.status)}</span></div>
-            ${encounterLine}
-        </div>
-        <div class="doc-preview-divider"></div>
-        <div class="doc-preview-content">${doc.previewContent || 'No preview content available.'}</div>
-        <div class="doc-preview-footer">
-            <button class="doc-preview-footer-btn" onclick="handleDocAction('download',${doc.id})"><i class="pi pi-file-pdf"></i> Download PDF</button>
-            <button class="doc-preview-footer-btn" onclick="handleDocAction('print',${doc.id})"><i class="pi pi-print"></i> Print</button>
-        </div>
-    `;
+    previewBody.innerHTML = DocPreview.buildPreviewBodyHtml(doc, footerHtml);
 
     renderDocumentTable();
 }
@@ -224,34 +177,7 @@ function openReadingModal() {
     workspace.style.display = 'none';
     modal.style.display = '';
 
-    const isDraft = doc.status === 'draft';
-    const isReadOnly = doc.status === 'signed' || doc.status === 'amended';
-    const isExternal = doc.status === 'external';
-
-    let bannerHtml = '';
-    if (isDraft) {
-        bannerHtml = `<div class="doc-preview-banner doc-preview-banner-draft"><i class="pi pi-pencil"></i> Draft — not yet signed</div>`;
-    } else if (isReadOnly) {
-        bannerHtml = `<div class="doc-preview-banner doc-preview-banner-signed"><i class="pi pi-lock"></i> Read-only — document is signed</div>`;
-    } else if (isExternal) {
-        bannerHtml = `<div class="doc-preview-banner doc-preview-banner-external"><i class="pi pi-external-link"></i> External document</div>`;
-    }
-
-    const encounterLine = (doc.encounter || doc.admission)
-        ? `<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Encounter / Admission</span><span>${doc.encounter || doc.admission}</span></div>`
-        : '';
-
-    content.innerHTML = `
-        ${bannerHtml}
-        <div class="doc-reading-doc-title">${doc.name}</div>
-        <div class="doc-reading-doc-byline">${doc.author} &nbsp;·&nbsp; ${doc.department} &nbsp;·&nbsp; ${doc.date} &nbsp;·&nbsp; ${getStatusTag(doc.status)}</div>
-        <div class="doc-preview-meta" style="margin-bottom:20px">
-            <div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Type</span><span>${doc.type}</span></div>
-            ${encounterLine}
-        </div>
-        <div class="doc-preview-divider"></div>
-        <div class="doc-reading-body">${doc.previewContent || 'No preview content available.'}</div>
-    `;
+    content.innerHTML = DocPreview.buildReadingContentHtml(doc);
 }
 
 function closeReadingModal() {

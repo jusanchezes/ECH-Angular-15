@@ -19,13 +19,15 @@
     <link rel="stylesheet" href="css/responsive.css">
     <style>
         /* Previous Visits docs table column widths */
-        .pv-doc-col-key    { width: 28px; text-align: center; }
-        .pv-doc-col-name   { min-width: 160px; }
-        .pv-doc-col-author { min-width: 130px; }
-        .pv-doc-col-type   { min-width: 110px; }
-        .pv-doc-col-date   { min-width: 100px; white-space: nowrap; }
-        .pv-doc-col-status { width: 88px; text-align: center; }
-        .pv-doc-col-actions { width: 62px; text-align: center; }
+        .pv-doc-col-key      { width: 28px; text-align: center; }
+        .pv-doc-col-name     { min-width: 150px; }
+        .pv-doc-col-author   { min-width: 120px; }
+        .pv-doc-col-dept     { min-width: 100px; }
+        .pv-doc-col-type     { min-width: 100px; }
+        .pv-doc-col-date     { min-width: 100px; white-space: nowrap; }
+        .pv-doc-col-status   { width: 86px; text-align: center; }
+        .pv-doc-col-encounter { min-width: 100px; }
+        .pv-doc-col-actions  { width: 62px; text-align: center; }
 
         /* Previous Visits three-column split when preview is open */
         .pv-split {
@@ -141,6 +143,7 @@
 <script src="mock-clinical-data.js"></script>
 <script src="clinical-data.service.js"></script>
 <script src="layout.js"></script>
+<script src="doc-preview-shared.js"></script>
 <script>
 (function() {
     var visits = ClinicalDataService.getPreviousVisits();
@@ -150,27 +153,6 @@
 
     /* Expose globals needed by inline onclick handlers */
     window.pvCurrentPreviewDocId = null;
-
-    /* ------------------------------------------------------------------
-       Status helpers
-    ------------------------------------------------------------------ */
-    function pvGetStatusTag(status) {
-        var map = {
-            signed:   { cls: 'doc-status-signed',   label: 'Signed' },
-            draft:    { cls: 'doc-status-draft',     label: 'Draft' },
-            amended:  { cls: 'doc-status-amended',   label: 'Amended' },
-            external: { cls: 'doc-status-external',  label: 'External' }
-        };
-        var s = map[status] || { cls: 'doc-status-draft', label: status };
-        return '<span class="doc-status-tag ' + s.cls + '">' + s.label + '</span>';
-    }
-
-    function pvGetBannerHtml(status) {
-        if (status === 'draft') return '<div class="doc-preview-banner doc-preview-banner-draft"><i class="pi pi-pencil"></i> Draft — not yet signed</div>';
-        if (status === 'signed' || status === 'amended') return '<div class="doc-preview-banner doc-preview-banner-signed"><i class="pi pi-lock"></i> Read-only — document is signed</div>';
-        if (status === 'external') return '<div class="doc-preview-banner doc-preview-banner-external"><i class="pi pi-external-link"></i> External document</div>';
-        return '';
-    }
 
     /* ------------------------------------------------------------------
        Episode list
@@ -268,9 +250,11 @@
             html += '<th class="pv-doc-col-key"></th>';
             html += '<th class="pv-doc-col-name">Name</th>';
             html += '<th class="pv-doc-col-author">Author</th>';
+            html += '<th class="pv-doc-col-dept">Department</th>';
             html += '<th class="pv-doc-col-type">Type</th>';
             html += '<th class="pv-doc-col-date">Date</th>';
             html += '<th class="pv-doc-col-status">Status</th>';
+            html += '<th class="pv-doc-col-encounter">Encounter</th>';
             html += '<th class="pv-doc-col-actions">Actions</th>';
             html += '</tr></thead>';
             html += '<tbody id="pvDocTableBody">';
@@ -292,16 +276,21 @@
             var keyStar = doc.keyDocument
                 ? '<span class="doc-key-star" title="Key clinical document"><i class="pi pi-star-fill"></i></span>'
                 : '';
-            var statusTag = pvGetStatusTag(doc.status);
+            var statusTag = DocPreview.getStatusTag(doc.status);
             var isActive = doc.id === activeDocId ? ' doc-row-active' : '';
+            var encounterLabel = (doc.encounter || doc.admission)
+                ? '<span class="doc-encounter-badge">' + (doc.encounter || doc.admission) + '</span>'
+                : '<span style="color:var(--ech-text-muted)">—</span>';
 
             return '<tr class="ehr-row doc-table-row' + isActive + '" onclick="pvOpenDocPreview(\'' + doc.id + '\')">' +
                 '<td class="pv-doc-col-key">' + keyStar + '</td>' +
                 '<td class="pv-doc-col-name"><a href="#" class="doc-link" onclick="pvOpenDocPreview(\'' + doc.id + '\');return false">' + doc.name + '</a></td>' +
                 '<td class="pv-doc-col-author">' + doc.author + '</td>' +
+                '<td class="pv-doc-col-dept">' + doc.department + '</td>' +
                 '<td class="pv-doc-col-type">' + doc.type + '</td>' +
                 '<td class="pv-doc-col-date">' + doc.date + '</td>' +
                 '<td class="pv-doc-col-status">' + statusTag + '</td>' +
+                '<td class="pv-doc-col-encounter">' + encounterLabel + '</td>' +
                 '<td class="pv-doc-col-actions">' +
                     '<div class="doc-actions-group">' +
                         '<button class="doc-action-btn doc-action-download" title="Download PDF" onclick="event.stopPropagation();pvHandleDocAction(\'download\',\'' + doc.id + '\')"><i class="pi pi-file-pdf"></i></button>' +
@@ -330,22 +319,12 @@
         previewPane.style.display = '';
         split.classList.add('pv-preview-open');
 
-        previewBody.innerHTML =
-            pvGetBannerHtml(doc.status) +
-            '<div class="doc-preview-title">' + doc.name + '</div>' +
-            '<div class="doc-preview-meta">' +
-                '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Author</span><span>' + doc.author + '</span></div>' +
-                '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Department</span><span>' + doc.department + '</span></div>' +
-                '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Date</span><span>' + doc.date + '</span></div>' +
-                '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Type</span><span>' + doc.type + '</span></div>' +
-                '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Status</span><span>' + pvGetStatusTag(doc.status) + '</span></div>' +
-            '</div>' +
-            '<div class="doc-preview-divider"></div>' +
-            '<div class="doc-preview-content">' + (doc.previewContent || 'No preview available.') + '</div>' +
+        var footerHtml =
             '<div class="doc-preview-footer">' +
-                '<button class="doc-preview-footer-btn" onclick="pvHandleDocAction(\'download\',\'' + doc.id + '\')"><i class="pi pi-file-pdf"></i> Download PDF</button>' +
-                '<button class="doc-preview-footer-btn" onclick="pvHandleDocAction(\'print\',\'' + doc.id + '\')"><i class="pi pi-print"></i> Print</button>' +
+            '<button class="doc-preview-footer-btn" onclick="pvHandleDocAction(\'download\',\'' + doc.id + '\')"><i class="pi pi-file-pdf"></i> Download PDF</button>' +
+            '<button class="doc-preview-footer-btn" onclick="pvHandleDocAction(\'print\',\'' + doc.id + '\')"><i class="pi pi-print"></i> Print</button>' +
             '</div>';
+        previewBody.innerHTML = DocPreview.buildPreviewBodyHtml(doc, footerHtml);
 
         /* Refresh active row highlight */
         var tbody = document.getElementById('pvDocTableBody');
@@ -384,15 +363,7 @@
 
         modal.style.display = '';
 
-        content.innerHTML =
-            pvGetBannerHtml(doc.status) +
-            '<div class="doc-reading-doc-title">' + doc.name + '</div>' +
-            '<div class="doc-reading-doc-byline">' + doc.author + ' &nbsp;·&nbsp; ' + doc.department + ' &nbsp;·&nbsp; ' + doc.date + ' &nbsp;·&nbsp; ' + pvGetStatusTag(doc.status) + '</div>' +
-            '<div class="doc-preview-meta" style="margin-bottom:20px">' +
-                '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Type</span><span>' + doc.type + '</span></div>' +
-            '</div>' +
-            '<div class="doc-preview-divider"></div>' +
-            '<div class="doc-reading-body">' + (doc.previewContent || 'No content available.') + '</div>';
+        content.innerHTML = DocPreview.buildReadingContentHtml(doc);
     };
 
     window.pvCloseReadingModal = function() {

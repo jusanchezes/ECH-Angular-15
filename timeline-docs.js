@@ -2,6 +2,7 @@
  * @file timeline-docs.js — Documents & Notes section for the Timeline page
  * @description Renders a filterable document table with inline preview panel
  *   and full reading modal, sourced from the current encounter documents.
+ *   Uses DocPreview shared utilities (doc-preview-shared.js).
  *   Angular equivalent: TimelineDocsComponent (standalone).
  */
 
@@ -17,46 +18,32 @@ var tlDocsSectionCollapsed = false;
 function tlGetFilteredDocs() {
     var docs = TL_DOCS_DATA;
 
+    var NOTE_TYPES = ['nursing note', 'progress note', 'doctor note', 'clinical note'];
     if (tlCurrentQuickFilter === 'notes-only') {
-        docs = docs.filter(function(d) { return d.type.toLowerCase().indexOf('note') !== -1; });
+        docs = docs.filter(function(d) { return NOTE_TYPES.indexOf(d.type.toLowerCase()) !== -1; });
     } else if (tlCurrentQuickFilter === 'documents-only') {
-        docs = docs.filter(function(d) { return d.type.toLowerCase().indexOf('note') === -1; });
+        docs = docs.filter(function(d) { return NOTE_TYPES.indexOf(d.type.toLowerCase()) === -1; });
     } else if (tlCurrentQuickFilter === 'draft-only') {
         docs = docs.filter(function(d) { return d.status === 'draft'; });
     } else if (tlCurrentQuickFilter === 'signed-only') {
         docs = docs.filter(function(d) { return d.status === 'signed'; });
-    } else if (tlCurrentQuickFilter === 'key-only') {
-        docs = docs.filter(function(d) { return d.keyDocument === true; });
+    } else if (tlCurrentQuickFilter === 'latest') {
+        docs = docs.slice().sort(function(a, b) {
+            return DocPreview.parseDateStr(b.date) - DocPreview.parseDateStr(a.date);
+        }).slice(0, 5);
     }
 
     return docs;
 }
 
 /* -----------------------------------------------------------------------
-   Status helpers (shared with doc-preview.css design)
+   Encounter / admission label helper
 ----------------------------------------------------------------------- */
-function tlGetStatusTag(status) {
-    var map = {
-        signed:   { cls: 'doc-status-signed',   label: 'Signed' },
-        draft:    { cls: 'doc-status-draft',     label: 'Draft' },
-        amended:  { cls: 'doc-status-amended',   label: 'Amended' },
-        external: { cls: 'doc-status-external',  label: 'External' }
-    };
-    var s = map[status] || { cls: 'doc-status-draft', label: status };
-    return '<span class="doc-status-tag ' + s.cls + '">' + s.label + '</span>';
-}
-
-function tlGetBannerHtml(status) {
-    if (status === 'draft') {
-        return '<div class="doc-preview-banner doc-preview-banner-draft"><i class="pi pi-pencil"></i> Draft — not yet signed</div>';
+function tlEncounterLabel(doc) {
+    if (doc.encounter || doc.admission) {
+        return '<span class="doc-encounter-badge">' + (doc.encounter || doc.admission) + '</span>';
     }
-    if (status === 'signed' || status === 'amended') {
-        return '<div class="doc-preview-banner doc-preview-banner-signed"><i class="pi pi-lock"></i> Read-only — document is signed</div>';
-    }
-    if (status === 'external') {
-        return '<div class="doc-preview-banner doc-preview-banner-external"><i class="pi pi-external-link"></i> External document</div>';
-    }
-    return '';
+    return '<span style="color:var(--ech-text-muted)">—</span>';
 }
 
 /* -----------------------------------------------------------------------
@@ -73,7 +60,7 @@ function tlRenderDocTable() {
     }
 
     if (docs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--ech-text-secondary)"><i class="pi pi-inbox" style="font-size:1.8rem;display:block;margin-bottom:8px"></i>No documents match the current filter</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--ech-text-secondary)"><i class="pi pi-inbox" style="font-size:1.8rem;display:block;margin-bottom:8px"></i>No documents match the current filter</td></tr>';
         return;
     }
 
@@ -81,16 +68,18 @@ function tlRenderDocTable() {
         var keyStar = doc.keyDocument
             ? '<span class="doc-key-star" title="Key clinical document"><i class="pi pi-star-fill"></i></span>'
             : '';
-        var statusTag = tlGetStatusTag(doc.status);
+        var statusTag = DocPreview.getStatusTag(doc.status);
         var isActive = doc.id === tlCurrentPreviewDocId ? ' doc-row-active' : '';
 
         return '<tr class="ehr-row doc-table-row' + isActive + '" onclick="tlOpenDocPreview(\'' + doc.id + '\')">' +
             '<td class="tl-col-key">' + keyStar + '</td>' +
             '<td class="tl-col-name"><a href="#" class="doc-link" onclick="tlOpenDocPreview(\'' + doc.id + '\');return false">' + doc.name + '</a></td>' +
             '<td class="tl-col-author">' + doc.author + '</td>' +
+            '<td class="tl-col-dept">' + doc.department + '</td>' +
             '<td class="tl-col-type">' + doc.type + '</td>' +
             '<td class="tl-col-date">' + doc.date + '</td>' +
             '<td class="tl-col-status">' + statusTag + '</td>' +
+            '<td class="tl-col-encounter">' + tlEncounterLabel(doc) + '</td>' +
             '<td class="tl-col-actions">' +
                 '<div class="doc-actions-group">' +
                     '<button class="doc-action-btn doc-action-download" title="Download PDF" onclick="event.stopPropagation();tlHandleDocAction(\'download\',\'' + doc.id + '\')"><i class="pi pi-file-pdf"></i></button>' +
@@ -144,27 +133,13 @@ function tlOpenDocPreview(docId) {
     previewPane.style.display = '';
     workspace.classList.add('preview-open');
 
-    var encounterLine = doc.encounter
-        ? '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Encounter</span><span>' + doc.encounter + '</span></div>'
-        : '';
-
-    previewBody.innerHTML =
-        tlGetBannerHtml(doc.status) +
-        '<div class="doc-preview-title">' + doc.name + '</div>' +
-        '<div class="doc-preview-meta">' +
-            '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Author</span><span>' + doc.author + '</span></div>' +
-            '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Department</span><span>' + doc.department + '</span></div>' +
-            '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Date</span><span>' + doc.date + '</span></div>' +
-            '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Type</span><span>' + doc.type + '</span></div>' +
-            '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Status</span><span>' + tlGetStatusTag(doc.status) + '</span></div>' +
-            encounterLine +
-        '</div>' +
-        '<div class="doc-preview-divider"></div>' +
-        '<div class="doc-preview-content">' + (doc.previewContent || 'No preview available.') + '</div>' +
+    var footerHtml =
         '<div class="doc-preview-footer">' +
-            '<button class="doc-preview-footer-btn" onclick="tlHandleDocAction(\'download\',\'' + doc.id + '\')"><i class="pi pi-file-pdf"></i> Download PDF</button>' +
-            '<button class="doc-preview-footer-btn" onclick="tlHandleDocAction(\'print\',\'' + doc.id + '\')"><i class="pi pi-print"></i> Print</button>' +
+        '<button class="doc-preview-footer-btn" onclick="tlHandleDocAction(\'download\',\'' + doc.id + '\')"><i class="pi pi-file-pdf"></i> Download PDF</button>' +
+        '<button class="doc-preview-footer-btn" onclick="tlHandleDocAction(\'print\',\'' + doc.id + '\')"><i class="pi pi-print"></i> Print</button>' +
         '</div>';
+
+    previewBody.innerHTML = DocPreview.buildPreviewBodyHtml(doc, footerHtml);
 
     tlRenderDocTable();
 }
@@ -190,21 +165,7 @@ function tlOpenReadingModal() {
     if (!modal || !content) return;
 
     modal.style.display = '';
-
-    var encounterLine = doc.encounter
-        ? '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Encounter</span><span>' + doc.encounter + '</span></div>'
-        : '';
-
-    content.innerHTML =
-        tlGetBannerHtml(doc.status) +
-        '<div class="doc-reading-doc-title">' + doc.name + '</div>' +
-        '<div class="doc-reading-doc-byline">' + doc.author + ' &nbsp;·&nbsp; ' + doc.department + ' &nbsp;·&nbsp; ' + doc.date + ' &nbsp;·&nbsp; ' + tlGetStatusTag(doc.status) + '</div>' +
-        '<div class="doc-preview-meta" style="margin-bottom:20px">' +
-            '<div class="doc-preview-meta-row"><span class="doc-preview-meta-label">Type</span><span>' + doc.type + '</span></div>' +
-            encounterLine +
-        '</div>' +
-        '<div class="doc-preview-divider"></div>' +
-        '<div class="doc-reading-body">' + (doc.previewContent || 'No content available.') + '</div>';
+    content.innerHTML = DocPreview.buildReadingContentHtml(doc);
 }
 
 function tlCloseReadingModal() {
