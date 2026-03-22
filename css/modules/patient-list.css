@@ -762,3 +762,127 @@
     margin-right: 8px;
     opacity: 0.5;
 }
+
+/* ============================================================
+   OUTPATIENT APPOINTMENTS — Column widths, status pills,
+   day-navigation toolbar, and auxiliary elements.
+   ============================================================ */
+
+/* --- Column widths ---------------------------------------- */
+.op-col-time       { width: 72px;  min-width: 64px;  }
+.op-col-visittype  { width: 130px; min-width: 110px; }
+.op-col-reason     { width: 180px; min-width: 140px; }
+.op-col-waitdelay  { width: 120px; min-width: 100px; }
+.op-col-doctor     { width: 140px; min-width: 120px; }
+.op-col-room       { width: 110px; min-width: 90px;  }
+
+/* --- Status pills ----------------------------------------- */
+.op-status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+}
+
+.op-status-arrived        { background: #e8f5e9; color: #2e7d32; }
+.op-status-waiting        { background: #fff8e1; color: #f57f17; }
+.op-status-inconsultation { background: #e8eaf6; color: #283593; }
+.op-status-completed      { background: #efebe9; color: #4e342e; }
+.op-status-cancelled      { background: #fafafa; color: #757575; }
+
+/* --- Wait / Delay cell text ------------------------------- */
+.op-wait-text {
+    font-size: 12px;
+    color: var(--ech-text-secondary, #6b7280);
+}
+
+.op-delay-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+.op-wait-done {
+    color: var(--ech-text-muted, #9ca3af);
+}
+
+/* Row subtle highlight when delayed */
+.op-row-delayed {
+    border-left: 3px solid #f59e0b;
+}
+
+/* --- Day navigation --------------------------------------- */
+.op-day-nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.op-day-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.923rem;
+}
+
+.op-day-btn:hover {
+    border-color: var(--ech-primary);
+    color: var(--ech-primary);
+    background: var(--ech-primary-light);
+}
+
+.op-day-label {
+    padding: 0 10px;
+    font-size: var(--fs-md, 13px);
+    font-weight: 600;
+    color: var(--ech-text);
+    white-space: nowrap;
+}
+
+.op-day-cal-btn {
+    margin-left: 4px;
+}
+
+/* --- Add Walk-in button ----------------------------------- */
+.op-walkin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 10px;
+    padding: 4px 12px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text-secondary);
+    font-size: var(--fs-md, 13px);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.op-walkin-btn:hover {
+    border-color: var(--ech-primary);
+    color: var(--ech-primary);
+    background: var(--ech-primary-light);
+}
+
+.op-walkin-btn .pi {
+    font-size: 11px;
+}

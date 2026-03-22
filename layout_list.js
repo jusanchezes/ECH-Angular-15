@@ -77,6 +77,13 @@ const TAB_CONFIGS = {
         { id: 'loc-discharge', label: 'Planned Discharges',  i18n: 'TABS.LOC_DISCHARGE', count: 2,  active: false },
         { id: 'loc-icu',       label: 'ICU / PACU',          i18n: 'TABS.LOC_ICU',       count: 0,  active: false },
         { id: 'loc-surgery',   label: 'In Theatre',          i18n: 'TABS.LOC_SURGERY',   count: 2,  active: false }
+    ],
+    'outpatient-list': [
+        { id: 'op-all',            label: 'All',              i18n: 'TABS.OP_ALL',            count: 18, active: true  },
+        { id: 'op-arrived',        label: 'Arrived',          i18n: 'TABS.OP_ARRIVED',        count: 3,  active: false },
+        { id: 'op-waiting',        label: 'Waiting',          i18n: 'TABS.OP_WAITING',        count: 5,  active: false },
+        { id: 'op-inconsultation', label: 'In Consultation',  i18n: 'TABS.OP_INCONSULTATION', count: 2,  active: false },
+        { id: 'op-completed',      label: 'Completed',        i18n: 'TABS.OP_COMPLETED',      count: 8,  active: false }
     ]
 };
 
@@ -228,6 +235,8 @@ function handleToolbarSearch(value) {
         filterDayList(value);
     } else if (typeof filterSurgList === 'function') {
         filterSurgList(value);
+    } else if (typeof filterOpList === 'function') {
+        filterOpList(value);
     }
 }
 
