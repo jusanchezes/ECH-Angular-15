@@ -66,6 +66,16 @@ const TAB_CONFIGS = {
         { id: 'day-ready',         label: 'Ready for Discharge', i18n: 'TABS.DAY_READY',       count: 2,  active: false },
         { id: 'day-completed',     label: 'Completed',         i18n: 'TABS.DAY_COMPLETED',     count: 2,  active: false },
         { id: 'day-noshow',        label: 'No-show',           i18n: 'TABS.DAY_NOSHOW',        count: 1,  active: false }
+    ],
+    'surgical-list': [
+        { id: 'surg-all',          label: 'All',               i18n: 'TABS.SURG_ALL',          count: 12, active: true },
+        { id: 'surg-requested',    label: 'Requested',         i18n: 'TABS.SURG_REQUESTED',    count: 2,  active: false },
+        { id: 'surg-scheduled',    label: 'Scheduled',         i18n: 'TABS.SURG_SCHEDULED',    count: 3,  active: false },
+        { id: 'surg-preop',        label: 'Pre-op Pending',    i18n: 'TABS.SURG_PREOP',        count: 1,  active: false },
+        { id: 'surg-ready',        label: 'Ready',             i18n: 'TABS.SURG_READY',        count: 1,  active: false },
+        { id: 'surg-in-theatre',   label: 'In Theatre',        i18n: 'TABS.SURG_IN_THEATRE',   count: 2,  active: false },
+        { id: 'surg-completed',    label: 'Completed',         i18n: 'TABS.SURG_COMPLETED',    count: 2,  active: false },
+        { id: 'surg-cancelled',    label: 'Cancelled',         i18n: 'TABS.SURG_CANCELLED',    count: 1,  active: false }
     ]
 };
 
