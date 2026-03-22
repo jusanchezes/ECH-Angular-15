@@ -47,7 +47,8 @@ const NAV_ITEMS = [
     { href: 'medication.html',       icon: 'pi-box',                 label: 'Medication',       i18n: 'NAV.MEDICATION' },
     { href: 'care-plans.html',       icon: 'pi-heart',               label: 'Care Plans',       i18n: 'NAV.CARE_PLANS' },
     { href: 'measurements.html',     icon: 'pi-chart-line',          label: 'Measurements',     i18n: 'NAV.MEASUREMENTS' },
-    { href: 'protocols.html',        icon: 'pi-book',                label: 'Protocols',        i18n: 'NAV.PROTOCOLS' }
+    { href: 'protocols.html',        icon: 'pi-book',                label: 'Protocols',        i18n: 'NAV.PROTOCOLS' },
+    { href: 'nursing-workbench.html', icon: 'pi-copy',              label: 'Nursing Workbench', i18n: 'NAV.NURSING_WORKBENCH' }
 ];
 
 /** User menu options for the three-dots dropdown. Angular: PrimeNG MenuItem[] */

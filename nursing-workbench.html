@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="APP.NURSING_WORKBENCH_TITLE">ECH — Nursing Workbench</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
+    <link rel="stylesheet" href="css/clinical-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/modules/nursing-workbench.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<!--
+    data-page-type="patient-list" → layout.js renders Header only (no sidebar / clinical banner),
+    matching the pattern used by inpatients.html and ed.html for list-type views.
+    Angular migration: This becomes a top-level route /nursing-workbench handled by AppRoutingModule.
+-->
+<body data-page-type="patient-list" data-list-type="nursing-workbench">
+
+<div class="layout layout-no-sidebar">
+    <main class="main-content main-full-width">
+
+        <!-- BEGIN: Angular Standalone Component — HeaderComponent -->
+        <header class="top-bar" id="header-component"></header>
+        <!-- END: HeaderComponent -->
+
+        <!-- ================================================================
+             BEGIN: Angular Standalone Component — NursingTabsComponent
+             Angular: <p-tabMenu [model]="nwTabs" [(activeItem)]="activeTab"
+                      (activeItemChange)="onTabChange($event)">
+             ================================================================ -->
+        <div class="nw-tabs-bar" id="nw-tabs-bar">
+            <!-- Rendered by nursing-workbench.js → renderNWTabs() -->
+        </div>
+        <!-- END: NursingTabsComponent -->
+
+        <!-- ================================================================
+             BEGIN: Angular Standalone Component — NursingToolbarComponent
+             Angular: <p-toolbar>
+                        <ng-template pTemplate="start">
+                          <p-dropdown [options]="wardOptions" [(ngModel)]="selectedWard">
+                          <p-dropdown [options]="shiftOptions" [(ngModel)]="selectedShift">
+                          <p-dropdown [options]="nurseOptions" [(ngModel)]="selectedNurse">
+                        </ng-template>
+                        <ng-template pTemplate="end">
+                          <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText [(ngModel)]="searchQuery">
+                          </span>
+                        </ng-template>
+                      </p-toolbar>
+             ================================================================ -->
+        <div class="nw-toolbar" id="nw-toolbar">
+            <!-- Rendered by nursing-workbench.js → renderNWToolbar() -->
+        </div>
+        <!-- END: NursingToolbarComponent -->
+
+        <!-- ================================================================
+             BEGIN: Angular Standalone Component — NursingTaskListComponent
+             Angular: *ngFor="let patient of filteredPatients$ | async"
+                      with nested *ngFor="let task of patient.tasks"
+             Active on tabs: My Patients, Unassigned, Overdue
+             ================================================================ -->
+        <section class="nw-content-area" id="nw-content" aria-label="Nursing task list">
+            <!-- Rendered by nursing-workbench.js → renderNWTaskList() -->
+        </section>
+        <!-- END: NursingTaskListComponent -->
+
+        <!-- ================================================================
+             BEGIN: Angular Standalone Component — HandoffComponent
+             Angular: *ngIf="activeTab === 'handoff'"
+             Contains: Planned vs Executed table + sparklines + signature button
+             Hidden by default; shown only when Handoff tab is active.
+             ================================================================ -->
+        <section class="nw-handoff-panel" id="nw-handoff" style="display:none" aria-label="Shift handoff">
+            <!-- Rendered by nursing-workbench.js → renderHandoffMode() -->
+        </section>
+        <!-- END: HandoffComponent -->
+
+    </main>
+</div>
+
+<!-- ================================================================
+     BEGIN: Angular Standalone Component — NursingPanelComponent
+     Angular: <p-sidebar [(visible)]="panelOpen" position="right"
+               styleClass="nw-panel" [modal]="true">
+     Opens on task row click; 35% width; z-index 950.
+     ================================================================ -->
+<div class="nw-panel-overlay" id="nwPanelOverlay" onclick="closeTaskPanel()" role="presentation" aria-hidden="true"></div>
+<aside class="nw-panel" id="nwPanel" role="complementary" aria-label="Task detail panel">
+    <!-- Rendered by nursing-workbench.js → renderNWPanel(task, patient) -->
+</aside>
+<!-- END: NursingPanelComponent -->
+
+<script src="mock-clinical-data.js"></script>
+<script src="clinical-data.service.js"></script>
+<script src="layout.js"></script>
+<script src="nursing-workbench.js"></script>
+
+</body>
+</html>

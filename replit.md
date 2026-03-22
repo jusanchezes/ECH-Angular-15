@@ -41,7 +41,8 @@ css/
     ├── laboratory.css       ← Lab orders + results viewer
     ├── protocols.css        ← Protocols list
     ├── measurements.css     ← Vital signs flowsheet
-    └── dashboard.css        ← Dashboard tile grid (module index)
+    ├── dashboard.css        ← Dashboard tile grid (module index)
+    └── nursing-workbench.css ← Nursing Workbench shift task manager
 ```
 
 **Load order in HTML files (for modules with tables):**
@@ -162,6 +163,7 @@ mock-clinical-data.js  →  clinical-data.service.js  →  module JS files  → 
 - **Measurements (`measurements.html`)**: Vital signs flowsheet with "All" group, Abnormal/Critical/Trend filtering, and action-bar Register button
 - **Nurse Notes (`nurse-notes.html`)**: Shift-based nursing overview
 - **Protocols (`protocols.html`)**: Protocol list with status formatting
+- **Nursing Workbench (`nursing-workbench.html`)**: Full-shift nursing task manager with four tabs (My Patients, Unassigned, Overdue, Handoff), Ward/Shift/Nurse filter toolbar, ECH-style patient task list (Medication / Care / Diagnostic rows with Drug Dose | Route | Frequency | Date range (Duration) format, alert icons with tooltips, acuity badges, status chips), right-side 35%-width detail panel (p-sidebar simulation) with order info, execution history timeline, and Complete/Document/Skip/Reassign action buttons; Handoff tab hides filters, shows Planned vs Executed summary table, inline SVG sparklines for 8h vitals trend (BP, HR, SpO2), and an "Accept & Sign Handoff" legal signature button. Linked from dashboard with pi-copy icon. Sidebar nav entry added to layout.js (NAV_ITEMS). JS: `nursing-workbench.js` (self-contained with inline NW_DATA mock, no ClinicalDataService dependency). CSS: `css/modules/nursing-workbench.css` (nw- prefix, 13px base density, all tokens from clinical-core.css).
 
 ## External Dependencies
 - **Node.js**: Static file server
