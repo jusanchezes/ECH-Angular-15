@@ -50,30 +50,103 @@
                     <i class="pi pi-search doc-search-icon"></i>
                     <input type="text" class="doc-search-input" placeholder="Search documents..." id="docSearchInput" oninput="searchDocuments(this.value)">
                 </div>
-                <span class="doc-count-badge" id="docCountBadge">8</span>
+                <span class="doc-count-badge" id="docCountBadge">12</span>
+            </div>
+        </section>
+
+        <!-- Quick filter chips row -->
+        <section class="doc-quick-filters-bar" id="doc-quick-filters-bar">
+            <div class="doc-quick-filters" id="docQuickFilters">
+                <button class="doc-qf-chip active" data-qf="all" onclick="setQuickFilter('all')">
+                    <i class="pi pi-list"></i> All
+                </button>
+                <button class="doc-qf-chip" data-qf="current-encounter" onclick="setQuickFilter('current-encounter')">
+                    <i class="pi pi-calendar"></i> Current Encounter
+                </button>
+                <button class="doc-qf-chip" data-qf="current-admission" onclick="setQuickFilter('current-admission')">
+                    <i class="pi pi-building"></i> Current Admission
+                </button>
+                <button class="doc-qf-chip" data-qf="all-history" onclick="setQuickFilter('all-history')">
+                    <i class="pi pi-history"></i> All History
+                </button>
+                <button class="doc-qf-chip" data-qf="latest-reports" onclick="setQuickFilter('latest-reports')">
+                    <i class="pi pi-clock"></i> Latest Reports
+                </button>
+                <button class="doc-qf-chip doc-qf-draft" data-qf="draft-only" onclick="setQuickFilter('draft-only')">
+                    <i class="pi pi-pencil"></i> Draft Only
+                </button>
+                <button class="doc-qf-chip doc-qf-signed" data-qf="signed-only" onclick="setQuickFilter('signed-only')">
+                    <i class="pi pi-check-circle"></i> Signed Only
+                </button>
             </div>
         </section>
 
         <!-- API Contract: GET /api/v1/clinical/documents/{patientId} → ClinicalDocumentDTO[] — Ver API_contracts.md -->
-        <section class="ehr-table-area" id="doc-table-area">
-            <div class="ehr-table-scroll">
-                <table class="ehr-table" id="docTable">
-                    <thead>
-                        <tr>
-                            <th class="col-doc-name">Name <i class="pi pi-sort-alt sort-icon"></i></th>
-                            <th class="col-doc-author">Author <i class="pi pi-sort-alt sort-icon"></i></th>
-                            <th class="col-doc-dept">Department <i class="pi pi-sort-alt sort-icon"></i></th>
-                            <th class="col-doc-type">Type <i class="pi pi-sort-alt sort-icon"></i></th>
-                            <th class="col-doc-date">Date <i class="pi pi-sort-alt sort-icon"></i></th>
-                            <th class="col-doc-status">Status</th>
-                            <th class="col-doc-access">Access Web</th>
-                            <th class="col-doc-actions">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="docTableBody"></tbody>
-                </table>
+        <!-- Document workspace: table pane + preview pane side-by-side -->
+        <div class="doc-workspace" id="doc-workspace">
+
+            <section class="ehr-table-area doc-table-pane" id="doc-table-area">
+                <div class="ehr-table-scroll">
+                    <table class="ehr-table" id="docTable">
+                        <thead>
+                            <tr>
+                                <th class="col-doc-key"></th>
+                                <th class="col-doc-name">Name <i class="pi pi-sort-alt sort-icon"></i></th>
+                                <th class="col-doc-author">Author <i class="pi pi-sort-alt sort-icon"></i></th>
+                                <th class="col-doc-dept">Department <i class="pi pi-sort-alt sort-icon"></i></th>
+                                <th class="col-doc-type">Type <i class="pi pi-sort-alt sort-icon"></i></th>
+                                <th class="col-doc-date">Date <i class="pi pi-sort-alt sort-icon"></i></th>
+                                <th class="col-doc-status">Status</th>
+                                <th class="col-doc-encounter">Encounter</th>
+                                <th class="col-doc-access">Web</th>
+                                <th class="col-doc-actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="docTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Right-side document preview panel -->
+            <aside class="doc-preview-pane" id="doc-preview-pane" style="display:none">
+                <div class="doc-preview-header">
+                    <div class="doc-preview-header-actions">
+                        <button class="doc-preview-action-btn doc-preview-expand-btn" title="Expand to reading mode" onclick="openReadingModal()">
+                            <i class="pi pi-window-maximize"></i> Expand
+                        </button>
+                        <button class="doc-preview-close-btn" title="Close preview" onclick="closeDocPreview()">
+                            <i class="pi pi-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="doc-preview-body" id="doc-preview-body">
+                    <!-- filled by JS -->
+                </div>
+            </aside>
+
+        </div>
+
+        <!-- Full reading modal (replaces workspace when expanded) -->
+        <div class="doc-reading-modal" id="doc-reading-modal" style="display:none">
+            <div class="doc-reading-topbar">
+                <button class="doc-reading-back-btn" onclick="closeReadingModal()">
+                    <i class="pi pi-arrow-left"></i> Back to table
+                </button>
+                <div class="doc-reading-topbar-actions">
+                    <button class="doc-action-btn doc-action-download" title="Download PDF" onclick="handleDocAction('download', currentPreviewDocId)">
+                        <i class="pi pi-file-pdf"></i>
+                    </button>
+                    <button class="doc-action-btn doc-action-share" title="Print" onclick="handleDocAction('print', currentPreviewDocId)">
+                        <i class="pi pi-print"></i>
+                    </button>
+                </div>
             </div>
-        </section>
+            <div class="doc-reading-content" id="doc-reading-content">
+                <!-- filled by JS -->
+            </div>
+        </div>
+
     </main>
 </div>
 
