@@ -11,150 +11,100 @@
  * ============================================================ */
 var surgicalCases = [
     {
-        id: 201,
-        name: 'María García López',         dob: '1958-03-14', age: 67, gender: 'Female',
-        scheduledDate: '2026-03-22',        scheduledTime: '07:30',
+        id: 201, name: 'María García López',  dob: '1958-03-14', age: 67, gender: 'Female',
+        scheduledDate: '2026-03-22', scheduledTime: '07:30',
         procedure: 'Total Knee Replacement (TKR)',
-        orRoom: 'OR-1',
-        status: 'In Theatre',
-        estimatedDurationMin: 120,
-        readiness: 100,
+        orRoom: 'OR-1', status: 'In Theatre', estimatedDurationMin: 120, readiness: 100,
         alerts: ['Allergy: Penicillin', 'Anticoagulation'],
-        surgeon: 'Dr. Fernández',           anesthesiologist: 'Dr. Prada'
+        surgeon: 'Dr. Fernández',  anesthesiologist: 'Dr. Prada',  department: 'Orthopedics'
     },
     {
-        id: 202,
-        name: 'Carlos Martínez Ruiz',       dob: '1970-07-22', age: 55, gender: 'Male',
-        scheduledDate: '2026-03-22',        scheduledTime: '08:00',
+        id: 202, name: 'Carlos Martínez Ruiz', dob: '1970-07-22', age: 55, gender: 'Male',
+        scheduledDate: '2026-03-22', scheduledTime: '08:00',
         procedure: 'Laparoscopic Cholecystectomy',
-        orRoom: 'OR-2',
-        status: 'In Theatre',
-        estimatedDurationMin: 90,
-        readiness: 100,
+        orRoom: 'OR-2', status: 'In Theatre', estimatedDurationMin: 90, readiness: 100,
         alerts: [],
-        surgeon: 'Dr. López',              anesthesiologist: 'Dr. Rueda'
+        surgeon: 'Dr. López',      anesthesiologist: 'Dr. Rueda',  department: 'General Surgery'
     },
     {
-        id: 203,
-        name: 'Elena Rodríguez Díaz',       dob: '1985-11-03', age: 40, gender: 'Female',
-        scheduledDate: '2026-03-22',        scheduledTime: '09:30',
+        id: 203, name: 'Elena Rodríguez Díaz', dob: '1985-11-03', age: 40, gender: 'Female',
+        scheduledDate: '2026-03-22', scheduledTime: '09:30',
         procedure: 'Appendectomy (Laparoscopic)',
-        orRoom: 'OR-3',
-        status: 'Ready',
-        estimatedDurationMin: 75,
-        readiness: 100,
+        orRoom: 'OR-3', status: 'Ready', estimatedDurationMin: 75, readiness: 100,
         alerts: ['Allergy: Sulfa'],
-        surgeon: 'Dr. Navarro',            anesthesiologist: 'Dr. Prada'
+        surgeon: 'Dr. Navarro',    anesthesiologist: 'Dr. Prada',  department: 'General Surgery'
     },
     {
-        id: 204,
-        name: 'José Antonio Pérez',         dob: '1962-01-19', age: 64, gender: 'Male',
-        scheduledDate: '2026-03-22',        scheduledTime: '10:00',
+        id: 204, name: 'José Antonio Pérez',   dob: '1962-01-19', age: 64, gender: 'Male',
+        scheduledDate: '2026-03-22', scheduledTime: '10:00',
         procedure: 'Coronary Artery Bypass Graft (CABG)',
-        orRoom: 'OR-4',
-        status: 'Pre-op Pending',
-        estimatedDurationMin: 240,
-        readiness: 60,
+        orRoom: 'OR-4', status: 'Pre-op Pending', estimatedDurationMin: 240, readiness: 60,
         alerts: ['DNR', 'Anticoagulation'],
-        surgeon: 'Dr. Rory Rogers',         anesthesiologist: 'Dr. Rueda',
-        department: 'Cardiology'
+        surgeon: 'Dr. Rory Rogers', anesthesiologist: 'Dr. Rueda', department: 'Cardiology'
     },
     {
-        id: 205,
-        name: 'Lucía Hernández Gil',        dob: '1990-05-30', age: 35, gender: 'Female',
-        scheduledDate: '2026-03-22',        scheduledTime: '11:00',
+        id: 205, name: 'Lucía Hernández Gil',  dob: '1990-05-30', age: 35, gender: 'Female',
+        scheduledDate: '2026-03-22', scheduledTime: '11:00',
         procedure: 'Thyroidectomy (Total)',
-        orRoom: 'OR-1',
-        status: 'Scheduled',
-        estimatedDurationMin: 100,
-        readiness: 30,
+        orRoom: 'OR-1', status: 'Scheduled', estimatedDurationMin: 100, readiness: 30,
         alerts: ['Allergy: Latex'],
-        surgeon: 'Dr. Moreno',             anesthesiologist: 'Dr. Prada'
+        surgeon: 'Dr. Moreno',     anesthesiologist: 'Dr. Prada',  department: 'Endocrinology'
     },
     {
-        id: 206,
-        name: 'Fernando Muñoz Vega',        dob: '1955-09-11', age: 70, gender: 'Male',
-        scheduledDate: '2026-03-22',        scheduledTime: '12:30',
+        id: 206, name: 'Fernando Muñoz Vega',  dob: '1955-09-11', age: 70, gender: 'Male',
+        scheduledDate: '2026-03-22', scheduledTime: '12:30',
         procedure: 'Hip Arthroplasty',
-        orRoom: 'OR-2',
-        status: 'Scheduled',
-        estimatedDurationMin: 110,
-        readiness: 20,
+        orRoom: 'OR-2', status: 'Scheduled', estimatedDurationMin: 110, readiness: 20,
         alerts: ['Allergy: Contrast', 'Anticoagulation'],
-        surgeon: 'Dr. Fernández',           anesthesiologist: 'Dr. Rueda'
+        surgeon: 'Dr. Fernández',  anesthesiologist: 'Dr. Rueda',  department: 'Orthopedics'
     },
     {
-        id: 207,
-        name: 'Ana Belén Torres',           dob: '1978-12-25', age: 47, gender: 'Female',
-        scheduledDate: '2026-03-22',        scheduledTime: '13:00',
+        id: 207, name: 'Ana Belén Torres',     dob: '1978-12-25', age: 47, gender: 'Female',
+        scheduledDate: '2026-03-22', scheduledTime: '13:00',
         procedure: 'Mastectomy (Left)',
-        orRoom: 'OR-3',
-        status: 'Requested',
-        estimatedDurationMin: 150,
-        readiness: 0,
+        orRoom: 'OR-3', status: 'Requested', estimatedDurationMin: 150, readiness: 0,
         alerts: [],
-        surgeon: 'Dr. Navarro',            anesthesiologist: 'Dr. Prada'
+        surgeon: 'Dr. Navarro',    anesthesiologist: 'Dr. Prada',  department: 'Oncology'
     },
     {
-        id: 208,
-        name: 'Miguel Ángel Soto',          dob: '1948-04-07', age: 77, gender: 'Male',
-        scheduledDate: '2026-03-22',        scheduledTime: '07:00',
+        id: 208, name: 'Miguel Ángel Soto',    dob: '1948-04-07', age: 77, gender: 'Male',
+        scheduledDate: '2026-03-22', scheduledTime: '07:00',
         procedure: 'Carotid Endarterectomy',
-        orRoom: 'OR-4',
-        status: 'Completed',
-        estimatedDurationMin: 180,
-        readiness: 100,
+        orRoom: 'OR-4', status: 'Completed', estimatedDurationMin: 180, readiness: 100,
         alerts: ['DNR', 'Anticoagulation'],
-        surgeon: 'Dr. López',              anesthesiologist: 'Dr. Rueda'
+        surgeon: 'Dr. López',      anesthesiologist: 'Dr. Rueda',  department: 'Vascular Surgery'
     },
     {
-        id: 209,
-        name: 'Isabel Romero Castro',       dob: '1966-08-16', age: 59, gender: 'Female',
-        scheduledDate: '2026-03-22',        scheduledTime: '06:30',
+        id: 209, name: 'Isabel Romero Castro', dob: '1966-08-16', age: 59, gender: 'Female',
+        scheduledDate: '2026-03-22', scheduledTime: '06:30',
         procedure: 'Hysterectomy (Laparoscopic)',
-        orRoom: 'OR-1',
-        status: 'Completed',
-        estimatedDurationMin: 130,
-        readiness: 100,
+        orRoom: 'OR-1', status: 'Completed', estimatedDurationMin: 130, readiness: 100,
         alerts: [],
-        surgeon: 'Dr. Moreno',             anesthesiologist: 'Dr. Prada'
+        surgeon: 'Dr. Moreno',     anesthesiologist: 'Dr. Prada',  department: 'Gynaecology'
     },
     {
-        id: 210,
-        name: 'Pablo Jiménez Reyes',        dob: '1982-02-28', age: 44, gender: 'Male',
-        scheduledDate: '2026-03-22',        scheduledTime: '14:00',
+        id: 210, name: 'Pablo Jiménez Reyes',  dob: '1982-02-28', age: 44, gender: 'Male',
+        scheduledDate: '2026-03-22', scheduledTime: '14:00',
         procedure: 'Hernia Repair (Inguinal)',
-        orRoom: 'OR-2',
-        status: 'Scheduled',
-        estimatedDurationMin: 60,
-        readiness: 10,
+        orRoom: 'OR-2', status: 'Scheduled', estimatedDurationMin: 60, readiness: 10,
         alerts: [],
-        surgeon: 'Dr. Rory Rogers',         anesthesiologist: 'Dr. Rueda',
-        department: 'General Surgery'
+        surgeon: 'Dr. Rory Rogers', anesthesiologist: 'Dr. Rueda', department: 'General Surgery'
     },
     {
-        id: 211,
-        name: 'Rosa María Delgado',         dob: '1973-06-09', age: 52, gender: 'Female',
-        scheduledDate: '2026-03-22',        scheduledTime: '15:00',
+        id: 211, name: 'Rosa María Delgado',   dob: '1973-06-09', age: 52, gender: 'Female',
+        scheduledDate: '2026-03-22', scheduledTime: '15:00',
         procedure: 'Spinal Fusion (L4-L5)',
-        orRoom: 'OR-3',
-        status: 'Requested',
-        estimatedDurationMin: 210,
-        readiness: 0,
+        orRoom: 'OR-3', status: 'Requested', estimatedDurationMin: 210, readiness: 0,
         alerts: ['Allergy: Iodine'],
-        surgeon: 'Dr. Navarro',            anesthesiologist: 'Dr. Prada'
+        surgeon: 'Dr. Navarro',    anesthesiologist: 'Dr. Prada',  department: 'Neurosurgery'
     },
     {
-        id: 212,
-        name: 'Andrés Vargas Pinto',        dob: '1951-10-05', age: 74, gender: 'Male',
-        scheduledDate: '2026-03-22',        scheduledTime: '10:30',
+        id: 212, name: 'Andrés Vargas Pinto',  dob: '1951-10-05', age: 74, gender: 'Male',
+        scheduledDate: '2026-03-22', scheduledTime: '10:30',
         procedure: 'Prostatectomy (Robotic)',
-        orRoom: 'OR-4',
-        status: 'Cancelled',
-        estimatedDurationMin: 180,
-        readiness: 0,
+        orRoom: 'OR-4', status: 'Cancelled', estimatedDurationMin: 180, readiness: 0,
         alerts: ['Anticoagulation', 'Allergy: NSAIDs'],
-        surgeon: 'Dr. López',              anesthesiologist: 'Dr. Rueda'
+        surgeon: 'Dr. López',      anesthesiologist: 'Dr. Rueda',  department: 'Urology'
     }
 ];
 
@@ -174,9 +124,30 @@ var SURG_STATUS_ORDER = [
 /* ============================================================
  * INIT
  * ============================================================ */
+function updateSurgTabCounts() {
+    var all = surgicalCases;
+    var counts = {
+        'loc-all':       all.length,
+        'loc-recent':    all.filter(function(c) {
+            return c.status === 'Scheduled' || c.status === 'Pre-op Pending' || c.status === 'Requested';
+        }).length,
+        'loc-discharge': all.filter(function(c) { return c.status === 'Completed'; }).length,
+        'loc-icu':       0,
+        'loc-surgery':   all.filter(function(c) { return c.status === 'In Theatre'; }).length
+    };
+    Object.keys(counts).forEach(function(tabId) {
+        var btn = document.querySelector('[data-tab-id="' + tabId + '"]');
+        if (btn) {
+            var badge = btn.querySelector('.tab-count');
+            if (badge) badge.textContent = counts[tabId];
+        }
+    });
+}
+
 function initSurgicalCases() {
     var wardLabel = document.querySelector('[data-field="wardName"]');
     if (wardLabel) wardLabel.textContent = 'Surgical Cases';
+    updateSurgTabCounts();
     renderSurgList();
     wireSurgTabs();
     wireSurgSearch();

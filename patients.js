@@ -28,7 +28,28 @@ var patSearchTerm      = '';
 
 function initPatientList() {
     wirePatientsFilters();
+    updatePatientTabCounts();
     renderPatientList();
+}
+
+function updatePatientTabCounts() {
+    var all = ClinicalDataService.getPatientList();
+    var counts = {
+        'loc-all':       all.length,
+        'loc-recent':    all.filter(function(p) { return p.daysAdmitted <= 3; }).length,
+        'loc-discharge': all.filter(function(p) { return p.plannedDischarge === true; }).length,
+        'loc-icu':       all.filter(function(p) {
+            return (p.room && p.room.toLowerCase().includes('icu')) || p.department === 'Intensive Care';
+        }).length,
+        'loc-surgery':   all.filter(function(p) { return p.inSurgery === true; }).length
+    };
+    Object.keys(counts).forEach(function(tabId) {
+        var btn = document.querySelector('[data-tab-id="' + tabId + '"]');
+        if (btn) {
+            var badge = btn.querySelector('.tab-count');
+            if (badge) badge.textContent = counts[tabId];
+        }
+    });
 }
 
 /* ============================================================
