@@ -213,7 +213,7 @@ function renderPatientList() {
                 patient.alerts.forEach(alert => {
                     const severity = getAlertSeverity(alert);
                     const icon = getAlertIcon(alert);
-                    html += `<span class="p-tag-custom p-tag-${severity}" title="${alert}"><i class="pi ${icon}"></i> ${alert}</span> `;
+                    html += `<span class="p-tag-custom p-tag-${severity}" data-tooltip="${alert}"><i class="pi ${icon}"></i></span> `;
                 });
             } else {
                 html += `<span class="no-alerts">—</span>`;

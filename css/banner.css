@@ -24,7 +24,7 @@
     top: 0;
     z-index: 50;
     max-height: 80px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .banner-row-1 {
@@ -83,13 +83,40 @@
 .p-tag-custom {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 2px 8px;
-    border-radius: 10px;
+    justify-content: center;
+    gap: 0;
+    padding: 4px 6px;
+    border-radius: 8px;
     font-size: var(--fs-xs);
     font-weight: 600;
     color: white;
     white-space: nowrap;
+    position: relative;
+    cursor: default;
+}
+
+.p-tag-custom[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 20, 20, 0.92);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.p-tag-custom[data-tooltip]:hover::after {
+    opacity: 1;
 }
 
 .p-tag-danger {
