@@ -135,10 +135,10 @@
                     <i class="pi pi-arrow-left"></i> Back to table
                 </button>
                 <div class="doc-reading-topbar-actions">
-                    <button class="doc-action-btn doc-action-download" title="Download PDF" onclick="handleDocAction('download', currentPreviewDocId)">
+                    <button class="doc-action-btn doc-action-download" title="Download PDF" onclick="handleDocAction('download', _docCtrl.getCurrentDocId())">
                         <i class="pi pi-file-pdf"></i>
                     </button>
-                    <button class="doc-action-btn doc-action-share" title="Print" onclick="handleDocAction('print', currentPreviewDocId)">
+                    <button class="doc-action-btn doc-action-share" title="Print" onclick="handleDocAction('print', _docCtrl.getCurrentDocId())">
                         <i class="pi pi-print"></i>
                     </button>
                 </div>
