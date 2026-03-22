@@ -1,0 +1,526 @@
+/* ============================================================================
+   DOC-PREVIEW.CSS — Shared Document Preview Styles
+   ============================================================================
+   Reused across Documents, Timeline, and Previous Visits pages.
+   Contains: quick-filter chips, doc-workspace split layout, clickable-row
+   styles, status badges, key-document star, encounter badge, action buttons,
+   preview panel, and full reading modal.
+   ============================================================================ */
+
+/* --- Quick filter chips bar --- */
+.doc-quick-filters-bar {
+    padding: 6px 16px 8px;
+    background: var(--ech-surface, #f8f9fa);
+    border-bottom: 1px solid var(--ech-border);
+}
+
+.doc-quick-filters {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.doc-qf-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 14px;
+    border: 1px solid var(--ech-border);
+    background: white;
+    color: var(--ech-text-secondary);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--ech-font-family);
+}
+
+.doc-qf-chip:hover {
+    border-color: var(--ech-primary);
+    color: var(--ech-primary);
+    background: var(--ech-primary-light, #e3f2fd);
+}
+
+.doc-qf-chip.active {
+    background: var(--ech-primary);
+    border-color: var(--ech-primary);
+    color: white;
+}
+
+.doc-qf-chip.doc-qf-draft.active {
+    background: #e65100;
+    border-color: #e65100;
+    color: white;
+}
+
+.doc-qf-chip.doc-qf-signed.active {
+    background: #2e7d32;
+    border-color: #2e7d32;
+    color: white;
+}
+
+/* --- Document workspace (split layout) --- */
+.doc-workspace {
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.doc-workspace .doc-table-pane {
+    flex: 1 1 auto;
+    min-width: 0;
+    transition: flex-basis 0.2s ease;
+}
+
+.doc-workspace.preview-open .doc-table-pane {
+    flex: 1 1 55%;
+    min-width: 0;
+}
+
+/* --- Document link and clickable row --- */
+.doc-link {
+    color: var(--ech-primary);
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.doc-link:hover {
+    text-decoration: underline;
+    color: var(--ech-primary-dark);
+}
+
+.doc-table-row {
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.doc-table-row:hover {
+    background: var(--ech-primary-light, #e3f2fd) !important;
+}
+
+.doc-row-active {
+    background: #e3f2fd !important;
+    box-shadow: inset 3px 0 0 var(--ech-primary);
+}
+
+/* --- Status badges --- */
+.doc-status-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.doc-status-signed {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.doc-status-draft {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.doc-status-amended {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.doc-status-external {
+    background: #f5f5f5;
+    color: #616161;
+}
+
+/* --- Key document star --- */
+.doc-key-star {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #f57c00;
+    font-size: 0.923rem;
+}
+
+/* --- Encounter badge (in table) --- */
+.doc-encounter-badge {
+    display: inline-block;
+    font-size: 0.692rem;
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    background: var(--ech-surface, #f0f2f5);
+    border-radius: 4px;
+    padding: 1px 6px;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+}
+
+/* --- Action buttons --- */
+.doc-actions-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.doc-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.923rem;
+    transition: all 0.15s;
+}
+
+.doc-action-download {
+    background: var(--ech-primary);
+    color: white;
+}
+
+.doc-action-download:hover {
+    background: var(--ech-primary-dark);
+}
+
+.doc-action-delete {
+    background: var(--ech-danger);
+    color: white;
+}
+
+.doc-action-delete:hover {
+    background: #d32f2f;
+}
+
+.doc-action-share {
+    background: var(--ech-success);
+    color: white;
+}
+
+.doc-action-share:hover {
+    background: #43a047;
+}
+
+/* ============================================================================
+   PREVIEW PANEL
+   ============================================================================ */
+.doc-preview-pane {
+    flex: 0 0 380px;
+    width: 380px;
+    max-width: 420px;
+    border-left: 1px solid var(--ech-border);
+    background: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideInRight 0.18s ease;
+    height: 100%;
+    min-height: 400px;
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.doc-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--ech-border);
+    background: var(--ech-surface, #f8f9fa);
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.doc-preview-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.doc-preview-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border: 1px solid var(--ech-primary);
+    border-radius: 4px;
+    background: white;
+    color: var(--ech-primary);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--ech-font-family);
+    transition: all 0.15s;
+}
+
+.doc-preview-expand-btn:hover {
+    background: var(--ech-primary);
+    color: white;
+}
+
+.doc-preview-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: white;
+    color: var(--ech-text-muted);
+    font-size: 0.923rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.doc-preview-close-btn:hover {
+    background: #fdecea;
+    border-color: var(--ech-danger);
+    color: var(--ech-danger);
+}
+
+.doc-preview-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Status banners inside preview */
+.doc-preview-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 4px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.doc-preview-banner-draft {
+    background: #fff3e0;
+    color: #bf360c;
+    border: 1px solid #ffcc80;
+}
+
+.doc-preview-banner-signed {
+    background: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #a5d6a7;
+}
+
+.doc-preview-banner-external {
+    background: #f3e5f5;
+    color: #4a148c;
+    border: 1px solid #ce93d8;
+}
+
+.doc-preview-title {
+    font-size: 0.985rem;
+    font-weight: 700;
+    color: var(--ech-text-primary);
+    margin-bottom: 12px;
+    line-height: 1.35;
+}
+
+.doc-preview-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 12px;
+}
+
+.doc-preview-meta-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: var(--fs-sm);
+}
+
+.doc-preview-meta-label {
+    flex: 0 0 80px;
+    font-weight: 600;
+    color: var(--ech-text-muted);
+    font-size: 0.692rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.doc-preview-divider {
+    height: 1px;
+    background: var(--ech-border);
+    margin: 12px 0;
+}
+
+.doc-preview-content {
+    font-size: var(--fs-sm);
+    color: var(--ech-text-primary);
+    line-height: 1.65;
+    flex: 1;
+}
+
+.doc-preview-footer {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--ech-border);
+}
+
+.doc-preview-footer-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--ech-border);
+    background: white;
+    color: var(--ech-text-secondary);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--ech-font-family);
+    transition: all 0.15s;
+}
+
+.doc-preview-footer-btn:hover {
+    border-color: var(--ech-primary);
+    color: var(--ech-primary);
+    background: var(--ech-primary-light, #e3f2fd);
+}
+
+/* ============================================================================
+   FULL READING MODAL
+   ============================================================================ */
+.doc-reading-modal {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    flex: 1;
+    min-height: 0;
+    animation: fadeIn 0.15s ease;
+}
+
+/* Fixed-overlay variant used on timeline and previous-visits pages */
+.doc-reading-modal.doc-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    flex: none;
+    animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.doc-reading-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 2px solid var(--ech-border);
+    background: var(--ech-surface, #f8f9fa);
+    flex-shrink: 0;
+}
+
+.doc-reading-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: white;
+    color: var(--ech-text-secondary);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--ech-font-family);
+    transition: all 0.15s;
+}
+
+.doc-reading-back-btn:hover {
+    border-color: var(--ech-primary);
+    color: var(--ech-primary);
+}
+
+.doc-reading-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.doc-reading-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 40px;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.doc-reading-doc-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ech-text-primary);
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.doc-reading-doc-byline {
+    font-size: var(--fs-sm);
+    color: var(--ech-text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.doc-reading-body {
+    font-size: 0.938rem;
+    color: var(--ech-text-primary);
+    line-height: 1.75;
+    white-space: pre-line;
+}
+
+/* ============================================================================
+   RESPONSIVE — narrow screens
+   ============================================================================ */
+@media (max-width: 900px) {
+    .doc-workspace.preview-open {
+        flex-direction: column;
+    }
+
+    .doc-preview-pane {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 100%;
+        border-left: none;
+        border-top: 2px solid var(--ech-primary);
+        max-height: 420px;
+    }
+
+    .doc-reading-content {
+        padding: 16px;
+    }
+}

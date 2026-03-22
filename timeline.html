@@ -13,8 +13,70 @@
     <link rel="stylesheet" href="css/banner.css">
     <link rel="stylesheet" href="css/action-bar.css">
     <link rel="stylesheet" href="css/modules/timeline.css">
+    <link rel="stylesheet" href="css/modules/doc-preview.css">
+    <link rel="stylesheet" href="css/table.css">
     <link rel="stylesheet" href="css/utilities.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        /* Timeline Documents & Notes section */
+        .tl-docs-section {
+            background: white;
+            border-bottom: 2px solid var(--ech-border);
+        }
+        .tl-docs-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            background: var(--ech-surface, #f8f9fa);
+            border-bottom: 1px solid var(--ech-border);
+            flex-wrap: wrap;
+        }
+        .tl-docs-title {
+            font-size: var(--fs-sm);
+            font-weight: 700;
+            color: var(--ech-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            margin-right: 4px;
+        }
+        .tl-docs-title i {
+            color: var(--ech-primary);
+        }
+        .tl-docs-toggle-btn {
+            margin-left: auto;
+            background: none;
+            border: 1px solid var(--ech-border);
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--ech-text-muted);
+            font-size: 0.923rem;
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+        .tl-docs-toggle-btn:hover {
+            border-color: var(--ech-primary);
+            color: var(--ech-primary);
+        }
+        .tl-docs-body.collapsed {
+            display: none;
+        }
+        /* Column widths for timeline doc table */
+        .tl-col-key    { width: 30px; text-align: center; }
+        .tl-col-name   { min-width: 180px; }
+        .tl-col-author { min-width: 140px; }
+        .tl-col-type   { min-width: 120px; }
+        .tl-col-date   { min-width: 130px; white-space: nowrap; }
+        .tl-col-status { width: 88px; text-align: center; }
+        .tl-col-actions { width: 70px; text-align: center; }
+    </style>
 </head>
 <body>
 
@@ -117,6 +179,95 @@
         </section>
         <!-- END: FilterBarComponent -->
 
+        <!-- DOCUMENTS & NOTES SECTION: Angular equivalent: TimelineDocsComponent -->
+        <!-- BEGIN: Angular Standalone Component — TimelineDocsComponent -->
+        <section class="tl-docs-section" id="tl-docs-section">
+            <div class="tl-docs-section-header">
+                <span class="tl-docs-title"><i class="pi pi-file-edit"></i> Documents &amp; Notes</span>
+                <div class="doc-quick-filters" id="tlDocQuickFilters">
+                    <button class="doc-qf-chip active" data-qf="all" onclick="tlSetQuickFilter('all')">
+                        <i class="pi pi-list"></i> All
+                    </button>
+                    <button class="doc-qf-chip" data-qf="notes-only" onclick="tlSetQuickFilter('notes-only')">
+                        <i class="pi pi-pencil"></i> Notes Only
+                    </button>
+                    <button class="doc-qf-chip" data-qf="documents-only" onclick="tlSetQuickFilter('documents-only')">
+                        <i class="pi pi-file"></i> Documents Only
+                    </button>
+                    <button class="doc-qf-chip doc-qf-draft" data-qf="draft-only" onclick="tlSetQuickFilter('draft-only')">
+                        <i class="pi pi-pencil"></i> Draft Only
+                    </button>
+                    <button class="doc-qf-chip doc-qf-signed" data-qf="signed-only" onclick="tlSetQuickFilter('signed-only')">
+                        <i class="pi pi-check-circle"></i> Signed Only
+                    </button>
+                    <button class="doc-qf-chip" data-qf="key-only" onclick="tlSetQuickFilter('key-only')">
+                        <i class="pi pi-star"></i> Key Documents
+                    </button>
+                </div>
+                <button class="tl-docs-toggle-btn" title="Collapse / expand" onclick="tlToggleDocsSection()">
+                    <i class="pi pi-chevron-up" id="tlDocsToggleIcon"></i>
+                </button>
+            </div>
+
+            <div class="tl-docs-body" id="tl-docs-body">
+                <div class="doc-workspace" id="tl-doc-workspace">
+
+                    <section class="ehr-table-area doc-table-pane" id="tl-doc-table-area">
+                        <div class="ehr-table-scroll">
+                            <table class="ehr-table" id="tlDocTable">
+                                <thead>
+                                    <tr>
+                                        <th class="tl-col-key"></th>
+                                        <th class="tl-col-name">Name</th>
+                                        <th class="tl-col-author">Author</th>
+                                        <th class="tl-col-type">Type</th>
+                                        <th class="tl-col-date">Date</th>
+                                        <th class="tl-col-status">Status</th>
+                                        <th class="tl-col-actions">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tlDocTableBody"></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <aside class="doc-preview-pane" id="tl-doc-preview-pane" style="display:none">
+                        <div class="doc-preview-header">
+                            <div class="doc-preview-header-actions">
+                                <button class="doc-preview-action-btn doc-preview-expand-btn" title="Expand to reading mode" onclick="tlOpenReadingModal()">
+                                    <i class="pi pi-window-maximize"></i> Expand
+                                </button>
+                                <button class="doc-preview-close-btn" title="Close preview" onclick="tlCloseDocPreview()">
+                                    <i class="pi pi-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="doc-preview-body" id="tl-doc-preview-body"></div>
+                    </aside>
+
+                </div>
+            </div>
+        </section>
+        <!-- END: TimelineDocsComponent -->
+
+        <!-- Timeline docs reading modal (fixed overlay) -->
+        <div class="doc-reading-modal doc-modal-overlay" id="tl-doc-reading-modal" style="display:none">
+            <div class="doc-reading-topbar">
+                <button class="doc-reading-back-btn" onclick="tlCloseReadingModal()">
+                    <i class="pi pi-arrow-left"></i> Back to timeline
+                </button>
+                <div class="doc-reading-topbar-actions">
+                    <button class="doc-action-btn doc-action-download" title="Download PDF" onclick="tlHandleDocAction('download', tlCurrentPreviewDocId)">
+                        <i class="pi pi-file-pdf"></i>
+                    </button>
+                    <button class="doc-action-btn doc-action-share" title="Print" onclick="tlHandleDocAction('print', tlCurrentPreviewDocId)">
+                        <i class="pi pi-print"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="doc-reading-content" id="tl-doc-reading-content"></div>
+        </div>
+
         <!-- API Contract: GET /api/v1/clinical/timeline/{patientId} → TimelineEntryGroupDTO[] — Ver API_contracts.md -->
 
         <!-- TIMELINE CONTENT: Angular equivalent: <p-timeline> component with custom templates -->
@@ -131,6 +282,7 @@
 <script src="mock-clinical-data.js"></script>
 <script src="clinical-data.service.js"></script>
 <script src="layout.js"></script>
+<script src="timeline-docs.js"></script>
 <script src="app.js"></script>
 
 </body>

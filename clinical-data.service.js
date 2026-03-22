@@ -141,6 +141,11 @@ var ClinicalDataService = (function () {
             return ctx ? ctx.documents : [];
         },
 
+        getEncounterDocuments: function (patientId) {
+            var ctx = _getContextForPatient(patientId || DEFAULT_PATIENT_ID);
+            return ctx ? (ctx.encounterDocuments || []) : [];
+        },
+
         getProtocols: function (patientId) {
             var ctx = _getContextForPatient(patientId || DEFAULT_PATIENT_ID);
             return ctx ? ctx.protocols : [];
