@@ -1,0 +1,100 @@
+Keep the current simple table-based layout, but make the document access more clinical and usable inside the EMR. Do not redesign everything from scratch. Improve the current screen incrementally.
+
+Context:
+I already have a Patient Documents page with:
+- patient header
+- top tabs (Reports, Informed Consent, Various, Digital History, Signed Documents)
+- search box
+- documents table with columns such as:
+  - Name
+  - Author
+  - Department
+  - Type
+  - Date
+  - Status
+  - Access Web
+  - Action
+
+Current problem:
+Documents are listed in a table, then opened as PDF in a new browser window. I want to keep the table, but this should feel more like a clinical EMR document workspace, not a file archive.
+
+What to build:
+1. Keep the current table as the main access point.
+2. Do not open documents in a new browser tab by default.
+3. When the user clicks a row or the document icon, open the document inside the EMR in a preview panel.
+4. Add an expand button so the preview can open in a larger in-app modal or full-width reading mode.
+5. Keep PDF download / print as a secondary action only.
+6. Preserve the current tabs and visual style as much as possible.
+7. Reuse existing styles, spacing, colors, and components from the project.
+
+Functional improvements:
+- Keep the table simple and readable.
+- Add quick filters above the table:
+  - Current encounter
+  - Current admission
+  - All history
+  - Latest reports
+  - Draft only
+  - Signed only
+- Allow filtering by document type.
+- Highlight important document types, especially:
+  - Anamnesis
+  - Physical examination
+  - Barthel
+  - Discharge summary
+  - In-progress draft
+- Add visual badges for status:
+  - Draft
+  - Signed
+  - Amended
+  - External
+- Add a “key document” visual marker for clinically important documents.
+
+Columns:
+Keep the current columns, but improve them slightly:
+- Name
+- Author
+- Department
+- Type
+- Date
+- Status
+- Encounter / Admission
+- Key document
+- Actions
+
+Behavior:
+- Clicking a row opens preview inside the page.
+- Clicking expand opens a larger reading mode, still inside the EMR.
+- Clicking print/download exports PDF.
+- Draft documents should open in editable mode if applicable.
+- Signed documents should open in read-only preview mode.
+
+Layout:
+- Left or center: documents table
+- Right side: document preview panel
+- On smaller screens, preview can open as a drawer or modal
+- Keep the patient banner and tabs at the top
+
+Design guidance:
+- Do not make it look like a generic file manager
+- Keep it clean, clinical, and lightweight
+- Focus on usability and low click count
+- This should feel like a simple evolution of the current page, not a brand new module
+
+Mock data:
+Use realistic document examples such as:
+- Admission Note
+- Initial Assessment
+- Physical Examination
+- Barthel Index
+- Discharge Summary
+- Informed Consent
+- Transfer Report
+
+Deliverable:
+Return the updated front-end screen with mocked data and working interactions for:
+- table browsing
+- filtering
+- in-app preview
+- expand reading mode
+- PDF download/print
