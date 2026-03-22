@@ -204,11 +204,11 @@ function renderBanner() {
                         </div>
                     </div>
                     <div class="safety-tags flex align-items-center gap-1 flex-wrap" data-field="allergyList">
-                        <span class="p-tag-custom p-tag-danger clinical-danger" data-tooltip="Penicillin Allergy" data-i18n="SAFETY.ALLERGY_PENICILLIN"><i class="pi pi-exclamation-circle"></i></span>
-                        <span class="p-tag-custom p-tag-danger clinical-danger" data-tooltip="Latex Allergy" data-i18n="SAFETY.ALLERGY_LATEX"><i class="pi pi-exclamation-circle"></i></span>
-                        <span class="p-tag-custom p-tag-warning clinical-warning" data-tooltip="Fall Risk" data-i18n="SAFETY.FALL_RISK"><i class="pi pi-exclamation-triangle"></i></span>
-                        <span class="p-tag-custom p-tag-info clinical-info" data-tooltip="VTE Risk" data-i18n="SAFETY.VTE_RISK"><i class="pi pi-info-circle"></i></span>
-                        <span class="p-tag-custom p-tag-dnr clinical-danger" data-tooltip="DNR" data-i18n="SAFETY.DNR"><i class="pi pi-ban"></i></span>
+                        <span class="p-tag-custom p-tag-danger clinical-danger" data-tooltip="Penicillin Allergy" title="Penicillin Allergy" data-i18n="SAFETY.ALLERGY_PENICILLIN"><i class="pi pi-exclamation-circle"></i></span>
+                        <span class="p-tag-custom p-tag-danger clinical-danger" data-tooltip="Latex Allergy" title="Latex Allergy" data-i18n="SAFETY.ALLERGY_LATEX"><i class="pi pi-exclamation-circle"></i></span>
+                        <span class="p-tag-custom p-tag-warning clinical-warning" data-tooltip="Fall Risk" title="Fall Risk" data-i18n="SAFETY.FALL_RISK"><i class="pi pi-exclamation-triangle"></i></span>
+                        <span class="p-tag-custom p-tag-info clinical-info" data-tooltip="VTE Risk" title="VTE Risk" data-i18n="SAFETY.VTE_RISK"><i class="pi pi-info-circle"></i></span>
+                        <span class="p-tag-custom p-tag-dnr clinical-danger" data-tooltip="DNR" title="DNR" data-i18n="SAFETY.DNR"><i class="pi pi-ban"></i></span>
                     </div>
                 </div>
             </div>`;

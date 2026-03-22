@@ -144,13 +144,13 @@ function renderDayAlertChips(alerts) {
     for (var i = 0; i < Math.min(alerts.length, maxVisible); i++) {
         var severity = getDayAlertSeverity(alerts[i]);
         var icon = getDayAlertIcon(alerts[i]);
-        html += '<span class="p-tag-custom p-tag-' + severity + '" data-tooltip="' + alerts[i] + '"><i class="pi ' + icon + '"></i></span> ';
+        html += '<span class="p-tag-custom p-tag-' + severity + '" data-tooltip="' + alerts[i] + '" title="' + alerts[i] + '"><i class="pi ' + icon + '"></i></span> ';
     }
 
     if (alerts.length > maxVisible) {
         var remaining = alerts.length - maxVisible;
         var tooltipText = alerts.slice(maxVisible).join(', ');
-        html += '<span class="p-tag-custom p-tag-info ed-alert-overflow" data-tooltip="' + tooltipText + '">+' + remaining + '</span>';
+        html += '<span class="p-tag-custom p-tag-info ed-alert-overflow" data-tooltip="' + tooltipText + '" title="' + tooltipText + '">+' + remaining + '</span>';
     }
 
     return html;
