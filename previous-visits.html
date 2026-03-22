@@ -126,10 +126,10 @@
                     <i class="pi pi-arrow-left"></i> Back to episode
                 </button>
                 <div class="doc-reading-topbar-actions">
-                    <button class="doc-action-btn doc-action-download" title="Download PDF" onclick="pvHandleDocAction('download', pvCurrentPreviewDocId)">
+                    <button class="doc-action-btn doc-action-download" title="Download PDF" onclick="pvHandleDocAction('download', pvCtrl.getCurrentDocId())">
                         <i class="pi pi-file-pdf"></i>
                     </button>
-                    <button class="doc-action-btn doc-action-share" title="Print" onclick="pvHandleDocAction('print', pvCurrentPreviewDocId)">
+                    <button class="doc-action-btn doc-action-share" title="Print" onclick="pvHandleDocAction('print', pvCtrl.getCurrentDocId())">
                         <i class="pi pi-print"></i>
                     </button>
                 </div>
@@ -150,7 +150,9 @@
     var pvCurrentEpisodeIndex = 0;
     var pvCurrentEpisodeDocs = [];
 
-    /* Lifecycle controller (DocPreview.createController from doc-preview-shared.js) */
+    /* Lifecycle controller (DocPreview.createController from doc-preview-shared.js).
+       Exposed as window.pvCtrl so inline onclick handlers in the modal topbar can call
+       pvCtrl.getCurrentDocId() to resolve the active doc ID for action buttons. */
     var pvCtrl = DocPreview.createController({
         getData: function() { return pvCurrentEpisodeDocs; },
         previewPaneId: 'pv-doc-preview-pane',
@@ -166,6 +168,7 @@
         modalId: 'pv-doc-reading-modal',
         modalContentId: 'pv-doc-reading-content'
     });
+    window.pvCtrl = pvCtrl;
 
     /* ------------------------------------------------------------------
        Episode list
