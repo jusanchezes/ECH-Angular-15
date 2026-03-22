@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ECH — Pharmacy Workbench</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
+    <link rel="stylesheet" href="css/clinical-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/modules/pharmacy-workbench.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<!--
+    data-page-type="ward-view" → layout.js renders Header + Sidebar (no clinical banner),
+    suitable for ward-level views not tied to a specific patient context.
+    Angular migration: This becomes a top-level route /pharmacy-workbench handled by AppRoutingModule.
+-->
+<body data-page-type="ward-view">
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- BEGIN: Angular Standalone Component — SidebarComponent -->
+    <aside class="sidebar collapsed" id="sidebar-component"></aside>
+    <!-- END: SidebarComponent -->
+
+    <main class="main-content">
+
+        <!-- BEGIN: Angular Standalone Component — HeaderComponent -->
+        <header class="top-bar" id="header-component"></header>
+        <!-- END: HeaderComponent -->
+
+        <!-- ================================================================
+             BEGIN: Angular Standalone Component — PharmacyTabsComponent
+             Angular: <p-tabMenu [model]="pwTabs" [(activeItem)]="activeTab"
+                      (activeItemChange)="onTabChange($event)">
+             ================================================================ -->
+        <div class="pw-tabs-bar" id="pw-tabs-bar">
+            <!-- Rendered by pharmacy-workbench.js → renderPWTabs() -->
+        </div>
+        <!-- END: PharmacyTabsComponent -->
+
+        <!-- ================================================================
+             BEGIN: Angular Standalone Component — PharmacyToolbarComponent
+             Angular: <p-toolbar>
+                        <ng-template pTemplate="start">
+                          <p-dropdown [options]="warehouseOptions" [(ngModel)]="selectedWarehouse">
+                          <p-dropdown [options]="wardOptions" [(ngModel)]="selectedWard">
+                        </ng-template>
+                        <ng-template pTemplate="end">
+                          <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText [(ngModel)]="searchQuery" placeholder="Search Patient/Drug...">
+                          </span>
+                        </ng-template>
+                      </p-toolbar>
+             ================================================================ -->
+        <div class="pw-toolbar" id="pw-toolbar">
+            <!-- Rendered by pharmacy-workbench.js → renderPWToolbar() -->
+        </div>
+        <!-- END: PharmacyToolbarComponent -->
+
+        <!-- ================================================================
+             BEGIN: Angular Standalone Component — PharmacyListComponent
+             Angular: *ngFor="let line of filteredLines$ | async"
+             Active on tabs: Pend. Prep, Urgent Prep, Prepared, Dispensed
+             ================================================================ -->
+        <div class="pw-layout" id="pw-layout">
+
+            <div class="pw-main-col">
+                <section class="pw-list-area" id="pw-list" aria-label="Dispensation list">
+                    <!-- Rendered by pharmacy-workbench.js → renderPWList() -->
+                </section>
+            </div>
+
+            <!-- ================================================================
+                 BEGIN: Angular Standalone Component — DispensingValidationComponent
+                 Angular: <p-panel> in a fixed right-side column
+                 Shows: delivery location, contraindications, quantity logic, safety markers
+                 ================================================================ -->
+            <aside class="pw-panel-col" id="pw-validation-panel" aria-label="Dispensing validation panel">
+                <!-- Rendered by pharmacy-workbench.js → renderPWPanel(line) -->
+            </aside>
+            <!-- END: DispensingValidationComponent -->
+
+        </div>
+        <!-- END: PharmacyListComponent -->
+
+    </main>
+</div>
+
+<script src="mock-clinical-data.js"></script>
+<script src="clinical-data.service.js"></script>
+<script src="layout.js"></script>
+<script src="pharmacy-workbench.js"></script>
+
+</body>
+</html>
