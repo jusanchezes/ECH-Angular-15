@@ -278,6 +278,128 @@ var NW_DATA = {
             ]
         },
         {
+            id: 50,
+            room: '212-B',
+            name: 'ANNA KOWALSKI',
+            nurse: 'Ana Ruiz',
+            acuity: 'High',
+            alerts: {
+                sun:   { active: true,  icon: 'pi-sun',    tooltip: 'Fall risk — Morse score 65, bed alarm active' },
+                flask: { active: false, icon: 'pi-flask',  tooltip: '' },
+                bell:  { active: true,  icon: 'pi-bell',   tooltip: 'Insulin sliding scale — BGL 14.2 mmol/L at 08:00' }
+            },
+            tasks: [
+                {
+                    id: 't11',
+                    type: 'medication',
+                    typeLabel: 'Medication',
+                    icon: 'pi-stop-circle',
+                    name: 'INSULIN GLARGINE 20 units SC',
+                    detail: 'Subcutaneous | QD Bedtime | 10-03-26 / 31-03-26 (21 days)',
+                    time: '07:00',
+                    status: 'Overdue',
+                    statusClass: 'nw-status-overdue',
+                    canCheck: false,
+                    order: {
+                        prescriber: 'Dr. Lisa Cheng',
+                        prescribed: '10/03/2026',
+                        indication: 'Type 2 DM — basal insulin regimen',
+                        route: 'Subcutaneous',
+                        frequency: 'QD Bedtime',
+                        notes: 'Check BGL before administration. Hold if BGL < 5.0 mmol/L. Document site rotation.',
+                        history: [
+                            { time: '21-03  22:00', nurse: 'J. Lima',   action: 'Given',    dotClass: 'dot-given',     note: 'BGL 9.8 mmol/L pre-dose. Left abdomen.' },
+                            { time: '20-03  22:00', nurse: 'M. Torres', action: 'Given',    dotClass: 'dot-given',     note: '' }
+                        ]
+                    }
+                },
+                {
+                    id: 't12',
+                    type: 'care',
+                    typeLabel: 'Care',
+                    icon: 'pi-heart',
+                    name: 'Blood Glucose Monitoring',
+                    detail: 'Goal: BGL 6-10 mmol/L | QID (AC & HS)',
+                    time: '12:00',
+                    status: 'Not Started',
+                    statusClass: 'nw-status-not-started',
+                    canCheck: true,
+                    order: {
+                        prescriber: 'Dr. Lisa Cheng',
+                        prescribed: '10/03/2026',
+                        indication: 'Diabetic monitoring — Type 2 DM',
+                        route: 'Capillary',
+                        frequency: 'QID',
+                        notes: 'Document result. Apply sliding scale if BGL > 12. Notify if BGL < 4 or > 16 mmol/L.',
+                        history: [
+                            { time: '22-03  08:00', nurse: 'Ana Ruiz',  action: 'Given',    dotClass: 'dot-given',     note: 'BGL 14.2 mmol/L — sliding scale applied, Dr. Cheng notified.' },
+                            { time: '22-03  06:00', nurse: 'J. Lima',   action: 'Given',    dotClass: 'dot-given',     note: 'BGL 8.6 mmol/L. Within target.' }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            id: 51,
+            room: '220-A',
+            name: 'RAFAEL MENDEZ Cruz',
+            nurse: null,
+            acuity: 'Low',
+            alerts: {
+                sun:   { active: false, icon: 'pi-sun',    tooltip: '' },
+                flask: { active: true,  icon: 'pi-flask',  tooltip: 'Penicillin allergy — mild rash documented 2021' },
+                bell:  { active: false, icon: 'pi-bell',   tooltip: '' }
+            },
+            tasks: [
+                {
+                    id: 't13',
+                    type: 'medication',
+                    typeLabel: 'Medication',
+                    icon: 'pi-stop-circle',
+                    name: 'PARACETAMOL 1g IV',
+                    detail: 'Intravenous | Q6H PRN | 21-03-26 / 24-03-26 (3 days)',
+                    time: '12:00',
+                    status: 'Not Started',
+                    statusClass: 'nw-status-not-started',
+                    canCheck: false,
+                    order: {
+                        prescriber: 'Dr. Henrik Larsson',
+                        prescribed: '21/03/2026',
+                        indication: 'Post-operative pain management — appendectomy',
+                        route: 'Intravenous',
+                        frequency: 'Q6H PRN',
+                        notes: 'Assess pain score before administration (NRS). Document response 30 min post-dose. Max 4g/day.',
+                        history: [
+                            { time: '22-03  06:00', nurse: 'J. Lima',   action: 'Given',    dotClass: 'dot-given',     note: 'NRS 5/10 pre-dose. Infused over 15 min without adverse events.' }
+                        ]
+                    }
+                },
+                {
+                    id: 't14',
+                    type: 'care',
+                    typeLabel: 'Care',
+                    icon: 'pi-heart',
+                    name: 'Post-op Wound Assessment',
+                    detail: 'Goal: Surgical wound healing | Q shift',
+                    time: '08:00',
+                    status: 'Completed',
+                    statusClass: 'nw-status-completed',
+                    canCheck: true,
+                    order: {
+                        prescriber: 'Dr. Henrik Larsson',
+                        prescribed: '21/03/2026',
+                        indication: 'Post-appendectomy wound surveillance',
+                        route: 'N/A',
+                        frequency: 'Q shift',
+                        notes: 'Inspect for erythema, oedema, exudate. Dressing intact? Document findings.',
+                        history: [
+                            { time: '22-03  07:30', nurse: 'J. Lima',   action: 'Given',    dotClass: 'dot-given',     note: 'Wound dry and intact. Small 3cm incision healing well. No signs of infection.' }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
             id: 99,
             room: '215-A',
             name: 'ELENA GARCIA MORALES',
@@ -341,10 +463,12 @@ var NW_DATA = {
     ],
 
     handoffVitals: {
-        46: { bp: [128,130,127,132,129,128,131,130], hr: [72,74,71,75,73,70,72,74], temp: [36.8,36.7,36.9,37.0,36.8,36.7,36.8,36.9], spo2: [97,97,96,97,98,97,97,98] },
-        47: { bp: [148,152,150,155,149,151,148,150], hr: [88,92,90,95,89,91,88,90], temp: [37.2,37.1,37.3,37.5,37.2,37.1,37.2,37.3], spo2: [94,93,95,94,95,96,95,94] },
-        48: { bp: [120,122,119,121,118,120,121,122], hr: [65,67,66,68,65,64,66,67], temp: [36.5,36.6,36.5,36.7,36.5,36.4,36.5,36.6], spo2: [99,99,98,99,99,98,99,99] },
-        99: { bp: [138,140,142,136,139,141,138,140], hr: [80,82,85,83,81,80,82,84], temp: [38.2,38.1,37.9,38.0,38.1,38.3,38.2,38.0], spo2: [96,96,97,96,95,96,97,96] }
+        46: { bp: [128,130,127,132,129,128,131,130], hr: [72,74,71,75,73,70,72,74], spo2: [97,97,96,97,98,97,97,98] },
+        47: { bp: [148,152,150,155,149,151,148,150], hr: [88,92,90,95,89,91,88,90], spo2: [94,93,95,94,95,96,95,94] },
+        48: { bp: [120,122,119,121,118,120,121,122], hr: [65,67,66,68,65,64,66,67], spo2: [99,99,98,99,99,98,99,99] },
+        50: { bp: [136,138,140,135,137,139,136,138], hr: [78,80,82,79,81,80,78,80], spo2: [96,95,96,97,96,96,95,96] },
+        51: { bp: [118,120,117,119,116,118,120,119], hr: [68,70,69,71,68,67,69,70], spo2: [98,99,98,99,99,98,98,99] },
+        99: { bp: [138,140,142,136,139,141,138,140], hr: [80,82,85,83,81,80,82,84], spo2: [96,96,97,96,95,96,97,96] }
     }
 };
 
@@ -409,9 +533,9 @@ function applySearch(patients) {
  * Angular: <p-tabMenu [model]="tabs" [activeItem]="activeTab">
  * ============================================================ */
 var NW_TABS = [
-    { id: 'my-patients', label: 'My Patients', count: 3, icon: null },
-    { id: 'unassigned',  label: 'Unassigned',  count: 1, icon: null },
-    { id: 'overdue',     label: 'Overdue',     count: 2, icon: null },
+    { id: 'my-patients', label: 'My Patients', count: 4, icon: null },
+    { id: 'unassigned',  label: 'Unassigned',  count: 2, icon: null },
+    { id: 'overdue',     label: 'Overdue',     count: 3, icon: null },
     { id: 'handoff',     label: 'Handoff',     count: null, icon: 'pi-refresh' }
 ];
 
@@ -528,7 +652,7 @@ function buildPatientBlock(patient) {
 
     var nurseHtml = patient.nurse
         ? '<span class="nw-patient-nurse"><i class="pi pi-user"></i> ' + patient.nurse + '</span>'
-        : '<span class="nw-patient-nurse" style="color:var(--ech-danger)"><i class="pi pi-exclamation-circle"></i> Unassigned</span>';
+        : '<span class="nw-patient-nurse nw-nurse-unassigned"><i class="pi pi-exclamation-circle"></i> Unassigned</span>';
 
     var acuityClass = 'nw-acuity-' + (patient.acuity ? patient.acuity.toLowerCase() : 'low');
     var acuityHtml = '<span class="nw-acuity-badge ' + acuityClass + '">Acuity: ' + (patient.acuity || 'Low') + '</span>';
@@ -582,12 +706,7 @@ function renderNWPanel(task, patient) {
         diagnostic: 'pi-sync'
     }[task.type] || 'pi-circle';
 
-    var colorMap = {
-        medication: '#1e88e5',
-        care: '#e91e63',
-        diagnostic: '#9c27b0'
-    };
-    var typeColor = colorMap[task.type] || '#777';
+    var typeIconClass = 'nw-panel-type-icon nw-panel-type-' + (task.type || 'default');
 
     var historyHtml = '';
     if (task.order.history && task.order.history.length > 0) {
@@ -608,11 +727,11 @@ function renderNWPanel(task, patient) {
             }).join('')
             + '</ul>';
     } else {
-        historyHtml = '<p style="color:var(--ech-text-muted);font-size:var(--fs-md)">No previous administrations recorded this episode.</p>';
+        historyHtml = '<p class="nw-history-empty">No previous administrations recorded this episode.</p>';
     }
 
     panel.innerHTML = '<div class="nw-panel-header">'
-        + '<div class="nw-panel-title"><i class="pi ' + iconClass + '" style="color:' + typeColor + '"></i> ' + task.typeLabel + ' Order</div>'
+        + '<div class="nw-panel-title"><i class="pi ' + iconClass + ' ' + typeIconClass + '"></i> ' + task.typeLabel + ' Order</div>'
         + '<button class="nw-panel-close" onclick="closeTaskPanel()"><i class="pi pi-times"></i></button>'
         + '</div>'
         + '<div class="nw-panel-body">'
@@ -630,7 +749,7 @@ function renderNWPanel(task, patient) {
         +     '<div class="nw-panel-field"><span class="nw-panel-field-label">Prescribed by</span><span class="nw-panel-field-value">' + task.order.prescriber + '</span></div>'
         +     '<div class="nw-panel-field"><span class="nw-panel-field-label">Prescribed</span><span class="nw-panel-field-value">' + task.order.prescribed + '</span></div>'
         +     '<div class="nw-panel-field"><span class="nw-panel-field-label">Indication</span><span class="nw-panel-field-value">' + task.order.indication + '</span></div>'
-        +     (task.order.notes ? '<div class="nw-panel-field"><span class="nw-panel-field-label">Notes</span><span class="nw-panel-field-value" style="white-space:pre-line;">' + task.order.notes + '</span></div>' : '')
+        +     (task.order.notes ? '<div class="nw-panel-field"><span class="nw-panel-field-label">Notes</span><span class="nw-panel-field-value nw-panel-notes-value">' + task.order.notes + '</span></div>' : '')
         +   '</div>'
         +   '<div class="nw-panel-section">'
         +     '<div class="nw-panel-section-title">Execution History</div>'
@@ -669,7 +788,7 @@ function buildSparklineSVG(values, color, min, max) {
 }
 
 function buildSparklineCell(vitals) {
-    if (!vitals) return '<span style="color:var(--ech-text-muted)">—</span>';
+    if (!vitals) return '<span class="nw-sparkline-empty">—</span>';
 
     var bpMin = Math.min.apply(null, vitals.bp) - 5;
     var bpMax = Math.max.apply(null, vitals.bp) + 5;
@@ -755,12 +874,12 @@ function nwSwitchTab(tabId) {
     var toolbarEl = document.getElementById('nw-toolbar');
 
     if (isHandoff) {
-        if (contentEl) contentEl.style.display = 'none';
-        if (handoffEl) { handoffEl.style.display = 'block'; renderHandoffMode(); }
+        if (contentEl) contentEl.classList.add('nw-hidden');
+        if (handoffEl) { handoffEl.classList.remove('nw-hidden'); renderHandoffMode(); }
         if (toolbarEl) toolbarEl.classList.add('nw-toolbar-hidden');
     } else {
-        if (contentEl) contentEl.style.display = '';
-        if (handoffEl) handoffEl.style.display = 'none';
+        if (contentEl) contentEl.classList.remove('nw-hidden');
+        if (handoffEl) handoffEl.classList.add('nw-hidden');
         if (toolbarEl) toolbarEl.classList.remove('nw-toolbar-hidden');
         renderNWTaskList();
     }

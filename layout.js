@@ -368,12 +368,15 @@ function initLayout() {
     const isPatientList = pageType === 'patient-list';
     const isDashboard = pageType === 'dashboard';
     const isShellOnly = isPatientList || isDashboard;
+    const isWardView = pageType === 'ward-view';
 
     renderHeader({ showHamburger: !isShellOnly });
 
     if (!isShellOnly) {
         renderSidebar();
-        renderBanner();
+        if (!isWardView) {
+            renderBanner();
+        }
     }
 
     renderAlertOverlay();

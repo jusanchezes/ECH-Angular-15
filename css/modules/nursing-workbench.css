@@ -92,10 +92,7 @@
 }
 
 .nw-toolbar.nw-toolbar-hidden {
-    max-height: 0 !important;
-    opacity: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    display: none !important;
 }
 
 .nw-toolbar-inner {
@@ -1020,4 +1017,43 @@
     .nw-task-time {
         width: 48px;
     }
+}
+
+
+/* ============================================================================
+   10. UTILITY CLASSES
+   ============================================================================ */
+
+/* Replaces style="display:none" — used for handoff panel and task list toggling */
+.nw-hidden {
+    display: none !important;
+}
+
+/* Unassigned nurse label — replaces style="color:var(--ech-danger)" */
+.nw-nurse-unassigned {
+    color: var(--ech-danger);
+}
+
+/* Empty history message — replaces inline style */
+.nw-history-empty {
+    color: var(--ech-text-muted);
+    font-size: var(--fs-md);
+    margin: 0;
+    padding: 4px 0;
+}
+
+/* Panel type icon colors — replaces style="color:..." inline on panel icon */
+.nw-panel-type-icon.nw-panel-type-medication { color: #1e88e5; }
+.nw-panel-type-icon.nw-panel-type-care        { color: #e91e63; }
+.nw-panel-type-icon.nw-panel-type-diagnostic  { color: #9c27b0; }
+.nw-panel-type-icon.nw-panel-type-default     { color: var(--ech-text-secondary); }
+
+/* Notes field — replaces style="white-space:pre-line;" */
+.nw-panel-notes-value {
+    white-space: pre-line;
+}
+
+/* Empty sparkline cell — replaces style="color:var(--ech-text-muted)" */
+.nw-sparkline-empty {
+    color: var(--ech-text-muted);
 }

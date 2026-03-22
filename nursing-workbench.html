@@ -9,20 +9,26 @@
     <link rel="stylesheet" href="css/clinical-core.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/modules/nursing-workbench.css">
     <link rel="stylesheet" href="css/utilities.css">
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 
 <!--
-    data-page-type="patient-list" → layout.js renders Header only (no sidebar / clinical banner),
-    matching the pattern used by inpatients.html and ed.html for list-type views.
+    data-page-type="ward-view" → layout.js renders Header + Sidebar (no clinical banner),
+    suitable for ward-level views not tied to a specific patient context.
     Angular migration: This becomes a top-level route /nursing-workbench handled by AppRoutingModule.
 -->
-<body data-page-type="patient-list" data-list-type="nursing-workbench">
+<body data-page-type="ward-view">
 
-<div class="layout layout-no-sidebar">
-    <main class="main-content main-full-width">
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- BEGIN: Angular Standalone Component — SidebarComponent -->
+    <aside class="sidebar collapsed" id="sidebar-component"></aside>
+    <!-- END: SidebarComponent -->
+
+    <main class="main-content">
 
         <!-- BEGIN: Angular Standalone Component — HeaderComponent -->
         <header class="top-bar" id="header-component"></header>
@@ -74,9 +80,9 @@
              BEGIN: Angular Standalone Component — HandoffComponent
              Angular: *ngIf="activeTab === 'handoff'"
              Contains: Planned vs Executed table + sparklines + signature button
-             Hidden by default; shown only when Handoff tab is active.
+             Hidden by default via .nw-hidden class; shown only when Handoff tab is active.
              ================================================================ -->
-        <section class="nw-handoff-panel" id="nw-handoff" style="display:none" aria-label="Shift handoff">
+        <section class="nw-handoff-panel nw-hidden" id="nw-handoff" aria-label="Shift handoff">
             <!-- Rendered by nursing-workbench.js → renderHandoffMode() -->
         </section>
         <!-- END: HandoffComponent -->
