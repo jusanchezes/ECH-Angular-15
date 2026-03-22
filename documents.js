@@ -68,6 +68,14 @@ function renderDocumentTable() {
     const docs = getFilteredDocuments();
     if (badge) badge.textContent = docs.length;
 
+    if (currentPreviewDocId !== null && !docs.find(d => d.id === currentPreviewDocId)) {
+        currentPreviewDocId = null;
+        const workspace = document.getElementById('doc-workspace');
+        const previewPane = document.getElementById('doc-preview-pane');
+        if (workspace) workspace.classList.remove('preview-open');
+        if (previewPane) previewPane.style.display = 'none';
+    }
+
     if (docs.length === 0) {
         tbody.innerHTML = `
             <tr>
