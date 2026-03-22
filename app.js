@@ -11,6 +11,48 @@
 var PatientData = ClinicalDataService.getPatient();
 var TimelineData = ClinicalDataService.getTimeline();
 
+/* ------------------------------------------------------------------
+   Merge encounter documents into the timeline as "Document" entries.
+   tlGetDocumentTimelineEntries() is provided by timeline-docs.js
+   which is loaded before app.js.
+------------------------------------------------------------------ */
+(function mergeDocumentEntries() {
+    if (typeof tlGetDocumentTimelineEntries !== 'function') return;
+
+    var MONTH_MAP = {
+        January:1, February:2, March:3, April:4, May:5, June:6,
+        July:7, August:8, September:9, October:10, November:11, December:12
+    };
+
+    function parseDateGroupStr(dateStr) {
+        var parts = (dateStr || '').split(' ');
+        if (parts.length === 4) {
+            return new Date(
+                parseInt(parts[3], 10),
+                (MONTH_MAP[parts[2]] || 1) - 1,
+                parseInt(parts[1], 10)
+            );
+        }
+        return new Date(0);
+    }
+
+    var docGroups = tlGetDocumentTimelineEntries();
+
+    docGroups.forEach(function (docGroup) {
+        var existing = TimelineData.find(function (g) { return g.date === docGroup.date; });
+        if (existing) {
+            docGroup.entries.forEach(function (e) { existing.entries.push(e); });
+            existing.entries.sort(function (a, b) { return a.time.localeCompare(b.time); });
+        } else {
+            TimelineData.push(docGroup);
+        }
+    });
+
+    TimelineData.sort(function (a, b) {
+        return parseDateGroupStr(a.date) - parseDateGroupStr(b.date);
+    });
+}());
+
 /** Timeline filter state. Angular: managed by TimelineFilterService with BehaviorSubject observables */
 let currentTimeFilter = 'full';
 let currentRoleFilters = ['All'];
@@ -39,7 +81,8 @@ function renderTimeline() {
         'Note': 'pi-pencil',
         'Images': 'pi-image',
         'Care': 'pi-shield',
-        'Vitals': 'pi-chart-line'
+        'Vitals': 'pi-chart-line',
+        'Document': 'pi-file-text'
     };
 
 
@@ -75,23 +118,49 @@ function renderTimeline() {
                 if (visibleColumns.type) headerParts.push(`<span class="tl-type tl-type-${first.type.toLowerCase()}" data-i18n="TYPE.${first.type.toUpperCase()}"><i class="pi ${icon}"></i> ${first.type}</span>`);
                 if (visibleColumns.dept) headerParts.push(`<span class="tl-dept">${first.dept}</span>`);
                 headerParts.push(`<span class="tl-role">${first.author}</span>`);
-                if (visibleColumns.card) headerParts.push(`<span class="tl-card-tag">${first.card}</span>`);
+                if (visibleColumns.card && first.card) headerParts.push(`<span class="tl-card-tag">${first.card}</span>`);
                 html += `<div class="tl-event-header">${headerParts.join('<span class="tl-sep">·</span>')}</div>`;
 
                 group.forEach(entry => {
                     html += `<div class="tl-sub-item">`;
+
                     if (visibleColumns.description) {
-                        html += `<span class="tl-description">${entry.description}</span>`;
+                        if (entry.docId) {
+                            /* Document entry — clickable title + type/status sub-label */
+                            const statusTag = (typeof DocPreview !== 'undefined')
+                                ? DocPreview.getStatusTag(entry.docStatus)
+                                : '';
+                            html += `<span class="tl-description tl-doc-desc">` +
+                                `<span class="tl-doc-link" onclick="tlOpenDocModal('${entry.docId}')">${entry.description}</span>` +
+                                `<span class="tl-doc-meta">${entry.docType}${statusTag ? ' &nbsp;·&nbsp; ' + statusTag : ''}</span>` +
+                                `</span>`;
+                        } else {
+                            html += `<span class="tl-description">${entry.description}</span>`;
+                        }
                     }
+
                     if (visibleColumns.actions) {
-                        html += `<span class="tl-sub-actions"><span class="action-icon pi pi-pencil" onclick="toggleRowMenu(event, this)" data-i18n-title="ACTIONS.MENU_TITLE" title="Actions"></span>`;
-                        html += `<div class="row-dropdown">`;
-                        entry.actions.forEach(a => {
-                            const actionKey = a.replace(/\s+/g, '_').toUpperCase();
-                            html += `<div class="rd-item" onclick="handleAction('${a}', event)" data-i18n="ACTIONS.${actionKey}">${a}</div>`;
-                        });
-                        html += `</div></span>`;
+                        if (entry.docId) {
+                            /* Document-specific action menu */
+                            html += `<span class="tl-sub-actions">` +
+                                `<span class="action-icon pi pi-ellipsis-v" onclick="toggleRowMenu(event, this)" title="Actions"></span>` +
+                                `<div class="row-dropdown">` +
+                                `<div class="rd-item" onclick="tlOpenDocModal('${entry.docId}')"><i class="pi pi-eye"></i> View Document</div>` +
+                                `<div class="rd-item" onclick="tlHandleDocAction('download','${entry.docId}')"><i class="pi pi-file-pdf"></i> Download PDF</div>` +
+                                `<div class="rd-item" onclick="tlHandleDocAction('print','${entry.docId}')"><i class="pi pi-print"></i> Print</div>` +
+                                `</div></span>`;
+                        } else {
+                            /* Standard action dropdown */
+                            html += `<span class="tl-sub-actions"><span class="action-icon pi pi-pencil" onclick="toggleRowMenu(event, this)" data-i18n-title="ACTIONS.MENU_TITLE" title="Actions"></span>`;
+                            html += `<div class="row-dropdown">`;
+                            entry.actions.forEach(a => {
+                                const actionKey = a.replace(/\s+/g, '_').toUpperCase();
+                                html += `<div class="rd-item" onclick="handleAction('${a}', event)" data-i18n="ACTIONS.${actionKey}">${a}</div>`;
+                            });
+                            html += `</div></span>`;
+                        }
                     }
+
                     html += `</div>`;
                 });
 

@@ -266,21 +266,57 @@
     color: white;
 }
 
-.tl-type-exam { color: var(--ech-primary); }
-.tl-type-surgery { color: #e91e63; }
+.tl-type-exam     { color: var(--ech-primary); }
+.tl-type-surgery  { color: #e91e63; }
 .tl-type-medication { color: #9c27b0; }
-.tl-type-note { color: #607d8b; }
-.tl-type-images { color: #00bcd4; }
-.tl-type-care { color: #4caf50; }
-.tl-type-vitals { color: #ff9800; }
+.tl-type-note     { color: #607d8b; }
+.tl-type-images   { color: #00bcd4; }
+.tl-type-care     { color: #4caf50; }
+.tl-type-vitals   { color: #ff9800; }
+.tl-type-document { color: #5c6bc0; }
 
-.p-timeline-event-marker[data-type-color="Exam"] { background: var(--ech-primary); border-color: var(--ech-primary); }
-.p-timeline-event-marker[data-type-color="Surgery"] { background: #e91e63; border-color: #e91e63; }
+.p-timeline-event-marker[data-type-color="Exam"]       { background: var(--ech-primary); border-color: var(--ech-primary); }
+.p-timeline-event-marker[data-type-color="Surgery"]    { background: #e91e63; border-color: #e91e63; }
 .p-timeline-event-marker[data-type-color="Medication"] { background: #9c27b0; border-color: #9c27b0; }
-.p-timeline-event-marker[data-type-color="Note"] { background: #607d8b; border-color: #607d8b; }
-.p-timeline-event-marker[data-type-color="Images"] { background: #00bcd4; border-color: #00bcd4; }
-.p-timeline-event-marker[data-type-color="Care"] { background: #4caf50; border-color: #4caf50; }
-.p-timeline-event-marker[data-type-color="Vitals"] { background: #ff9800; border-color: #ff9800; }
+.p-timeline-event-marker[data-type-color="Note"]       { background: #607d8b; border-color: #607d8b; }
+.p-timeline-event-marker[data-type-color="Images"]     { background: #00bcd4; border-color: #00bcd4; }
+.p-timeline-event-marker[data-type-color="Care"]       { background: #4caf50; border-color: #4caf50; }
+.p-timeline-event-marker[data-type-color="Vitals"]     { background: #ff9800; border-color: #ff9800; }
+.p-timeline-event-marker[data-type-color="Document"]   { background: #5c6bc0; border-color: #5c6bc0; }
+
+/* --- Document entries within the timeline feed --- */
+.tl-doc-desc {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tl-doc-link {
+    color: var(--ech-primary);
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: var(--fs-md);
+}
+
+.tl-doc-link:hover {
+    text-decoration: underline;
+    color: var(--ech-primary-dark);
+}
+
+.tl-doc-meta {
+    font-size: 0.72rem;
+    color: var(--ech-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.2;
+}
+
+.tl-doc-meta .doc-status-tag {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+}
 
 
   
