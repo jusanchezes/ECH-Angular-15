@@ -18,6 +18,8 @@ function getFilteredDocuments() {
         docs = docs.filter(d => d.encounter === 'ENC-2026-001');
     } else if (currentQuickFilter === 'current-admission') {
         docs = docs.filter(d => d.admission === 'ADM-2026-001');
+    } else if (currentQuickFilter === 'all-history') {
+        docs = docs.filter(d => d.encounter !== 'ENC-2026-001' && d.admission !== 'ADM-2026-001');
     } else if (currentQuickFilter === 'latest-reports') {
         docs = docs.slice().sort((a, b) => parseDateStr(b.date) - parseDateStr(a.date)).slice(0, 5);
     } else if (currentQuickFilter === 'draft-only') {
