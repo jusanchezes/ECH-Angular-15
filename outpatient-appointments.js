@@ -22,7 +22,7 @@ var opAppointments = [
 var opSortField = null;
 var opSortAsc = true;
 var opTabFilter = 'op-all';
-var opScopeFilter = 'all';
+var opScopeFilter = 'mine';
 var opSearchTerm = '';
 
 var OP_CURRENT_DATE = new Date(2026, 2, 22);
@@ -50,7 +50,7 @@ function renderOpToolbar() {
         '<div class="toolbar-inner">' +
             '<div class="toolbar-left">' +
                 '<div class="scope-filter-group">' +
-                    '<button class="scope-btn scope-btn-active" data-scope="all" onclick="opHandleScopeChange(\'all\')">' +
+                    '<button class="scope-btn scope-btn-active" data-scope="mine" onclick="opHandleScopeChange(\'mine\')">' +
                         'My Patients' +
                     '</button>' +
                     '<button class="scope-btn" data-scope="dept" onclick="opHandleScopeChange(\'dept\')">' +
