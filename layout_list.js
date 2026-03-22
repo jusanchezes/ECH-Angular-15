@@ -235,8 +235,6 @@ function handleToolbarSearch(value) {
         filterDayList(value);
     } else if (typeof filterSurgList === 'function') {
         filterSurgList(value);
-    } else if (typeof filterOpList === 'function') {
-        filterOpList(value);
     }
 }
 
