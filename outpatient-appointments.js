@@ -403,10 +403,13 @@ function openOpDrawer(apptId) {
     var actHtml = '';
     actHtml += '<button class="ed-drawer-action-btn" onclick="opHandleAction(\'chart\',' + appt.id + ')"><i class="pi pi-file-edit"></i> Open Chart</button>';
     actHtml += '<button class="ed-drawer-action-btn" onclick="opHandleAction(\'vitals\',' + appt.id + ')"><i class="pi pi-heart"></i> Record Vitals</button>';
+    if (appt.status === 'Waiting') {
+        actHtml += '<button class="ed-drawer-action-btn" onclick="opHandleAction(\'arrive\',' + appt.id + ')"><i class="pi pi-sign-in"></i> Mark Arrived</button>';
+    }
     if (appt.status === 'Arrived' || appt.status === 'Waiting') {
         actHtml += '<button class="ed-drawer-action-btn" onclick="opHandleAction(\'start\',' + appt.id + ')"><i class="pi pi-play"></i> Start Consultation</button>';
     }
-    if (appt.status !== 'Completed') {
+    if (appt.status !== 'Completed' && appt.status !== 'Cancelled') {
         actHtml += '<button class="ed-drawer-action-btn" onclick="opHandleAction(\'complete\',' + appt.id + ')"><i class="pi pi-check"></i> Mark Completed</button>';
     }
     actHtml += '<button class="ed-drawer-action-btn" onclick="opHandleAction(\'note\',' + appt.id + ')"><i class="pi pi-pencil"></i> Add Note</button>';
