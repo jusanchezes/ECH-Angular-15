@@ -84,6 +84,23 @@ const TAB_CONFIGS = {
 };
 
 /* ============================================================
+ * LOCATION FILTER CONFIGS
+ * Opciones del filtro de ubicación mostradas en el toolbar para
+ * el listado de inpatients. Separado de TAB_CONFIGS para permitir
+ * que el toolbar y las pestañas evolucionen de forma independiente.
+ * Angular: Reemplazado por un selector <p-dropdown> o botones en ToolbarComponent.
+ * ============================================================ */
+const LOCATION_FILTER_CONFIGS = {
+    'patient-list': [
+        { id: 'loc-all',       label: 'All',                  count: 12, active: true  },
+        { id: 'loc-recent',    label: 'Recently Admitted',     count: 3,  active: false },
+        { id: 'loc-discharge', label: 'Planned Discharges',    count: 2,  active: false },
+        { id: 'loc-icu',       label: 'ICU / PACU',            count: 1,  active: false },
+        { id: 'loc-surgery',   label: 'Patients in Surgery',   count: 1,  active: false }
+    ]
+};
+
+/* ============================================================
  * PAGINATION STATE
  * Angular: Reemplazado por PaginatorState en PatientListComponent
  * ============================================================ */
@@ -134,23 +151,15 @@ function renderToolbar() {
     if (!el) return;
 
     const listType = document.body.getAttribute('data-list-type') || '';
-    const locationFilterHtml = listType === 'patient-list' ? `
+    const locationFilters = LOCATION_FILTER_CONFIGS[listType];
+    const locationFilterHtml = locationFilters ? `
                 <div class="scope-filter-group" id="location-filter-group">
-                    <button class="scope-btn scope-btn-active" data-location="all" onclick="handleLocationFilter('all')">
-                        All <span class="tab-count">12</span>
-                    </button>
-                    <button class="scope-btn" data-location="loc-recent" onclick="handleLocationFilter('loc-recent')">
-                        Recently Admitted <span class="tab-count">3</span>
-                    </button>
-                    <button class="scope-btn" data-location="loc-discharge" onclick="handleLocationFilter('loc-discharge')">
-                        Planned Discharges <span class="tab-count">2</span>
-                    </button>
-                    <button class="scope-btn" data-location="loc-icu" onclick="handleLocationFilter('loc-icu')">
-                        ICU / PACU <span class="tab-count">1</span>
-                    </button>
-                    <button class="scope-btn" data-location="loc-surgery" onclick="handleLocationFilter('loc-surgery')">
-                        Patients in Surgery <span class="tab-count">1</span>
-                    </button>
+                    ${locationFilters.map(function(f) {
+                        const activeClass = f.active ? ' scope-btn-active' : '';
+                        return `<button class="scope-btn${activeClass}" data-location="${f.id}" onclick="handleLocationFilter('${f.id}')">
+                        ${f.label} <span class="tab-count">${f.count}</span>
+                    </button>`;
+                    }).join('\n                    ')}
                 </div>` : '';
 
     el.innerHTML = `
