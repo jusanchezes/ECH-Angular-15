@@ -53,22 +53,90 @@
             <button class="action-btn" onclick="handleQuickAction('Prescribe Medication')" data-i18n-title="ACTIONS.PRESCRIBE" title="Prescribe Medication">
                 <i class="pi pi-box"></i> <span data-i18n="ACTIONS.PRESCRIBE">Medication order</span>
             </button>
-            <button class="action-btn" onclick="handleQuickAction('Doctors Forms')" data-i18n-title="ACTIONS.DOC_FORM" title="Doctors Forms">
-                <i class="pi pi-chart-line"></i> <span data-i18n="ACTIONS.DOC_FORM">Doctors Forms</span>
-            </button>
-            <button class="action-btn" onclick="handleQuickAction('Order Test')" data-i18n-title="ACTIONS.ORDER_TEST" title="Order Test">
-                <i class="pi pi-search"></i> <span data-i18n="ACTIONS.ORDER_TEST">Diag Exam</span>
-            </button>
+            <!-- DROPDOWN: Doctors Forms -->
+            <div class="action-dropdown" id="dd-doctors-forms">
+                <button class="action-dropdown-trigger" onclick="toggleActionDropdown('dd-doctors-forms')" title="Doctors Forms">
+                    <i class="pi pi-chart-line"></i>
+                    <span>Doctors Forms</span>
+                    <i class="pi pi-chevron-down action-dropdown-chevron"></i>
+                </button>
+                <div class="action-dropdown-panel">
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-doctors-forms','Admission Note')"><i class="pi pi-file"></i> Admission Note</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-doctors-forms','Discharge Summary')"><i class="pi pi-file-export"></i> Discharge Summary</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-doctors-forms','Progress Note')"><i class="pi pi-pencil"></i> Progress Note</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-doctors-forms','Consultation Request')"><i class="pi pi-send"></i> Consultation Request</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-doctors-forms','Inter-consultation')"><i class="pi pi-arrow-right-arrow-left"></i> Inter-consultation</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-doctors-forms','Surgical Note')"><i class="pi pi-heart"></i> Surgical Note</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-doctors-forms','Anesthesia Note')"><i class="pi pi-shield"></i> Anesthesia Note</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-doctors-forms','Procedure Note')"><i class="pi pi-list"></i> Procedure Note</button>
+                </div>
+            </div>
+
+            <!-- DROPDOWN: Diag Exams -->
+            <div class="action-dropdown" id="dd-diag-exams">
+                <button class="action-dropdown-trigger" onclick="toggleActionDropdown('dd-diag-exams')" title="Diagnostic Exams">
+                    <i class="pi pi-search"></i>
+                    <span>Diag Exams</span>
+                    <i class="pi pi-chevron-down action-dropdown-chevron"></i>
+                </button>
+                <div class="action-dropdown-panel">
+                    <div class="action-dropdown-section-label">Radiology</div>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','X-Ray')"><i class="pi pi-image"></i> X-Ray</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','CT Scan')"><i class="pi pi-image"></i> CT Scan</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','MRI')"><i class="pi pi-image"></i> MRI</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','Ultrasound')"><i class="pi pi-image"></i> Ultrasound</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','Nuclear Medicine')"><i class="pi pi-image"></i> Nuclear Medicine</button>
+                    <div class="action-dropdown-divider"></div>
+                    <div class="action-dropdown-section-label">Laboratory</div>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','Blood Panel')"><i class="pi pi-chart-bar"></i> Blood Panel</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','Urinalysis')"><i class="pi pi-chart-bar"></i> Urinalysis</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','Microbiology')"><i class="pi pi-chart-bar"></i> Microbiology</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','Blood Bank')"><i class="pi pi-chart-bar"></i> Blood Bank</button>
+                    <div class="action-dropdown-divider"></div>
+                    <div class="action-dropdown-section-label">Pathology</div>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','Biopsy')"><i class="pi pi-microscope"></i> Biopsy</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-diag-exams','Cytology')"><i class="pi pi-microscope"></i> Cytology</button>
+                </div>
+            </div>
+
             <div class="action-bar-separator"></div>
             <button class="action-btn" onclick="handleQuickAction('Add Diagnosis')" data-i18n-title="ACTIONS.ADD_DIAGNOSIS" title="Add Diagnosis">
                 <i class="pi pi-tag"></i> <span data-i18n="ACTIONS.ADD_DIAGNOSIS">Diagnoses</span>
             </button>
-            <button class="action-btn" onclick="handleQuickAction('Generate Report')" data-i18n-title="ACTIONS.GENERATE_REPORT" title="Generate Report">
-                <i class="pi pi-file-pdf"></i> <span data-i18n="ACTIONS.GENERATE_REPORT">Report</span>
-            </button>
-            <button class="action-btn" onclick="handleQuickAction('Risk assesment')" data-i18n-title="ACTIONS.RISK" title="Risk assesment">
-                <i class="pi pi-file-pdf"></i> <span data-i18n="ACTIONS.RISK">Risk assesment</span>
-            </button>
+
+            <!-- DROPDOWN: Reports -->
+            <div class="action-dropdown" id="dd-reports">
+                <button class="action-dropdown-trigger" onclick="toggleActionDropdown('dd-reports')" title="Reports">
+                    <i class="pi pi-file-pdf"></i>
+                    <span>Reports</span>
+                    <i class="pi pi-chevron-down action-dropdown-chevron"></i>
+                </button>
+                <div class="action-dropdown-panel">
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-reports','Discharge Report')"><i class="pi pi-file-export"></i> Discharge Report</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-reports','Referral Letter')"><i class="pi pi-envelope"></i> Referral Letter</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-reports','Medical Certificate')"><i class="pi pi-verified"></i> Medical Certificate</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-reports','Epicrisis')"><i class="pi pi-book"></i> Epicrisis</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-reports','Operative Report')"><i class="pi pi-file"></i> Operative Report</button>
+                </div>
+            </div>
+
+            <!-- DROPDOWN: Risk Assessment -->
+            <div class="action-dropdown" id="dd-risk">
+                <button class="action-dropdown-trigger" onclick="toggleActionDropdown('dd-risk')" title="Risk Assessment">
+                    <i class="pi pi-exclamation-triangle"></i>
+                    <span>Risk Assessment</span>
+                    <i class="pi pi-chevron-down action-dropdown-chevron"></i>
+                </button>
+                <div class="action-dropdown-panel">
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-risk','Fall Risk (Morse Scale)')"><i class="pi pi-person"></i> Fall Risk (Morse Scale)</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-risk','Pressure Ulcer Risk (Braden Scale)')"><i class="pi pi-sun"></i> Pressure Ulcer Risk (Braden)</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-risk','DVT/Thrombosis Risk (Caprini)')"><i class="pi pi-heart"></i> DVT Risk (Caprini)</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-risk','Nutritional Risk (NRS-2002)')"><i class="pi pi-table"></i> Nutritional Risk (NRS-2002)</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-risk','Pain Assessment (NRS)')"><i class="pi pi-info-circle"></i> Pain Assessment (NRS)</button>
+                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-risk','Delirium Risk')"><i class="pi pi-exclamation-circle"></i> Delirium Risk</button>
+                </div>
+            </div>
+
             <button class="action-btn" onclick="handleQuickAction('Logistic Request')" data-i18n-title="ACTIONS.LOG_REQ" title="Logistic Request">
                 <i class="pi pi-file-pdf"></i> <span data-i18n="ACTIONS.LOG_REQ">Log Request</span>
             </button>
@@ -282,6 +350,40 @@
 <script src="layout.js"></script>
 <script src="doc-preview-shared.js"></script>
 <script src="app.js"></script>
+<script>
+(function () {
+    function closeAllActionDropdowns(exceptId) {
+        document.querySelectorAll('.action-dropdown.open').forEach(function (el) {
+            if (!exceptId || el.id !== exceptId) {
+                el.classList.remove('open');
+            }
+        });
+    }
+
+    window.toggleActionDropdown = function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var isOpen = el.classList.contains('open');
+        closeAllActionDropdowns(null);
+        if (!isOpen) {
+            el.classList.add('open');
+        }
+    };
+
+    window.selectActionDropdown = function (dropdownId, actionLabel) {
+        closeAllActionDropdowns(null);
+        if (typeof handleQuickAction === 'function') {
+            handleQuickAction(actionLabel);
+        }
+    };
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.action-dropdown')) {
+            closeAllActionDropdowns(null);
+        }
+    });
+}());
+</script>
 
 </body>
 </html>

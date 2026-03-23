@@ -219,6 +219,125 @@
 }
 
 
+/* ============================================================================
+   ACTION DROPDOWN — Flyout menus for action bar buttons
+   Used by timeline.html for Doctors Forms, Reports, Risk Assessment, Diag Exams.
+   Angular: each becomes a <p-menu> or <p-splitButton> component.
+   ============================================================================ */
+.action-dropdown {
+    position: relative;
+    display: inline-flex;
+}
+
+.action-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    background: var(--ech-surface);
+    color: var(--ech-text);
+    font-size: var(--fs-md);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+    font-family: var(--ech-font-family);
+}
+
+.action-dropdown-trigger .pi:first-child {
+    font-size: 0.923rem;
+}
+
+.action-dropdown-trigger .action-dropdown-chevron {
+    font-size: 0.65rem;
+    opacity: 0.65;
+    transition: transform 0.15s;
+}
+
+.action-dropdown-trigger:hover {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
+    color: var(--ech-primary-dark);
+}
+
+.action-dropdown.open .action-dropdown-trigger {
+    background: var(--ech-primary-light);
+    border-color: var(--ech-primary);
+    color: var(--ech-primary-dark);
+}
+
+.action-dropdown.open .action-dropdown-chevron {
+    transform: rotate(180deg);
+}
+
+.action-dropdown-panel {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 400;
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+    min-width: 210px;
+    display: none;
+    padding: 4px 0;
+}
+
+.action-dropdown.open .action-dropdown-panel {
+    display: block;
+}
+
+.action-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.12s;
+    font-family: var(--ech-font-family);
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
+.action-dropdown-item .pi {
+    font-size: 0.85rem;
+    color: var(--ech-text-secondary);
+    flex-shrink: 0;
+    width: 14px;
+}
+
+.action-dropdown-item:hover {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+}
+
+.action-dropdown-item:hover .pi {
+    color: var(--ech-primary);
+}
+
+.action-dropdown-section-label {
+    padding: 6px 14px 3px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ech-text-secondary);
+    user-select: none;
+}
+
+.action-dropdown-divider {
+    height: 1px;
+    background: var(--ech-border);
+    margin: 4px 0;
+}
+
   /* ============================================================================
    10. MODULE TOOLBAR (SHARED)
    --------------------------------------------------------------------------
