@@ -210,21 +210,37 @@ function renderToolbar() {
     if (!el) return;
 
     const listType = document.body.getAttribute('data-list-type') || '';
+    const isPatientList = listType === 'patient-list';
 
-    initDropdownState('scope-dropdown', SCOPE_DROPDOWN_OPTIONS);
-    const scopeLabel = getDropdownLabel('scope-dropdown', SCOPE_DROPDOWN_OPTIONS);
-    const scopeDropdownHtml = buildSelectDropdownHtml(
-        'scope-dropdown', scopeLabel, SCOPE_DROPDOWN_OPTIONS
-    );
-
-    const locationOptions = LOCATION_FILTER_CONFIGS[listType];
-    let locationDropdownHtml = '';
-    if (locationOptions) {
-        initDropdownState('location-dropdown', locationOptions);
-        const locationLabel = getDropdownLabel('location-dropdown', locationOptions);
-        locationDropdownHtml = buildSelectDropdownHtml(
-            'location-dropdown', locationLabel, locationOptions
+    let filterControlsHtml = '';
+    if (isPatientList) {
+        initDropdownState('scope-dropdown', SCOPE_DROPDOWN_OPTIONS);
+        const scopeLabel = getDropdownLabel('scope-dropdown', SCOPE_DROPDOWN_OPTIONS);
+        filterControlsHtml += buildSelectDropdownHtml(
+            'scope-dropdown', scopeLabel, SCOPE_DROPDOWN_OPTIONS
         );
+
+        const locationOptions = LOCATION_FILTER_CONFIGS[listType];
+        if (locationOptions) {
+            initDropdownState('location-dropdown', locationOptions);
+            const locationLabel = getDropdownLabel('location-dropdown', locationOptions);
+            filterControlsHtml += buildSelectDropdownHtml(
+                'location-dropdown', locationLabel, locationOptions
+            );
+        }
+    } else {
+        filterControlsHtml = `
+                <div class="scope-filter-group">
+                    <button class="scope-btn scope-btn-active" data-scope="all" onclick="handleScopeChange('all')">
+                        <i class="pi pi-users"></i> All Patients
+                    </button>
+                    <button class="scope-btn" data-scope="mine" onclick="handleScopeChange('mine')">
+                        <i class="pi pi-user"></i> My Patients
+                    </button>
+                    <button class="scope-btn" data-scope="dept" onclick="handleScopeChange('dept')">
+                        <i class="pi pi-building"></i> My Department
+                    </button>
+                </div>`;
     }
 
     el.innerHTML = `
@@ -249,8 +265,7 @@ function renderToolbar() {
                         <i class="pi pi-angle-double-right"></i>
                     </button>
                 </div>
-                ${scopeDropdownHtml}
-                ${locationDropdownHtml}
+                ${filterControlsHtml}
             </div>
             <div class="toolbar-center">
                 <button class="toolbar-action-btn" onclick="handleToolbarAction('pdf')" title="Export PDF" data-i18n-title="TOOLBAR.EXPORT_PDF">
@@ -348,7 +363,12 @@ function toggleSelectDropdown(dropdownId) {
         state.open = true;
         state.tempChecked = new Set(state.appliedChecked);
         const el = document.getElementById(dropdownId);
-        if (el) el.classList.add('open');
+        if (el) {
+            el.classList.add('open');
+            el.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+                cb.checked = state.tempChecked.has(cb.value);
+            });
+        }
     }
 }
 
