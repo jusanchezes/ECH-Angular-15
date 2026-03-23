@@ -297,7 +297,9 @@ function renderEDCards() {
 
             html += '<div class="patient-card-footer">' +
                     '<div class="card-footer-alerts">' + renderAlertChips(patient.alerts) + '</div>' +
-                    '<div class="card-footer-status">' + renderTaskFlags(patient) + '</div>' +
+                    '<div class="card-footer-status">' +
+                    '<span class="ed-status-pill ' + statusClass + '">' + patient.status + '</span>' +
+                    '</div>' +
                     '</div>';
 
             html += '</div>';

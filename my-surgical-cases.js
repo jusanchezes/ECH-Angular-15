@@ -524,7 +524,7 @@ function renderSurgCards() {
             html += '<div class="patient-card-footer">' +
                     '<div class="card-footer-alerts">' + renderSurgAlertChips(sc.alerts) + '</div>' +
                     '<div class="card-footer-status">' +
-                    '<button class="card-action-btn" onclick="event.stopPropagation(); openSurgDrawer(' + sc.id + ')" title="Ver detalle"><i class="pi pi-eye"></i></button>' +
+                    '<span class="day-status-pill ' + getSurgStatusClass(sc.status) + '">' + sc.status + '</span>' +
                     '</div>' +
                     '</div>';
 
