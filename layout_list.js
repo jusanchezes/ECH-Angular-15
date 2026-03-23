@@ -193,6 +193,7 @@ function renderToolbar() {
 
     const listType = document.body.getAttribute('data-list-type') || '';
     const isPatientList = listType === 'patient-list';
+    const isEDList = listType === 'ed-list';
 
     let filterControlsHtml = '';
     if (isPatientList) {
@@ -210,7 +211,7 @@ function renderToolbar() {
                 'location-dropdown', locationLabel, locationOptions
             );
         }
-    } else {
+    } else if (!isEDList) {
         filterControlsHtml = `
                 <div class="scope-filter-group">
                     <button class="scope-btn scope-btn-active" data-scope="all" onclick="handleScopeChange('all')">
@@ -239,6 +240,23 @@ function renderToolbar() {
                     </button>
                 </div>` : '';
 
+    const edDayNavHtml = isEDList ? `
+                <div class="op-day-nav">
+                    <button class="op-day-btn" onclick="edNavigateDay(-1)" title="Previous day"><i class="pi pi-chevron-left"></i></button>
+                    <span class="op-day-label" id="edDayLabel">${(typeof edFormatNavDate === 'function' && typeof ED_CURRENT_DATE !== 'undefined') ? edFormatNavDate(ED_CURRENT_DATE) : ''}</span>
+                    <button class="op-day-btn" onclick="edNavigateDay(1)" title="Next day"><i class="pi pi-chevron-right"></i></button>
+                    <button class="op-day-btn op-day-cal-btn" onclick="edOpenCalendar()" title="Pick date"><i class="pi pi-calendar"></i></button>
+                </div>` : `
+                <button class="toolbar-action-btn" onclick="handleToolbarAction('pdf')" title="Export PDF" data-i18n-title="TOOLBAR.EXPORT_PDF">
+                    <i class="pi pi-file-pdf"></i>
+                </button>
+                <button class="toolbar-action-btn" onclick="handleToolbarAction('filter')" title="Advanced Filter" data-i18n-title="TOOLBAR.FILTER">
+                    <i class="pi pi-filter"></i>
+                </button>
+                <button class="toolbar-action-btn" onclick="handleToolbarAction('folder')" title="Manage Lists" data-i18n-title="TOOLBAR.MANAGE_LISTS">
+                    <i class="pi pi-folder"></i>
+                </button>`;
+
     el.innerHTML = `
         <div class="toolbar-inner">
             <div class="toolbar-left">
@@ -264,15 +282,7 @@ function renderToolbar() {
                 ${filterControlsHtml}
             </div>
             <div class="toolbar-center">
-                <button class="toolbar-action-btn" onclick="handleToolbarAction('pdf')" title="Export PDF" data-i18n-title="TOOLBAR.EXPORT_PDF">
-                    <i class="pi pi-file-pdf"></i>
-                </button>
-                <button class="toolbar-action-btn" onclick="handleToolbarAction('filter')" title="Advanced Filter" data-i18n-title="TOOLBAR.FILTER">
-                    <i class="pi pi-filter"></i>
-                </button>
-                <button class="toolbar-action-btn" onclick="handleToolbarAction('folder')" title="Manage Lists" data-i18n-title="TOOLBAR.MANAGE_LISTS">
-                    <i class="pi pi-folder"></i>
-                </button>
+                ${edDayNavHtml}
             </div>
             <div class="toolbar-right">
                 ${viewToggleHtml}

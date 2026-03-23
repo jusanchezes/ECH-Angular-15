@@ -5,6 +5,26 @@ var edActiveFilter = 'ed-all';
 var edHighRiskOnly = false;
 var edSearchTerm = '';
 
+var ED_CURRENT_DATE = new Date(2026, 2, 22);
+
+function edFormatNavDate(d) {
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var dd = String(d.getDate()).padStart(2, '0');
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var yyyy = d.getFullYear();
+    return days[d.getDay()] + ', ' + dd + '/' + mm + '/' + yyyy;
+}
+
+function edNavigateDay(delta) {
+    ED_CURRENT_DATE = new Date(ED_CURRENT_DATE.getTime() + delta * 86400000);
+    var label = document.getElementById('edDayLabel');
+    if (label) label.textContent = edFormatNavDate(ED_CURRENT_DATE);
+}
+
+function edOpenCalendar() {
+    console.log('ED Calendar picker opened');
+}
+
 function initEDList() {
     edPatients = ClinicalDataService.getEDPatientList();
     var wardLabel = document.querySelector('[data-field="wardName"]');
