@@ -856,3 +856,351 @@
     margin-left: 4px;
 }
 
+/* ============================================================================
+   VIEW TOGGLE — List / Cards button group in toolbar
+   ============================================================================ */
+.view-toggle-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.view-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 28px;
+    border: none;
+    background: var(--ech-surface);
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+    font-size: 0.923rem;
+    transition: background 0.15s, color 0.15s;
+    border-right: 1px solid var(--ech-border);
+}
+
+.view-toggle-btn:last-child {
+    border-right: none;
+}
+
+.view-toggle-btn:hover {
+    background: var(--ech-primary-light, #e3f2fd);
+    color: var(--ech-primary);
+}
+
+.view-toggle-btn.view-toggle-active {
+    background: var(--ech-primary);
+    color: #fff;
+}
+
+/* ============================================================================
+   CARD GRID LAYOUT — Shared for Inpatients, Surgical, ED
+   ============================================================================ */
+.patient-list-area.view-cards-mode .table-scroll-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.patient-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 12px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+@media (max-width: 1400px) {
+    .patient-card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 1024px) {
+    .patient-card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .patient-card-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================================
+   PATIENT CARD — Base styles
+   ============================================================================ */
+.patient-card {
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: box-shadow 0.15s, border-color 0.15s;
+    overflow: visible;
+    position: relative;
+}
+
+.patient-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    border-color: var(--ech-primary);
+}
+
+.patient-card-cancelled {
+    opacity: 0.6;
+}
+
+/* --- Card header --- */
+.patient-card-header {
+    padding: 7px 10px;
+    background: var(--ech-surface-alt, #f0f4f8);
+    border-bottom: 1px solid var(--ech-border);
+    border-radius: 8px 8px 0 0;
+}
+
+.patient-card-header.card-header-discharge {
+    background: #fff8e1;
+    border-bottom-color: #f9a825;
+}
+
+.card-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+    gap: 4px;
+}
+
+.card-room {
+    font-weight: 700;
+    font-size: 0.923rem;
+    color: var(--ech-text);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.card-room-icon {
+    font-size: 0.769rem;
+    color: var(--ech-text-muted);
+}
+
+.card-admission-date {
+    font-size: 0.769rem;
+    color: var(--ech-text-muted);
+    white-space: nowrap;
+}
+
+.card-patient-name {
+    font-weight: 700;
+    font-size: 0.923rem;
+    color: var(--ech-primary);
+    line-height: 1.3;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- Card body --- */
+.patient-card-body {
+    padding: 7px 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: var(--fs-md);
+}
+
+.card-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    line-height: 1.4;
+}
+
+.card-sep {
+    color: var(--ech-border);
+    margin: 0 1px;
+}
+
+.card-label {
+    color: var(--ech-text-muted);
+    font-size: 0.846rem;
+    white-space: nowrap;
+}
+
+.card-episode {
+    color: var(--ech-primary);
+}
+
+.card-service-unit {
+    font-size: 0.769rem;
+    color: var(--ech-text-muted);
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.card-adm-label {
+    color: var(--ech-text-muted);
+    font-size: 0.846rem;
+    margin-left: 2px;
+}
+
+.card-adm-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 7px;
+    border-radius: 8px;
+    font-size: 0.769rem;
+    font-weight: 600;
+    background: var(--ech-primary-light, #e3f2fd);
+    color: var(--ech-primary-dark, #1565c0);
+}
+
+.card-problem-row {
+    color: var(--ech-text-secondary);
+    font-size: 0.846rem;
+    align-items: flex-start;
+}
+
+.card-discharge-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 7px;
+    border-radius: 8px;
+    font-size: 0.769rem;
+    font-weight: 600;
+    background: #fff3e0;
+    color: #e65100;
+}
+
+/* --- Card footer --- */
+.patient-card-footer {
+    padding: 6px 10px;
+    border-top: 1px solid var(--ech-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    background: var(--ech-surface);
+    border-radius: 0 0 8px 8px;
+}
+
+.card-footer-alerts {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 0;
+}
+
+.card-footer-status {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.card-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--ech-primary);
+    cursor: pointer;
+    font-size: 0.846rem;
+    transition: background 0.15s;
+    font-family: var(--ech-font-family);
+}
+
+.card-action-btn:hover {
+    background: var(--ech-primary-light, #e3f2fd);
+}
+
+/* Card dropdown (contextual menu) */
+.patient-card .card-dropdown {
+    position: absolute;
+    right: 8px;
+    bottom: 38px;
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    min-width: 160px;
+    z-index: 200;
+    display: none;
+    padding: 4px 0;
+}
+
+.patient-card .card-dropdown.show {
+    display: block;
+}
+
+/* Empty state in card grid */
+.pat-card-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--ech-text-secondary, #6b7280);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ============================================================================
+   SURGICAL CARD SPECIFIC STYLES
+   ============================================================================ */
+.card-readiness-wrap {
+    flex: 1;
+    background: var(--ech-border, #e0e0e0);
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+    min-width: 40px;
+}
+
+.card-readiness-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+.card-readiness-label {
+    font-size: 0.769rem;
+    font-weight: 700;
+    color: var(--ech-text-secondary);
+    min-width: 30px;
+    text-align: right;
+}
+
+.card-readiness-row {
+    flex-wrap: nowrap !important;
+}
+
+/* ============================================================================
+   ED CARD SPECIFIC STYLES
+   ============================================================================ */
+.card-ed-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin-bottom: 2px;
+}
+
+.card-ed-location-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+

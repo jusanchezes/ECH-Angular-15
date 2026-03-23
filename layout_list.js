@@ -243,6 +243,20 @@ function renderToolbar() {
                 </div>`;
     }
 
+    const savedMode = getListViewMode();
+    const supportsCardView = CARD_VIEW_SUPPORTED.indexOf(listType) !== -1;
+    const viewToggleHtml = supportsCardView ? `
+                <div class="view-toggle-group">
+                    <button class="view-toggle-btn${savedMode !== 'cards' ? ' view-toggle-active' : ''}"
+                            id="viewToggleList" onclick="setListView('list')" title="List View">
+                        <i class="pi pi-list"></i>
+                    </button>
+                    <button class="view-toggle-btn${savedMode === 'cards' ? ' view-toggle-active' : ''}"
+                            id="viewToggleCards" onclick="setListView('cards')" title="Card View">
+                        <i class="pi pi-th-large"></i>
+                    </button>
+                </div>` : '';
+
     el.innerHTML = `
         <div class="toolbar-inner">
             <div class="toolbar-left">
@@ -279,6 +293,7 @@ function renderToolbar() {
                 </button>
             </div>
             <div class="toolbar-right">
+                ${viewToggleHtml}
                 <div class="toolbar-search-wrapper">
                     <i class="pi pi-search toolbar-search-icon"></i>
                     <input type="text" class="toolbar-search-input" placeholder="Search..." data-i18n-placeholder="TOOLBAR.SEARCH_PLACEHOLDER" id="toolbarSearch" oninput="handleToolbarSearch(this.value)">
@@ -434,6 +449,43 @@ function handleToolbarSearch(value) {
         filterDayList(value);
     } else if (typeof filterSurgList === 'function') {
         filterSurgList(value);
+    }
+}
+
+/* ============================================================
+ * VIEW TOGGLE — List / Cards
+ * Supported for: patient-list, surgical-list, ed-list
+ * Angular: @Input() viewMode: 'list' | 'cards' in PatientListComponent
+ * ============================================================ */
+var CARD_VIEW_SUPPORTED = ['patient-list', 'surgical-list', 'ed-list'];
+
+function getListViewMode() {
+    var listType = document.body.getAttribute('data-list-type') || 'patient-list';
+    return localStorage.getItem('ech_view_' + listType) || 'list';
+}
+
+function setListView(mode) {
+    var listType = document.body.getAttribute('data-list-type') || 'patient-list';
+    localStorage.setItem('ech_view_' + listType, mode);
+
+    var btnList = document.getElementById('viewToggleList');
+    var btnCards = document.getElementById('viewToggleCards');
+    if (btnList) {
+        btnList.classList.toggle('view-toggle-active', mode === 'list');
+    }
+    if (btnCards) {
+        btnCards.classList.toggle('view-toggle-active', mode === 'cards');
+    }
+
+    var area = document.getElementById('patient-list-component');
+    if (area) area.classList.toggle('view-cards-mode', mode === 'cards');
+
+    if (listType === 'patient-list' && typeof renderPatientList === 'function') {
+        renderPatientList();
+    } else if (listType === 'surgical-list' && typeof renderSurgList === 'function') {
+        renderSurgList();
+    } else if (listType === 'ed-list' && typeof renderEDList === 'function') {
+        renderEDList();
     }
 }
 

@@ -155,6 +155,14 @@ function renderPatientList() {
     const container = document.getElementById('patientListContainer');
     if (!container) return;
 
+    const mode = (typeof getListViewMode === 'function') ? getListViewMode() : 'list';
+    const area = document.getElementById('patient-list-component');
+    if (area) area.classList.toggle('view-cards-mode', mode === 'cards');
+    if (mode === 'cards') {
+        renderPatientCards();
+        return;
+    }
+
     const patients = getFilteredPatients();
 
     let html = '';
@@ -247,6 +255,123 @@ function renderPatientList() {
     }
 
     html += `</tbody></table>`;
+    container.innerHTML = html;
+
+    const badge = document.getElementById('toolbarSearchBadge');
+    if (badge) badge.textContent = patients.length;
+}
+
+/* ============================================================
+ * RENDER — CARD VIEW (Inpatients)
+ * ============================================================ */
+function renderPatientCards() {
+    const container = document.getElementById('patientListContainer');
+    if (!container) return;
+
+    const patients = getFilteredPatients();
+    let html = '<div class="patient-card-grid">';
+
+    if (patients.length === 0) {
+        html += '<div class="pat-card-empty"><i class="pi pi-inbox"></i> No patients match the current filter.</div>';
+    } else {
+        patients.forEach(function(patient) {
+            const genderIcon  = patient.gender === 'Male' ? 'pi-mars' : 'pi-venus';
+            const genderColor = patient.gender === 'Male' ? 'color:var(--ech-primary)' : 'color:#e91e63';
+            const admissionIcon = patient.admissionType === 'emergency'
+                ? '<i class="pi pi-bolt admission-icon admission-emergency" title="Urgencias"></i>'
+                : '<i class="pi pi-home admission-icon admission-inpatient" title="Hospitalizado"></i>';
+            const admTypeLabel = patient.admissionType === 'emergency' ? 'Emergency' : 'Inpatient';
+            const headerClass  = 'patient-card-header' + (patient.plannedDischarge ? ' card-header-discharge' : '');
+            const daysClass    = patient.daysAdmitted > 30 ? 'days-highlight days-long' :
+                                 patient.daysAdmitted > 7  ? 'days-highlight days-medium' : 'days-highlight';
+
+            let alertsHtml = '';
+            if (patient.alerts && patient.alerts.length > 0) {
+                patient.alerts.forEach(function(alert) {
+                    const sev  = getAlertSeverity(alert);
+                    const icon = getAlertIcon(alert);
+                    alertsHtml += `<span class="p-tag-custom p-tag-${sev}" title="${alert}"><i class="pi ${icon}"></i></span> `;
+                });
+            } else {
+                alertsHtml = '<span class="no-alerts">\u2014</span>';
+            }
+
+            html += `<div class="patient-card" onclick="navigateToPatient(${patient.id})" data-patient-id="${patient.id}">`;
+
+            html += `<div class="${headerClass}">
+                        <div class="card-header-top">
+                            <span class="card-room"><i class="pi pi-building card-room-icon"></i>${patient.room}</span>
+                            <span class="card-admission-date">${patient.admissionDate || ''}</span>
+                        </div>
+                        <div class="card-patient-name">${patient.name}</div>
+                     </div>`;
+
+            html += `<div class="patient-card-body">
+                        <div class="card-row">
+                            <i class="pi ${genderIcon}" style="${genderColor}"></i>
+                            <span>${patient.age}</span>
+                            <span class="card-sep">|</span>
+                            <span class="card-label">Rec ID:</span> <strong>${patient.id}</strong>
+                            <span class="card-sep">|</span>
+                            <span class="card-label">Ep.</span> <strong class="card-episode">${patient.episode}</strong>
+                        </div>`;
+
+            if (patient.serviceUnit) {
+                html += `<div class="card-row card-service-unit">${patient.serviceUnit}</div>`;
+            }
+
+            html += `       <div class="card-row">
+                                ${admissionIcon}
+                                <span class="card-adm-label">Adm Type:</span>
+                                <span class="card-adm-badge">${admTypeLabel}</span>
+                            </div>
+                            <div class="card-row">
+                                <span class="card-label">Adm. Dr:</span>
+                                <span class="physician-name">${patient.attendingPhysician}</span>
+                            </div>`;
+
+            if (patient.payer) {
+                html += `<div class="card-row"><span class="card-label">Payer:</span> ${patient.payer}</div>`;
+            }
+
+            html += `       <div class="card-row card-problem-row">
+                                <span class="problem-text" style="max-width:100%;white-space:normal">${patient.medicalProblem}</span>
+                            </div>
+                            <div class="card-row">
+                                <span class="card-label">Días est.:</span>
+                                <span class="${daysClass}">${patient.daysAdmitted}</span>`;
+
+            if (patient.plannedDischarge) {
+                html += ' <span class="card-discharge-badge">Alta planif.</span>';
+            }
+
+            html += `       </div>
+                     </div>`;
+
+            html += `<div class="patient-card-footer">
+                        <div class="card-footer-alerts">${alertsHtml}</div>
+                        <div class="card-footer-status">
+                            ${getStatusIcon(patient.statusMeds, 'meds')}
+                            ${getStatusIcon(patient.statusOrders, 'orders')}
+                            ${getStatusIcon(patient.statusVitals, 'vitals')}
+                            <button class="card-action-btn"
+                                    onclick="event.stopPropagation(); toggleRowMenu(${patient.id})"
+                                    title="Acciones"><i class="pi pi-pencil"></i></button>
+                        </div>
+                     </div>`;
+
+            html += `<div class="row-dropdown card-dropdown" id="rowMenu-${patient.id}">
+                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('view',${patient.id})"><i class="pi pi-eye"></i> Ver Detalle</button>
+                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('notes',${patient.id})"><i class="pi pi-pencil"></i> Notas</button>
+                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('orders',${patient.id})"><i class="pi pi-file"></i> Órdenes</button>
+                        <button class="rd-item" onclick="event.stopPropagation(); handleRowAction('meds',${patient.id})"><i class="pi pi-box"></i> Medicación</button>
+                     </div>`;
+
+            html += '</div>';
+        });
+    }
+
+    html += '</div>';
     container.innerHTML = html;
 
     const badge = document.getElementById('toolbarSearchBadge');

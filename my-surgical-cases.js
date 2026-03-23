@@ -356,6 +356,14 @@ function renderSurgList() {
     var container = document.getElementById('surgicalCasesContainer');
     if (!container) return;
 
+    var mode = (typeof getListViewMode === 'function') ? getListViewMode() : 'list';
+    var area = document.getElementById('patient-list-component');
+    if (area) area.classList.toggle('view-cards-mode', mode === 'cards');
+    if (mode === 'cards') {
+        renderSurgCards();
+        return;
+    }
+
     var cases = getFilteredSurgCases();
     var html  = '';
 
@@ -436,6 +444,95 @@ function renderSurgList() {
     }
 
     html += '</tbody></table>';
+    container.innerHTML = html;
+
+    var badge = document.getElementById('toolbarSearchBadge');
+    if (badge) badge.textContent = cases.length;
+}
+
+/* ============================================================
+ * RENDER — CARD VIEW (Surgical Cases)
+ * ============================================================ */
+function renderSurgCards() {
+    var container = document.getElementById('surgicalCasesContainer');
+    if (!container) return;
+
+    var cases = getFilteredSurgCases();
+    var html  = '<div class="patient-card-grid">';
+
+    if (cases.length === 0) {
+        html += '<div class="pat-card-empty"><i class="pi pi-inbox"></i> No surgical cases match the current filter.</div>';
+    } else {
+        cases.forEach(function(sc) {
+            var genderIcon    = sc.gender === 'Male' ? 'pi-mars' : 'pi-venus';
+            var genderColor   = sc.gender === 'Male' ? 'color:var(--ech-primary)' : 'color:#e91e63';
+            var rowClass      = sc.status === 'Cancelled' ? ' patient-card-cancelled' : '';
+            var readinessColor = sc.readiness === 100 ? 'var(--ech-clinical-success, #2e7d32)' :
+                                 sc.readiness >= 60   ? 'var(--ech-warning, #f9a825)' :
+                                                        'var(--ech-primary, #1e88e5)';
+
+            html += '<div class="patient-card' + rowClass + '" onclick="openSurgDrawer(' + sc.id + ')" data-patient-id="' + sc.id + '">';
+
+            html += '<div class="patient-card-header">' +
+                    '<div class="card-header-top">' +
+                    '<span class="card-room"><i class="pi pi-building card-room-icon"></i>' + sc.orRoom + '</span>' +
+                    '<span class="card-admission-date">' + sc.scheduledDate + ' ' + sc.scheduledTime + '</span>' +
+                    '</div>' +
+                    '<div class="card-patient-name">' + sc.name + '</div>' +
+                    '</div>';
+
+            html += '<div class="patient-card-body">';
+
+            html += '<div class="card-row">' +
+                    '<i class="pi ' + genderIcon + '" style="' + genderColor + '"></i>' +
+                    '<span>' + sc.age + 'y</span>' +
+                    '<span class="card-sep">|</span>' +
+                    '<span>' + sc.department + '</span>' +
+                    '</div>';
+
+            html += '<div class="card-row card-problem-row">' +
+                    '<span class="problem-text" style="max-width:100%;white-space:normal">' + sc.procedure + '</span>' +
+                    '</div>';
+
+            html += '<div class="card-row">' +
+                    '<span class="card-label">Cirujano:</span> ' +
+                    '<span class="physician-name">' + (sc.surgeon || '\u2014') + '</span>' +
+                    '</div>';
+
+            html += '<div class="card-row">' +
+                    '<span class="card-label">Anestesiólogo:</span> ' +
+                    '<span class="physician-name">' + (sc.anesthesiologist || '\u2014') + '</span>' +
+                    '</div>';
+
+            html += '<div class="card-row">' +
+                    '<span class="card-label">Duración:</span> ' +
+                    '<span>' + formatSurgMinutes(sc.estimatedDurationMin) + '</span>' +
+                    '<span class="card-sep">|</span>' +
+                    '<span class="day-status-pill ' + getSurgStatusClass(sc.status) + '">' + sc.status + '</span>' +
+                    '</div>';
+
+            if (sc.status !== 'Cancelled') {
+                html += '<div class="card-row card-readiness-row">' +
+                        '<span class="card-label">Readiness:</span>' +
+                        '<div class="card-readiness-wrap"><div class="card-readiness-fill" style="width:' + sc.readiness + '%;background:' + readinessColor + '"></div></div>' +
+                        '<span class="card-readiness-label">' + sc.readiness + '%</span>' +
+                        '</div>';
+            }
+
+            html += '</div>';
+
+            html += '<div class="patient-card-footer">' +
+                    '<div class="card-footer-alerts">' + renderSurgAlertChips(sc.alerts) + '</div>' +
+                    '<div class="card-footer-status">' +
+                    '<button class="card-action-btn" onclick="event.stopPropagation(); openSurgDrawer(' + sc.id + ')" title="Ver detalle"><i class="pi pi-eye"></i></button>' +
+                    '</div>' +
+                    '</div>';
+
+            html += '</div>';
+        });
+    }
+
+    html += '</div>';
     container.innerHTML = html;
 
     var badge = document.getElementById('toolbarSearchBadge');

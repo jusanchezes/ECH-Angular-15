@@ -166,6 +166,14 @@ function renderEDList() {
     var container = document.getElementById('edListContainer');
     if (!container) return;
 
+    var mode = (typeof getListViewMode === 'function') ? getListViewMode() : 'list';
+    var area = document.getElementById('patient-list-component');
+    if (area) area.classList.toggle('view-cards-mode', mode === 'cards');
+    if (mode === 'cards') {
+        renderEDCards();
+        return;
+    }
+
     var patients = getFilteredPatients();
     var html = '';
 
@@ -224,6 +232,79 @@ function renderEDList() {
     });
 
     html += '</tbody></table>';
+    container.innerHTML = html;
+
+    updateBadgeCount(patients.length);
+}
+
+/* ============================================================
+ * RENDER — CARD VIEW (Emergency Department)
+ * ============================================================ */
+function renderEDCards() {
+    var container = document.getElementById('edListContainer');
+    if (!container) return;
+
+    var patients = getFilteredPatients();
+    var html = '<div class="patient-card-grid">';
+
+    if (patients.length === 0) {
+        html += '<div class="pat-card-empty"><i class="pi pi-inbox"></i> No patients match the current filter.</div>';
+    } else {
+        patients.forEach(function(patient) {
+            var genderIcon  = patient.gender === 'Male' ? 'pi-mars' : 'pi-venus';
+            var genderColor = patient.gender === 'Male' ? 'color:var(--ech-primary)' : 'color:#e91e63';
+            var acuityClass = getAcuityClass(patient.triageAcuity);
+            var acuityLabel = getAcuityLabel(patient.triageAcuity);
+            var losClass    = getLOSClass(patient.LOSMinutes);
+            var statusClass = getStatusClass(patient.status);
+
+            html += '<div class="patient-card" onclick="openEDDrawer(' + patient.id + ')" data-patient-id="' + patient.id + '">';
+
+            html += '<div class="patient-card-header">' +
+                    '<div class="card-header-top">' +
+                    '<span class="card-ed-location-row">' +
+                    '<span class="card-room"><i class="pi pi-building card-room-icon"></i>' + patient.location + '</span>' +
+                    '<span class="ed-acuity-badge ' + acuityClass + '" title="' + acuityLabel + '">ESI ' + patient.triageAcuity + '</span>' +
+                    '</span>' +
+                    '<span class="card-admission-date">' + patient.arrivalTime + '</span>' +
+                    '</div>' +
+                    '<div class="card-patient-name">' + patient.name + '</div>' +
+                    '</div>';
+
+            html += '<div class="patient-card-body">';
+
+            html += '<div class="card-row">' +
+                    '<i class="pi ' + genderIcon + '" style="' + genderColor + '"></i>' +
+                    '<span>' + patient.age + 'y</span>' +
+                    '<span class="card-sep">|</span>' +
+                    '<span class="ed-status-pill ' + statusClass + '">' + patient.status + '</span>' +
+                    '</div>';
+
+            html += '<div class="card-row">' +
+                    '<span class="card-label">LOS:</span> <span class="' + losClass + '">' + formatLOS(patient.LOSMinutes) + '</span>' +
+                    '</div>';
+
+            html += '<div class="card-row card-problem-row">' +
+                    '<span class="problem-text" style="max-width:100%;white-space:normal">' + patient.chiefComplaint + '</span>' +
+                    '</div>';
+
+            html += '<div class="card-row">' +
+                    '<span class="card-label">Médico:</span> ' +
+                    '<span class="physician-name">' + patient.attendingPhysician + '</span>' +
+                    '</div>';
+
+            html += '</div>';
+
+            html += '<div class="patient-card-footer">' +
+                    '<div class="card-footer-alerts">' + renderAlertChips(patient.alerts) + '</div>' +
+                    '<div class="card-footer-status">' + renderTaskFlags(patient) + '</div>' +
+                    '</div>';
+
+            html += '</div>';
+        });
+    }
+
+    html += '</div>';
     container.innerHTML = html;
 
     updateBadgeCount(patients.length);
