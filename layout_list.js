@@ -158,7 +158,7 @@ function buildSelectDropdownHtml(dropdownId, triggerLabel, options) {
     const isOpen = DROPDOWN_STATE[dropdownId] && DROPDOWN_STATE[dropdownId].open;
 
     return `<div class="ech-select-dropdown${isOpen ? ' open' : ''}" id="${dropdownId}">
-                <button class="ech-select-trigger"
+                <button class="ech-select-trigger ml-[1px] mr-[1px]"
                         onclick="event.stopPropagation(); toggleSelectDropdown('${dropdownId}')">
                     <span id="${dropdownId}-label">${triggerLabel}</span>
                     <i class="pi pi-chevron-down ech-select-chevron"></i>
