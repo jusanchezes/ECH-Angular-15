@@ -411,6 +411,13 @@ function cancelSelectDropdown(dropdownId) {
     if (el) el.classList.remove('open');
 }
 
+function handleScopeChange(scope) {
+    document.querySelectorAll('.scope-btn[data-scope]').forEach(function(btn) {
+        btn.classList.toggle('scope-btn-active', btn.getAttribute('data-scope') === scope);
+    });
+    console.log('Scope changed:', scope);
+}
+
 function closeAllDropdowns() {
     Object.keys(DROPDOWN_STATE).forEach(function(id) {
         DROPDOWN_STATE[id].open = false;
