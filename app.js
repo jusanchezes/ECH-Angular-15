@@ -476,6 +476,9 @@ function openNoteEditor() {
     panel.classList.add('open');
     _noteEditorExpanded = false;
     panel.classList.remove('expanded');
+    /* Reset expand button active state */
+    var expandBtn = document.getElementById('neTbExpand');
+    if (expandBtn) expandBtn.classList.remove('active');
 
     /* Add padding to timeline so content isn't hidden behind the panel */
     var timelineArea = document.getElementById('timeline-area');
@@ -487,6 +490,28 @@ function openNoteEditor() {
         if (body) body.focus();
         noteEditorUpdateStatus();
     }, 300);
+
+    /* Attach selectionchange listener once — update status whenever selection
+       changes while the editor panel is open (more reliable than keyup/mouseup) */
+    if (!openNoteEditor._selectionListenerAttached) {
+        document.addEventListener('selectionchange', function () {
+            var panel = document.getElementById('noteEditorPanel');
+            var body  = document.getElementById('noteEditorBody');
+            if (panel && panel.classList.contains('open') && body) {
+                /* Only update if selection is inside the editor body */
+                var sel = window.getSelection();
+                if (sel && sel.rangeCount > 0) {
+                    var node = sel.getRangeAt(0).startContainer;
+                    if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+                    if (body.contains(node)) {
+                        noteEditorUpdateStatus();
+                        noteEditorRefreshToolbarState();
+                    }
+                }
+            }
+        });
+        openNoteEditor._selectionListenerAttached = true;
+    }
 }
 
 /**
