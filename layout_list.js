@@ -55,10 +55,6 @@ const TAB_CONFIGS = {
     ],
     'ed-list': [
         { id: 'ed-all',            label: 'All',               i18n: 'TABS.ED_ALL',            count: 10, active: true },
-        { id: 'ed-waiting',        label: 'Waiting Room',      i18n: 'TABS.ED_WAITING',        count: 3,  active: false },
-        { id: 'ed-inroom',         label: 'In Room',           i18n: 'TABS.ED_IN_ROOM',        count: 5,  active: false },
-        { id: 'ed-dispo',          label: 'Dispo',             i18n: 'TABS.ED_DISPO',          count: 2,  active: false },
-        { id: 'ed-high-acuity',    label: 'High Acuity',       i18n: 'TABS.ED_HIGH_ACUITY',    count: 3,  active: false }
     ],
     'day-hospital-list': [
         { id: 'loc-all',       label: 'All Day Cases',       i18n: 'TABS.LOC_ALL',       count: 14, active: true  },
@@ -66,20 +62,6 @@ const TAB_CONFIGS = {
         { id: 'loc-discharge', label: 'Planned Discharges',  i18n: 'TABS.LOC_DISCHARGE', count: 1,  active: false },
         { id: 'loc-icu',       label: 'ICU / PACU',          i18n: 'TABS.LOC_ICU',       count: 1,  active: false },
         { id: 'loc-surgery',   label: 'Patients in Surgery', i18n: 'TABS.LOC_SURGERY',   count: 0,  active: false }
-    ],
-    'surgical-list': [
-        { id: 'loc-all',       label: 'All Cases',           i18n: 'TABS.LOC_ALL',       count: 12, active: true  },
-        { id: 'loc-recent',    label: 'Recently Admitted',   i18n: 'TABS.LOC_RECENT',    count: 5,  active: false },
-        { id: 'loc-discharge', label: 'Planned Discharges',  i18n: 'TABS.LOC_DISCHARGE', count: 2,  active: false },
-        { id: 'loc-icu',       label: 'ICU / PACU',          i18n: 'TABS.LOC_ICU',       count: 0,  active: false },
-        { id: 'loc-surgery',   label: 'In Theatre',          i18n: 'TABS.LOC_SURGERY',   count: 2,  active: false }
-    ],
-    'outpatient-list': [
-        { id: 'op-all',            label: 'All',              i18n: 'TABS.OP_ALL',            count: 18, active: true  },
-        { id: 'op-arrived',        label: 'Arrived',          i18n: 'TABS.OP_ARRIVED',        count: 3,  active: false },
-        { id: 'op-waiting',        label: 'Waiting',          i18n: 'TABS.OP_WAITING',        count: 5,  active: false },
-        { id: 'op-inconsultation', label: 'In Consultation',  i18n: 'TABS.OP_INCONSULTATION', count: 2,  active: false },
-        { id: 'op-completed',      label: 'Completed',        i18n: 'TABS.OP_COMPLETED',      count: 8,  active: false }
     ]
 };
 
