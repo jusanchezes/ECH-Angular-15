@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/action-bar.css">
     <link rel="stylesheet" href="css/modules/timeline.css">
     <link rel="stylesheet" href="css/modules/doc-preview.css">
+    <link rel="stylesheet" href="css/modules/note-editor.css">
     <link rel="stylesheet" href="css/table.css">
     <link rel="stylesheet" href="css/utilities.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -46,7 +47,7 @@
         <!actions bar; unique per module page -->
         <!-- BEGIN: Angular Standalone Component — ActionBarComponent -->
         <section class="action-bar" id="action-bar-component">
-            <button class="action-btn action-btn-primary" onclick="handleQuickAction('Add Clinical Note')" data-i18n-title="ACTIONS.ADD_NOTE" title="Add Clinical Note">
+            <button class="action-btn action-btn-primary" onclick="openNoteEditor()" data-i18n-title="ACTIONS.ADD_NOTE" title="Physical examination">
                 <i class="pi pi-plus"></i> <span data-i18n="ACTIONS.ADD_NOTE">Phisical examination</span>
             </button>
             <button class="action-btn" onclick="handleQuickAction('Prescribe Medication')" data-i18n-title="ACTIONS.PRESCRIBE" title="Prescribe Medication">
@@ -179,6 +180,96 @@
         </section>
 
     </main>
+</div>
+
+<!-- NOTE EDITOR PANEL: Physical examination / Progress Note
+     Fixed bottom panel with rich-text toolbar.
+     Angular equivalent: NoteEditorPanelComponent (position: fixed overlay)
+     Opened by openNoteEditor() in app.js -->
+<div class="note-editor-panel" id="noteEditorPanel" aria-label="Progress Note Editor" role="dialog">
+
+    <!-- Header -->
+    <div class="note-editor-header">
+        <div class="note-editor-header-left">
+            <span class="note-editor-label">Progress Note :</span>
+            <span class="note-editor-note-type">Physical Examination</span>
+        </div>
+        <div class="note-editor-header-right">
+            <span class="note-editor-author" id="noteEditorAuthor">
+                <i class="pi pi-pencil"></i>
+                <span id="noteEditorAuthorName"></span>
+            </span>
+            <button class="note-editor-header-close" onclick="closeNoteEditor()" title="Close editor">
+                <i class="pi pi-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Formatting Toolbar -->
+    <div class="note-editor-toolbar" id="noteEditorToolbar">
+        <!-- Discard -->
+        <button class="ne-tb-btn" onclick="closeNoteEditor()" title="Discard note">
+            <i class="pi pi-times"></i>
+        </button>
+        <div class="ne-tb-sep"></div>
+        <!-- Undo / Redo -->
+        <button class="ne-tb-btn" onclick="noteEditorCmd('undo')" title="Undo">&#8617;</button>
+        <button class="ne-tb-btn" onclick="noteEditorCmd('redo')" title="Redo">&#8618;</button>
+        <!-- Cut / Copy / Paste -->
+        <button class="ne-tb-btn" onclick="noteEditorCmd('cut')" title="Cut">&#9986;</button>
+        <button class="ne-tb-btn" onclick="noteEditorCmd('copy')" title="Copy"><i class="pi pi-copy"></i></button>
+        <button class="ne-tb-btn" onclick="noteEditorCmd('paste')" title="Paste">&#128203;</button>
+        <div class="ne-tb-sep"></div>
+        <!-- Headings -->
+        <button class="ne-tb-btn ne-tb-h1" onclick="noteEditorFormat('h1')" title="Heading 1">H1</button>
+        <button class="ne-tb-btn ne-tb-h2" onclick="noteEditorFormat('h2')" title="Heading 2">H2</button>
+        <!-- Inline formatting -->
+        <button class="ne-tb-btn ne-tb-btn-bold"   id="neTbBold"   onclick="noteEditorCmd('bold')"        title="Bold">B</button>
+        <button class="ne-tb-btn ne-tb-btn-italic"  id="neTbItalic" onclick="noteEditorCmd('italic')"      title="Italic">I</button>
+        <button class="ne-tb-btn ne-tb-btn-under"   id="neTbUnder"  onclick="noteEditorCmd('underline')"   title="Underline">U</button>
+        <button class="ne-tb-btn ne-tb-btn-strike"  id="neTbStrike" onclick="noteEditorCmd('strikeThrough')" title="Strikethrough">S</button>
+        <button class="ne-tb-btn" onclick="noteEditorCmd('removeFormat')" title="Clear formatting">T&#x0332;</button>
+        <div class="ne-tb-sep"></div>
+        <!-- Format block -->
+        <select class="ne-tb-select" onchange="noteEditorFormatBlock(this)" title="Format">
+            <option value="">Format</option>
+            <option value="p">Paragraph</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+            <option value="pre">Preformatted</option>
+            <option value="blockquote">Blockquote</option>
+        </select>
+        <div class="ne-tb-sep"></div>
+        <!-- Font size -->
+        <button class="ne-tb-btn ne-tb-aa-sm" onclick="noteEditorFontSize(1)" title="Small text">Aa</button>
+        <button class="ne-tb-btn ne-tb-aa-md" onclick="noteEditorFontSize(3)" title="Normal text">Aa</button>
+        <button class="ne-tb-btn ne-tb-aa-lg" onclick="noteEditorFontSize(5)" title="Large text">Aa</button>
+        <div class="ne-tb-sep"></div>
+        <!-- Expand / Print -->
+        <button class="ne-tb-btn" onclick="noteEditorToggleExpand()" id="neTbExpand" title="Expand editor"><i class="pi pi-window-maximize"></i></button>
+        <button class="ne-tb-btn" onclick="noteEditorPrint()" title="Print note"><i class="pi pi-print"></i></button>
+        <div class="ne-tb-sep"></div>
+        <!-- Medical history -->
+        <button class="ne-tb-btn ne-tb-med-history" onclick="noteEditorInsertMedHistory()" title="Insert medical history snippet">
+            <i class="pi pi-book"></i> Medical history
+        </button>
+    </div>
+
+    <!-- Content editable area -->
+    <div class="note-editor-body"
+         id="noteEditorBody"
+         contenteditable="true"
+         spellcheck="true"
+         data-placeholder="Start typing your physical examination note here…"
+         onkeyup="noteEditorUpdateStatus()"
+         onmouseup="noteEditorUpdateStatus()"
+         onfocus="noteEditorUpdateStatus()">
+    </div>
+
+    <!-- Status bar -->
+    <div class="note-editor-statusbar" id="noteEditorStatusBar">body</div>
+
 </div>
 
 <script src="mock-clinical-data.js"></script>

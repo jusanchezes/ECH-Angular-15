@@ -447,3 +447,203 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     bindEvents();
 });
+
+/* ===========================================================================
+   NOTE EDITOR — Physical Examination Progress Note
+   Fixed bottom panel with rich-text toolbar.
+   Angular equivalent: NoteEditorPanelComponent
+   =========================================================================== */
+
+var _noteEditorExpanded = false;
+
+/**
+ * Opens the note editor panel, populates the author from the active patient
+ * data, and gives focus to the contenteditable area.
+ */
+function openNoteEditor() {
+    var panel = document.getElementById('noteEditorPanel');
+    if (!panel) return;
+
+    /* Populate author name from the clinical data service */
+    var patient = PatientData;
+    var authorName = (patient && patient.attendingPhysician) ? patient.attendingPhysician : 'Physician';
+    var authorEl = document.getElementById('noteEditorAuthorName');
+    if (authorEl) authorEl.textContent = authorName;
+
+    panel.classList.add('open');
+    _noteEditorExpanded = false;
+    panel.classList.remove('expanded');
+
+    /* Add padding to timeline so content isn't hidden behind the panel */
+    var timelineArea = document.getElementById('timeline-area');
+    if (timelineArea) timelineArea.style.paddingBottom = '350px';
+
+    /* Give focus to the editable area after the slide animation */
+    setTimeout(function () {
+        var body = document.getElementById('noteEditorBody');
+        if (body) body.focus();
+        noteEditorUpdateStatus();
+    }, 300);
+}
+
+/**
+ * Closes (slides down) the note editor panel.
+ * Content is preserved so the clinician can reopen without losing work.
+ */
+function closeNoteEditor() {
+    var panel = document.getElementById('noteEditorPanel');
+    if (panel) {
+        panel.classList.remove('open');
+    }
+    /* Restore timeline padding */
+    var timelineArea = document.getElementById('timeline-area');
+    if (timelineArea) timelineArea.style.paddingBottom = '';
+}
+
+/**
+ * Executes a document.execCommand formatting command against the
+ * contenteditable note body.
+ * @param {string} cmd - execCommand command name
+ */
+function noteEditorCmd(cmd) {
+    var body = document.getElementById('noteEditorBody');
+    if (!body) return;
+    body.focus();
+    document.execCommand(cmd, false, null);
+    noteEditorUpdateStatus();
+    noteEditorRefreshToolbarState();
+}
+
+/**
+ * Applies a block-level heading or format via the Format dropdown.
+ * @param {string} tag - HTML tag name ('h1', 'h2', 'p', 'pre', etc.)
+ */
+function noteEditorFormat(tag) {
+    var body = document.getElementById('noteEditorBody');
+    if (!body) return;
+    body.focus();
+    document.execCommand('formatBlock', false, '<' + tag + '>');
+    noteEditorUpdateStatus();
+}
+
+/**
+ * Handles the Format <select> dropdown change.
+ * @param {HTMLSelectElement} selectEl
+ */
+function noteEditorFormatBlock(selectEl) {
+    var tag = selectEl.value;
+    if (!tag) return;
+    noteEditorFormat(tag);
+    /* Reset the select to placeholder after applying */
+    setTimeout(function () { selectEl.value = ''; }, 100);
+}
+
+/**
+ * Changes the font size of the selected text.
+ * @param {number} size - execCommand fontSize value (1-7)
+ */
+function noteEditorFontSize(size) {
+    var body = document.getElementById('noteEditorBody');
+    if (!body) return;
+    body.focus();
+    document.execCommand('fontSize', false, size);
+    noteEditorUpdateStatus();
+}
+
+/**
+ * Toggles the editor between normal and expanded (taller) mode.
+ */
+function noteEditorToggleExpand() {
+    var panel = document.getElementById('noteEditorPanel');
+    var btn   = document.getElementById('neTbExpand');
+    if (!panel) return;
+    _noteEditorExpanded = !_noteEditorExpanded;
+    panel.classList.toggle('expanded', _noteEditorExpanded);
+    if (btn) btn.classList.toggle('active', _noteEditorExpanded);
+}
+
+/**
+ * Opens a minimal print dialog containing only the note body content.
+ */
+function noteEditorPrint() {
+    var body = document.getElementById('noteEditorBody');
+    if (!body) return;
+    var content = body.innerHTML || '';
+    var win = window.open('', '_blank', 'width=700,height=500');
+    if (!win) return;
+    win.document.write(
+        '<!DOCTYPE html><html><head><title>Progress Note</title>' +
+        '<style>body{font-family:Arial,sans-serif;font-size:13px;padding:20px;color:#333}' +
+        'h1{font-size:1.3em}h2{font-size:1.1em}pre{background:#f5f5f5;padding:8px}</style>' +
+        '</head><body>' + content + '</body></html>'
+    );
+    win.document.close();
+    win.focus();
+    win.print();
+    win.close();
+}
+
+/**
+ * Inserts a structured medical history template snippet at the cursor
+ * position inside the note body.
+ */
+function noteEditorInsertMedHistory() {
+    var body = document.getElementById('noteEditorBody');
+    if (!body) return;
+    body.focus();
+
+    var patient = PatientData;
+    var name    = patient ? patient.name : 'Patient';
+    var dob     = patient ? patient.dob  : '';
+    var problem = patient ? patient.medicalProblem : '';
+
+    var snippet =
+        '<h2>Medical History</h2>' +
+        '<p><strong>Patient:</strong> ' + name + (dob ? ' &nbsp;|&nbsp; DOB: ' + dob : '') + '</p>' +
+        '<p><strong>Chief complaint:</strong> ' + (problem || '') + '</p>' +
+        '<p><strong>Allergies:</strong> ' +
+        (patient && patient.alerts ? patient.alerts.join(', ') : 'None known') + '</p>' +
+        '<p><strong>Current medications:</strong> </p>' +
+        '<p><strong>Past medical history:</strong> </p>' +
+        '<hr>';
+
+    document.execCommand('insertHTML', false, snippet);
+    noteEditorUpdateStatus();
+}
+
+/**
+ * Updates the status bar text to reflect the current cursor context
+ * (tag name of the element containing the cursor).
+ */
+function noteEditorUpdateStatus() {
+    var statusBar = document.getElementById('noteEditorStatusBar');
+    if (!statusBar) return;
+    var sel = window.getSelection();
+    var tag = 'body';
+    if (sel && sel.rangeCount > 0) {
+        var node = sel.getRangeAt(0).startContainer;
+        /* Walk up to the nearest element */
+        if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+        var body = document.getElementById('noteEditorBody');
+        /* Collect ancestor tags up to (but not including) the editor body */
+        var tags = [];
+        while (node && node !== body && node.nodeType === Node.ELEMENT_NODE) {
+            tags.unshift(node.tagName.toLowerCase());
+            node = node.parentNode;
+        }
+        if (tags.length > 0) tag = tags.join(' > ');
+    }
+    statusBar.textContent = tag;
+}
+
+/**
+ * Refreshes the active/inactive state of the B / I / U / S toolbar buttons
+ * based on the current selection's computed formatting state.
+ */
+function noteEditorRefreshToolbarState() {
+    var cmds = { bold: 'neTbBold', italic: 'neTbItalic', underline: 'neTbUnder', strikeThrough: 'neTbStrike' };
+    Object.keys(cmds).forEach(function (cmd) {
+        var btn = document.getElementById(cmds[cmd]);
+        if (btn) btn.classList.toggle('active', document.queryCommandState(cmd));
+    });
+}
