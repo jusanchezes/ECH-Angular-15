@@ -41,11 +41,7 @@ var CURRENT_USER = { name: 'Dr. Rory Rogers', department: 'Cardiology' };
  * ============================================================ */
 const TAB_CONFIGS = {
     'patient-list': [
-        { id: 'loc-all',       label: 'All Inpatients',      i18n: 'TABS.LOC_ALL',       count: 12, active: true  },
-        { id: 'loc-recent',    label: 'Recently Admitted',   i18n: 'TABS.LOC_RECENT',    count: 3,  active: false },
-        { id: 'loc-discharge', label: 'Planned Discharges',  i18n: 'TABS.LOC_DISCHARGE', count: 2,  active: false },
-        { id: 'loc-icu',       label: 'ICU / PACU',          i18n: 'TABS.LOC_ICU',       count: 1,  active: false },
-        { id: 'loc-surgery',   label: 'Patients in Surgery', i18n: 'TABS.LOC_SURGERY',   count: 1,  active: false }
+        { id: 'loc-all',       label: 'All Inpatients',      i18n: 'TABS.LOC_ALL',       count: 12, active: true  }
     ],
     'discharge-list': [
         { id: 'pending-discharge', label: 'Pending Discharge', i18n: 'TABS.PENDING_DISCHARGE', count: 8,  active: true },
@@ -137,6 +133,26 @@ function renderToolbar() {
     const el = document.getElementById('toolbar-component');
     if (!el) return;
 
+    const listType = document.body.getAttribute('data-list-type') || '';
+    const locationFilterHtml = listType === 'patient-list' ? `
+                <div class="scope-filter-group" id="location-filter-group">
+                    <button class="scope-btn scope-btn-active" data-location="all" onclick="handleLocationFilter('all')">
+                        All <span class="tab-count">12</span>
+                    </button>
+                    <button class="scope-btn" data-location="loc-recent" onclick="handleLocationFilter('loc-recent')">
+                        Recently Admitted <span class="tab-count">3</span>
+                    </button>
+                    <button class="scope-btn" data-location="loc-discharge" onclick="handleLocationFilter('loc-discharge')">
+                        Planned Discharges <span class="tab-count">2</span>
+                    </button>
+                    <button class="scope-btn" data-location="loc-icu" onclick="handleLocationFilter('loc-icu')">
+                        ICU / PACU <span class="tab-count">1</span>
+                    </button>
+                    <button class="scope-btn" data-location="loc-surgery" onclick="handleLocationFilter('loc-surgery')">
+                        Patients in Surgery <span class="tab-count">1</span>
+                    </button>
+                </div>` : '';
+
     el.innerHTML = `
         <div class="toolbar-inner">
             <div class="toolbar-left">
@@ -170,6 +186,7 @@ function renderToolbar() {
                         <i class="pi pi-building"></i> My Department
                     </button>
                 </div>
+                ${locationFilterHtml}
             </div>
             <div class="toolbar-center">
                 <button class="toolbar-action-btn" onclick="handleToolbarAction('pdf')" title="Export PDF" data-i18n-title="TOOLBAR.EXPORT_PDF">
@@ -222,10 +239,17 @@ function handleToolbarAction(action) {
 }
 
 function handleScopeChange(scope) {
-    document.querySelectorAll('.scope-btn').forEach(function(btn) {
+    document.querySelectorAll('.scope-btn[data-scope]').forEach(function(btn) {
         btn.classList.toggle('scope-btn-active', btn.getAttribute('data-scope') === scope);
     });
     console.log('Scope changed:', scope);
+}
+
+function handleLocationFilter(location) {
+    document.querySelectorAll('.scope-btn[data-location]').forEach(function(btn) {
+        btn.classList.toggle('scope-btn-active', btn.getAttribute('data-location') === location);
+    });
+    console.log('Location filter changed:', location);
 }
 
 function handleToolbarSearch(value) {
