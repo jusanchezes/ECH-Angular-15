@@ -84,6 +84,26 @@
     color: var(--ech-primary);
 }
 
+.note-editor-patient {
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+}
+
+.note-editor-patient .pi {
+    font-size: 0.85rem;
+    color: var(--ech-text-muted);
+}
+
+.note-editor-header-sep {
+    color: var(--ech-border);
+    font-size: var(--fs-xs);
+    margin: 0 2px;
+}
+
 .note-editor-header-close {
     background: none;
     border: none;

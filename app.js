@@ -464,11 +464,14 @@ function openNoteEditor() {
     var panel = document.getElementById('noteEditorPanel');
     if (!panel) return;
 
-    /* Populate author name from the clinical data service */
+    /* Populate patient and author names from the clinical data service */
     var patient = PatientData;
-    var authorName = (patient && patient.attendingPhysician) ? patient.attendingPhysician : 'Physician';
-    var authorEl = document.getElementById('noteEditorAuthorName');
-    if (authorEl) authorEl.textContent = authorName;
+    var authorName  = (patient && patient.attendingPhysician) ? patient.attendingPhysician : 'Physician';
+    var patientName = (patient && patient.name) ? patient.name : '';
+    var authorEl  = document.getElementById('noteEditorAuthorName');
+    var patientEl = document.getElementById('noteEditorPatientName');
+    if (authorEl)  authorEl.textContent  = authorName;
+    if (patientEl) patientEl.textContent = patientName;
 
     panel.classList.add('open');
     _noteEditorExpanded = false;
@@ -560,6 +563,11 @@ function noteEditorToggleExpand() {
     _noteEditorExpanded = !_noteEditorExpanded;
     panel.classList.toggle('expanded', _noteEditorExpanded);
     if (btn) btn.classList.toggle('active', _noteEditorExpanded);
+    /* Adjust timeline bottom padding to match new panel height */
+    var timelineArea = document.getElementById('timeline-area');
+    if (timelineArea) {
+        timelineArea.style.paddingBottom = _noteEditorExpanded ? '540px' : '350px';
+    }
 }
 
 /**
