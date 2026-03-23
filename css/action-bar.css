@@ -398,4 +398,162 @@
     flex-shrink: 0;
 }
 
+
+/* ============================================================
+   ECH SELECT DROPDOWN — Checkbox multi-select with OK/Cancel
+   Reemplaza los grupos de botones segmentados (scope y location)
+   en el toolbar de listados de pacientes.
+   Angular: Reemplazado por <p-multiSelect> de PrimeNG.
+   ============================================================ */
+.ech-select-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.ech-select-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: #3a7abf;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: var(--fs-md);
+    cursor: pointer;
+    font-family: var(--ech-font-family);
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+
+.ech-select-trigger:hover {
+    background: #2d6aaf;
+}
+
+.ech-select-trigger .ech-select-chevron {
+    font-size: 0.7rem;
+    transition: transform 0.15s;
+}
+
+.ech-select-dropdown.open .ech-select-trigger .ech-select-chevron {
+    transform: rotate(180deg);
+}
+
+.ech-select-panel {
+    position: absolute;
+    top: calc(100% + 3px);
+    left: 0;
+    z-index: 300;
+    background: #fff;
+    border: 1px solid #c0cfe0;
+    border-radius: 4px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    min-width: 210px;
+    display: none;
+}
+
+.ech-select-dropdown.open .ech-select-panel {
+    display: block;
+}
+
+.ech-select-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    background: #3a7abf;
+    color: #fff;
+    font-size: var(--fs-md);
+    font-weight: 600;
+    border-radius: 3px 3px 0 0;
+    user-select: none;
+}
+
+.ech-select-panel-header .pi {
+    font-size: 0.7rem;
+}
+
+.ech-select-options {
+    padding: 3px 0;
+}
+
+.ech-select-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    transition: background 0.1s;
+    user-select: none;
+}
+
+.ech-select-option:hover {
+    background: #eef4fb;
+}
+
+.ech-select-option input[type="checkbox"] {
+    accent-color: #3a7abf;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.ech-select-option-count {
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: #fff;
+    font-weight: 600;
+    background: #3a7abf;
+    border-radius: 10px;
+    padding: 1px 6px;
+    flex-shrink: 0;
+}
+
+.ech-select-footer {
+    display: flex;
+    gap: 6px;
+    padding: 6px 10px;
+    border-top: 1px solid #dde3ea;
+}
+
+.ech-select-ok {
+    flex: 1;
+    padding: 4px 0;
+    background: #3a7abf;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: var(--fs-md);
+    font-family: var(--ech-font-family);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.ech-select-ok:hover {
+    background: #2d6aaf;
+}
+
+.ech-select-cancel {
+    flex: 1;
+    padding: 4px 0;
+    background: #fff;
+    color: var(--ech-text-secondary);
+    border: 1px solid #c0cfe0;
+    border-radius: 3px;
+    font-size: var(--fs-md);
+    font-family: var(--ech-font-family);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.ech-select-cancel:hover {
+    background: #f0f3f7;
+}
+
   

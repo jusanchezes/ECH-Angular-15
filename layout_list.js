@@ -84,21 +84,34 @@ const TAB_CONFIGS = {
 };
 
 /* ============================================================
- * LOCATION FILTER CONFIGS
- * Opciones del filtro de ubicación mostradas en el toolbar para
- * el listado de inpatients. Separado de TAB_CONFIGS para permitir
- * que el toolbar y las pestañas evolucionen de forma independiente.
- * Angular: Reemplazado por un selector <p-dropdown> o botones en ToolbarComponent.
+ * SELECT DROPDOWN CONFIGS
+ * Opciones de los dropdowns con checkboxes del toolbar.
+ * Scope: visibilidad (todos / mis pacientes / mi dpto.)
+ * Location: tipo de ubicación clínica (UCi, cirugía, etc.)
+ * Angular: Reemplazado por <p-multiSelect> de PrimeNG.
  * ============================================================ */
+const SCOPE_DROPDOWN_OPTIONS = [
+    { id: 'all',  label: 'All Patients',  checked: true  },
+    { id: 'mine', label: 'My Patients',   checked: false },
+    { id: 'dept', label: 'My Department', checked: false }
+];
+
 const LOCATION_FILTER_CONFIGS = {
     'patient-list': [
-        { id: 'loc-all',       label: 'All',                  count: 12, active: true  },
-        { id: 'loc-recent',    label: 'Recently Admitted',     count: 3,  active: false },
-        { id: 'loc-discharge', label: 'Planned Discharges',    count: 2,  active: false },
-        { id: 'loc-icu',       label: 'ICU / PACU',            count: 1,  active: false },
-        { id: 'loc-surgery',   label: 'Patients in Surgery',   count: 1,  active: false }
+        { id: 'loc-all',       label: 'All',                  count: 12, checked: true  },
+        { id: 'loc-recent',    label: 'Recently Admitted',     count: 3,  checked: false },
+        { id: 'loc-discharge', label: 'Planned Discharges',    count: 2,  checked: false },
+        { id: 'loc-icu',       label: 'ICU / PACU',            count: 1,  checked: false },
+        { id: 'loc-surgery',   label: 'Patients in Surgery',   count: 1,  checked: false }
     ]
 };
+
+/* ============================================================
+ * SELECT DROPDOWN STATE
+ * Mantiene el estado de selección de cada dropdown.
+ * Angular: Reemplazado por FormControl en ToolbarComponent.
+ * ============================================================ */
+const DROPDOWN_STATE = {};
 
 /* ============================================================
  * PAGINATION STATE
@@ -141,6 +154,52 @@ function renderTabBar() {
 }
 
 /* ============================================================
+ * SELECT DROPDOWN BUILDER
+ * Genera el HTML de un dropdown con checkboxes y OK/Cancel.
+ * Angular: Cada instancia → <p-multiSelect> en ToolbarComponent.
+ * ============================================================ */
+function buildSelectDropdownHtml(dropdownId, triggerLabel, options) {
+    const optionsHtml = options.map(function(opt) {
+        const isChecked = DROPDOWN_STATE[dropdownId]
+            ? DROPDOWN_STATE[dropdownId].tempChecked.has(opt.id)
+            : opt.checked;
+        const countHtml = (opt.count !== undefined)
+            ? `<span class="ech-select-option-count">${opt.count}</span>`
+            : '';
+        return `<label class="ech-select-option">
+                        <input type="checkbox" value="${opt.id}"${isChecked ? ' checked' : ''}
+                               onchange="handleSelectChange('${dropdownId}', '${opt.id}', this.checked)">
+                        ${opt.label}${countHtml}
+                    </label>`;
+    }).join('\n                    ');
+
+    const isOpen = DROPDOWN_STATE[dropdownId] && DROPDOWN_STATE[dropdownId].open;
+
+    return `<div class="ech-select-dropdown${isOpen ? ' open' : ''}" id="${dropdownId}">
+                <button class="ech-select-trigger"
+                        onclick="event.stopPropagation(); toggleSelectDropdown('${dropdownId}')">
+                    <span id="${dropdownId}-label">${triggerLabel}</span>
+                    <i class="pi pi-chevron-down ech-select-chevron"></i>
+                </button>
+                <div class="ech-select-panel" onclick="event.stopPropagation()">
+                    <div class="ech-select-panel-header">
+                        <span>Select:</span>
+                        <i class="pi pi-chevron-up"></i>
+                    </div>
+                    <div class="ech-select-options">
+                        ${optionsHtml}
+                    </div>
+                    <div class="ech-select-footer">
+                        <button class="ech-select-ok"
+                                onclick="applySelectDropdown('${dropdownId}')">OK</button>
+                        <button class="ech-select-cancel"
+                                onclick="cancelSelectDropdown('${dropdownId}')">Cancel</button>
+                    </div>
+                </div>
+            </div>`;
+}
+
+/* ============================================================
  * TOOLBAR RENDERER
  * Inyecta la barra de herramientas ampliada con paginación,
  * iconos de acción y buscador con badge.
@@ -151,16 +210,22 @@ function renderToolbar() {
     if (!el) return;
 
     const listType = document.body.getAttribute('data-list-type') || '';
-    const locationFilters = LOCATION_FILTER_CONFIGS[listType];
-    const locationFilterHtml = locationFilters ? `
-                <div class="scope-filter-group" id="location-filter-group">
-                    ${locationFilters.map(function(f) {
-                        const activeClass = f.active ? ' scope-btn-active' : '';
-                        return `<button class="scope-btn${activeClass}" data-location="${f.id}" onclick="handleLocationFilter('${f.id}')">
-                        ${f.label} <span class="tab-count">${f.count}</span>
-                    </button>`;
-                    }).join('\n                    ')}
-                </div>` : '';
+
+    initDropdownState('scope-dropdown', SCOPE_DROPDOWN_OPTIONS);
+    const scopeLabel = getDropdownLabel('scope-dropdown', SCOPE_DROPDOWN_OPTIONS);
+    const scopeDropdownHtml = buildSelectDropdownHtml(
+        'scope-dropdown', scopeLabel, SCOPE_DROPDOWN_OPTIONS
+    );
+
+    const locationOptions = LOCATION_FILTER_CONFIGS[listType];
+    let locationDropdownHtml = '';
+    if (locationOptions) {
+        initDropdownState('location-dropdown', locationOptions);
+        const locationLabel = getDropdownLabel('location-dropdown', locationOptions);
+        locationDropdownHtml = buildSelectDropdownHtml(
+            'location-dropdown', locationLabel, locationOptions
+        );
+    }
 
     el.innerHTML = `
         <div class="toolbar-inner">
@@ -184,18 +249,8 @@ function renderToolbar() {
                         <i class="pi pi-angle-double-right"></i>
                     </button>
                 </div>
-                <div class="scope-filter-group">
-                    <button class="scope-btn scope-btn-active" data-scope="all" onclick="handleScopeChange('all')">
-                        <i class="pi pi-users"></i> All Patients
-                    </button>
-                    <button class="scope-btn" data-scope="mine" onclick="handleScopeChange('mine')">
-                        <i class="pi pi-user"></i> My Patients
-                    </button>
-                    <button class="scope-btn" data-scope="dept" onclick="handleScopeChange('dept')">
-                        <i class="pi pi-building"></i> My Department
-                    </button>
-                </div>
-                ${locationFilterHtml}
+                ${scopeDropdownHtml}
+                ${locationDropdownHtml}
             </div>
             <div class="toolbar-center">
                 <button class="toolbar-action-btn" onclick="handleToolbarAction('pdf')" title="Export PDF" data-i18n-title="TOOLBAR.EXPORT_PDF">
@@ -216,6 +271,35 @@ function renderToolbar() {
                 </div>
             </div>
         </div>`;
+}
+
+/* ============================================================
+ * SELECT DROPDOWN STATE HELPERS
+ * Inicialización y lectura del estado de cada dropdown.
+ * ============================================================ */
+
+function initDropdownState(dropdownId, options) {
+    if (DROPDOWN_STATE[dropdownId]) return;
+    DROPDOWN_STATE[dropdownId] = {
+        open: false,
+        appliedChecked: new Set(options.filter(o => o.checked).map(o => o.id)),
+        tempChecked:    new Set(options.filter(o => o.checked).map(o => o.id))
+    };
+}
+
+function getDropdownLabel(dropdownId, options) {
+    const state = DROPDOWN_STATE[dropdownId];
+    if (!state) {
+        const defaultOpt = options.find(o => o.checked);
+        return defaultOpt ? defaultOpt.label : 'Select...';
+    }
+    const checked = state.appliedChecked;
+    if (checked.size === 0) return 'Select...';
+    if (checked.size === 1) {
+        const opt = options.find(o => checked.has(o.id));
+        return opt ? opt.label : 'Select...';
+    }
+    return checked.size + ' selected';
 }
 
 /* ============================================================
@@ -247,18 +331,73 @@ function handleToolbarAction(action) {
     console.log('Toolbar action:', action);
 }
 
-function handleScopeChange(scope) {
-    document.querySelectorAll('.scope-btn[data-scope]').forEach(function(btn) {
-        btn.classList.toggle('scope-btn-active', btn.getAttribute('data-scope') === scope);
-    });
-    console.log('Scope changed:', scope);
+/* ============================================================
+ * SELECT DROPDOWN INTERACTION HANDLERS
+ * Angular: Reemplazados por (onChange) / (onPanelHide) de p-multiSelect
+ * ============================================================ */
+
+function toggleSelectDropdown(dropdownId) {
+    const state = DROPDOWN_STATE[dropdownId];
+    if (!state) return;
+
+    const isCurrentlyOpen = state.open;
+
+    closeAllDropdowns();
+
+    if (!isCurrentlyOpen) {
+        state.open = true;
+        state.tempChecked = new Set(state.appliedChecked);
+        const el = document.getElementById(dropdownId);
+        if (el) el.classList.add('open');
+    }
 }
 
-function handleLocationFilter(location) {
-    document.querySelectorAll('.scope-btn[data-location]').forEach(function(btn) {
-        btn.classList.toggle('scope-btn-active', btn.getAttribute('data-location') === location);
+function handleSelectChange(dropdownId, optionId, checked) {
+    const state = DROPDOWN_STATE[dropdownId];
+    if (!state) return;
+    if (checked) {
+        state.tempChecked.add(optionId);
+    } else {
+        state.tempChecked.delete(optionId);
+    }
+}
+
+function applySelectDropdown(dropdownId) {
+    const state = DROPDOWN_STATE[dropdownId];
+    if (!state) return;
+
+    state.appliedChecked = new Set(state.tempChecked);
+    state.open = false;
+
+    const el = document.getElementById(dropdownId);
+    if (el) el.classList.remove('open');
+
+    const options = dropdownId === 'scope-dropdown'
+        ? SCOPE_DROPDOWN_OPTIONS
+        : (LOCATION_FILTER_CONFIGS[document.body.getAttribute('data-list-type')] || []);
+
+    const labelEl = document.getElementById(dropdownId + '-label');
+    if (labelEl) labelEl.textContent = getDropdownLabel(dropdownId, options);
+
+    console.log('Dropdown applied:', dropdownId, [...state.appliedChecked]);
+}
+
+function cancelSelectDropdown(dropdownId) {
+    const state = DROPDOWN_STATE[dropdownId];
+    if (!state) return;
+    state.tempChecked = new Set(state.appliedChecked);
+    state.open = false;
+    const el = document.getElementById(dropdownId);
+    if (el) el.classList.remove('open');
+}
+
+function closeAllDropdowns() {
+    Object.keys(DROPDOWN_STATE).forEach(function(id) {
+        DROPDOWN_STATE[id].open = false;
     });
-    console.log('Location filter changed:', location);
+    document.querySelectorAll('.ech-select-dropdown.open').forEach(function(el) {
+        el.classList.remove('open');
+    });
 }
 
 function handleToolbarSearch(value) {
@@ -278,6 +417,7 @@ function handleToolbarSearch(value) {
 function initListLayout() {
     renderTabBar();
     renderToolbar();
+    document.addEventListener('click', closeAllDropdowns);
 }
 
 document.addEventListener('DOMContentLoaded', initListLayout);
