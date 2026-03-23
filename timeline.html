@@ -356,6 +356,7 @@
         document.querySelectorAll('.action-dropdown.open').forEach(function (el) {
             if (!exceptId || el.id !== exceptId) {
                 el.classList.remove('open');
+                el.classList.remove('open-up');
             }
         });
     }
@@ -366,7 +367,17 @@
         var isOpen = el.classList.contains('open');
         closeAllActionDropdowns(null);
         if (!isOpen) {
+            el.classList.remove('open-up');
             el.classList.add('open');
+            var panel = el.querySelector('.action-dropdown-panel');
+            if (panel) {
+                var triggerRect = el.getBoundingClientRect();
+                var panelHeight = panel.offsetHeight || 300;
+                var spaceBelow = window.innerHeight - triggerRect.bottom;
+                if (spaceBelow < panelHeight && triggerRect.top > panelHeight) {
+                    el.classList.add('open-up');
+                }
+            }
         }
     };
 
