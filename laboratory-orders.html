@@ -55,13 +55,33 @@
                 <div class="io-panel io-panel-catalog">
                     <div class="io-panel-header">
                         <span data-i18n="LO.CATALOG_TITLE">1. Laboratory Catalog</span>
-                        <div class="io-modality-filters" id="loCategoryFilters">
-                            <button class="io-modality-btn active" data-category="all" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_ALL">All</button>
-                            <button class="io-modality-btn" data-category="Hematology" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_HEMATOLOGY">Hematology</button>
-                            <button class="io-modality-btn" data-category="Chemistry" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_CHEMISTRY">Chemistry</button>
-                            <button class="io-modality-btn" data-category="Microbiology" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_MICROBIOLOGY">Microbiology</button>
-                            <button class="io-modality-btn" data-category="Coagulation" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_COAGULATION">Coagulation</button>
-                            <button class="io-modality-btn" data-category="Urinalysis" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_URINALYSIS">Urinalysis</button>
+                        <div class="lo-catalog-header-actions">
+                            <div class="io-modality-filters" id="loCategoryFilters">
+                                <button class="io-modality-btn active" data-category="all" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_ALL">All</button>
+                                <button class="io-modality-btn" data-category="Hematology" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_HEMATOLOGY">Hematology</button>
+                                <button class="io-modality-btn" data-category="Chemistry" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_CHEMISTRY">Chemistry</button>
+                                <button class="io-modality-btn" data-category="Microbiology" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_MICROBIOLOGY">Microbiology</button>
+                                <button class="io-modality-btn" data-category="Coagulation" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_COAGULATION">Coagulation</button>
+                                <button class="io-modality-btn" data-category="Urinalysis" onclick="loSetCategoryFilter(this)" data-i18n="LO.FILTER_URINALYSIS">Urinalysis</button>
+                                <button class="io-modality-btn lo-favorites-filter-btn" id="loFavoritesFilterBtn" data-category="favorites" onclick="loToggleFavoritesFilter()" data-i18n="LO.FILTER_FAVORITES">
+                                    <i class="pi pi-star-fill"></i> Favorites
+                                </button>
+                            </div>
+                            <div class="lo-profile-dropdown-wrapper" id="loProfileDropdownWrapper">
+                                <button class="lo-profile-btn" id="loProfileBtn" onclick="loToggleProfileDropdown()" aria-haspopup="true" aria-expanded="false" data-i18n="LO.PROFILE_BTN">
+                                    <i class="pi pi-th-large"></i>
+                                    <span id="loProfileBtnLabel">Select Profile</span>
+                                    <i class="pi pi-chevron-down lo-profile-chevron" id="loProfileChevron"></i>
+                                </button>
+                                <div class="lo-profile-panel" id="loProfilePanel" role="dialog" aria-label="Select test profile">
+                                    <div class="lo-profile-panel-header" data-i18n="LO.PROFILE_PANEL_TITLE">Test Profiles</div>
+                                    <div class="lo-profile-list" id="loProfileList"></div>
+                                    <div class="lo-profile-panel-footer">
+                                        <button class="io-btn io-btn-secondary lo-profile-cancel-btn" onclick="loCloseProfileDropdown()" data-i18n="LO.PROFILE_CANCEL">Cancel</button>
+                                        <button class="io-btn io-btn-primary lo-profile-apply-btn" id="loProfileApplyBtn" onclick="loApplyProfile()" data-i18n="LO.PROFILE_APPLY">Add to Orders</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="io-panel-body">

@@ -180,6 +180,10 @@ var ClinicalDataService = (function () {
             return MockClinicalData.catalogs.labCatalog;
         },
 
+        getLabProfiles: function () {
+            return MockClinicalData.catalogs.labProfiles;
+        },
+
         getRadiologyCatalog: function () {
             return MockClinicalData.catalogs.radiologyCatalog;
         },

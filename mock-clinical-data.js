@@ -866,6 +866,44 @@ var MockClinicalData = {
             { id: 14, name: 'Urine Microalbumin/Creatinine Ratio', category: 'Urinalysis', specimenType: 'Urine', defaultVolume: '15 mL', fastingRequired: false, isCoagulation: false },
             { id: 15, name: 'Thyroid Stimulating Hormone (TSH)', category: 'Chemistry', specimenType: 'Blood', defaultVolume: '4 mL', fastingRequired: false, isCoagulation: false }
         ],
+        labProfiles: [
+            {
+                id: 'ami',
+                name: 'AMI Profile',
+                description: 'Acute Myocardial Infarction workup',
+                testIds: [1, 4, 10, 11, 12]
+            },
+            {
+                id: 'emergency-general',
+                name: 'Emergency General',
+                description: 'Standard emergency department panel',
+                testIds: [1, 4, 7, 8, 13]
+            },
+            {
+                id: 'metabolic',
+                name: 'Metabolic Panel',
+                description: 'Full metabolic and endocrine screening',
+                testIds: [4, 5, 6, 15]
+            },
+            {
+                id: 'coagulation-screen',
+                name: 'Coagulation Screen',
+                description: 'Complete coagulation workup',
+                testIds: [10, 11, 12]
+            },
+            {
+                id: 'infection-workup',
+                name: 'Infection Workup',
+                description: 'Sepsis and infection screening panel',
+                testIds: [1, 7, 8, 9, 13]
+            },
+            {
+                id: 'renal-urinary',
+                name: 'Renal & Urinary',
+                description: 'Kidney function and urinary tract assessment',
+                testIds: [4, 13, 14]
+            }
+        ],
         radiologyCatalog: [
             { id: 1, name: 'CT Abdomen/Pelvis w IV Contrast', modality: 'CT', requiresContrast: true, contrastProtocol: 'IV Only' },
             { id: 2, name: 'CT Chest w IV Contrast', modality: 'CT', requiresContrast: true, contrastProtocol: 'IV Only' },

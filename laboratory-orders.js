@@ -13,19 +13,57 @@
 (function () {
 
     var LAB_CATALOG = ClinicalDataService.getLabCatalog();
+    var LAB_PROFILES = ClinicalDataService.getLabProfiles();
     var PATIENT_CONTEXT = ClinicalDataService.getLabOrdersContext() || {};
 
+    var FAVORITES_KEY = 'lo_favorite_tests';
+
     var activeCategoryFilter = null;
+    var showFavoritesOnly = false;
     var selectedExam = null;
     var ordersCart = [];
     var selectedOrderIndex = -1;
 
+    var profileDropdownOpen = false;
+    var selectedProfileId = null;
+
+    function getFavoriteIds() {
+        try {
+            return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveFavoriteIds(ids) {
+        try {
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify(ids));
+        } catch (e) {}
+    }
+
+    function isFavorite(examId) {
+        return getFavoriteIds().indexOf(examId) !== -1;
+    }
+
+    function toggleFavorite(examId) {
+        var ids = getFavoriteIds();
+        var idx = ids.indexOf(examId);
+        if (idx === -1) {
+            ids.push(examId);
+        } else {
+            ids.splice(idx, 1);
+        }
+        saveFavoriteIds(ids);
+    }
+
     function getFilteredCatalog(searchText) {
         searchText = (searchText || '').toLowerCase();
+        var favoriteIds = getFavoriteIds();
         return LAB_CATALOG.filter(function (item) {
             var matchesSearch = !searchText || item.name.toLowerCase().indexOf(searchText) !== -1;
             var matchesCategory = !activeCategoryFilter || item.category === activeCategoryFilter;
-            return matchesSearch && matchesCategory;
+            var matchesFavorites = !showFavoritesOnly || favoriteIds.indexOf(item.id) !== -1;
+            return matchesSearch && matchesCategory && matchesFavorites;
         });
     }
 
@@ -36,17 +74,51 @@
         var filtered = getFilteredCatalog(searchText);
 
         if (filtered.length === 0) {
-            list.innerHTML = '<div class="io-catalog-empty"><i class="pi pi-info-circle"></i> No tests found</div>';
+            var emptyMsg = showFavoritesOnly
+                ? '<div class="io-catalog-empty"><i class="pi pi-star"></i> No favorite tests yet. Click the star on any test to add it.</div>'
+                : '<div class="io-catalog-empty"><i class="pi pi-info-circle"></i> No tests found</div>';
+            list.innerHTML = emptyMsg;
             return;
         }
 
         list.innerHTML = filtered.map(function (item) {
             var activeClass = selectedExam && selectedExam.id === item.id ? ' io-catalog-item-active' : '';
+            var fav = isFavorite(item.id);
+            var favClass = fav ? ' lo-fav-star-active' : '';
+            var favIcon = fav ? 'pi-star-fill' : 'pi-star';
             return '<div class="io-catalog-item' + activeClass + '" data-exam-id="' + item.id + '" onclick="loSelectExam(' + item.id + ')">' +
+                '<button class="lo-fav-star' + favClass + '" onclick="event.stopPropagation();loToggleFavorite(' + item.id + ')" title="Toggle favorite" aria-label="Toggle favorite">' +
+                    '<i class="pi ' + favIcon + '"></i>' +
+                '</button>' +
                 '<span class="io-catalog-item-name">' + item.name + '</span>' +
                 '<span class="io-catalog-item-modality">' + item.category + '</span>' +
                 '</div>';
         }).join('');
+    }
+
+    function renderProfileList() {
+        var list = document.getElementById('loProfileList');
+        if (!list) return;
+        list.innerHTML = LAB_PROFILES.map(function (profile) {
+            var isSelected = selectedProfileId === profile.id;
+            var testCount = profile.testIds.length;
+            return '<div class="lo-profile-item' + (isSelected ? ' lo-profile-item-selected' : '') + '" onclick="loSelectProfile(\'' + profile.id + '\')">' +
+                '<div class="lo-profile-item-check">' +
+                    '<span class="lo-profile-checkbox' + (isSelected ? ' lo-profile-checkbox-checked' : '') + '">' +
+                        (isSelected ? '<i class="pi pi-check"></i>' : '') +
+                    '</span>' +
+                '</div>' +
+                '<div class="lo-profile-item-info">' +
+                    '<span class="lo-profile-item-name">' + profile.name + '</span>' +
+                    '<span class="lo-profile-item-desc">' + profile.description + ' &mdash; ' + testCount + ' test' + (testCount !== 1 ? 's' : '') + '</span>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+
+        var applyBtn = document.getElementById('loProfileApplyBtn');
+        if (applyBtn) {
+            applyBtn.disabled = !selectedProfileId;
+        }
     }
 
     function renderOrders() {
@@ -235,7 +307,33 @@
         renderCatalog();
     };
 
+    window.loToggleFavorite = function (examId) {
+        toggleFavorite(examId);
+        renderCatalog();
+    };
+
+    window.loToggleFavoritesFilter = function () {
+        showFavoritesOnly = !showFavoritesOnly;
+        var btn = document.getElementById('loFavoritesFilterBtn');
+        if (btn) {
+            btn.classList.toggle('active', showFavoritesOnly);
+        }
+        if (showFavoritesOnly) {
+            activeCategoryFilter = null;
+            var categoryBtns = document.querySelectorAll('.io-modality-btn:not(#loFavoritesFilterBtn)');
+            categoryBtns.forEach(function (b) { b.classList.remove('active'); });
+            var allBtn = document.querySelector('.io-modality-btn[data-category="all"]');
+            if (allBtn) allBtn.classList.remove('active');
+        }
+        renderCatalog();
+    };
+
     window.loSetCategoryFilter = function (btn) {
+        if (showFavoritesOnly) {
+            showFavoritesOnly = false;
+            var favBtn = document.getElementById('loFavoritesFilterBtn');
+            if (favBtn) favBtn.classList.remove('active');
+        }
         var category = btn.dataset.category;
         var buttons = document.querySelectorAll('.io-modality-btn');
         if (category === 'all' || activeCategoryFilter === category) {
@@ -250,6 +348,77 @@
             });
         }
         renderCatalog();
+    };
+
+    window.loToggleProfileDropdown = function () {
+        if (profileDropdownOpen) {
+            loCloseProfileDropdown();
+        } else {
+            profileDropdownOpen = true;
+            selectedProfileId = null;
+            renderProfileList();
+            var panel = document.getElementById('loProfilePanel');
+            var btn = document.getElementById('loProfileBtn');
+            var chevron = document.getElementById('loProfileChevron');
+            if (panel) panel.classList.add('lo-profile-panel-open');
+            if (btn) btn.setAttribute('aria-expanded', 'true');
+            if (chevron) chevron.classList.add('lo-profile-chevron-open');
+        }
+    };
+
+    window.loCloseProfileDropdown = function () {
+        profileDropdownOpen = false;
+        var panel = document.getElementById('loProfilePanel');
+        var btn = document.getElementById('loProfileBtn');
+        var chevron = document.getElementById('loProfileChevron');
+        if (panel) panel.classList.remove('lo-profile-panel-open');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+        if (chevron) chevron.classList.remove('lo-profile-chevron-open');
+    };
+
+    window.loSelectProfile = function (profileId) {
+        selectedProfileId = profileId;
+        renderProfileList();
+    };
+
+    window.loApplyProfile = function () {
+        if (!selectedProfileId) return;
+        var profile = LAB_PROFILES.find(function (p) { return p.id === selectedProfileId; });
+        if (!profile) return;
+
+        profile.testIds.forEach(function (testId) {
+            var exam = LAB_CATALOG.find(function (e) { return e.id === testId; });
+            if (!exam) return;
+            var existingIndex = ordersCart.findIndex(function (o) { return o.examId === testId; });
+            if (existingIndex >= 0) return;
+            var newOrder = {
+                examId: exam.id,
+                name: exam.name,
+                category: exam.category,
+                priority: 'Routine',
+                requestedDate: '',
+                frequency: 'Once',
+                specimenType: exam.specimenType,
+                collectionMethod: 'Nurse',
+                volumeRequired: exam.defaultVolume,
+                fastingRequired: exam.fastingRequired,
+                fastingDuration: exam.fastingRequired ? '8' : '',
+                clinicalIndication: ''
+            };
+            ordersCart.push(newOrder);
+        });
+
+        selectedOrderIndex = ordersCart.length > 0 ? ordersCart.length - 1 : -1;
+        if (selectedOrderIndex >= 0) {
+            var lastOrder = ordersCart[selectedOrderIndex];
+            selectedExam = LAB_CATALOG.find(function (e) { return e.id === lastOrder.examId; }) || null;
+            populateDetailForm(lastOrder);
+        }
+
+        loCloseProfileDropdown();
+        selectedProfileId = null;
+        renderCatalog();
+        renderOrders();
     };
 
     window.loSelectExam = function (id) {
@@ -353,6 +522,14 @@
         formFields.forEach(function (el) {
             el.addEventListener('change', window.loFormChange);
             el.addEventListener('input', window.loFormChange);
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!profileDropdownOpen) return;
+            var wrapper = document.getElementById('loProfileDropdownWrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                loCloseProfileDropdown();
+            }
         });
     });
 
