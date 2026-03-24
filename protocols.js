@@ -14,15 +14,19 @@ var PROTOCOLS_DATA = ClinicalDataService.getProtocols();
 
 let selectedProtocolId = null;
 let searchTerm = '';
+let statusFilter = 'all';
 
 function filterProtocols() {
-    if (!searchTerm) return PROTOCOLS_DATA;
-    const term = searchTerm.toLowerCase();
-    return PROTOCOLS_DATA.filter(p =>
-        p.protocolName.toLowerCase().includes(term) ||
-        p.author.toLowerCase().includes(term) ||
-        p.department.toLowerCase().includes(term)
-    );
+    return PROTOCOLS_DATA.filter(p => {
+        const matchesStatus = statusFilter === 'all' || p.status === statusFilter;
+        if (!searchTerm) return matchesStatus;
+        const term = searchTerm.toLowerCase();
+        const matchesSearch =
+            p.protocolName.toLowerCase().includes(term) ||
+            p.author.toLowerCase().includes(term) ||
+            p.department.toLowerCase().includes(term);
+        return matchesStatus && matchesSearch;
+    });
 }
 
 function renderProtocolsTable() {
@@ -85,6 +89,13 @@ function handleAddProtocol() {
 
 function handleProtocolSearch(input) {
     searchTerm = input.value.trim();
+    renderProtocolsTable();
+}
+
+function handleProtocolStatusFilter(filter, btn) {
+    statusFilter = filter;
+    document.querySelectorAll('#protoStatusTabs .sb-option').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
     renderProtocolsTable();
 }
 

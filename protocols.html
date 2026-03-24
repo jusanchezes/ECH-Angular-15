@@ -47,6 +47,17 @@
         </section>
         <!-- END: ActionBarComponent -->
 
+        <!-- BEGIN: Angular Standalone Component — FilterBarComponent -->
+        <section class="filter-bar flex align-items-center gap-2 flex-wrap" id="proto-filter-bar">
+            <label data-i18n="PROTO.FILTER_STATUS">Status:</label>
+            <div class="select-button-group" id="protoStatusTabs">
+                <button class="sb-option active" data-filter="all" onclick="handleProtocolStatusFilter('all', this)" data-i18n="PROTO.STATUS_ALL">All</button>
+                <button class="sb-option" data-filter="Open" onclick="handleProtocolStatusFilter('Open', this)" data-i18n="PROTO.STATUS_OPEN">Open</button>
+                <button class="sb-option" data-filter="Closed" onclick="handleProtocolStatusFilter('Closed', this)" data-i18n="PROTO.STATUS_CLOSED">Closed</button>
+            </div>
+        </section>
+        <!-- END: FilterBarComponent -->
+
         <!-- API Contract: GET /api/v1/clinical/protocols/{patientId} → ProtocolDTO[] — Ver API_contracts.md -->
         <section class="ehr-table-area" id="module-content">
             <div class="ehr-table-scroll">
