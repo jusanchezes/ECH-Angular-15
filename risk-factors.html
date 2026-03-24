@@ -44,23 +44,56 @@
             </div>
         </section>
 
-        <!-- Angular: p-selectButton for risk factor category switching -->
-        <!-- PrimeFlex: filter-bar with select-button-group matching MAR filter pattern -->
-        <section class="filter-bar flex align-items-center gap-2 flex-wrap">
-            <label data-i18n="MAR.RF_TYPE">Type:</label>
-            <div class="select-button-group rf-select-group" id="rfTabs">
-                <button class="sb-option active" data-tab="summary" onclick="switchTab('summary')" data-i18n="RISK_FACTORS.TAB_SUMMARY">Summary</button>
-                <button class="sb-option" data-tab="allergies" onclick="switchTab('allergies')" data-i18n="RISK_FACTORS.TAB_ALLERGIES">Allergies</button>
-                <button class="sb-option" data-tab="conditions" onclick="switchTab('conditions')" data-i18n="RISK_FACTORS.TAB_CONDITIONS">Conditions</button>
-                <button class="sb-option" data-tab="procedures" onclick="switchTab('procedures')" data-i18n="RISK_FACTORS.TAB_PROCEDURES">Procedures</button>
-                <button class="sb-option" data-tab="family-history" onclick="switchTab('family-history')" data-i18n="RISK_FACTORS.TAB_FAMILY_HISTORY">Family H.</button>
-                <button class="sb-option" data-tab="social-history" onclick="switchTab('social-history')" data-i18n="RISK_FACTORS.TAB_SOCIAL_HISTORY">Social &amp; Habits</button>
-                <button class="sb-option" data-tab="infection-control" onclick="switchTab('infection-control')" data-i18n="RISK_FACTORS.TAB_INFECTION_CONTROL">IC</button>
-                <button class="sb-option" data-tab="immunizations" onclick="switchTab('immunizations')" data-i18n="RISK_FACTORS.TAB_IMMUNIZATIONS">Immunizations</button>
-                <button class="sb-option" data-tab="devices" onclick="switchTab('devices')" data-i18n="RISK_FACTORS.TAB_DEVICES">Devices</button>
-                <button class="sb-option" data-tab="risk-assessments" onclick="switchTab('risk-assessments')" data-i18n="RISK_FACTORS.TAB_RISK_ASSESSMENTS">Risks</button>
+        <!-- Angular: Left sidebar nav replacing horizontal tab bar -->
+        <div class="rf-main-wrapper">
+
+        <!-- BEGIN: Angular Standalone Component — RiskFactorSidenavComponent -->
+        <nav class="rf-sidenav" id="rfSidenav">
+            <div class="rf-sidenav-header">
+                <span data-i18n="RISK_FACTORS.SIDENAV_TITLE">RISK FACTOR</span>
+                <i class="pi pi-bars"></i>
             </div>
-        </section>
+            <button class="rf-sidenav-item active" data-tab="summary" onclick="switchTab('summary')" data-i18n="RISK_FACTORS.TAB_SUMMARY">
+                <span>Summary</span>
+            </button>
+            <button class="rf-sidenav-item" data-tab="allergies" onclick="switchTab('allergies')" data-i18n="RISK_FACTORS.TAB_ALLERGIES">
+                <span>Allergies</span>
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button class="rf-sidenav-item" data-tab="conditions" onclick="switchTab('conditions')" data-i18n="RISK_FACTORS.TAB_CONDITIONS">
+                <span>Conditions</span>
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button class="rf-sidenav-item" data-tab="procedures" onclick="switchTab('procedures')" data-i18n="RISK_FACTORS.TAB_PROCEDURES">
+                <span>Procedures</span>
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button class="rf-sidenav-item" data-tab="family-history" onclick="switchTab('family-history')" data-i18n="RISK_FACTORS.TAB_FAMILY_HISTORY">
+                <span>Family History</span>
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button class="rf-sidenav-item" data-tab="social-history" onclick="switchTab('social-history')" data-i18n="RISK_FACTORS.TAB_SOCIAL_HISTORY">
+                <span>Social &amp; Habits</span>
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button class="rf-sidenav-item" data-tab="infection-control" onclick="switchTab('infection-control')" data-i18n="RISK_FACTORS.TAB_INFECTION_CONTROL">
+                <span>Infection Control</span>
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button class="rf-sidenav-item" data-tab="immunizations" onclick="switchTab('immunizations')" data-i18n="RISK_FACTORS.TAB_IMMUNIZATIONS">
+                <span>Immunizations</span>
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button class="rf-sidenav-item" data-tab="devices" onclick="switchTab('devices')" data-i18n="RISK_FACTORS.TAB_DEVICES">
+                <span>Devices</span>
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button class="rf-sidenav-item" data-tab="risk-assessments" onclick="switchTab('risk-assessments')" data-i18n="RISK_FACTORS.TAB_RISK_ASSESSMENTS">
+                <span>Risk Assessments</span>
+                <i class="pi pi-pencil"></i>
+            </button>
+        </nav>
+        <!-- END: RiskFactorSidenavComponent -->
 
         <!-- API Contract: GET /api/v1/clinical/risk-factors/{patientId} → RiskFactorsContextDTO (RiskFactorDTO[]) — Ver API_contracts.md -->
         <section class="rf-content-area" id="rfContentArea">
@@ -596,6 +629,8 @@
             </div>
 
         </section>
+
+        </div><!-- end rf-main-wrapper -->
     </main>
 </div>
 

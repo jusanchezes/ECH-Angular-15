@@ -89,20 +89,99 @@
     box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
 }
 
-/* --- Category select-button-group (scrollable for 10 categories) --- */
-.rf-select-group {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: thin;
+/* --- Main wrapper: sidebar + content side by side --- */
+.rf-main-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    min-height: 0;
 }
 
-.rf-select-group::-webkit-scrollbar {
-    height: 3px;
+/* --- Left sidebar navigation --- */
+.rf-sidenav {
+    width: 210px;
+    min-width: 210px;
+    background: var(--ech-surface);
+    border-right: 1px solid var(--ech-border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
 }
 
-.rf-select-group::-webkit-scrollbar-thumb {
-    background: var(--ech-border);
-    border-radius: 3px;
+.rf-sidenav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--ech-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--ech-border);
+    background: var(--ech-bg);
+    flex-shrink: 0;
+}
+
+.rf-sidenav-header .pi {
+    font-size: 1rem;
+    color: var(--ech-text-secondary);
+    cursor: pointer;
+}
+
+.rf-sidenav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 9px 12px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--ech-border-light);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--ech-text);
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    font-family: var(--ech-font-family);
+    transition: background 0.12s, color 0.12s;
+}
+
+.rf-sidenav-item span {
+    flex: 1;
+}
+
+.rf-sidenav-item .pi {
+    font-size: 0.846rem;
+    color: var(--ech-text-muted);
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.rf-sidenav-item:hover {
+    background: var(--ech-primary-light);
+    color: var(--ech-primary);
+}
+
+.rf-sidenav-item:hover .pi {
+    color: var(--ech-primary);
+    opacity: 1;
+}
+
+.rf-sidenav-item.active {
+    background: #e3f0fb;
+    color: var(--ech-primary);
+    border-left: 3px solid var(--ech-primary);
+    padding-left: 9px;
+}
+
+.rf-sidenav-item.active .pi {
+    color: var(--ech-primary);
+    opacity: 1;
 }
 
 /* --- Content area --- */

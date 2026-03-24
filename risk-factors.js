@@ -108,9 +108,9 @@ function renderAllPanels() {
 function switchTab(tabId) {
     activeTab = tabId;
 
-    document.querySelectorAll('#rfTabs .sb-option').forEach(t => t.classList.remove('active'));
-    const activeTabBtn = document.querySelector('#rfTabs .sb-option[data-tab="' + tabId + '"]');
-    if (activeTabBtn) activeTabBtn.classList.add('active');
+    document.querySelectorAll('#rfSidenav .rf-sidenav-item').forEach(t => t.classList.remove('active'));
+    const activeSidenavBtn = document.querySelector('#rfSidenav .rf-sidenav-item[data-tab="' + tabId + '"]');
+    if (activeSidenavBtn) activeSidenavBtn.classList.add('active');
 
     document.querySelectorAll('.rf-tab-panel').forEach(p => p.classList.remove('rf-tab-panel-active'));
     const activePanel = document.getElementById('panel-' + tabId);
