@@ -47,7 +47,6 @@
         <!-- Angular: Left sidebar nav replacing horizontal tab bar -->
         <div class="rf-main-wrapper">
 
-        <!-- BEGIN: Angular Standalone Component — RiskFactorSidenavComponent -->
         <nav class="rf-sidenav" id="rfSidenav">
             <div class="rf-sidenav-header">
                 <span data-i18n="RISK_FACTORS.SIDENAV_TITLE">RISK FACTOR</span>
@@ -69,7 +68,7 @@
                 <i class="pi pi-pencil"></i>
             </button>
             <button class="rf-sidenav-item" data-tab="family-history" onclick="switchTab('family-history')" data-i18n="RISK_FACTORS.TAB_FAMILY_HISTORY">
-                <span>Family History</span>
+                <span>Family H.</span>
                 <i class="pi pi-pencil"></i>
             </button>
             <button class="rf-sidenav-item" data-tab="social-history" onclick="switchTab('social-history')" data-i18n="RISK_FACTORS.TAB_SOCIAL_HISTORY">
@@ -77,7 +76,7 @@
                 <i class="pi pi-pencil"></i>
             </button>
             <button class="rf-sidenav-item" data-tab="infection-control" onclick="switchTab('infection-control')" data-i18n="RISK_FACTORS.TAB_INFECTION_CONTROL">
-                <span>Infection Control</span>
+                <span>IC</span>
                 <i class="pi pi-pencil"></i>
             </button>
             <button class="rf-sidenav-item" data-tab="immunizations" onclick="switchTab('immunizations')" data-i18n="RISK_FACTORS.TAB_IMMUNIZATIONS">
@@ -89,11 +88,10 @@
                 <i class="pi pi-pencil"></i>
             </button>
             <button class="rf-sidenav-item" data-tab="risk-assessments" onclick="switchTab('risk-assessments')" data-i18n="RISK_FACTORS.TAB_RISK_ASSESSMENTS">
-                <span>Risk Assessments</span>
+                <span>Risks</span>
                 <i class="pi pi-pencil"></i>
             </button>
         </nav>
-        <!-- END: RiskFactorSidenavComponent -->
 
         <!-- API Contract: GET /api/v1/clinical/risk-factors/{patientId} → RiskFactorsContextDTO (RiskFactorDTO[]) — Ver API_contracts.md -->
         <section class="rf-content-area" id="rfContentArea">
