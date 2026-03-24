@@ -750,7 +750,200 @@
 
 
 /* ============================================================================
-   7. EMPTY STATE
+   7. PATIENT GROUP HEADER ROW
+   ============================================================================ */
+
+/* Header row that spans all 4 columns — separates patient groups */
+.pw-patient-header {
+    background: #f0f4f9;
+    border-top: 2px solid var(--ech-border);
+    border-bottom: 1px solid var(--ech-primary-border);
+    position: relative;
+}
+
+.pw-patient-header:first-child {
+    border-top: none;
+}
+
+/* Urgent group: red left accent + faint red tint */
+.pw-patient-header.pw-patient-header-urgent {
+    background: #fff4f4;
+    border-top-color: #e0b3b3;
+    border-left: 4px solid #c62828;
+    border-bottom-color: #f5c6c6;
+}
+
+.pw-patient-header-cell {
+    padding: 6px 10px 5px !important;
+    height: auto !important;
+}
+
+/* Flex row: patient info on left, location badges on right */
+.pw-ph-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+}
+
+/* Left: name + meta */
+.pw-ph-info {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.pw-ph-name {
+    font-weight: 700;
+    font-size: var(--fs-md);
+    color: var(--ech-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pw-patient-header-urgent .pw-ph-name {
+    color: #b71c1c;
+}
+
+/* Age · Sex · Episode — compact clinical meta */
+.pw-ph-meta {
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    white-space: nowrap;
+}
+
+/* Right: location badges */
+.pw-ph-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* Ward — filled chip */
+.pw-ph-ward {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.769rem;
+    font-weight: 700;
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+    border: 1px solid var(--ech-primary-border);
+    white-space: nowrap;
+}
+
+.pw-patient-header-urgent .pw-ph-ward {
+    background: #ffebee;
+    color: #c62828;
+    border-color: #ef9a9a;
+}
+
+/* Room — icon + text, subtle */
+.pw-ph-room {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+    white-space: nowrap;
+}
+
+.pw-ph-room .pi {
+    font-size: 0.769rem;
+    color: var(--ech-text-muted);
+}
+
+
+/* ============================================================================
+   8. DRUG SUB-ROWS
+   ============================================================================ */
+
+.pw-drug-row {
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border-light);
+    cursor: pointer;
+    transition: background 0.13s;
+    position: relative;
+}
+
+.pw-drug-row:hover {
+    background: var(--ech-hover);
+}
+
+.pw-drug-row.pw-drug-row-active {
+    background: var(--ech-primary-light);
+}
+
+/* Urgent drug row — stronger red left border accent */
+.pw-drug-row.pw-drug-row-urgent {
+    border-left: 3px solid #e53935;
+    background: #fff9f9;
+}
+
+.pw-drug-row.pw-drug-row-urgent:hover {
+    background: #ffebeb;
+}
+
+.pw-drug-row.pw-drug-row-urgent.pw-drug-row-active {
+    background: #fce4e4;
+}
+
+/* Main medication content cell */
+.pw-drug-content-cell {
+    padding: 6px 10px !important;
+}
+
+/* Inline row: drug name + dose chip + comment icon */
+.pw-drug-name-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* Dose — secondary chip after drug name */
+.pw-drug-dose {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--ech-primary-dark);
+    background: var(--ech-primary-light);
+    border: 1px solid var(--ech-primary-border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    white-space: nowrap;
+}
+
+/* Intervention/comment indicator icon */
+.pw-comment-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    color: #f57f17;
+    font-size: 0.769rem;
+    cursor: help;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.pw-comment-icon:hover {
+    background: #fff3cd;
+    border-color: #f9a825;
+}
+
+
+/* ============================================================================
+   9. EMPTY STATE
    ============================================================================ */
 .pw-empty-state {
     display: flex;

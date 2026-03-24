@@ -46,19 +46,26 @@ var PW_DATA = {
     ],
 
     lines: [
+        /* ── URGENT PREP ─────────────────────────────────────── */
         {
             id: 'dl1',
+            patientId: 'pt1',
             tab: 'urgent-prep',
             warehouse: 'central',
             priority: 'urgent',
+            comment: 'Intervención: ajustar dosis por eGFR < 45. Contactar médico.',
             patient: {
                 name: 'THOMAS MEYER WOOD',
+                age: 67,
+                sex: 'M',
+                episode: '2024-00312',
                 ward: 'Ward 2E',
                 room: 'Room 201-A',
                 locationFull: 'Ward 2E | Room 201-A'
             },
             medication: {
                 name: 'Heparin 5,000 U/mL',
+                dose: '5,000 U',
                 form: 'Vial 5 mL',
                 frequency: 'Q12H'
             },
@@ -81,18 +88,62 @@ var PW_DATA = {
             }
         },
         {
-            id: 'dl2',
+            id: 'dl10',
+            patientId: 'pt1',
             tab: 'urgent-prep',
             warehouse: 'central',
             priority: 'urgent',
+            comment: '',
+            patient: {
+                name: 'THOMAS MEYER WOOD',
+                age: 67,
+                sex: 'M',
+                episode: '2024-00312',
+                ward: 'Ward 2E',
+                room: 'Room 201-A',
+                locationFull: 'Ward 2E | Room 201-A'
+            },
+            medication: {
+                name: 'Warfarin 5mg',
+                dose: '5 mg',
+                form: 'Tab',
+                frequency: 'QD'
+            },
+            status: 'urgent-prep',
+            statusLabel: 'Urgent Prep',
+            validation: {
+                contraindications: [
+                    'Severe Drug Interaction: Warfarin + Heparin — monitor INR closely.'
+                ],
+                quantity: {
+                    clinicalNeed: '7 Tablets (1/day × 7 days)',
+                    logistics: '1 Strip (10 tablets)',
+                    total: '1 Strip'
+                },
+                safetyMarkers: [
+                    { icon: 'pi-exclamation-triangle', type: 'warning', tooltip: 'INR monitoring required daily — target 2.0–3.0' }
+                ]
+            }
+        },
+        {
+            id: 'dl2',
+            patientId: 'pt2',
+            tab: 'urgent-prep',
+            warehouse: 'central',
+            priority: 'urgent',
+            comment: '',
             patient: {
                 name: 'ANNA KOWALSKI',
+                age: 54,
+                sex: 'F',
+                episode: '2024-00589',
                 ward: 'Ward 2E',
                 room: 'Room 212-B',
                 locationFull: 'Ward 2E | Room 212-B'
             },
             medication: {
                 name: 'Insulin Glargine 20 U SC',
+                dose: '20 U',
                 form: 'Pen 3 mL',
                 frequency: 'QD Bedtime'
             },
@@ -116,17 +167,23 @@ var PW_DATA = {
         },
         {
             id: 'dl3',
+            patientId: 'pt3',
             tab: 'urgent-prep',
             warehouse: 'central',
             priority: 'urgent',
+            comment: 'Intervención: verificar sensibilidad MRSA antes de dispensar.',
             patient: {
                 name: 'ELENA GARCIA MORALES',
+                age: 42,
+                sex: 'F',
+                episode: '2024-00741',
                 ward: 'Ward 2E',
                 room: 'Room 215-A',
                 locationFull: 'Ward 2E | Room 215-A'
             },
             medication: {
                 name: 'Vancomycin 1.5g IV',
+                dose: '1.5 g',
                 form: 'Vial 1.5 g',
                 frequency: 'Q12H'
             },
@@ -148,19 +205,26 @@ var PW_DATA = {
                 ]
             }
         },
+        /* ── PEND. PREP ──────────────────────────────────────── */
         {
             id: 'dl4',
+            patientId: 'pt4',
             tab: 'pend-prep',
             warehouse: 'central',
             priority: 'normal',
+            comment: '',
             patient: {
                 name: 'JUAN PÉREZ',
+                age: 71,
+                sex: 'M',
+                episode: '2024-01023',
                 ward: 'Ward 2E',
                 room: 'Room 312-B',
                 locationFull: 'Ward 2E | Room 312-B'
             },
             medication: {
                 name: 'Paracetamol 1g Comp',
+                dose: '1 g',
                 form: 'Box 20 units',
                 frequency: 'Q8H'
             },
@@ -179,18 +243,58 @@ var PW_DATA = {
             }
         },
         {
-            id: 'dl5',
+            id: 'dl12',
+            patientId: 'pt4',
             tab: 'pend-prep',
             warehouse: 'central',
             priority: 'normal',
+            comment: '',
+            patient: {
+                name: 'JUAN PÉREZ',
+                age: 71,
+                sex: 'M',
+                episode: '2024-01023',
+                ward: 'Ward 2E',
+                room: 'Room 312-B',
+                locationFull: 'Ward 2E | Room 312-B'
+            },
+            medication: {
+                name: 'Omeprazole 20mg',
+                dose: '20 mg',
+                form: 'Capsule',
+                frequency: 'QD'
+            },
+            status: 'pend-prep',
+            statusLabel: 'Pend. Prep',
+            validation: {
+                contraindications: [],
+                quantity: {
+                    clinicalNeed: '7 Capsules (1/day × 7 days)',
+                    logistics: '1 Strip (14 capsules)',
+                    total: '1 Strip'
+                },
+                safetyMarkers: []
+            }
+        },
+        {
+            id: 'dl5',
+            patientId: 'pt5',
+            tab: 'pend-prep',
+            warehouse: 'central',
+            priority: 'normal',
+            comment: '',
             patient: {
                 name: 'JAMES O\'BRIEN',
+                age: 58,
+                sex: 'M',
+                episode: '2024-01187',
                 ward: 'Ward 2E',
                 room: 'Room 210-A',
                 locationFull: 'Ward 2E | Room 210-A'
             },
             medication: {
                 name: 'Enoxaparin 40mg SC',
+                dose: '40 mg',
                 form: 'Syringe 0.4 mL',
                 frequency: 'QD'
             },
@@ -210,17 +314,23 @@ var PW_DATA = {
         },
         {
             id: 'dl6',
+            patientId: 'pt6',
             tab: 'pend-prep',
             warehouse: 'central',
             priority: 'normal',
+            comment: 'Intervención: K+ 5.8 mEq/L — revisar electrolitos con médico.',
             patient: {
                 name: 'MARIA SANTOS FERREIRA',
+                age: 63,
+                sex: 'F',
+                episode: '2024-01251',
                 ward: 'Ward 2E',
                 room: 'Room 205-B',
                 locationFull: 'Ward 2E | Room 205-B'
             },
             medication: {
                 name: 'Furosemide 40mg IV',
+                dose: '40 mg',
                 form: 'Ampoule 4 mL',
                 frequency: 'QD'
             },
@@ -243,18 +353,62 @@ var PW_DATA = {
             }
         },
         {
-            id: 'dl7',
+            id: 'dl11',
+            patientId: 'pt6',
             tab: 'pend-prep',
             warehouse: 'central',
             priority: 'normal',
+            comment: '',
+            patient: {
+                name: 'MARIA SANTOS FERREIRA',
+                age: 63,
+                sex: 'F',
+                episode: '2024-01251',
+                ward: 'Ward 2E',
+                room: 'Room 205-B',
+                locationFull: 'Ward 2E | Room 205-B'
+            },
+            medication: {
+                name: 'Spironolactone 25mg',
+                dose: '25 mg',
+                form: 'Tab',
+                frequency: 'QD'
+            },
+            status: 'pend-prep',
+            statusLabel: 'Pend. Prep',
+            validation: {
+                contraindications: [
+                    'K+ 5.8 mEq/L — hyperkalemia risk elevated with spironolactone.'
+                ],
+                quantity: {
+                    clinicalNeed: '7 Tablets (1/day × 7 days)',
+                    logistics: '1 Strip (10 tablets)',
+                    total: '1 Strip'
+                },
+                safetyMarkers: [
+                    { icon: 'pi-exclamation-triangle', type: 'warning', tooltip: 'Hyperkalemia Risk: K+ 5.8 mEq/L — monitor electrolytes daily' }
+                ]
+            }
+        },
+        {
+            id: 'dl7',
+            patientId: 'pt7',
+            tab: 'pend-prep',
+            warehouse: 'central',
+            priority: 'normal',
+            comment: '',
             patient: {
                 name: 'RAFAEL MENDEZ CRUZ',
+                age: 45,
+                sex: 'M',
+                episode: '2024-01389',
                 ward: 'Ward 3S',
                 room: 'Room 220-A',
                 locationFull: 'Ward 3S | Room 220-A'
             },
             medication: {
                 name: 'Paracetamol 1g IV',
+                dose: '1 g',
                 form: 'Bag 100 mL',
                 frequency: 'Q6H PRN'
             },
@@ -272,19 +426,26 @@ var PW_DATA = {
                 ]
             }
         },
+        /* ── PREPARED ────────────────────────────────────────── */
         {
             id: 'dl8',
+            patientId: 'pt8',
             tab: 'prepared',
             warehouse: 'central',
             priority: 'normal',
+            comment: '',
             patient: {
                 name: 'CARLOS VEGA RUIZ',
+                age: 55,
+                sex: 'M',
+                episode: '2024-01502',
                 ward: 'Ward 3S',
                 room: 'Room 301-C',
                 locationFull: 'Ward 3S | Room 301-C'
             },
             medication: {
                 name: 'Metoprolol Tartrate 50mg',
+                dose: '50 mg',
                 form: 'Tab',
                 frequency: 'BID'
             },
@@ -302,19 +463,26 @@ var PW_DATA = {
                 ]
             }
         },
+        /* ── DISPENSED ───────────────────────────────────────── */
         {
             id: 'dl9',
+            patientId: 'pt9',
             tab: 'dispensed',
             warehouse: 'central',
             priority: 'normal',
+            comment: '',
             patient: {
                 name: 'LUISA FERNÁNDEZ ALBA',
+                age: 38,
+                sex: 'F',
+                episode: '2024-01634',
                 ward: 'Ward 2E',
                 room: 'Room 208-A',
                 locationFull: 'Ward 2E | Room 208-A'
             },
             medication: {
                 name: 'Amoxicillin 500mg',
+                dose: '500 mg',
                 form: 'Capsule',
                 frequency: 'TID'
             },
@@ -406,8 +574,9 @@ function renderPWToolbar() {
 
 
 /* ============================================================
- * RENDER: DISPENSATION LIST
- * Angular: PharmacyListComponent with *ngFor and [class.pw-row-urgent]
+ * RENDER: DISPENSATION LIST  (grouped by patient)
+ * Angular: PharmacyListComponent with *ngFor over patientGroups,
+ *          nested *ngFor over group.lines
  * ============================================================ */
 function renderPWList() {
     var el = document.getElementById('pw-list');
@@ -420,43 +589,99 @@ function renderPWList() {
         return;
     }
 
-    var rowsHtml = filtered.map(function(line) {
-        var isUrgent  = line.priority === 'urgent';
-        var isActive  = line.id === PW_STATE.selectedLineId;
-        var urgentCls = isUrgent ? ' pw-row-urgent' : '';
-        var activeCls = isActive ? ' pw-row-active' : '';
+    /* ── 1. Group lines by patientId, preserving first-appearance order ── */
+    var patientOrder = [];
+    var patientMap   = {};
+    filtered.forEach(function(line) {
+        var pid = line.patientId || line.id;
+        if (!patientMap[pid]) {
+            patientMap[pid] = { patient: line.patient, lines: [], highestPriority: 'normal' };
+            patientOrder.push(pid);
+        }
+        patientMap[pid].lines.push(line);
+        if (line.priority === 'urgent') patientMap[pid].highestPriority = 'urgent';
+    });
 
-        var priIcon = isUrgent
-            ? '<i class="pi pi-bolt pw-pri-icon pw-pri-urgent" title="Urgent"></i>'
-            : '<i class="pi pi-clock pw-pri-icon pw-pri-normal" title="Normal"></i>';
+    /* ── 2. Build HTML for each patient group ── */
+    var rowsHtml = patientOrder.map(function(pid) {
+        var group       = patientMap[pid];
+        var p           = group.patient;
+        var isUrgentGrp = group.highestPriority === 'urgent';
 
-        var statusCls = 'pw-status-' + line.status.replace(/-/g, '-');
-        var statusBadge = '<span class="pw-status-badge ' + getPWStatusClass(line.status) + '">' + escHtml(line.statusLabel) + '</span>';
+        /* Patient header row */
+        var hdrCls  = 'pw-patient-header' + (isUrgentGrp ? ' pw-patient-header-urgent' : '');
+        var metaTxt = p.age + 'y · ' + p.sex + ' · Ep.\u00a0' + escHtml(p.episode);
 
-        return '<tr class="pw-row' + urgentCls + activeCls + '" onclick="onPWLineClick(\'' + line.id + '\')">'
-            + '<td class="pw-col-pri-cell">' + priIcon + '</td>'
-            + '<td>'
-            + '<div class="pw-patient-name">' + escHtml(line.patient.name) + '</div>'
-            + '<div class="pw-patient-location">' + escHtml(line.patient.ward + ' | ' + line.patient.room) + '</div>'
-            + '</td>'
-            + '<td>'
-            + '<div class="pw-med-name">' + escHtml(line.medication.name) + '</div>'
-            + '<div class="pw-med-detail">' + escHtml(line.medication.form + ' | ' + line.medication.frequency) + '</div>'
-            + '</td>'
-            + '<td class="pw-col-status-cell">' + statusBadge + '</td>'
-            + '<td class="pw-col-actions-cell">'
-            + '<button class="pw-action-btn" title="Dispense" onclick="event.stopPropagation(); onPWDispenseAction(\'' + line.id + '\')">'
-            + '<i class="pi pi-send"></i>'
-            + '</button>'
+        var headerHtml = '<tr class="' + hdrCls + '">'
+            + '<td colspan="4" class="pw-patient-header-cell">'
+            + '<div class="pw-ph-row">'
+            + '<div class="pw-ph-info">'
+            + '<span class="pw-ph-name">' + escHtml(p.name) + '</span>'
+            + '<span class="pw-ph-meta">' + metaTxt + '</span>'
+            + '</div>'
+            + '<div class="pw-ph-location">'
+            + '<span class="pw-ph-ward">' + escHtml(p.ward) + '</span>'
+            + '<span class="pw-ph-room"><i class="pi pi-map-marker"></i> ' + escHtml(p.room) + '</span>'
+            + '</div>'
+            + '</div>'
             + '</td>'
             + '</tr>';
+
+        /* Drug sub-rows */
+        var drugRowsHtml = group.lines.map(function(line) {
+            var isUrgent = line.priority === 'urgent';
+            var isActive = line.id === PW_STATE.selectedLineId;
+
+            var rowCls = 'pw-drug-row'
+                + (isUrgent ? ' pw-drug-row-urgent' : '')
+                + (isActive ? ' pw-drug-row-active' : '');
+
+            var priIcon = isUrgent
+                ? '<i class="pi pi-bolt pw-pri-icon pw-pri-urgent" title="Urgent"></i>'
+                : '<i class="pi pi-clock pw-pri-icon pw-pri-normal" title="Normal"></i>';
+
+            var statusBadge = '<span class="pw-status-badge ' + getPWStatusClass(line.status) + '">'
+                + escHtml(line.statusLabel) + '</span>';
+
+            var doseHtml = line.medication.dose
+                ? '<span class="pw-drug-dose">\u00b7 ' + escHtml(line.medication.dose) + '</span>'
+                : '';
+
+            var commentHtml = line.comment
+                ? '<span class="pw-comment-icon" title="' + escHtml(line.comment) + '">'
+                    + '<i class="pi pi-comment"></i>'
+                    + '</span>'
+                : '';
+
+            return '<tr class="' + rowCls + '" onclick="onPWLineClick(\'' + line.id + '\')">'
+                + '<td class="pw-col-pri-cell">' + priIcon + '</td>'
+                + '<td class="pw-drug-content-cell">'
+                + '<div class="pw-drug-name-row">'
+                + '<span class="pw-med-name">' + escHtml(line.medication.name) + '</span>'
+                + doseHtml
+                + commentHtml
+                + '</div>'
+                + '<div class="pw-med-detail">'
+                + escHtml(line.medication.form + ' | ' + line.medication.frequency)
+                + '</div>'
+                + '</td>'
+                + '<td class="pw-col-status-cell">' + statusBadge + '</td>'
+                + '<td class="pw-col-actions-cell">'
+                + '<button class="pw-action-btn" title="Dispense"'
+                + ' onclick="event.stopPropagation(); onPWDispenseAction(\'' + line.id + '\')">'
+                + '<i class="pi pi-send"></i>'
+                + '</button>'
+                + '</td>'
+                + '</tr>';
+        }).join('');
+
+        return headerHtml + drugRowsHtml;
     }).join('');
 
     el.innerHTML = '<table class="pw-table">'
         + '<thead>'
         + '<tr>'
         + '<th class="pw-col-pri">Pri</th>'
-        + '<th>Patient &amp; Location</th>'
         + '<th>Medication</th>'
         + '<th class="pw-col-status">Status</th>'
         + '<th class="pw-col-actions">Actions</th>'
