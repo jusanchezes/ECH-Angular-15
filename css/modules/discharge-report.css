@@ -1,0 +1,857 @@
+/* ============================================================================
+   DISCHARGE-REPORT.CSS — Page-Specific Styles for discharge-report.html
+   ============================================================================
+   Advanced Document Builder for Discharge Summaries.
+   All colours reference ECH design tokens from clinical-core.css.
+   Angular equivalent: DischargeReportComponent styles (encapsulated).
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   PAGE LAYOUT — Two-column builder workspace
+   --------------------------------------------------------------------------
+   Angular: Flex layout within DischargeReportComponent host.
+   -------------------------------------------------------------------------- */
+.dr-workspace {
+    display: flex;
+    gap: 12px;
+    padding: 10px 12px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Left configuration panel (~33%) */
+.dr-config-panel {
+    flex: 0 0 320px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Thin scrollbar for config panel */
+.dr-config-panel::-webkit-scrollbar { width: 4px; }
+.dr-config-panel::-webkit-scrollbar-thumb { background: var(--ech-border); border-radius: 4px; }
+
+/* Right preview panel (~67%) */
+.dr-preview-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    gap: 0;
+    border: 1px solid var(--ech-border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--ech-bg);
+}
+
+/* ----------------------------------------------------------------------------
+   CONFIG CARDS — Left panel section cards
+   -------------------------------------------------------------------------- */
+.dr-card {
+    background: var(--ech-surface);
+    border: 1px solid var(--ech-border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    flex-shrink: 0;
+}
+
+.dr-card-nursing {
+    border-left: 4px solid #7c3aed;
+}
+
+.dr-card-title {
+    font-weight: 700;
+    font-size: 1.08rem;
+    color: var(--ech-text);
+    margin: 0 0 10px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--ech-bg);
+}
+
+.dr-card-title-nursing {
+    color: #5b21b6;
+}
+
+.dr-form-label {
+    display: block;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    margin-bottom: 4px;
+}
+
+.dr-select {
+    font-family: var(--ech-font-family);
+    font-size: var(--fs-xs);
+    color: var(--ech-text);
+    background: var(--ech-surface);
+    padding: 5px 8px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.15s;
+}
+
+.dr-select:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
+}
+
+.dr-date-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.dr-date-input {
+    font-family: var(--ech-font-family);
+    font-size: var(--fs-xs);
+    padding: 5px 8px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    outline: none;
+    flex: 1;
+    color: var(--ech-text);
+}
+
+.dr-date-input:focus {
+    border-color: var(--ech-primary);
+}
+
+/* ----------------------------------------------------------------------------
+   MODULE CHECKLIST — Clinical modules checkbox list
+   -------------------------------------------------------------------------- */
+.dr-module-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dr-module-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 5px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.dr-module-item:hover {
+    background: var(--ech-bg);
+}
+
+.dr-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--ech-border);
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: var(--ech-surface);
+}
+
+.dr-checkbox.checked {
+    background: var(--ech-primary);
+    border-color: var(--ech-primary);
+}
+
+.dr-checkbox .dr-check-icon {
+    display: none;
+    width: 9px;
+    height: 9px;
+    fill: none;
+    stroke: white;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.dr-checkbox.checked .dr-check-icon {
+    display: block;
+}
+
+.dr-module-info {
+    flex: 1;
+}
+
+.dr-module-name {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--ech-text);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dr-module-badge {
+    display: inline-block;
+    font-size: 0.615rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: var(--ech-primary-light);
+    color: var(--ech-primary-dark);
+}
+
+.dr-module-desc {
+    font-size: 0.846rem;
+    color: var(--ech-text-muted);
+    line-height: 1.3;
+    margin-top: 1px;
+}
+
+/* ----------------------------------------------------------------------------
+   NURSING INPUT — Textarea and toggle in nursing card
+   -------------------------------------------------------------------------- */
+.dr-nursing-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.dr-nursing-label {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ech-text);
+    cursor: pointer;
+}
+
+.dr-textarea {
+    font-family: var(--ech-font-family);
+    font-size: var(--fs-xs);
+    color: var(--ech-text);
+    background: var(--ech-surface);
+    padding: 6px 8px;
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    outline: none;
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    transition: border-color 0.15s;
+    line-height: 1.5;
+}
+
+.dr-textarea:focus {
+    border-color: var(--ech-primary);
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.15);
+}
+
+/* ----------------------------------------------------------------------------
+   PREVIEW PANEL — Header toolbar + document area + footer
+   -------------------------------------------------------------------------- */
+.dr-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: var(--ech-surface);
+    border-bottom: 1px solid var(--ech-border);
+    flex-shrink: 0;
+    gap: 10px;
+}
+
+.dr-preview-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dr-preview-title {
+    font-weight: 700;
+    font-size: 1.08rem;
+    color: var(--ech-text);
+    white-space: nowrap;
+}
+
+.dr-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1px solid var(--ech-border);
+    background: var(--ech-surface);
+    color: var(--ech-text);
+    font-family: var(--ech-font-family);
+    white-space: nowrap;
+}
+
+.dr-edit-btn:hover {
+    background: var(--ech-bg);
+}
+
+.dr-edit-btn.active {
+    background: #f0fdf4;
+    border-color: #86efac;
+    color: #15803d;
+}
+
+.dr-edit-btn.active:hover {
+    background: #dcfce7;
+}
+
+.dr-preview-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.dr-type-label {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+    white-space: nowrap;
+}
+
+.dr-type-select {
+    font-family: var(--ech-font-family);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--ech-primary);
+    background: var(--ech-surface);
+    padding: 5px 8px;
+    border: 1px solid var(--ech-primary-border);
+    border-radius: 4px;
+    outline: none;
+    min-width: 220px;
+    transition: border-color 0.15s;
+}
+
+.dr-type-select:focus {
+    border-color: var(--ech-primary);
+}
+
+.dr-type-select:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* ----------------------------------------------------------------------------
+   DOCUMENT BODY — Scrollable white paper area
+   -------------------------------------------------------------------------- */
+.dr-doc-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    min-height: 0;
+}
+
+.dr-doc-area::-webkit-scrollbar { width: 6px; }
+.dr-doc-area::-webkit-scrollbar-thumb { background: var(--ech-border); border-radius: 3px; }
+
+/* The "paper" document */
+.dr-paper {
+    background: white;
+    border: 1px solid var(--ech-border);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 28px 32px;
+    width: 100%;
+    max-width: 800px;
+    font-size: var(--fs-xs);
+    color: var(--ech-text);
+    line-height: 1.65;
+    transition: outline 0.15s, box-shadow 0.15s;
+    min-height: 100%;
+}
+
+/* Edit mode indicator */
+.dr-paper[contenteditable="true"] {
+    outline: 2px dashed var(--ech-primary);
+    outline-offset: 3px;
+    box-shadow: 0 4px 20px rgba(30, 136, 229, 0.15);
+    background: #fdfdff;
+}
+
+/* Edit mode notice bar */
+.dr-edit-notice {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-xs);
+    color: var(--ech-primary-dark);
+    font-weight: 600;
+    background: var(--ech-primary-light);
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+}
+
+.dr-edit-notice.visible {
+    display: flex;
+}
+
+/* Document section header */
+.dr-section-heading {
+    font-weight: 700;
+    font-size: 0.923rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ech-primary-dark);
+    border-bottom: 1px solid var(--ech-border);
+    padding-bottom: 4px;
+    margin: 0 0 8px 0;
+}
+
+/* Standard document sections */
+.dr-doc-section {
+    margin-bottom: 18px;
+}
+
+/* Standard document header */
+.dr-doc-header {
+    text-align: center;
+    border-bottom: 2px solid var(--ech-text);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+}
+
+.dr-doc-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    color: var(--ech-text);
+}
+
+.dr-doc-header p {
+    margin: 4px 0 0 0;
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+}
+
+/* Generic list reset for document lists */
+.dr-doc-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.dr-doc-list li {
+    margin-bottom: 3px;
+}
+
+/* Lab grid */
+.dr-lab-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px 16px;
+}
+
+/* Medications table */
+.dr-med-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-xs);
+}
+
+.dr-med-table th {
+    background: var(--ech-bg);
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid var(--ech-border);
+    font-size: 0.846rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ech-text-secondary);
+}
+
+.dr-med-table td {
+    padding: 6px 10px;
+    border: 1px solid var(--ech-border);
+    color: var(--ech-text);
+}
+
+/* Progress notes quote block */
+.dr-quote-block {
+    background: var(--ech-bg);
+    border: 1px solid var(--ech-border);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-style: italic;
+    color: var(--ech-text);
+}
+
+/* Ancillary left border accent */
+.dr-ancillary-note {
+    border-left: 3px solid var(--ech-primary-border);
+    padding-left: 10px;
+}
+
+/* Nursing handover section */
+.dr-nursing-section {
+    background: #faf5ff;
+    border: 1px solid #e9d5ff;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+}
+
+.dr-nursing-section .dr-section-heading {
+    color: #5b21b6;
+    border-bottom-color: #e9d5ff;
+}
+
+.dr-nursing-sub-label {
+    font-size: 0.769rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7c3aed;
+    margin-bottom: 3px;
+}
+
+.dr-nursing-text {
+    font-style: italic;
+    color: var(--ech-text);
+}
+
+/* PCP Brief template */
+.dr-pcp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid var(--ech-primary-dark);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+}
+
+.dr-pcp-header h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ech-primary-dark);
+}
+
+.dr-pcp-header p {
+    margin: 4px 0 0 0;
+    font-size: var(--fs-xs);
+    color: var(--ech-text-secondary);
+}
+
+.dr-pcp-to {
+    text-align: right;
+    font-size: var(--fs-xs);
+}
+
+.dr-pending-box {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 16px;
+}
+
+.dr-pending-box h3 {
+    margin: 0 0 6px 0;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: #92400e;
+}
+
+.dr-pending-box ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ech-text);
+}
+
+.dr-recs-section {
+    margin-bottom: 12px;
+}
+
+.dr-recs-section h3 {
+    font-weight: 700;
+    color: var(--ech-primary-dark);
+    border-bottom: 1px solid var(--ech-primary-light);
+    padding-bottom: 4px;
+    margin: 0 0 6px 0;
+}
+
+/* Patient-friendly template */
+.dr-patient-body {
+    font-size: 1.08rem;
+    line-height: 1.7;
+}
+
+.dr-patient-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.dr-patient-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ech-primary);
+    margin: 0;
+}
+
+.dr-patient-header p {
+    font-size: 1.1rem;
+    margin: 6px 0 0 0;
+    color: var(--ech-text-secondary);
+}
+
+.dr-pf-welcome {
+    background: var(--ech-primary-light);
+    border: 1px solid var(--ech-primary-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.dr-pf-welcome h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ech-primary-dark);
+    margin: 0 0 6px 0;
+}
+
+.dr-pf-meds {
+    margin-bottom: 18px;
+}
+
+.dr-pf-meds h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ech-clinical-success-dark);
+    margin: 0 0 10px 0;
+}
+
+.dr-pf-med-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 2px solid var(--ech-clinical-success-light);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.dr-pf-med-table th {
+    background: var(--ech-clinical-success-light);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--ech-clinical-success-dark);
+}
+
+.dr-pf-med-table td {
+    padding: 8px 12px;
+    border-top: 1px solid var(--ech-clinical-success-light);
+    color: var(--ech-text);
+}
+
+.dr-pf-care {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.dr-pf-care h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #92400e;
+    margin: 0 0 10px 0;
+}
+
+.dr-pf-care ul {
+    margin: 0;
+    padding-left: 22px;
+    font-weight: 600;
+    color: #78350f;
+    line-height: 1.8;
+}
+
+.dr-pf-emergency {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.dr-pf-emergency h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #991b1b;
+    margin: 0 0 10px 0;
+}
+
+.dr-pf-emergency ul {
+    margin: 0;
+    padding-left: 22px;
+    font-weight: 600;
+    color: #7f1d1d;
+    line-height: 1.8;
+}
+
+/* ----------------------------------------------------------------------------
+   PREVIEW FOOTER — Print / Finalize actions
+   -------------------------------------------------------------------------- */
+.dr-preview-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: var(--ech-surface);
+    border-top: 1px solid var(--ech-border);
+    flex-shrink: 0;
+}
+
+.dr-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--ech-text-secondary);
+}
+
+.dr-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ech-clinical-success-dark);
+    flex-shrink: 0;
+}
+
+.dr-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dr-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--ech-font-family);
+    border: 1px solid var(--ech-border);
+    background: var(--ech-surface);
+    color: var(--ech-text);
+}
+
+.dr-btn:hover {
+    background: var(--ech-bg);
+}
+
+.dr-btn-primary {
+    background: var(--ech-primary);
+    border-color: var(--ech-primary);
+    color: white;
+}
+
+.dr-btn-primary:hover {
+    background: var(--ech-primary-dark);
+    border-color: var(--ech-primary-dark);
+    color: white;
+}
+
+.dr-btn-success {
+    background: var(--ech-clinical-success-dark);
+    border-color: var(--ech-clinical-success-dark);
+    color: white;
+}
+
+.dr-btn-success:hover {
+    background: #1b5e20;
+    border-color: #1b5e20;
+    color: white;
+}
+
+/* ----------------------------------------------------------------------------
+   TOAST NOTIFICATION — Finalize confirmation
+   -------------------------------------------------------------------------- */
+.dr-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--ech-clinical-success-dark);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none;
+}
+
+.dr-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ----------------------------------------------------------------------------
+   PRINT STYLES — Hides chrome when printing
+   -------------------------------------------------------------------------- */
+@media print {
+    .sidebar,
+    .top-bar,
+    .clinical-banner,
+    .dr-config-panel,
+    .dr-preview-header,
+    .dr-preview-footer {
+        display: none !important;
+    }
+
+    .dr-workspace {
+        padding: 0;
+        display: block;
+    }
+
+    .dr-preview-panel {
+        border: none;
+        box-shadow: none;
+    }
+
+    .dr-doc-area {
+        padding: 0;
+        overflow: visible;
+    }
+
+    .dr-paper {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- ANGULAR NOTE: Page title resolved by TitleStrategy using PatientContextResolver -->
+    <title data-i18n="APP.PAGE_TITLE">ECH — Discharge Report Builder</title>
+
+    <!-- ECH Global Design System -->
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.3.1/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css">
+    <link rel="stylesheet" href="css/clinical-core.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/action-bar.css">
+    <!-- Module-specific styles -->
+    <link rel="stylesheet" href="css/modules/discharge-report.css">
+</head>
+<body>
+
+<!-- LAYOUT: PrimeFlex grid shell. Angular equivalent: app.component.html with <router-outlet> -->
+<div class="layout">
+
+    <!-- OVERLAY: Mobile sidebar backdrop -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- COMPONENT BOUNDARY: <ech-sidebar> — Injected by layout.js -->
+    <aside class="sidebar collapsed" id="sidebar-component"></aside>
+
+    <main class="main-content">
+
+        <!-- COMPONENT BOUNDARY: <ech-header> — Injected by layout.js -->
+        <header class="top-bar" id="header-component"></header>
+
+        <!-- COMPONENT BOUNDARY: <ech-clinical-banner> — Injected by layout.js -->
+        <!-- SAFETY: max-height 80px, fixed, never scrolls out of view (Instructions.md §2.1) -->
+        <section class="clinical-banner" id="banner-component"></section>
+
+        <!-- ACTION BAR: Page context breadcrumb and back navigation
+             Angular equivalent: ActionBarComponent with [breadcrumb]="[{label:'Timeline',routerLink:'timeline.html'},{label:'Discharge Report'}]" -->
+        <section class="action-bar" id="action-bar-component">
+            <a href="timeline.html" class="action-btn" title="Back to Timeline" data-i18n-title="ACTIONS.BACK_TIMELINE">
+                <i class="pi pi-arrow-left"></i>
+                <span data-i18n="ACTIONS.BACK_TIMELINE">Back to Timeline</span>
+            </a>
+            <div class="action-bar-separator"></div>
+            <span style="font-weight:700;color:var(--ech-primary);font-size:var(--fs-xs)">
+                <i class="pi pi-file-export" style="margin-right:4px"></i>
+                <span data-i18n="REPORTS.DISCHARGE_REPORT">Discharge Report Builder</span>
+            </span>
+        </section>
+
+        <!-- MAIN WORKSPACE: Two-column split — config (left) + live preview (right) -->
+        <!-- Angular: DischargeReportComponent host element -->
+        <div class="dr-workspace">
+
+            <!-- ================================================================
+                 LEFT PANEL — Configuration cards
+                 Angular: DischargeReportConfigComponent
+                 data-field: dischargeReportConfig → DischargeReportConfigDTO
+                 ================================================================ -->
+            <div class="dr-config-panel" id="drConfigPanel">
+
+                <!-- CARD 1: Data Aggregation Filters
+                     Angular: DataAggregationFilterComponent
+                     API Contract: GET /api/v1/clinical/admission/{episodeId}/dates → AdmissionDateRangeDTO -->
+                <div class="dr-card">
+                    <h3 class="dr-card-title" data-i18n="DR.FILTERS_TITLE">Data Aggregation Filters</h3>
+                    <label class="dr-form-label" data-i18n="DR.TIMEFRAME_LABEL">Timeframe for Clinical Data Pull</label>
+                    <select class="dr-select" id="drTimeFilter" onchange="drHandleTimeFilter(this.value)" data-field="reportTimeframe">
+                        <option value="admission" data-i18n="DR.TIMEFRAME_ADMISSION">Entire Admission</option>
+                        <option value="last48h" data-i18n="DR.TIMEFRAME_48H">Last 48 Hours</option>
+                        <option value="last24h" data-i18n="DR.TIMEFRAME_24H">Last 24 Hours</option>
+                        <option value="custom" data-i18n="DR.TIMEFRAME_CUSTOM">Custom Date Range...</option>
+                    </select>
+                    <!-- Conditional date range pickers — shown only when 'custom' is selected -->
+                    <div class="dr-date-row" id="drCustomDateRow" style="display:none">
+                        <input type="date" class="dr-date-input" id="drDateFrom" data-field="reportDateFrom" title="From date">
+                        <input type="date" class="dr-date-input" id="drDateTo" data-field="reportDateTo" title="To date">
+                    </div>
+                </div>
+
+                <!-- CARD 2: Clinical Modules Checklist
+                     Angular: ClinicalModulesChecklistComponent
+                     data-field: selectedModules → string[] (module IDs) -->
+                <div class="dr-card">
+                    <h3 class="dr-card-title" data-i18n="DR.MODULES_TITLE">Include Clinical Modules</h3>
+                    <div class="dr-module-list" id="drModuleList">
+                        <!-- Populated by drRenderModuleList() -->
+                    </div>
+                </div>
+
+                <!-- CARD 3: Nursing Input (purple-accented)
+                     Angular: NursingInputComponent
+                     data-field: nursingInput → NursingDischargeInputDTO -->
+                <div class="dr-card dr-card-nursing">
+                    <h3 class="dr-card-title dr-card-title-nursing" data-i18n="DR.NURSING_TITLE">Nursing Input</h3>
+
+                    <!-- Nurse Progress Note toggle -->
+                    <div class="dr-nursing-toggle" onclick="drToggleNursing()" id="drNursingToggle" role="checkbox" aria-checked="true" tabindex="0">
+                        <div class="dr-checkbox checked" id="drNursingCheckbox">
+                            <svg class="dr-check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <label class="dr-nursing-label" data-i18n="DR.NURSING_PROGRESS_NOTE">Nurse Progress Note</label>
+                    </div>
+
+                    <!-- Free-text nursing notes textarea -->
+                    <label class="dr-form-label" data-i18n="DR.NURSING_NOTES_LABEL">Discharge Nursing Notes</label>
+                    <textarea class="dr-textarea"
+                              id="drNursingNotes"
+                              data-field="nursingDischargeNotes"
+                              placeholder="Enter free text for nursing observations upon discharge..."
+                              oninput="drSyncNursingNotes(this.value)"
+                              data-i18n-placeholder="DR.NURSING_NOTES_PLACEHOLDER">Patient shows good understanding of wound care instructions. Tolerating oral diet well. Independently mobile in hallways. Voiding without difficulty.</textarea>
+                </div>
+
+            </div>
+            <!-- END: dr-config-panel -->
+
+            <!-- ================================================================
+                 RIGHT PANEL — Live document preview
+                 Angular: DischargeDocumentPreviewComponent
+                 ================================================================ -->
+            <div class="dr-preview-panel" id="drPreviewPanel">
+
+                <!-- Preview toolbar: Edit toggle + Template type select -->
+                <div class="dr-preview-header">
+                    <div class="dr-preview-header-left">
+                        <span class="dr-preview-title" data-i18n="DR.PREVIEW_TITLE">Live Document Preview</span>
+
+                        <!-- Edit / Save Changes toggle
+                             Angular: (click)="toggleEditMode()" [class.active]="isEditing" -->
+                        <button class="dr-edit-btn" id="drEditBtn" onclick="drToggleEdit()" data-i18n="DR.EDIT_BTN">
+                            <i class="pi pi-pencil"></i>
+                            <span id="drEditBtnLabel" data-i18n="DR.EDIT_REPORT">Edit Report</span>
+                        </button>
+                    </div>
+
+                    <div class="dr-preview-header-right">
+                        <label class="dr-type-label" data-i18n="DR.TEMPLATE_LABEL">Template Type:</label>
+                        <!-- Template selector — disabled during edit mode -->
+                        <select class="dr-type-select" id="drTemplateSelect" onchange="drSwitchTemplate(this.value)" data-field="reportTemplate">
+                            <option value="standard" data-i18n="DR.TPL_STANDARD">Standard Discharge Summary</option>
+                            <option value="pcp" data-i18n="DR.TPL_PCP">Primary Care Provider (PCP) Brief</option>
+                            <option value="patient" data-i18n="DR.TPL_PATIENT">Patient-Friendly Instructions</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Scrollable document area -->
+                <div class="dr-doc-area">
+
+                    <!-- THE PAPER: contenteditable toggled by drToggleEdit()
+                         Angular: [contentEditable]="isEditing | async" (attr binding) -->
+                    <div class="dr-paper" id="drPaper">
+
+                        <!-- Edit mode notice — shown only when editing is active -->
+                        <div class="dr-edit-notice" id="drEditNotice">
+                            <i class="pi pi-pencil"></i>
+                            <span data-i18n="DR.EDIT_ACTIVE">Edit Mode Active — click anywhere below to edit text</span>
+                        </div>
+
+                        <!-- ============================================
+                             TEMPLATE: Standard Discharge Summary
+                             Angular: *ngIf="reportType === 'standard'"
+                             ============================================ -->
+                        <div id="drTplStandard">
+
+                            <!-- Document header — excluded from contenteditable via JS -->
+                            <div class="dr-doc-header">
+                                <h1 data-i18n="DR.STD_TITLE">Discharge Summary</h1>
+                                <p data-i18n="DR.STD_DATES">Date: 17/02/2026 &nbsp;|&nbsp; Admission: 10/02/2026</p>
+                            </div>
+
+                            <!-- Section: Diagnostics
+                                 data-field: diagnostics → DiagnosisDTO[]
+                                 API: GET /api/v1/clinical/{episodeId}/diagnoses -->
+                            <div class="dr-doc-section" id="drSec-diagnostics">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_DIAGNOSTICS">Diagnostics</h2>
+                                <ol class="dr-doc-list">
+                                    <li><strong data-i18n="DR.PRIMARY">Primary:</strong> Abdominal Aortic Aneurysm, without rupture (I71.4) — 10/02/2026</li>
+                                    <li>Essential (primary) hypertension (I10) — 10/02/2026</li>
+                                    <li>Hyperlipidemia, unspecified (E78.5) — 10/02/2026</li>
+                                </ol>
+                            </div>
+
+                            <!-- Section: Risk Factors & Medical History
+                                 data-field: medicalHistory → MedicalHistoryDTO -->
+                            <div class="dr-doc-section" id="drSec-risk_factors">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_RISK">Risk Factors &amp; Medical History</h2>
+                                <p><strong data-i18n="DR.PAST_MED_HIST">Past Medical History:</strong> Hypertension (diagnosed 2015), Hyperlipidemia.</p>
+                                <p><strong data-i18n="DR.RISK_FACTORS">Risk Factors:</strong> Current smoker (1 pack/day for 30 years), Family history of cardiovascular disease.</p>
+                            </div>
+
+                            <!-- Section: Physical Exam on Discharge
+                                 data-field: dischargeExam → PhysicalExamDTO -->
+                            <div class="dr-doc-section" id="drSec-physical_exam">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_EXAM">Physical Exam (On Discharge)</h2>
+                                <p><strong data-i18n="DR.VITALS">Vitals:</strong> BP 120/75, HR 72, Temp 36.8°C, SpO2 98% on room air.</p>
+                                <p>Patient is alert and oriented x3. Groin access sites (bilateral) are clean, dry, and intact with no hematoma. Distal pulses (dorsalis pedis/posterior tibial) are palpable and symmetric bilaterally. Abdomen is soft, non-tender, no pulsatile mass appreciated post-EVAR.</p>
+                            </div>
+
+                            <!-- Section: Surgeries
+                                 data-field: surgeries → SurgeryDTO[] -->
+                            <div class="dr-doc-section" id="drSec-surgeries">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_SURGERIES">Surgeries</h2>
+                                <ul class="dr-doc-list">
+                                    <li><strong>Endovascular Aneurysm Repair (EVAR)</strong> — Performed on 11/02/2026 by Dr. S. Jenkins.</li>
+                                    <li>Bilateral percutaneous femoral artery access.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Section: Applied Procedures
+                                 data-field: appliedProcedures → ProcedureDTO[] -->
+                            <div class="dr-doc-section" id="drSec-applied_procedures">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_PROCEDURES">Applied Procedures</h2>
+                                <p>Summary of procedures executed during admission:</p>
+                                <ul class="dr-doc-list">
+                                    <li><strong>Diagnostic Angiography of Abdominal Aorta:</strong> 11/02/2026 — Confirmed infrarenal AAA anatomy suitable for endograft.</li>
+                                    <li><strong>EVAR Deployment:</strong> Successful deployment of bifurcated endograft. Final completion angiogram demonstrated exclusion of the aneurysm sac with no evidence of endoleak.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Section: Progress Notes Summary
+                                 data-field: progressNotesSummary → ProgressNotesSummaryDTO -->
+                            <div class="dr-doc-section" id="drSec-progress_notes">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_PROGRESS">Progress Notes (Summary)</h2>
+                                <div class="dr-quote-block">
+                                    "Patient tolerated EVAR procedure well. Extubated in OR and transferred to ICU for overnight observation. Transferred to surgical ward on POD 1. Hemodynamics remained stable throughout. Tolerated regular diet by POD 2. Mobilizing independently in hallways by POD 3. Groin sites without complication. Ready for discharge."
+                                </div>
+                            </div>
+
+                            <!-- Section: Discharge Recommendations
+                                 data-field: dischargeRecommendations → RecommendationDTO[] -->
+                            <div class="dr-doc-section" id="drSec-orders">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_RECOMMENDATIONS">Discharge Recommendations</h2>
+                                <ul class="dr-doc-list">
+                                    <li><strong>Vascular Surgery:</strong> No heavy lifting (&gt;10 lbs) for 4 weeks. Showering is permitted; avoid soaking groin sites in baths/pools.</li>
+                                    <li><strong>Internal Medicine:</strong> Aggressive blood pressure control and strict smoking cessation advised.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Section: Discharge Medications (TTO)
+                                 data-field: dischargeMedications → MedicationDTO[]
+                                 API: GET /api/v1/clinical/{episodeId}/medications?status=TTO -->
+                            <div class="dr-doc-section" id="drSec-meds">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_MEDS">Discharge Medications (TTO)</h2>
+                                <table class="dr-med-table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n="DR.MED_NAME">Medication</th>
+                                            <th data-i18n="DR.MED_DOSE">Dosage</th>
+                                            <th data-i18n="DR.MED_FREQ">Frequency</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Aspirin</td><td>81 mg</td><td>PO Daily</td></tr>
+                                        <tr><td>Atorvastatin</td><td>40 mg</td><td>PO Nightly</td></tr>
+                                        <tr><td>Amlodipine</td><td>5 mg</td><td>PO Daily</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Section: Laboratory Results (Pre-Discharge)
+                                 data-field: labResults → LabResultDTO[]
+                                 API: GET /api/v1/clinical/{episodeId}/labs?filter=pre-discharge -->
+                            <div class="dr-doc-section" id="drSec-labs">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_LABS">Laboratory Results (Pre-Discharge)</h2>
+                                <div class="dr-lab-grid">
+                                    <div><strong>WBC:</strong> 7.2 ×10⁹/L</div>
+                                    <div><strong>Hb:</strong> 12.1 g/dL</div>
+                                    <div><strong>Creatinine:</strong> 1.1 mg/dL</div>
+                                    <div><strong>Platelets:</strong> 198 ×10⁹/L</div>
+                                    <div><strong>Na:</strong> 139 mmol/L</div>
+                                    <div><strong>K:</strong> 4.1 mmol/L</div>
+                                </div>
+                            </div>
+
+                            <!-- Section: Exam Requests
+                                 data-field: examRequests → ExamRequestDTO[] -->
+                            <div class="dr-doc-section" id="drSec-exam_requests">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_EXAM_REQUESTS">Exam Requests</h2>
+                                <p><strong>Imaging:</strong> CTA Abdomen with and without contrast (Aorta) requested for 1 month post-op to evaluate endograft placement and check for endoleaks.</p>
+                            </div>
+
+                            <!-- Section: Referral Requests
+                                 data-field: referrals → ReferralDTO[] -->
+                            <div class="dr-doc-section" id="drSec-referrals">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_REFERRALS">Referral Requests</h2>
+                                <ul class="dr-doc-list">
+                                    <li><strong>Outpatient Vascular Surgery Clinic:</strong> Follow-up appointment in 4 weeks.</li>
+                                    <li><strong>Smoking Cessation Clinic:</strong> Referral sent for consultation.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Section: Ancillary Care Notes
+                                 data-field: ancillaryNotes → AncillaryNoteDTO[] -->
+                            <div class="dr-doc-section" id="drSec-ancillary">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_ANCILLARY">Ancillary Care Notes</h2>
+                                <div class="dr-ancillary-note">
+                                    <strong style="font-size:0.769rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--ech-text-secondary)">Physiotherapy</strong>
+                                    <p style="margin:4px 0 0 0">Patient independent with ambulation. Encouraged daily progressive walking program.</p>
+                                </div>
+                            </div>
+
+                            <!-- Section: Nursing Handover & Evaluation (purple-accented)
+                                 Controlled by nursing toggle in left panel.
+                                 data-field: nursingHandover → NursingHandoverDTO -->
+                            <div class="dr-nursing-section" id="drNursingSection">
+                                <h2 class="dr-section-heading" data-i18n="DR.SEC_NURSING">Nursing Handover &amp; Evaluation</h2>
+                                <div style="margin-bottom:8px">
+                                    <div class="dr-nursing-sub-label" data-i18n="DR.NURSING_EVAL">Evaluation Report:</div>
+                                    <span data-i18n="DR.NURSING_EVAL_TEXT">Patient is stable, vitals within normal limits. Ready for discharge to home environment.</span>
+                                </div>
+                                <div>
+                                    <div class="dr-nursing-sub-label" data-i18n="DR.NURSING_DISCHARGE_NOTES">Discharge Notes:</div>
+                                    <span class="dr-nursing-text" id="drNursingPreviewText">Patient shows good understanding of wound care instructions. Tolerating oral diet well. Independently mobile in hallways. Voiding without difficulty.</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- END: drTplStandard -->
+
+                        <!-- ============================================
+                             TEMPLATE: PCP Transfer of Care Brief
+                             Angular: *ngIf="reportType === 'pcp'"
+                             ============================================ -->
+                        <div id="drTplPcp" style="display:none">
+
+                            <div class="dr-pcp-header">
+                                <div>
+                                    <h1 data-i18n="DR.PCP_TITLE">PCP Transfer of Care Brief</h1>
+                                    <p>Patient: THOMAS MEYER WOOD (DOB: 11/07/1990)</p>
+                                </div>
+                                <div class="dr-pcp-to">
+                                    <p><strong>To: Dr. Emily Watson</strong></p>
+                                    <p>Springfield Family Practice</p>
+                                </div>
+                            </div>
+
+                            <p style="margin-bottom:14px">Dear Dr. Watson, your patient Thomas Meyer Wood underwent an elective Endovascular Aneurysm Repair (EVAR) on 11/02/2026. The procedure was uncomplicated and the patient recovered well.</p>
+
+                            <!-- Conditional: shows only when Discharge Recommendations module is selected -->
+                            <div class="dr-recs-section" id="drPcpSec-orders">
+                                <h3 data-i18n="DR.PCP_RECOMMENDATIONS">Recommendations</h3>
+                                <p>Please monitor blood pressure closely. CTA Aorta requested at 1 month post-op. Continue anti-hypertensive therapy and reinforce smoking cessation.</p>
+                            </div>
+
+                            <!-- Conditional: shows only when Discharge Medications module is selected -->
+                            <div id="drPcpSec-meds">
+                                <div class="dr-recs-section">
+                                    <h3 data-i18n="DR.PCP_MEDICATIONS">Discharge Medications</h3>
+                                    <table class="dr-med-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Medication</th>
+                                                <th>Dosage</th>
+                                                <th>Frequency</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>Aspirin</td><td>81 mg</td><td>PO Daily</td></tr>
+                                            <tr><td>Atorvastatin</td><td>40 mg</td><td>PO Nightly</td></tr>
+                                            <tr><td>Amlodipine</td><td>5 mg</td><td>PO Daily</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="dr-pending-box">
+                                <h3 data-i18n="DR.PCP_PENDING">Pending Actions for PCP:</h3>
+                                <ul>
+                                    <li>Check basic metabolic panel (creatinine) in 2 weeks due to contrast exposure.</li>
+                                    <li>Assist with smoking cessation management and refer to cessation programme if not already enrolled.</li>
+                                    <li>Blood pressure target: systolic &lt; 130 mmHg.</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- END: drTplPcp -->
+
+                        <!-- ============================================
+                             TEMPLATE: Patient-Friendly Instructions
+                             Angular: *ngIf="reportType === 'patient'"
+                             ============================================ -->
+                        <div id="drTplPatient" style="display:none" class="dr-patient-body">
+
+                            <div class="dr-patient-header">
+                                <h1 data-i18n="DR.PF_TITLE">Going Home Guide</h1>
+                                <p>Prepared for: <strong>Thomas Meyer Wood</strong></p>
+                            </div>
+
+                            <div class="dr-pf-welcome">
+                                <h2>&#128075; Welcome Home!</h2>
+                                <p>You had a procedure to fix the main blood vessel in your abdomen (EVAR). Here is what you need to do to heal properly.</p>
+                            </div>
+
+                            <!-- Conditional: shows when Discharge Medications module is on -->
+                            <div class="dr-pf-meds" id="drPfSec-meds">
+                                <h2>&#128138; Your Medicines</h2>
+                                <table class="dr-pf-med-table">
+                                    <thead>
+                                        <tr>
+                                            <th>What to take</th>
+                                            <th>When to take it</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td><strong>Aspirin (81 mg)</strong></td><td>&#127749; Morning, with food</td></tr>
+                                        <tr><td><strong>Atorvastatin (40 mg)</strong></td><td>&#127769; Night, before bed</td></tr>
+                                        <tr><td><strong>Amlodipine (5 mg)</strong></td><td>&#127749; Morning, with food</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Conditional: shows when Discharge Recommendations module is on -->
+                            <div class="dr-pf-care" id="drPfSec-orders">
+                                <h2>&#128197; Care Instructions</h2>
+                                <ul>
+                                    <li>Do not lift anything heavier than 10 pounds (like a gallon of milk) for 4 weeks.</li>
+                                    <li>You may shower, but do not take baths or swim until your groin incisions are fully healed.</li>
+                                    <li>Stop smoking — it is essential for your blood vessel to heal correctly.</li>
+                                    <li>Keep your blood pressure under control by taking all medicines as prescribed.</li>
+                                </ul>
+                            </div>
+
+                            <div class="dr-pf-emergency">
+                                <h2>&#128680; When to call a doctor or go to Emergency:</h2>
+                                <ul>
+                                    <li>If you have swelling, bleeding, or worsening pain at your groin.</li>
+                                    <li>If you feel coldness or numbness in your legs or feet.</li>
+                                    <li>If you have a fever higher than 38°C (101°F).</li>
+                                    <li>If you have sudden severe abdominal or back pain.</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- END: drTplPatient -->
+
+                    </div>
+                    <!-- END: dr-paper -->
+
+                </div>
+                <!-- END: dr-doc-area -->
+
+                <!-- Preview footer: status indicator + action buttons -->
+                <div class="dr-preview-footer">
+                    <div class="dr-status-indicator">
+                        <div class="dr-status-dot"></div>
+                        <span data-i18n="DR.STATUS_READY">Ready to transmit</span>
+                    </div>
+                    <div class="dr-footer-actions">
+                        <!-- Print PDF: triggers window.print() which hides chrome via @media print -->
+                        <button class="dr-btn" onclick="window.print()" title="Print PDF" data-i18n-title="DR.PRINT_PDF">
+                            <i class="pi pi-print"></i>
+                            <span data-i18n="DR.PRINT_PDF">Print PDF</span>
+                        </button>
+                        <!-- Finalize: saves to EMR (mock confirmation toast) -->
+                        <button class="dr-btn dr-btn-success" onclick="drFinalize()" data-i18n="DR.FINALIZE">
+                            <i class="pi pi-check-circle"></i>
+                            <span data-i18n="DR.FINALIZE">Finalize &amp; Save to EMR</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <!-- END: dr-preview-panel -->
+
+        </div>
+        <!-- END: dr-workspace -->
+
+    </main>
+</div>
+
+<!-- Toast notification for Finalize confirmation -->
+<div class="dr-toast" id="drToast">
+    <i class="pi pi-check-circle"></i>
+    <span id="drToastText" data-i18n="DR.TOAST_SAVED">Document saved to EMR Document Tree successfully.</span>
+</div>
+
+<!-- ============================================================================
+     SCRIPTS
+     ============================================================================ -->
+<script src="layout.js"></script>
+
+<script>
+/**
+ * @file discharge-report.html (inline script)
+ * @description Vanilla JS controller for the Discharge Report Builder.
+ *   Manages module toggle state, template switching, edit mode, nursing sync,
+ *   and footer actions.
+ *
+ *   ANGULAR 15 MIGRATION:
+ *   This entire script becomes DischargeReportComponent (Standalone) with:
+ *     - reportConfig: Signal<DischargeReportConfigDTO>
+ *     - isEditing: WritableSignal<boolean>
+ *     - activeTemplate: WritableSignal<'standard' | 'pcp' | 'patient'>
+ *     - selectedModules: WritableSignal<Set<string>>
+ *     - nursingIncluded: WritableSignal<boolean>
+ *     - nursingNotes: WritableSignal<string>
+ *   All DOM manipulation replaced by Angular bindings and *ngIf / [class] / [attr].
+ */
+
+/* ============================================================================
+   MODULE DEFINITIONS
+   Angular: DischargeReportConfigDTO.modules array from ClinicalDataService
+   ============================================================================ */
+var DR_MODULES = [
+    { id: 'diagnostics',         name: 'Diagnostics',                desc: 'Chronological list of diagnoses.',                   selected: true,  isNew: true  },
+    { id: 'risk_factors',        name: 'Risk Factors & Medical History', desc: 'Patient background and risks.',                  selected: true,  isNew: true  },
+    { id: 'physical_exam',       name: 'Physical Exam',              desc: 'Clinical findings on discharge.',                    selected: true,  isNew: true  },
+    { id: 'surgeries',           name: 'Surgeries',                  desc: 'Performed surgical procedures.',                     selected: true,  isNew: true  },
+    { id: 'applied_procedures',  name: 'Applied Procedures',         desc: 'Summary of executed interventions.',                 selected: true,  isNew: true  },
+    { id: 'progress_notes',      name: 'Progress Notes',             desc: 'Nursing & physician observations.',                  selected: true,  isNew: true  },
+    { id: 'orders',              name: 'Discharge Recommendations',  desc: 'Medical instructions upon discharge.',               selected: true,  isNew: false },
+    { id: 'meds',                name: 'Discharge Medications',      desc: 'Prescribed TTO medications.',                        selected: true,  isNew: false },
+    { id: 'labs',                name: 'Laboratory Results',         desc: 'Aggregated pre-discharge lab data.',                 selected: true,  isNew: false },
+    { id: 'exam_requests',       name: 'Exam Requests',              desc: 'Requested imaging and diagnostic tests.',            selected: true,  isNew: true  },
+    { id: 'referrals',           name: 'Referral Requests',          desc: 'Specialist consultations and follow-up.',            selected: true,  isNew: true  },
+    { id: 'ancillary',           name: 'Ancillary & Follow-ups',     desc: 'Allied health notes (physio, dietitian).',           selected: false, isNew: false }
+];
+
+/* ============================================================================
+   STATE
+   Angular: Component signals / BehaviorSubjects
+   ============================================================================ */
+var drState = {
+    isEditing: false,
+    activeTemplate: 'standard',
+    nursingIncluded: true,
+    nursingNotes: document.getElementById('drNursingNotes') ? document.getElementById('drNursingNotes').value : ''
+};
+
+/* ============================================================================
+   MODULE LIST RENDERER
+   Angular: *ngFor="let mod of modules" with [class.checked] binding
+   ============================================================================ */
+/**
+ * Renders the module checklist into #drModuleList.
+ * Angular: replaced by *ngFor in DischargeReportConfigComponent template.
+ */
+function drRenderModuleList() {
+    var container = document.getElementById('drModuleList');
+    if (!container) return;
+
+    container.innerHTML = DR_MODULES.map(function (mod) {
+        var checkedClass = mod.selected ? ' checked' : '';
+        var badgeHtml = mod.isNew
+            ? '<span class="dr-module-badge">New</span>'
+            : '';
+        return [
+            '<div class="dr-module-item" onclick="drToggleModule(\'' + mod.id + '\')" role="checkbox" aria-checked="' + mod.selected + '" tabindex="0">',
+            '  <div class="dr-checkbox' + checkedClass + '" id="drCb-' + mod.id + '">',
+            '    <svg class="dr-check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+            '  </div>',
+            '  <div class="dr-module-info">',
+            '    <div class="dr-module-name">' + mod.name + badgeHtml + '</div>',
+            '    <div class="dr-module-desc">' + mod.desc + '</div>',
+            '  </div>',
+            '</div>'
+        ].join('');
+    }).join('');
+}
+
+/* ============================================================================
+   MODULE TOGGLE
+   Angular: (click)="toggleModule(mod.id)" → selectedModules signal update
+   ============================================================================ */
+/**
+ * Toggles a clinical module's selected state and syncs document visibility.
+ * @param {string} moduleId - The module identifier (matches section id suffix).
+ */
+function drToggleModule(moduleId) {
+    var mod = DR_MODULES.find(function (m) { return m.id === moduleId; });
+    if (!mod) return;
+
+    mod.selected = !mod.selected;
+
+    var cb = document.getElementById('drCb-' + moduleId);
+    if (cb) {
+        if (mod.selected) {
+            cb.classList.add('checked');
+            cb.closest('[role="checkbox"]').setAttribute('aria-checked', 'true');
+        } else {
+            cb.classList.remove('checked');
+            cb.closest('[role="checkbox"]').setAttribute('aria-checked', 'false');
+        }
+    }
+
+    drSyncDocumentSections();
+}
+
+/* ============================================================================
+   DOCUMENT SECTIONS SYNC
+   Angular: [hidden]="!selectedModules.has(sec.id)" binding
+   ============================================================================ */
+/**
+ * Shows/hides document sections across all templates based on module state.
+ * Angular: replaced by [hidden] or *ngIf bindings bound to selectedModules signal.
+ */
+function drSyncDocumentSections() {
+    DR_MODULES.forEach(function (mod) {
+        var display = mod.selected ? '' : 'none';
+
+        /* Standard template sections */
+        var stdSec = document.getElementById('drSec-' + mod.id);
+        if (stdSec) stdSec.style.display = display;
+
+        /* PCP template sections (only orders and meds are conditional) */
+        var pcpSec = document.getElementById('drPcpSec-' + mod.id);
+        if (pcpSec) pcpSec.style.display = display;
+
+        /* Patient-friendly template sections */
+        var pfSec = document.getElementById('drPfSec-' + mod.id);
+        if (pfSec) pfSec.style.display = display;
+    });
+}
+
+/* ============================================================================
+   TEMPLATE SWITCHING
+   Angular: activeTemplate signal + *ngIf on each template div
+   ============================================================================ */
+/**
+ * Switches the visible report template and disables editing if switching while in edit mode.
+ * @param {string} templateKey - 'standard' | 'pcp' | 'patient'
+ */
+function drSwitchTemplate(templateKey) {
+    if (drState.isEditing) {
+        drToggleEdit();
+    }
+
+    drState.activeTemplate = templateKey;
+
+    var tplIds = ['drTplStandard', 'drTplPcp', 'drTplPatient'];
+    var keyMap = { standard: 'drTplStandard', pcp: 'drTplPcp', patient: 'drTplPatient' };
+
+    tplIds.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = (id === keyMap[templateKey]) ? '' : 'none';
+    });
+}
+
+/* ============================================================================
+   EDIT MODE TOGGLE
+   Angular: isEditing WritableSignal; [contentEditable]="isEditing | async"
+   ============================================================================ */
+/**
+ * Toggles contenteditable on the document paper and updates the edit button label.
+ */
+function drToggleEdit() {
+    drState.isEditing = !drState.isEditing;
+
+    var paper  = document.getElementById('drPaper');
+    var btn    = document.getElementById('drEditBtn');
+    var label  = document.getElementById('drEditBtnLabel');
+    var notice = document.getElementById('drEditNotice');
+    var tplSel = document.getElementById('drTemplateSelect');
+
+    if (drState.isEditing) {
+        paper.setAttribute('contenteditable', 'true');
+        paper.focus();
+        btn.classList.add('active');
+        label.textContent = 'Save Changes';
+        if (notice) notice.classList.add('visible');
+        if (tplSel) tplSel.disabled = true;
+    } else {
+        paper.removeAttribute('contenteditable');
+        btn.classList.remove('active');
+        label.textContent = 'Edit Report';
+        if (notice) notice.classList.remove('visible');
+        if (tplSel) tplSel.disabled = false;
+    }
+}
+
+/* ============================================================================
+   TIMEFRAME FILTER
+   Angular: (ngModelChange)="onTimeframeChange($event)"
+   ============================================================================ */
+/**
+ * Shows/hides the custom date range inputs.
+ * @param {string} value - The selected timeframe value.
+ */
+function drHandleTimeFilter(value) {
+    var row = document.getElementById('drCustomDateRow');
+    if (row) row.style.display = (value === 'custom') ? 'flex' : 'none';
+}
+
+/* ============================================================================
+   NURSING TOGGLE
+   Angular: (click)="nursingIncluded.update(v => !v)"
+   ============================================================================ */
+/**
+ * Toggles inclusion of the nursing handover section in the document.
+ */
+function drToggleNursing() {
+    drState.nursingIncluded = !drState.nursingIncluded;
+
+    var cb      = document.getElementById('drNursingCheckbox');
+    var section = document.getElementById('drNursingSection');
+    var toggle  = document.getElementById('drNursingToggle');
+
+    if (cb) {
+        if (drState.nursingIncluded) {
+            cb.classList.add('checked');
+            toggle.setAttribute('aria-checked', 'true');
+        } else {
+            cb.classList.remove('checked');
+            toggle.setAttribute('aria-checked', 'false');
+        }
+    }
+
+    if (section) section.style.display = drState.nursingIncluded ? '' : 'none';
+}
+
+/* ============================================================================
+   NURSING NOTES SYNC
+   Angular: (input)="nursingNotes.set($event.target.value)"
+   ============================================================================ */
+/**
+ * Syncs nursing notes textarea content into the document preview in real time.
+ * @param {string} value - Current textarea value.
+ */
+function drSyncNursingNotes(value) {
+    drState.nursingNotes = value;
+    var preview = document.getElementById('drNursingPreviewText');
+    if (preview) {
+        preview.textContent = value || 'No specific notes provided.';
+    }
+}
+
+/* ============================================================================
+   FINALIZE
+   Angular: DischargeReportService.finalize() → POST /api/v1/reports/discharge
+   ============================================================================ */
+/**
+ * Simulates saving the discharge report to the EMR document tree.
+ * Angular: replaced by DischargeReportService.finalize(config).subscribe(...)
+ */
+function drFinalize() {
+    var toast    = document.getElementById('drToast');
+    var textEl   = document.getElementById('drToastText');
+    if (!toast) return;
+
+    if (textEl) textEl.textContent = 'Document saved to EMR Document Tree successfully.';
+    toast.classList.add('show');
+
+    setTimeout(function () { toast.classList.remove('show'); }, 3500);
+}
+
+/* ============================================================================
+   KEYBOARD ACCESSIBILITY
+   Angular: (keydown.enter)="..." / (keydown.space)="..."
+   ============================================================================ */
+document.addEventListener('keydown', function (e) {
+    var target = e.target;
+    if (target.classList.contains('dr-module-item') && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        var moduleId = target.querySelector('.dr-checkbox').id.replace('drCb-', '');
+        drToggleModule(moduleId);
+    }
+    if (target.id === 'drNursingToggle' && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        drToggleNursing();
+    }
+});
+
+/* ============================================================================
+   INITIALIZATION
+   Angular: ngOnInit() in DischargeReportComponent
+   ============================================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+    drRenderModuleList();
+    drSyncDocumentSections();
+
+    /* Sync initial nursing notes value from textarea into preview */
+    var ta = document.getElementById('drNursingNotes');
+    if (ta) drSyncNursingNotes(ta.value);
+});
+</script>
+
+</body>
+</html>

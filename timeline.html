@@ -112,7 +112,8 @@
                     <i class="pi pi-chevron-down action-dropdown-chevron"></i>
                 </button>
                 <div class="action-dropdown-panel">
-                    <button class="action-dropdown-item" onclick="selectActionDropdown('dd-reports','Discharge Report')"><i class="pi pi-file-export"></i> Discharge Report</button>
+                    <!-- ANGULAR NOTE: routerLink="/reports/discharge" with current episode context passed via Router state -->
+                    <button class="action-dropdown-item" onclick="window.location.href='discharge-report.html'"><i class="pi pi-file-export"></i> Discharge Report</button>
                     <button class="action-dropdown-item" onclick="selectActionDropdown('dd-reports','Referral Letter')"><i class="pi pi-envelope"></i> Referral Letter</button>
                     <button class="action-dropdown-item" onclick="selectActionDropdown('dd-reports','Medical Certificate')"><i class="pi pi-verified"></i> Medical Certificate</button>
                     <button class="action-dropdown-item" onclick="selectActionDropdown('dd-reports','Epicrisis')"><i class="pi pi-book"></i> Epicrisis</button>
