@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECH - Advanced Document Builder (Editable & Nursing Update)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* PrimeNG Lara Theme Simulated Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #495057; overflow: hidden;}
+        
+        .ech-header { background-color: #ffffff; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); position: relative; z-index: 10; }
+        .ech-toolbar { background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; margin: 0.5rem; height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 1rem; }
+        
+        .p-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12); padding: 1.25rem; margin-bottom: 1rem; }
+        .p-btn { background-color: #3b82f6; color: #ffffff; border: 1px solid #3b82f6; padding: 0.5rem 1rem; font-size: 13px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .p-btn:hover { background-color: #2563eb; border-color: #2563eb; }
+        .p-btn-secondary { background-color: #ffffff; color: #3b82f6; border: 1px solid #3b82f6; }
+        .p-btn-secondary:hover { background-color: #eff6ff; }
+        .p-btn-success { background-color: #22c55e; border-color: #22c55e; }
+        .p-btn-success:hover { background-color: #16a34a; }
+        
+        .p-input { font-family: inherit; font-size: 13px; color: #495057; background: #ffffff; padding: 0.5rem 0.75rem; border: 1px solid #ced4da; border-radius: 6px; outline: none; width: 100%; transition: border-color 0.2s; }
+        .p-input:focus { box-shadow: 0 0 0 0.2rem #bfdbfe; border-color: #3b82f6; }
+        
+        .p-checkbox { width: 20px; height: 20px; border: 2px solid #ced4da; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.2s; flex-shrink: 0;}
+        .p-checkbox.checked { background-color: #3b82f6; border-color: #3b82f6; color: white; }
+
+        .section-title { font-size: 1.1rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 0.5rem; }
+        
+        /* Document Styles */
+        .doc-paper { background: white; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 2rem; min-height: 100%; transition: all 0.3s ease; }
+        .doc-patient-friendly { font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; }
+        
+        /* Editable Document Style */
+        .doc-paper[contenteditable="true"] {
+            outline: 2px dashed #3b82f6;
+            outline-offset: 4px;
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2), 0 4px 6px -2px rgba(59, 130, 246, 0.1);
+            background-color: #fdfdfe;
+        }
+    </style>
+</head>
+<body x-data="documentBuilder()">
+
+    <header class="ech-header">
+        <div class="flex items-center gap-4">
+            <div class="font-bold text-xl text-gray-800 flex items-center gap-2">
+                <span class="text-2xl text-blue-500">📄</span> ECH Reports
+            </div>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="text-gray-800 font-bold text-lg">Advanced Document Builder</div>
+        </div>
+        <div class="text-right">
+            <div class="text-blue-600 font-semibold text-sm">Dr. Sarah Jenkins</div>
+            <div class="text-[10px] text-gray-500 uppercase">Vascular Surgery</div>
+        </div>
+    </header>
+
+    <div class="ech-toolbar bg-blue-50 border-blue-200">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 font-bold">JD</div>
+            <div>
+                <h2 class="font-bold text-blue-900 text-sm">DOE, JOHN (Bed 204)</h2>
+                <div class="text-xs text-blue-700">M • 62 yrs • Rec ID: 982347 • Adm: 10/02/2026</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex h-[calc(100vh-130px)] p-4 gap-4 overflow-hidden">
+        
+        <div class="w-1/3 flex flex-col gap-4 overflow-y-auto pr-2">
+            
+            <div class="p-card">
+                <h3 class="section-title">Data Aggregation Filters</h3>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Timeframe for Clinical Data Pull</label>
+                <select x-model="timeFilter" class="p-input mb-3">
+                    <option value="admission">Entire Admission</option>
+                    <option value="last48h">Last 48 Hours</option>
+                    <option value="last24h">Last 24 Hours</option>
+                    <option value="custom">Custom Date Range...</option>
+                </select>
+                
+                <div x-show="timeFilter === 'custom'" class="flex gap-2 mb-3">
+                    <input type="date" class="p-input text-xs">
+                    <input type="date" class="p-input text-xs">
+                </div>
+            </div>
+
+            <div class="p-card">
+                <h3 class="section-title">Include Clinical Modules</h3>
+                <div class="space-y-2">
+                    <template x-for="widget in widgets" :key="widget.id">
+                        <div class="flex items-start gap-3 p-1.5 hover:bg-gray-50 rounded cursor-pointer" @click="widget.selected = !widget.selected">
+                            <div class="p-checkbox mt-0.5" :class="widget.selected ? 'checked' : ''">
+                                <svg x-show="widget.selected" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-[13px] text-gray-800 flex items-center gap-1">
+                                    <span x-text="widget.name"></span>
+                                    <span x-show="widget.isNew" class="bg-blue-100 text-blue-800 text-[9px] px-1 rounded uppercase font-bold">New</span>
+                                </div>
+                                <div class="text-[10px] text-gray-500 leading-tight" x-text="widget.desc"></div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="p-card border-l-4 border-l-purple-500">
+                <h3 class="section-title text-purple-800">Nursing Input</h3>
+                <div class="space-y-4">
+                    
+                    <div class="flex items-center gap-2 cursor-pointer" @click="nursingData.includeEvaluation = !nursingData.includeEvaluation">
+                        <div class="p-checkbox" :class="nursingData.includeEvaluation ? 'checked' : ''">
+                            <svg x-show="nursingData.includeEvaluation" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <label class="text-xs font-bold text-gray-700 cursor-pointer uppercase tracking-wider">Nurse Progress Note</label>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Discharge Nursing Notes</label>
+                        <textarea class="p-input h-24 resize-none" x-model="nursingData.notes" placeholder="Enter free text for nursing observations upon discharge..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-2/3 flex flex-col gap-4">
+            
+            <div class="p-card flex-grow flex flex-col bg-gray-100 p-0 overflow-hidden">
+                <div class="bg-white px-4 py-3 border-b flex justify-between items-center z-10 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <h3 class="font-bold text-gray-800">Live Document Preview</h3>
+                        
+                        <button @click="isEditing = !isEditing" 
+                                class="px-3 py-1.5 rounded text-xs font-bold transition-colors flex items-center gap-1 shadow-sm"
+                                :class="isEditing ? 'bg-green-100 text-green-700 border border-green-300 hover:bg-green-200' : 'bg-gray-50 text-gray-700 border border-gray-300 hover:bg-gray-100'">
+                            <span x-text="isEditing ? '💾 Save Changes' : '✏️ Edit Report'"></span>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center gap-2">
+                        <label class="text-xs font-semibold text-gray-600">Template Type:</label>
+                        <select x-model="reportType" class="p-input w-64 text-sm font-semibold text-blue-700 border-blue-300" :disabled="isEditing">
+                            <option value="standard">Standard Discharge Summary</option>
+                            <option value="pcp">Primary Care Provider (PCP) Brief</option>
+                            <option value="patient">Patient-Friendly Instructions</option>
+                            <option value="baby">Baby Discharge Summary (OBS50)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="p-6 overflow-y-auto flex-grow flex justify-center">
+                    <div class="doc-paper w-full max-w-3xl text-sm" 
+                         :class="reportType === 'patient' ? 'text-lg text-blue-900' : 'text-gray-800'"
+                         :contenteditable="isEditing">
+                        
+                        <div x-show="reportType === 'standard'" x-transition>
+                            <div class="text-center border-b-2 border-gray-800 pb-4 mb-6" contenteditable="false">
+                                <h1 class="text-2xl font-bold uppercase tracking-wider">Discharge Summary</h1>
+                                <p class="text-gray-600 mt-1">Date: 17/02/2026 | Admission: 10/02/2026</p>
+                                <div x-show="isEditing" class="mt-2 text-xs text-blue-500 font-bold bg-blue-50 inline-block px-2 py-1 rounded">
+                                    📝 Edit Mode Active - Click anywhere below to edit text
+                                </div>
+                            </div>
+
+                            <div x-show="getWidget('diagnostics')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Diagnostics</h2>
+                                <ul class="list-decimal pl-5 space-y-1 text-gray-700">
+                                    <li><span class="font-semibold">Primary:</span> Abdominal Aortic Aneurysm, without rupture (I71.4) - 10/02/2026</li>
+                                    <li>Essential (primary) hypertension (I10) - 10/02/2026</li>
+                                    <li>Hyperlipidemia, unspecified (E78.5) - 10/02/2026</li>
+                                </ul>
+                            </div>
+
+                            <div x-show="getWidget('risk_factors')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Risk Factors & Medical History</h2>
+                                <p class="text-gray-700"><span class="font-semibold">Past Medical History:</span> Hypertension (diagnosed 2015), Hyperlipidemia.</p>
+                                <p class="text-gray-700"><span class="font-semibold">Risk Factors:</span> Current smoker (1 pack/day for 30 years), Family history of cardiovascular disease.</p>
+                            </div>
+
+                            <div x-show="getWidget('physical_exam')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Physical Exam (On Discharge)</h2>
+                                <p class="text-gray-700 mb-1"><span class="font-semibold">Vitals:</span> BP 120/75, HR 72, Temp 36.8°C, SpO2 98% on room air.</p>
+                                <p class="text-gray-700">Patient is alert and oriented x3. Groin access sites (bilateral) are clean, dry, and intact with no hematoma. Distal pulses (dorsalis pedis/posterior tibial) are palpable and symmetric bilaterally. Abdomen is soft, non-tender, no pulsatile mass appreciated post-EVAR.</p>
+                            </div>
+
+                            <div x-show="getWidget('surgeries')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Surgeries</h2>
+                                <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                    <li><span class="font-semibold">Endovascular Aneurysm Repair (EVAR)</span> - Performed on 11/02/2026 by Dr. S. Jenkins.</li>
+                                    <li>Bilateral percutaneous femoral artery access.</li>
+                                </ul>
+                            </div>
+
+                            <div x-show="getWidget('applied_procedures')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Applied Procedures</h2>
+                                <p class="text-gray-700 mb-2">Summary of procedures executed during admission:</p>
+                                <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                    <li><span class="font-semibold">Diagnostic Angiography of Abdominal Aorta:</span> 11/02/2026 - Confirmed infrarenal AAA anatomy suitable for endograft.</li>
+                                    <li><span class="font-semibold">EVAR Deployment:</span> Successful deployment of bifurcated endograft. Final completion angiogram demonstrated exclusion of the aneurysm sac with no evidence of endoleak.</li>
+                                </ul>
+                            </div>
+
+                            <div x-show="getWidget('progress_notes')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Progress Notes (Summary)</h2>
+                                <div class="bg-gray-50 p-3 rounded border border-gray-200 text-gray-700 italic">
+                                    "Patient tolerated EVAR procedure well. Extubated in OR and transferred to ICU for overnight observation. Transferred to surgical ward on POD 1. Hemodynamics remained stable throughout. Tolerated regular diet by POD 2. Mobilizing independently in hallways by POD 3. Groin sites without complication. Ready for discharge."
+                                </div>
+                            </div>
+
+                            <div x-show="getWidget('orders')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Discharge Recommendations</h2>
+                                <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                    <li><span class="font-semibold">Vascular Surgery:</span> No heavy lifting (>10 lbs) for 4 weeks. Showering is permitted; avoid soaking groin sites in baths/pools.</li>
+                                    <li><span class="font-semibold">Internal Med:</span> Aggressive blood pressure control and strict smoking cessation advised.</li>
+                                </ul>
+                            </div>
+
+                            <div x-show="getWidget('meds')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Discharge Medications (TTO)</h2>
+                                <table class="w-full border text-left text-gray-700">
+                                    <tr class="bg-gray-100"><th class="p-2 border">Medication</th><th class="p-2 border">Dosage</th><th class="p-2 border">Frequency</th></tr>
+                                    <tr><td class="p-2 border">Aspirin</td><td class="p-2 border">81mg</td><td class="p-2 border">PO Daily</td></tr>
+                                    <tr><td class="p-2 border">Atorvastatin</td><td class="p-2 border">40mg</td><td class="p-2 border">PO Nightly</td></tr>
+                                    <tr><td class="p-2 border">Amlodipine</td><td class="p-2 border">5mg</td><td class="p-2 border">PO Daily</td></tr>
+                                </table>
+                            </div>
+
+                            <div x-show="getWidget('labs')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Laboratory Results (Pre-Discharge)</h2>
+                                <div class="grid grid-cols-3 gap-4 text-gray-700">
+                                    <div><span class="font-semibold">WBC:</span> 7.2 x10^9/L</div>
+                                    <div><span class="font-semibold">Hb:</span> 12.1 g/dL</div>
+                                    <div><span class="font-semibold">Creatinine:</span> 1.1 mg/dL</div>
+                                </div>
+                            </div>
+
+                            <div x-show="getWidget('exam_requests')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Exam Requests</h2>
+                                <p class="text-gray-700"><span class="font-semibold">Imaging:</span> CTA Abdomen with and without contrast (Aorta) requested for 1 month post-op to evaluate endograft placement and check for endoleaks.</p>
+                            </div>
+
+                            <div x-show="getWidget('referrals')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Referral Requests</h2>
+                                <ul class="list-disc pl-5 mt-1 text-gray-700">
+                                    <li><span class="font-semibold">Outpatient Vascular Surgery Clinic:</span> Follow-up appointment in 4 weeks.</li>
+                                    <li><span class="font-semibold">Smoking Cessation Clinic:</span> Referral sent for consultation.</li>
+                                </ul>
+                            </div>
+
+                            <div x-show="getWidget('ancillary')" class="mb-5">
+                                <h2 class="font-bold text-md border-b border-gray-300 pb-1 mb-2 text-blue-900 uppercase">Ancillary Care Notes</h2>
+                                <div class="border-l-2 border-blue-400 pl-3">
+                                    <h3 class="font-bold text-gray-800 text-xs uppercase tracking-wide">Physiotherapy</h3>
+                                    <p class="text-gray-700 mt-1">Patient independent with ambulation. Encouraged daily progressive walking program.</p>
+                                </div>
+                            </div>
+
+                            <div x-show="nursingData.includeEvaluation" class="mb-5 bg-purple-50 p-3 rounded-lg border border-purple-100">
+                                <h2 class="font-bold text-md border-b border-purple-200 pb-1 mb-2 text-purple-900 uppercase">Nursing Handover & Evaluation</h2>
+                                <div class="mb-2">
+                                    <span class="font-semibold text-purple-800 text-xs uppercase">Evaluation Report:</span><br>
+                                    <span class="text-gray-800 font-medium" x-text="nursingData.evaluationReport"></span>
+                                </div>
+                                <div>
+                                    <span class="font-semibold text-purple-800 text-xs uppercase">Discharge Notes:</span><br>
+                                    <span class="text-gray-700 italic" x-text="nursingData.notes || 'No specific notes provided.'"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div x-show="reportType === 'pcp'" x-transition>
+                            <div class="border-b-2 border-blue-800 pb-4 mb-6 flex justify-between items-end" contenteditable="false">
+                                <div>
+                                    <h1 class="text-xl font-bold text-blue-900">PCP Transfer of Care Brief</h1>
+                                    <p class="text-gray-600 mt-1">Patient: DOE, JOHN (DOB: 05/04/1963)</p>
+                                </div>
+                                <div class="text-right text-sm">
+                                    <p class="font-bold">To: Dr. Emily Watson</p>
+                                    <p>Springfield Family Practice</p>
+                                </div>
+                            </div>
+                            <p class="mb-4">Dear Dr. Watson, your patient John Doe underwent an elective Endovascular Aneurysm Repair (EVAR) on 11/02/2026. The procedure was uncomplicated.</p>
+                            <div x-show="getWidget('orders')" class="mb-4">
+                                <h3 class="font-bold text-blue-800 border-b border-blue-200 mb-2">Recommendations</h3>
+                                <p class="text-gray-700">Please monitor blood pressure closely. CTA Aorta requested at 1 month post-op.</p>
+                            </div>
+                            <div class="mt-8 p-3 bg-yellow-50 border border-yellow-200 rounded">
+                                <h3 class="font-bold text-yellow-800">Pending Actions for PCP:</h3>
+                                <ul class="list-disc pl-5">
+                                    <li>Check basic metabolic panel (creatinine) in 2 weeks due to contrast exposure.</li>
+                                    <li>Assist with smoking cessation management.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div x-show="reportType === 'patient'" x-transition class="doc-patient-friendly">
+                            <div class="text-center mb-6" contenteditable="false">
+                                <h1 class="text-3xl font-bold text-blue-600">Going Home Guide</h1>
+                                <p class="text-xl mt-2">Prepared for: <strong>John Doe</strong></p>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
+                                <h2 class="text-xl font-bold text-blue-800 mb-2">👋 Welcome Home!</h2>
+                                <p>You had a procedure to fix the main blood vessel in your stomach (EVAR). Here is what you need to do to heal properly.</p>
+                            </div>
+                            <div x-show="getWidget('meds')" class="mb-6">
+                                <h2 class="text-xl font-bold text-green-700 mb-3">💊 Your Medicines</h2>
+                                <table class="w-full text-left bg-white border-2 border-green-200 rounded overflow-hidden">
+                                    <tr class="bg-green-100"><th class="p-3">What to take</th><th class="p-3">When to take it</th></tr>
+                                    <tr class="border-b"><td class="p-3 font-bold">Aspirin (81mg)</td><td class="p-3">🌅 Morning, with food</td></tr>
+                                    <tr><td class="p-3 font-bold">Atorvastatin (40mg)</td><td class="p-3">🌙 Night, before bed</td></tr>
+                                </table>
+                            </div>
+                            <div x-show="getWidget('orders')" class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 mb-6">
+                                <h2 class="text-xl font-bold text-yellow-800 mb-3">📅 Care Instructions</h2>
+                                <ul class="list-disc pl-6 space-y-2 font-semibold text-yellow-900">
+                                    <li>Do not lift anything heavier than 10 pounds (like a gallon of milk) for 4 weeks.</li>
+                                    <li>You may shower, but do not take baths or swim until your groin cuts are fully healed.</li>
+                                    <li>Stop smoking to help your blood vessels heal.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200 mb-6">
+                                <h2 class="text-xl font-bold text-red-800 mb-2">🚨 When to call a doctor:</h2>
+                                <ul class="list-disc pl-6 space-y-2 font-semibold">
+                                    <li>If you have swelling, bleeding, or worsening pain at your groin.</li>
+                                    <li>If you feel coldness or numbness in your legs or feet.</li>
+                                    <li>If you have a fever higher than 101°F.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div x-show="reportType === 'baby'" x-transition>
+                            <div class="text-center p-10 bg-gray-50 text-gray-500 rounded border border-dashed" contenteditable="false">
+                                This template is not applicable for Vascular Surgery discharges.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-card bg-white flex justify-between items-center py-3 m-0">
+                <div class="text-sm text-gray-600 flex items-center gap-2 font-semibold">
+                    <span class="text-green-500">●</span> Ready to transmit
+                </div>
+                <div class="flex gap-3">
+                    <button class="p-btn p-btn-secondary">🖨️ Print PDF</button>
+                    <button class="p-btn p-btn-success" @click="alert('Saved to EMR Document Tree!')">
+                        💾 Finalize
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('documentBuilder', () => ({
+                reportType: 'standard', 
+                timeFilter: 'admission',
+                isEditing: false, 
+                nursingData: {
+                    includeEvaluation: true,
+                    evaluationReport: 'Patient is stable, vitals within normal limits. Ready for discharge to home environment.',
+                    notes: 'Patient shows good understanding of wound care instructions. Tolerating oral diet well. Independently mobile in hallways. Voiding without difficulty.'
+                },
+                widgets: [
+                    { id: 'diagnostics', name: 'Diagnostics', desc: 'Chronological list of diagnoses.', selected: true, isNew: true },
+                    { id: 'risk_factors', name: 'Risk Factors & Medical History', desc: 'Patient background and risks.', selected: true, isNew: true },
+                    { id: 'physical_exam', name: 'Physical Exam', desc: 'Clinical findings on discharge.', selected: true, isNew: true },
+                    { id: 'surgeries', name: 'Surgeries', desc: 'Performed surgical procedures.', selected: true, isNew: true },
+                    { id: 'applied_procedures', name: 'Applied Procedures', desc: 'Summary of executed interventions (EVAR/Angiography).', selected: true, isNew: true },
+                    { id: 'progress_notes', name: 'Progress Notes', desc: 'Nursing & physician observations.', selected: true, isNew: true },
+                    { id: 'orders', name: 'Discharge Recommendations', desc: 'Medical instructions (Formerly Multi-specialist orders).', selected: true, isNew: false },
+                    { id: 'meds', name: 'Discharge Medications', desc: 'Prescribed TTO meds.', selected: true, isNew: false },
+                    { id: 'labs', name: 'Laboratory Results', desc: 'Aggregated lab data.', selected: true, isNew: false },
+                    { id: 'exam_requests', name: 'Exam Requests', desc: 'Requested tests and imaging.', selected: true, isNew: true },
+                    { id: 'referrals', name: 'Referral Requests', desc: 'Specialist consultations.', selected: true, isNew: true },
+                    { id: 'ancillary', name: 'Ancillary & Follow-ups', desc: 'Allied health notes.', selected: false, isNew: false }
+                ],
+                
+                getWidget(id) {
+                    const widget = this.widgets.find(w => w.id === id);
+                    return widget ? widget.selected : false;
+                }
+            }))
+        })
+    </script>
+</body>
+</html>
