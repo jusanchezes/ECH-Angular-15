@@ -66,54 +66,69 @@
                 <!-- CARD 1: Data Aggregation Filters
                      Angular: DataAggregationFilterComponent
                      API Contract: GET /api/v1/clinical/admission/{episodeId}/dates → AdmissionDateRangeDTO -->
-                <div class="dr-card">
-                    <h3 class="dr-card-title" data-i18n="DR.FILTERS_TITLE">Data Aggregation Filters</h3>
-                    <label class="dr-form-label" data-i18n="DR.TIMEFRAME_LABEL">Timeframe for Clinical Data Pull</label>
-                    <select class="dr-select" id="drTimeFilter" onchange="drHandleTimeFilter(this.value)" data-field="reportTimeframe">
-                        <option value="admission" data-i18n="DR.TIMEFRAME_ADMISSION">Entire Admission</option>
-                        <option value="last48h" data-i18n="DR.TIMEFRAME_48H">Last 48 Hours</option>
-                        <option value="last24h" data-i18n="DR.TIMEFRAME_24H">Last 24 Hours</option>
-                        <option value="custom" data-i18n="DR.TIMEFRAME_CUSTOM">Custom Date Range...</option>
-                    </select>
-                    <!-- Conditional date range pickers — shown only when 'custom' is selected -->
-                    <div class="dr-date-row" id="drCustomDateRow" style="display:none">
-                        <input type="date" class="dr-date-input" id="drDateFrom" data-field="reportDateFrom" title="From date">
-                        <input type="date" class="dr-date-input" id="drDateTo" data-field="reportDateTo" title="To date">
+                <div class="dr-card" id="drCardFilters">
+                    <!-- Collapsible header — onclick toggles collapsed class on card -->
+                    <div class="dr-card-header" onclick="drToggleCard('drCardFilters')" role="button" aria-expanded="true" tabindex="0">
+                        <h3 class="dr-card-title" data-i18n="DR.FILTERS_TITLE">Data Aggregation Filters</h3>
+                        <i class="pi pi-chevron-down dr-card-chevron"></i>
+                    </div>
+                    <div class="dr-card-body">
+                        <label class="dr-form-label" data-i18n="DR.TIMEFRAME_LABEL">Timeframe for Clinical Data Pull</label>
+                        <select class="dr-select" id="drTimeFilter" onchange="drHandleTimeFilter(this.value)" data-field="reportTimeframe">
+                            <option value="admission" data-i18n="DR.TIMEFRAME_ADMISSION">Entire Admission</option>
+                            <option value="last48h" data-i18n="DR.TIMEFRAME_48H">Last 48 Hours</option>
+                            <option value="last24h" data-i18n="DR.TIMEFRAME_24H">Last 24 Hours</option>
+                            <option value="custom" data-i18n="DR.TIMEFRAME_CUSTOM">Custom Date Range...</option>
+                        </select>
+                        <!-- Conditional date range pickers — shown only when 'custom' is selected -->
+                        <div class="dr-date-row" id="drCustomDateRow" style="display:none">
+                            <input type="date" class="dr-date-input" id="drDateFrom" data-field="reportDateFrom" title="From date">
+                            <input type="date" class="dr-date-input" id="drDateTo" data-field="reportDateTo" title="To date">
+                        </div>
                     </div>
                 </div>
 
                 <!-- CARD 2: Clinical Modules Checklist
                      Angular: ClinicalModulesChecklistComponent
                      data-field: selectedModules → string[] (module IDs) -->
-                <div class="dr-card">
-                    <h3 class="dr-card-title" data-i18n="DR.MODULES_TITLE">Include Clinical Modules</h3>
-                    <div class="dr-module-list" id="drModuleList">
-                        <!-- Populated by drRenderModuleList() -->
+                <div class="dr-card" id="drCardModules">
+                    <div class="dr-card-header" onclick="drToggleCard('drCardModules')" role="button" aria-expanded="true" tabindex="0">
+                        <h3 class="dr-card-title" data-i18n="DR.MODULES_TITLE">Include Clinical Modules</h3>
+                        <i class="pi pi-chevron-down dr-card-chevron"></i>
+                    </div>
+                    <div class="dr-card-body">
+                        <div class="dr-module-list" id="drModuleList">
+                            <!-- Populated by drRenderModuleList() -->
+                        </div>
                     </div>
                 </div>
 
                 <!-- CARD 3: Nursing Input (purple-accented)
                      Angular: NursingInputComponent
                      data-field: nursingInput → NursingDischargeInputDTO -->
-                <div class="dr-card dr-card-nursing">
-                    <h3 class="dr-card-title dr-card-title-nursing" data-i18n="DR.NURSING_TITLE">Nursing Input</h3>
-
-                    <!-- Nurse Progress Note toggle -->
-                    <div class="dr-nursing-toggle" onclick="drToggleNursing()" id="drNursingToggle" role="checkbox" aria-checked="true" tabindex="0">
-                        <div class="dr-checkbox checked" id="drNursingCheckbox">
-                            <svg class="dr-check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        </div>
-                        <label class="dr-nursing-label" data-i18n="DR.NURSING_PROGRESS_NOTE">Nurse Progress Note</label>
+                <div class="dr-card dr-card-nursing" id="drCardNursing">
+                    <div class="dr-card-header" onclick="drToggleCard('drCardNursing')" role="button" aria-expanded="true" tabindex="0">
+                        <h3 class="dr-card-title dr-card-title-nursing" data-i18n="DR.NURSING_TITLE">Nursing Input</h3>
+                        <i class="pi pi-chevron-down dr-card-chevron"></i>
                     </div>
+                    <div class="dr-card-body">
+                        <!-- Nurse Progress Note toggle -->
+                        <div class="dr-nursing-toggle" onclick="drToggleNursing()" id="drNursingToggle" role="checkbox" aria-checked="true" tabindex="0">
+                            <div class="dr-checkbox checked" id="drNursingCheckbox">
+                                <svg class="dr-check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <label class="dr-nursing-label" data-i18n="DR.NURSING_PROGRESS_NOTE">Nurse Progress Note</label>
+                        </div>
 
-                    <!-- Free-text nursing notes textarea -->
-                    <label class="dr-form-label" data-i18n="DR.NURSING_NOTES_LABEL">Discharge Nursing Notes</label>
-                    <textarea class="dr-textarea"
-                              id="drNursingNotes"
-                              data-field="nursingDischargeNotes"
-                              placeholder="Enter free text for nursing observations upon discharge..."
-                              oninput="drSyncNursingNotes(this.value)"
-                              data-i18n-placeholder="DR.NURSING_NOTES_PLACEHOLDER">Patient shows good understanding of wound care instructions. Tolerating oral diet well. Independently mobile in hallways. Voiding without difficulty.</textarea>
+                        <!-- Free-text nursing notes textarea -->
+                        <label class="dr-form-label" data-i18n="DR.NURSING_NOTES_LABEL">Discharge Nursing Notes</label>
+                        <textarea class="dr-textarea"
+                                  id="drNursingNotes"
+                                  data-field="nursingDischargeNotes"
+                                  placeholder="Enter free text for nursing observations upon discharge..."
+                                  oninput="drSyncNursingNotes(this.value)"
+                                  data-i18n-placeholder="DR.NURSING_NOTES_PLACEHOLDER">Patient shows good understanding of wound care instructions. Tolerating oral diet well. Independently mobile in hallways. Voiding without difficulty.</textarea>
+                    </div>
                 </div>
 
             </div>
@@ -504,6 +519,24 @@
  */
 
 /* ============================================================================
+   CARD COLLAPSE / EXPAND
+   Angular: [class.collapsed]="card.isCollapsed" + (click)="toggleCard(card)"
+   ============================================================================ */
+/**
+ * Toggles the collapsed state of a left-panel config card.
+ * Rotates the chevron icon and toggles the .collapsed class on the card.
+ * @param {string} cardId - The id attribute of the .dr-card element.
+ */
+function drToggleCard(cardId) {
+    var card = document.getElementById(cardId);
+    if (!card) return;
+
+    var isNowCollapsed = card.classList.toggle('collapsed');
+    var header = card.querySelector('.dr-card-header');
+    if (header) header.setAttribute('aria-expanded', isNowCollapsed ? 'false' : 'true');
+}
+
+/* ============================================================================
    MODULE DEFINITIONS
    Angular: DischargeReportConfigDTO.modules array from ClinicalDataService
    ============================================================================ */
@@ -763,6 +796,12 @@ document.addEventListener('keydown', function (e) {
     if (target.id === 'drNursingToggle' && (e.key === 'Enter' || e.key === ' ')) {
         e.preventDefault();
         drToggleNursing();
+    }
+    /* Card header keyboard collapse/expand */
+    if (target.classList.contains('dr-card-header') && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        var card = target.closest('.dr-card');
+        if (card) drToggleCard(card.id);
     }
 });
 
