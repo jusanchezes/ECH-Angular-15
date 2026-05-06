@@ -896,39 +896,173 @@
 }
 
 /* ----------------------------------------------------------------------------
-   PRINT STYLES — Hides chrome when printing
+   PRINT LETTERHEAD — Hidden on screen, shown only when printing
    -------------------------------------------------------------------------- */
+.dr-print-letterhead {
+    display: none;
+}
+
+/* ----------------------------------------------------------------------------
+   PRINT STYLES — A4 layout, letterhead, page numbers, page-break rules
+   -------------------------------------------------------------------------- */
+
+/* A4 page setup: 15 mm margins on all sides; page number in footer */
+@page {
+    size: A4;
+    margin: 15mm;
+    @bottom-center {
+        content: "Page " counter(page) " of " counter(pages);
+        font-family: Arial, sans-serif;
+        font-size: 9pt;
+        color: #555;
+    }
+}
+
 @media print {
+    /* --- Hide all application chrome --- */
     .sidebar,
     .top-bar,
     .clinical-banner,
     .action-bar,
     .dr-config-panel,
     .dr-preview-header,
-    .dr-preview-footer {
+    .dr-preview-footer,
+    .dr-edit-notice {
         display: none !important;
     }
 
-    .dr-workspace {
-        padding: 0;
+    /* --- Reset workspace to single-column block --- */
+    body {
+        background: white !important;
+    }
+
+    .layout,
+    .main-content {
         display: block;
+        overflow: visible;
+    }
+
+    .dr-workspace {
+        display: block;
+        padding: 0;
+        overflow: visible;
     }
 
     .dr-preview-panel {
         border: none;
         box-shadow: none;
+        overflow: visible;
     }
 
     .dr-doc-area {
         padding: 0;
         overflow: visible;
+        display: block;
     }
 
+    /* --- Paper: full width, no decorative chrome --- */
     .dr-paper {
         box-shadow: none;
         border: none;
         padding: 0;
         max-width: 100%;
+        width: 100%;
         background: white !important;
+        font-size: 10pt;
+        color: #000;
+        line-height: 1.5;
+    }
+
+    /* --- Hospital letterhead: shown at top of first (printed) page --- */
+    .dr-print-letterhead {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border-bottom: 2pt solid #1a5276;
+        padding-bottom: 10pt;
+        margin-bottom: 16pt;
+    }
+
+    .dr-letterhead-logo-box {
+        flex-shrink: 0;
+        width: 52pt;
+        height: 52pt;
+        border: 2pt solid #1a5276;
+        border-radius: 4pt;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16pt;
+        font-weight: 700;
+        color: #1a5276;
+        letter-spacing: 0.05em;
+        font-family: Arial, sans-serif;
+    }
+
+    .dr-letterhead-info {
+        flex: 1;
+    }
+
+    .dr-letterhead-name {
+        font-size: 16pt;
+        font-weight: 700;
+        color: #1a5276;
+        font-family: Arial, sans-serif;
+        line-height: 1.2;
+        margin-bottom: 3pt;
+    }
+
+    .dr-letterhead-address {
+        font-size: 8.5pt;
+        color: #444;
+        font-family: Arial, sans-serif;
+    }
+
+    /* --- Page-break rules: keep sections together, no orphaned headings --- */
+    .dr-doc-section,
+    .dr-nursing-section,
+    .dr-recs-section,
+    .dr-pf-welcome,
+    .dr-pf-meds,
+    .dr-pf-care,
+    .dr-pf-emergency,
+    .dr-pending-box {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .dr-section-heading,
+    h1, h2, h3 {
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+
+    /* --- Ensure tables and quote blocks don't split awkwardly --- */
+    .dr-med-table,
+    .dr-pf-med-table,
+    .dr-quote-block,
+    .dr-lab-grid,
+    .dr-ancillary-note {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    /* --- Preserve background colours for clinical callout boxes --- */
+    .dr-nursing-section,
+    .dr-pending-box,
+    .dr-pf-welcome,
+    .dr-pf-care,
+    .dr-pf-emergency,
+    .dr-quote-block {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* --- Table borders stay solid in print --- */
+    .dr-med-table th,
+    .dr-med-table td,
+    .dr-pf-med-table th,
+    .dr-pf-med-table td {
+        border: 1pt solid #bbb !important;
     }
 }

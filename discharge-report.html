@@ -171,6 +171,15 @@
                          Angular: [contentEditable]="isEditing | async" (attr binding) -->
                     <div class="dr-paper" id="drPaper">
 
+                        <!-- PRINT ONLY: Hospital letterhead — hidden on screen, visible when printing -->
+                        <div class="dr-print-letterhead" aria-hidden="true">
+                            <div class="dr-letterhead-logo-box">ECH</div>
+                            <div class="dr-letterhead-info">
+                                <div class="dr-letterhead-name">ECH Medical Centre</div>
+                                <div class="dr-letterhead-address">123 Hospital Road, Springfield, SP1 2AB &nbsp;&bull;&nbsp; Tel: +44 (0)1234 567890 &nbsp;&bull;&nbsp; Fax: +44 (0)1234 567891</div>
+                            </div>
+                        </div>
+
                         <!-- Edit mode notice — shown only when editing is active -->
                         <div class="dr-edit-notice" id="drEditNotice">
                             <i class="pi pi-pencil"></i>
@@ -467,8 +476,8 @@
                         <span data-i18n="DR.STATUS_READY">Ready to transmit</span>
                     </div>
                     <div class="dr-footer-actions">
-                        <!-- Print PDF: triggers window.print() which hides chrome via @media print -->
-                        <button class="dr-btn" onclick="window.print()" title="Print PDF" data-i18n-title="DR.PRINT_PDF">
+                        <!-- Print PDF: opens paged print window with A4 layout and page numbers -->
+                        <button class="dr-btn" onclick="drPrintPDF()" title="Print PDF" data-i18n-title="DR.PRINT_PDF">
                             <i class="pi pi-print"></i>
                             <span data-i18n="DR.PRINT_PDF">Print PDF</span>
                         </button>
@@ -780,6 +789,68 @@ function drFinalize() {
     toast.classList.add('show');
 
     setTimeout(function () { toast.classList.remove('show'); }, 3500);
+}
+
+/* ============================================================================
+   PRINT PDF — Opens a Paged.js-powered popup for A4 print with page numbers
+   Paged.js is a CSS Paged Media polyfill that enables @page margin boxes
+   (e.g. @bottom-center page numbers) which standard Chrome does not support.
+   Angular: PrintService.printDocument(paperEl)
+   ============================================================================ */
+/**
+ * Opens a clean popup window containing only the document paper content,
+ * linked to the same CSS (so all design tokens and print rules apply), and
+ * bootstrapped with Paged.js.  Paged.js processes @page @bottom-center to
+ * render "Page X of Y" on every page, then fires afterRendered() which
+ * triggers window.print() automatically.
+ *
+ * Falls back to window.print() if the popup is blocked by the browser.
+ */
+function drPrintPDF() {
+    var paper = document.getElementById('drPaper');
+    if (!paper) { window.print(); return; }
+
+    /* Build base URL relative to this page so subpath deployments work correctly. */
+    var base = window.location.href.replace(/[^/]*$/, '');
+    var paperHTML = paper.innerHTML;
+
+    var html = [
+        '<!DOCTYPE html>',
+        '<html lang="en">',
+        '<head>',
+        '<meta charset="UTF-8">',
+        '<title>Discharge Report \u2014 Print</title>',
+        '<link rel="stylesheet" href="' + base + 'css/clinical-core.css">',
+        '<link rel="stylesheet" href="' + base + 'css/modules/discharge-report.css">',
+        '</head>',
+        '<body>',
+        '<div id="drPaper" class="dr-paper">',
+        paperHTML,
+        '</div>',
+        /* Vendored Paged.js (js/vendor/paged.polyfill.js).
+           onerror: if file is unavailable, fall back to plain window.print(). */
+        '<script src="' + base + 'js/vendor/paged.polyfill.js"',
+        '        onerror="window.print()"><\/script>',
+        '<script>',
+        /* Watchdog: if afterRendered never fires within 12 s, fall back to plain print. */
+        'var _drPrintWatchdog = setTimeout(function() { window.print(); }, 12000);',
+        'class PrintReadyHandler extends Paged.Handler {',
+        '    afterRendered() {',
+        '        clearTimeout(_drPrintWatchdog);',
+        '        window.print();',
+        '    }',
+        '}',
+        'Paged.registerHandlers(PrintReadyHandler);',
+        '<\/script>',
+        '</body>',
+        '</html>'
+    ].join('\n');
+
+    var win = window.open('', '_blank');
+    if (!win) { window.print(); return; }
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
 }
 
 /* ============================================================================
